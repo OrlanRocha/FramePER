@@ -1,77 +1,70 @@
 # FramePER-CSS
-FramePE CSS
 
-Este projeto demonstra um conjunto de classes CSS reutilizáveis e personalizáveis para aprimorar sua experiência de desenvolvimento web. Os estilos são projetados para serem flexíveis e podem ser facilmente integrados aos seus projetos.
+FramePER-CSS é um micro framework de utilitários que reúne classes CSS reutilizáveis para acelerar o desenvolvimento de interfaces web consistentes. Ele concentra estilos base para tipografia, cores, espaçamento e componentes comuns, permitindo combinar utilitários de acordo com a necessidade de cada projeto.
 
+## Estrutura do projeto
 
-## Color Palette
+```
+.
+├── ANALISE.md        # Avaliação detalhada dos utilitários disponíveis
+├── README.md         # Este guia
+└── css/
+    └── framePERCSS.css
+```
 
-The project defines a custom color palette using CSS variables. Here are the main color variables:
+## Como começar
 
-- `--blue`: rgba(50, 100, 200, 1.0)
-- `--green`: rgba(100, 200, 160, 1.0)
-- `--white`: rgba(255, 255, 255, 1.0)
-- `--red`: rgba(200, 75, 75, 1.0)
-- `--text`: rgba(25, 25, 25, 1.0)
+1. Faça o download deste repositório ou instale os arquivos através de seu gerenciador preferido.
+2. Importe o arquivo `css/framePERCSS.css` na página HTML:
 
-## Buttons and Links
+```html
+<link rel="stylesheet" href="css/framePERCSS.css" />
+```
 
-### Buttons
+3. Aplique as classes utilitárias diretamente nos elementos para compor layouts e componentes sem escrever regras adicionais.
 
-Buttons are designed with a clean and versatile style. Here are some key classes:
+## Paleta de cores
 
-- `.btn`: Basic button style with padding, border, and transition effects.
-- `.btn:focus`, `.btn:active`: Styles for focused and active states.
+As cores são expostas via variáveis CSS e podem ser sobrescritas conforme necessário:
 
-### Links
+| Variável     | Valor RGBA             | Uso sugerido             |
+|--------------|------------------------|--------------------------|
+| `--black`    | rgba(75, 75, 75, 1.0)  | Texto contrastante       |
+| `--blue`     | rgba(50, 150, 225, 1.0)| Estados primários        |
+| `--yellow`   | rgba(255, 225, 50, 1.0)| Destaques e alertas      |
+| `--green`    | rgba(50, 175, 75, 1.0) | Sucesso                  |
+| `--white`    | rgba(255, 255, 255, 1.0)| Fundos neutros          |
+| `--red`      | rgba(200, 75, 75, 1.0) | Erros ou avisos          |
+| `--orange`   | rgba(255, 165, 0, 1.0) | Chamada para ação        |
+| `--grey`     | rgba(180, 180, 180, 1.0)| Bordas e separadores    |
+| `--texto`    | rgba(80, 80, 80, 1.0)  | Tipografia padrão        |
 
-Links are styled for better readability:
+Classes utilitárias como `.bg-blue`, `.white`, `.b-red` e `.bg-yelow` facilitam aplicar essas cores a fundos, textos e bordas. *Observação:* as classes relacionadas a "yellow" utilizam a variável `--yelow`; ajuste o nome da variável ou sobrescreva o valor caso deseje consistência com `--yellow`.
 
-- `a`, `a:link`, `a:hover`: Custom styles for links with a subtle color change on hover.
+## Principais utilitários
 
-## Typography
+- **Reset e elementos básicos:** normalização de `box-sizing`, estilização de listas, botões, inputs e barras de rolagem.
+- **Tipografia:** classes `.h1` a `.h5` para títulos em diferentes tamanhos, `.p` para parágrafos e utilitários de cor para texto.
+- **Layout:** `.container` com largura responsiva, grids flexíveis, controle de overflow e classes de posicionamento (`.p-relative`, `.p-absolute`, `.p-fixed`).
+- **Espaçamento e bordas:** utilitários de padding, margin, borda (`.b-*`) e raio (`.r-*`, `.r-circle`).
+- **Componentes:** `.btn` para botões, variações de foco/ativo, tabelas com estilos prontos e classes para inputs (`.input`).
 
-### Headings
+## Exemplo de uso
 
-Custom heading styles provide a unique and elegant look:
+```html
+<section class="container bg-blue white r-2 p-3">
+  <h1 class="h2">Comece com FramePER-CSS</h1>
+  <p class="p">
+    Combine utilitários de cor, espaçamento e tipografia para criar componentes rapidamente.
+  </p>
+  <button class="btn bg-white blue r-2">Chamada para ação</button>
+</section>
+```
 
-- `.h1`, `.h2`, `.h3`, `.h4`, `.h5`: Different heading styles with varying font sizes.
+## Análises e roadmap
 
-### Paragraph
+O arquivo [ANALISE.md](ANALISE.md) apresenta uma visão crítica sobre pontos fortes, oportunidades de melhoria e sugestões de evolução para o framework.
 
-- `.p`: Sets the font family, color, and size for paragraphs.
+## Licença
 
-## Containers and Layout
-
-- `.container`: Defines a responsive container with a max-width of 800px and padding.
-- `.grid`, `.grid-2`, `.grid-3`, ...: Responsive grid classes for creating different column layouts.
-
-## Borders and Padding
-
-Customize borders and padding easily with intuitive classes:
-
-- `.b-1`, `.b-t-2`, `.p-3`, `.p-t-4`, ...
-
-## Miscellaneous
-
-- `.txt-center`, `.txt-left`, `.txt-right`: Text alignment classes.
-- `.o-h`, `.o-s`, `.o-h-s`, `.o-h-v`: Overflow and overflow-x/overflow-y classes.
-
-## Responsive Sizing
-
-Adjust width and height with responsive sizing classes:
-
-- `.w-100`, `.w-75`, `.h-1`, `.h-2`, ...
-
-## Position and Float
-
-- `.p-relative`, `.p-absolute`, `.p-fixed`: Positioning classes.
-- `.f-left`, `.f-right`: Float classes.
-
-## Usage
-
-Feel free to explore and integrate these styles into your project. Mix and match the classes to achieve the desired look for your components.
-
-## License
-
-This project is licensed under the MIT License - see the [LICENSE.md](LICENSE.md) file for details.
+Este projeto está licenciado sob os termos da licença MIT. Consulte o arquivo [LICENSE.md](LICENSE.md) para mais informações.
