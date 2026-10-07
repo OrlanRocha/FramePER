@@ -1,31 +1,34 @@
-# FramePER CSS
+# Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-1.0.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-FramePER CSS is a modern, responsive, and lightweight CSS framework designed to simplify and accelerate web development. Built with SCSS, it provides a highly customizable utility-first approach combined with powerful layout components.
+**Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, and animations.
 
 ## 🚀 Features
 
+- **CSS & JS Integrated**: Now includes a Vanilla JS library for interactive components (Modals, Dropdowns, Alerts).
+- **Smooth Animations & Transitions**: Built-in CSS utilities for `fade-in`, `slide-up`, `hover-scale`, and more.
 - **Responsive Grid System**: Modern CSS Grid based layout with breakpoints (`sm`, `md`, `lg`, `xl`).
 - **SCSS Architecture**: Highly modular, organized by variables, base, components, layouts, and utilities.
 - **Utility-First**: Extensive classes for margins, paddings, sizing, borders, colors, typography, and flexbox/grid.
-- **Modern CSS**: Leveraging CSS Variables for theming, CSS Grid for layouts, and flexbox.
-- **Production Ready**: Automated build process via PostCSS resulting in highly optimized, minified code (`framePER.min.css`).
+- **Production Ready**: Automated build process via PostCSS & Terser resulting in optimized `framePER.min.css` and `framePER.min.js`.
 
 ## 📦 Getting Started
 
 ### Using the Pre-compiled Version
 
-Just include the compiled and minified CSS file in your HTML `<head>`:
+Include the compiled CSS and JS files in your HTML:
 
 ```html
+<!-- In your <head> -->
 <link rel="stylesheet" href="dist/framePER.min.css">
+
+<!-- Right before closing </body> -->
+<script src="dist/framePER.min.js"></script>
 ```
 
 ### Building from Source
-
-If you want to customize variables, colors, or breakpoints, you can build from source.
 
 1. Clone the repository:
    ```bash
@@ -35,63 +38,61 @@ If you want to customize variables, colors, or breakpoints, you can build from s
    ```bash
    npm install
    ```
-3. Build the CSS:
+3. Build the assets:
    ```bash
    npm run build
    ```
-   This will generate `dist/framePER.css` and `dist/framePER.min.css`.
-
-## 🎨 Customization
-
-All core configurations are located in `src/scss/_variables.scss`. You can easily change:
-- Colors (`$colors`)
-- Breakpoints (`$breakpoints`)
-- Spacing Scales (`$spacing`)
-- Border Radius (`$radius`)
-- Typography (`$font-family-base`, `$font-family-heading`)
+   This will generate the `/dist` folder with both CSS and JS compiled files.
 
 ## 🛠️ Components & Utilities
 
-### 1. Grid System
-FramePER CSS offers a powerful grid system:
+### 1. Interactive Components (New! ✨)
+Frame PER now comes with pure JavaScript behaviors (No jQuery needed!).
+
+**Modals:**
+```html
+<button class="btn btn-blue" data-toggle="modal" data-target="#myModal">Open Modal</button>
+
+<div id="myModal" class="modal">
+  <div class="modal-content">
+    <div class="modal-header">
+      <h3 class="h3">Modal Title</h3>
+      <button class="modal-close" data-dismiss="modal">&times;</button>
+    </div>
+    <p>Modal body content goes here.</p>
+  </div>
+</div>
+```
+
+**Dismissible Alerts:**
+```html
+<div class="alert alert-blue">
+  This is a primary alert!
+  <button class="alert-close" data-dismiss="alert">&times;</button>
+</div>
+```
+
+### 2. Animations & Transitions (New! ✨)
+Add life to your UI with simple classes:
+```html
+<div class="fade-in">Fades in on load</div>
+<div class="slide-up">Slides up on load</div>
+<button class="btn btn-green hover-lift transition">Hover me to lift</button>
+```
+
+### 3. Grid System
+Frame PER offers a powerful grid system:
 ```html
 <div class="grid grid-3">
-  <!-- 3 equal columns -->
   <div>1</div><div>2</div><div>3</div>
 </div>
-
-<div class="grid grid-md-4">
-  <!-- 4 columns on medium screens and up -->
-</div>
 ```
 
-### 2. Spacing
-Consistent spacing scale using `m` (margin) and `p` (padding) with modifiers (`t`, `b`, `l`, `r`, `x`, `y`):
-```html
-<div class="m-t-5 p-3">
-  Margin Top 5 (1rem), Padding 3 (0.6rem)
-</div>
-```
-
-### 3. Typography
+### 4. Typography & Spacing
 Clean heading styles and text utilities:
 ```html
-<h1 class="h1">Display Heading</h1>
+<h1 class="h1 m-b-4">Display Heading</h1>
 <p class="p txt-center f-w-7">Paragraph text, centered, bold (700)</p>
-```
-
-### 4. Buttons
-Easily add stylish, modern buttons:
-```html
-<button class="btn btn-blue">Primary Action</button>
-<a href="#" class="btn btn-green">Link Button</a>
-```
-
-### 5. Forms & Tables
-Pre-styled form inputs and clean tables ready for use:
-```html
-<input type="text" class="input" placeholder="Type here...">
-<table class="w-100">...</table>
 ```
 
 ## 📜 License

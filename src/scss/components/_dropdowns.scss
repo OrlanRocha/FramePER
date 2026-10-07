@@ -1,0 +1,40 @@
+@use '../variables' as *;
+
+.dropdown {
+    position: relative;
+    display: inline-block;
+}
+
+.dropdown-menu {
+    position: absolute;
+    top: 100%;
+    left: 0;
+    background-color: var(--white);
+    min-width: 150px;
+    box-shadow: 0 4px 12px rgba(0,0,0,0.1);
+    border-radius: 0.4rem;
+    padding: 0.5rem 0;
+    margin-top: 0.5rem;
+    opacity: 0;
+    visibility: hidden;
+    transform: translateY(10px);
+    transition: all 0.2s ease;
+    z-index: 100;
+
+    &.show {
+        opacity: 1;
+        visibility: visible;
+        transform: translateY(0);
+    }
+}
+
+.dropdown-item {
+    display: block;
+    padding: 0.5rem 1rem;
+    color: var(--black);
+    text-decoration: none;
+    
+    &:hover {
+        background-color: rgba(0,0,0,0.05);
+    }
+}
