@@ -21,7 +21,7 @@
         .rounded-lg { border-radius: 0.5rem; }
         .container-fluid { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
         
-        .doc-card { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; }
+        .doc-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; }
         .code-block { background: #0f172a; color: #f8fafc; padding: 1.5rem; border-radius: 0.5rem; font-family: monospace; overflow-x: auto; }
     
     </style>
@@ -52,7 +52,7 @@
             <!-- Content -->
             <div class="grid-lg-span-2">
                 <div class="doc-card shadow-sm" id="http">
-                    <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Módulo HTTP</h2>
+                    <h2 class="h3 m-b-3" style="color: var(--text-main); font-weight: 700;">Módulo HTTP</h2>
                     <p class="text-muted m-b-4">O wrapper HTTP cuida de toda comunicação com seu backend (GET, POST, PUT, DELETE), com tratamento automático de erros, CSRF e offline.</p>
                     <div class="code-block m-b-4">
 // Exemplo de Chamada GET
@@ -66,7 +66,7 @@ if(response.ok) {
                 </div>
 
                 <div class="doc-card shadow-sm" id="notify">
-                    <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Toasts de Notificação</h2>
+                    <h2 class="h3 m-b-3" style="color: var(--text-main); font-weight: 700;">Toasts de Notificação</h2>
                     <p class="text-muted m-b-4">Chame notificações elegantes dinamicamente pelo JS sem sujar o seu HTML.</p>
                     <button class="btn btn-blue m-b-4" onclick="FramePER.Notify.success('Documentação', 'Exemplo de sucesso renderizado na hora!')">Testar Toast</button>
                     <div class="code-block m-b-4">
@@ -77,7 +77,7 @@ FramePER.Notify.info('Aviso', 'Ação processada.');
                 </div>
 
                 <div class="doc-card shadow-sm" id="loaders">
-                    <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Loaders</h2>
+                    <h2 class="h3 m-b-3" style="color: var(--text-main); font-weight: 700;">Loaders</h2>
                     <p class="text-muted m-b-4">Tranque a interface do usuário enquanto algo crucial carrega, ou insira spinners dentro de botões.</p>
                     <button id="btnLoadEx" class="btn btn-black m-b-4" onclick="demoLoader(this)">Testar Loader no Botão</button>
                     <div class="code-block m-b-4">

@@ -3468,9 +3468,10 @@ input:checked + .slider:before {
 :root {
   --bg-body: #f8fafc;
   --bg-surface: #ffffff;
-  --text-main: #1e293b;
+  --text-main: #0f172a;
   --text-muted: #64748b;
   --border-color: #e2e8f0;
+  --primary: #2563eb;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.05);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.1), 0 2px 4px -1px rgba(0, 0, 0, 0.06);
   --radius-sm: 0.25rem;
@@ -3484,6 +3485,7 @@ input:checked + .slider:before {
   --text-main: #f8fafc;
   --text-muted: #94a3b8;
   --border-color: #334155;
+  --primary: #3b82f6;
   --shadow-sm: 0 1px 2px 0 rgba(0, 0, 0, 0.3);
   --shadow-md: 0 4px 6px -1px rgba(0, 0, 0, 0.4), 0 2px 4px -1px rgba(0, 0, 0, 0.2);
 }
@@ -3495,7 +3497,7 @@ body {
 }
 
 /* Subtle, normalized components */
-.card, .ui-card, .stat-card, .modal-content, .demo-card {
+.card, .ui-card, .stat-card, .modal-content, .demo-card, .doc-card {
   background-color: var(--bg-surface) !important;
   color: var(--text-main);
   border: 1px solid var(--border-color);
@@ -3510,7 +3512,6 @@ body {
   box-shadow: var(--shadow-md);
 }
 
-/* Sidebar and Topbar should not have border radius by default if they are flush */
 .sidebar, .topbar {
   background-color: var(--bg-surface) !important;
   color: var(--text-main);

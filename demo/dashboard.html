@@ -52,7 +52,7 @@
         
         <p class="text-muted f-s-2 text-uppercase f-w-bold m-b-2 p-x-2">Menu Principal</p>
         <nav class="d-flex flex-column gap-1 m-b-5">
-            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg bg-blue text-white" style="text-decoration:none;">
+            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg bg-surface border text-main f-w-bold" style="text-decoration:none;">
                 <i class="icon icon-home m-r-3"></i> Dashboard
             </a>
             <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition" style="text-decoration:none;">
@@ -60,7 +60,7 @@
             </a>
             <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition justify-content-between" style="text-decoration:none;">
                 <span class="d-flex align-items-center"><i class="icon icon-envelope m-r-3"></i> Mensagens</span>
-                <span class="badge badge-pill bg-red text-white">4</span>
+                <span class="badge badge-pill border text-muted  ">4</span>
             </a>
         </nav>
         
@@ -71,10 +71,10 @@
             </a>
         </nav>
         
-        <div class="mt-auto m-t-auto p-4 rounded-lg text-white mt-auto" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="mt-auto m-t-auto p-4 rounded-lg mt-auto" style="background: var(--bg-body); border: 1px solid var(--border-color);">
             <p class="f-w-bold m-b-1">Pro Plan</p>
             <p class="f-s-2 m-b-3" style="opacity: 0.9;">Mais recursos incríveis.</p>
-            <button class="btn btn-white w-100 rounded-lg shadow-sm text-blue f-s-2">Fazer Upgrade</button>
+            <button class="btn btn-blue w-100 rounded-lg shadow-sm text-blue f-s-2">Fazer Upgrade</button>
         </div>
     </aside>
 
@@ -113,28 +113,28 @@
             <!-- Stats -->
             <div class="grid grid-1 grid-md-2 grid-lg-4 gap-4 m-b-6">
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;"><i class="icon icon-user icon-lg"></i></div>
+                    <div class="stat-icon" class="border text-muted"><i class="icon icon-user icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Usuários Ativos</p>
                         <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">24,592</h3>
                     </div>
                 </div>
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;"><i class="icon icon-check icon-lg"></i></div>
+                    <div class="stat-icon" class="border text-muted"><i class="icon icon-check icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Vendas</p>
                         <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">R$ 84.000</h3>
                     </div>
                 </div>
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="icon icon-trash icon-lg"></i></div>
+                    <div class="stat-icon" class="border text-muted"><i class="icon icon-trash icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Cancelamentos</p>
                         <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">143</h3>
                     </div>
                 </div>
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;"><i class="icon icon-star icon-lg"></i></div>
+                    <div class="stat-icon" class="border text-muted"><i class="icon icon-star icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Avaliação Média</p>
                         <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">4.8</h3>
@@ -147,7 +147,7 @@
                 <div class="card-body p-5">
                     <div class="d-flex justify-content-between align-items-center m-b-4">
                         <h3 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Transações Recentes</h3>
-                        <button class="btn btn-blue text-white shadow-sm f-s-3 p-y-2 p-x-3">Ver Todas</button>
+                        <button class="btn btn-blue shadow-sm f-s-3 p-y-2 p-x-3">Ver Todas</button>
                     </div>
                     
                     <div style="overflow-x: auto;">
@@ -169,7 +169,7 @@
                                     </td>
                                     <td class="p-y-3 p-x-2 text-muted">07 Out 2026</td>
                                     <td class="p-y-3 p-x-2 f-w-bold">R$ 1.250,00</td>
-                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill bg-green text-white">Completado</span></td>
+                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill border text-muted  ">Completado</span></td>
                                     <td class="p-y-3 p-x-2 txt-right">
                                         <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
                                     </td>
@@ -181,7 +181,7 @@
                                     </td>
                                     <td class="p-y-3 p-x-2 text-muted">06 Out 2026</td>
                                     <td class="p-y-3 p-x-2 f-w-bold">R$ 430,00</td>
-                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill bg-yellow text-white">Pendente</span></td>
+                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill border text-muted  ">Pendente</span></td>
                                     <td class="p-y-3 p-x-2 txt-right">
                                         <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
                                     </td>
@@ -193,7 +193,7 @@
                                     </td>
                                     <td class="p-y-3 p-x-2 text-muted">05 Out 2026</td>
                                     <td class="p-y-3 p-x-2 f-w-bold">R$ 90,00</td>
-                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill bg-red text-white">Falhou</span></td>
+                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill border text-muted  ">Falhou</span></td>
                                     <td class="p-y-3 p-x-2 txt-right">
                                         <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
                                     </td>

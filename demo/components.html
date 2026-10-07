@@ -50,15 +50,15 @@
                     <h3 class="h4 m-b-4" style="color: var(--text-main);">Botões & Badges</h3>
                     <div class="d-flex flex-wrap gap-3 m-b-4">
                         <button class="btn btn-blue shadow-sm">Primário</button>
-                        <button class="btn btn-black shadow-sm">Secundário</button>
-                        <button class="btn btn-red shadow-sm">Perigo</button>
-                        <button class="btn btn-white border">Neutro</button>
+                        <button class="btn border text-muted shadow-sm">Secundário</button>
+                        <button class="btn border text-muted shadow-sm">Perigo</button>
+                        <button class="btn border text-muted">Neutro</button>
                     </div>
                     <div class="d-flex flex-wrap gap-3 align-items-center">
-                        <span class="badge bg-blue text-white rounded-lg">Novo</span>
-                        <span class="badge badge-pill bg-green text-white">Concluído</span>
-                        <span class="badge badge-pill bg-red text-white">99+</span>
-                        <button class="btn btn-white border rounded-lg p-y-1 p-x-2" data-tooltip="Isso é um tooltip nativo!">Hover Tooltip</button>
+                        <span class="badge border text-muted rounded-lg">Novo</span>
+                        <span class="badge badge-pill border text-muted">Concluído</span>
+                        <span class="badge badge-pill border text-muted">99+</span>
+                        <button class="btn border text-muted rounded-lg p-y-1 p-x-2" data-tooltip="Isso é um tooltip nativo!">Hover Tooltip</button>
                     </div>
                 </div>
 
@@ -93,10 +93,10 @@
                 <div class="ui-card p-5">
                     <h3 class="h4 m-b-4" style="color: var(--text-main);">Progresso e Paginação</h3>
                     <div class="progress m-b-3 rounded-lg" style="height: 1.5rem;">
-                        <div class="progress-bar bg-blue" style="width: 65%;">65%</div>
+                        <div class="progress-bar bg-surface border" style="width: 65%;">65%</div>
                     </div>
                     <div class="progress m-b-4 rounded-lg" style="height: 0.5rem;">
-                        <div class="progress-bar bg-green" style="width: 40%;"></div>
+                        <div class="progress-bar bg-surface border" style="width: 40%;"></div>
                     </div>
                     
                     <ul class="pagination">
@@ -134,7 +134,7 @@
                     <p class="text-muted m-b-4">Testes de componentes flutuantes controlados via JS nativo.</p>
                     
                     <div class="d-flex flex-wrap gap-3">
-                        <button class="btn bg-blue text-white rounded-lg shadow-sm" onclick="FramePER.Notify.success('Feito!', 'Isso é um Toast gerado dinamicamente.')">
+                        <button class="btn rounded-lg shadow-sm" onclick="FramePER.Notify.success('Feito!', 'Isso é um Toast gerado dinamicamente.')">
                             Testar Toast (Sucesso)
                         </button>
                         <button class="btn bg-black text-white rounded-lg shadow-sm" data-toggle="offcanvas" data-target="#demoOffcanvas">
@@ -152,11 +152,11 @@
                     <div class="accordion border rounded-lg" style="overflow:hidden;">
                         <div class="accordion-item border-bottom">
                             <div class="accordion-header p-4 cursor f-w-bold" style="background: var(--bg-body); color: var(--text-main);">Como funciona a instalação?</div>
-                            <div class="accordion-body p-4 text-muted">É só importar os arquivos CSS e JS compilados no seu HTML. Nenhuma dependência é necessária.</div>
+                            <div class="accordion-body p-4 text-muted" style="line-height:1.5; padding: 1rem 1.5rem; color: var(--text-muted) !important;">É só importar os arquivos CSS e JS compilados no seu HTML. Nenhuma dependência é necessária.</div>
                         </div>
                         <div class="accordion-item">
                             <div class="accordion-header p-4 cursor f-w-bold" style="background: var(--bg-body); color: var(--text-main);">Posso customizar as cores?</div>
-                            <div class="accordion-body p-4 text-muted">Sim! O projeto usa SCSS, então você pode alterar o mapa de cores facilmente e recompilar o framework.</div>
+                            <div class="accordion-body p-4 text-muted" style="line-height:1.5; padding: 1rem 1.5rem; color: var(--text-muted) !important;">Sim! O projeto usa SCSS, então você pode alterar o mapa de cores facilmente e recompilar o framework.</div>
                         </div>
                     </div>
                 </div>
