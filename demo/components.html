@@ -25,14 +25,14 @@
         .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         
         body { background: var(--bg-body); }
-        .ui-card { border: 1px solid #e2e8f0; background: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
+        .ui-card { border: 1px solid var(--border-color); background: var(--bg-surface); border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     
     </style>
 </head>
 <body class="">
 
     <!-- Navbar simples para voltar -->
-    <nav class="bg-white border-bottom p-y-3">
+    <nav class="bg-surface border-bottom p-y-3" style="border-bottom: 1px solid var(--border-color);">
         <div class="container-fluid d-flex align-items-center">
             <a href="index.html" class="btn text-muted p-0 m-r-4 hover-text-blue"><i class="icon icon-arrow-left icon-lg"></i></a>
             <h1 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Biblioteca de Componentes</h1>
@@ -140,7 +140,7 @@
                         <button class="btn bg-black text-white rounded-lg shadow-sm" data-toggle="offcanvas" data-target="#demoOffcanvas">
                             Abrir Menu Lateral
                         </button>
-                        <button class="btn bg-white border rounded-lg" onclick="FramePER.Loader.showPageLoad(); setTimeout(()=>FramePER.Loader.hidePageLoad(), 2000);">
+                        <button class="btn bg-surface border rounded-lg" onclick="FramePER.Loader.showPageLoad(); setTimeout(()=>FramePER.Loader.hidePageLoad(), 2000);">
                             Testar Page Loader (2s)
                         </button>
                     </div>
@@ -152,11 +152,11 @@
                     <div class="accordion border rounded-xl" style="overflow:hidden;">
                         <div class="accordion-item border-bottom">
                             <div class="accordion-header p-4 cursor f-w-bold" style="background: var(--bg-body); color: var(--text-main);">Como funciona a instalação?</div>
-                            <div class="accordion-body p-4 text-muted bg-white">É só importar os arquivos CSS e JS compilados no seu HTML. Nenhuma dependência é necessária.</div>
+                            <div class="accordion-body p-4 text-muted">É só importar os arquivos CSS e JS compilados no seu HTML. Nenhuma dependência é necessária.</div>
                         </div>
                         <div class="accordion-item">
                             <div class="accordion-header p-4 cursor f-w-bold" style="background: var(--bg-body); color: var(--text-main);">Posso customizar as cores?</div>
-                            <div class="accordion-body p-4 text-muted bg-white">Sim! O projeto usa SCSS, então você pode alterar o mapa de cores facilmente e recompilar o framework.</div>
+                            <div class="accordion-body p-4 text-muted">Sim! O projeto usa SCSS, então você pode alterar o mapa de cores facilmente e recompilar o framework.</div>
                         </div>
                     </div>
                 </div>
@@ -168,7 +168,7 @@
 
     <!-- Offcanvas Container -->
     <div id="demoOffcanvas" class="offcanvas offcanvas-right">
-        <div class="offcanvas-header bg-white border-bottom p-4">
+        <div class="offcanvas-header bg-surface border-bottom p-4">
             <h3 class="h4 m-0" style="color: var(--text-main);">Carrinho / Menu</h3>
             <button class="btn p-0 text-muted hover-text-red" data-dismiss="offcanvas"><i class="icon icon-close icon-lg"></i></button>
         </div>

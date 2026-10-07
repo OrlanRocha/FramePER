@@ -8,7 +8,7 @@ input, select, textarea {
 }
 
 .input, .textarea, .select {
-  border: 1px solid rgba(0, 0, 0, 0.08);
+  border: 1px solid var(--border-color);
   padding: .6rem 1.4rem;
   border-radius: .4rem;
   font-size: 1rem;

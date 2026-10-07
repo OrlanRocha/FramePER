@@ -13,7 +13,7 @@
 }
 
 .accordion-header {
-    background-color: var(--bg-surface);
+    background-color: transparent;
     padding: 1rem 1.5rem;
     cursor: pointer;
     font-weight: bold;
@@ -22,7 +22,7 @@
     align-items: center;
     transition: background-color 0.3s;
     
-    &:hover { background-color: rgba(0,0,0,0.02); }
+    &:hover { background-color: rgba(128,128,128,0.05); }
     
     &::after {
         content: '+';
@@ -31,7 +31,7 @@
     }
     
     &.active {
-        background-color: rgba(0,0,0,0.05);
+        background-color: rgba(128,128,128,0.1);
         &::after { content: '-'; transform: rotate(180deg); }
     }
 }
@@ -40,7 +40,7 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out, padding 0.3s ease;
-    background-color: var(--bg-surface);
+    background-color: transparent;
     
     &.active {
         padding: 1rem 1.5rem;
