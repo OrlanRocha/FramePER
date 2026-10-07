@@ -24,12 +24,15 @@
         .rounded-xl { border-radius: 1rem; }
         .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         
-        body { background: #f8fafc; }
-        .sidebar { width: 260px; background: var(--bg-surface); border: 1px solid var(--border-color); height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; }
-        .main-content { margin-left: 260px; padding: 0; min-height: 100vh; }
-        .topbar { background: var(--bg-surface); height: 70px; border: 1px solid var(--border-color); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
-        .stat-card { border: 1px solid var(--border-color); background: var(--bg-surface); border-radius: 1rem; padding: 1.5rem; }
-        .stat-icon { width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; }
+        
+        body { background: var(--bg-body); }
+        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; transition: all 0.3s; }
+        .main-content { margin-left: 280px; padding: 0; min-height: 100vh; }
+        .topbar { background: var(--bg-surface); height: 80px; border-bottom: 1px solid var(--border-color); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s; }
+        .stat-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.5rem; transition: transform 0.3s; }
+        .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
+        .stat-icon { width: 56px; height: 56px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; }
+
         
         @media (max-width: 768px) {
             .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
@@ -83,7 +86,7 @@
                 <i class="icon icon-menu"></i>
             </button>
             <div class="d-none d-md-block">
-                <h2 class="h3 m-0" style="color: #0f172a; font-weight: 700;">Visão Geral</h2>
+                <h2 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Visão Geral</h2>
             </div>
             
             <div class="d-flex align-items-center gap-4">
@@ -99,7 +102,7 @@
 
                 <div class="d-flex align-items-center gap-2 cursor">
                     <img src="https://ui-avatars.com/api/?name=Admin+User&background=0f172a&color=fff" class="avatar avatar-sm">
-                    <span class="f-w-bold d-none d-md-inline" style="color: #0f172a;">Admin Silva</span>
+                    <span class="f-w-bold d-none d-md-inline" style="color: var(--text-main);">Admin Silva</span>
                     <i class="icon icon-arrow-down text-muted f-s-2"></i>
                 </div>
             </div>
@@ -110,31 +113,31 @@
             <!-- Stats -->
             <div class="grid grid-1 grid-md-2 grid-lg-4 gap-4 m-b-6">
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: #eff6ff; color: #3b82f6;"><i class="icon icon-user icon-lg"></i></div>
+                    <div class="stat-icon" style="background: rgba(59, 130, 246, 0.15); color: #3b82f6;"><i class="icon icon-user icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Usuários Ativos</p>
-                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">24,592</h3>
+                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">24,592</h3>
                     </div>
                 </div>
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: #ecfdf5; color: #10b981;"><i class="icon icon-check icon-lg"></i></div>
+                    <div class="stat-icon" style="background: rgba(16, 185, 129, 0.15); color: #10b981;"><i class="icon icon-check icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Vendas</p>
-                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">R$ 84.000</h3>
+                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">R$ 84.000</h3>
                     </div>
                 </div>
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: #fef2f2; color: #ef4444;"><i class="icon icon-trash icon-lg"></i></div>
+                    <div class="stat-icon" style="background: rgba(239, 68, 68, 0.15); color: #ef4444;"><i class="icon icon-trash icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Cancelamentos</p>
-                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">143</h3>
+                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">143</h3>
                     </div>
                 </div>
                 <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" style="background: #fffbeb; color: #f59e0b;"><i class="icon icon-star icon-lg"></i></div>
+                    <div class="stat-icon" style="background: rgba(245, 158, 11, 0.15); color: #f59e0b;"><i class="icon icon-star icon-lg"></i></div>
                     <div>
                         <p class="text-muted m-0 f-s-3">Avaliação Média</p>
-                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">4.8</h3>
+                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">4.8</h3>
                     </div>
                 </div>
             </div>
@@ -143,14 +146,14 @@
             <div class="card rounded-xl shadow-sm border-0 bg-white">
                 <div class="card-body p-5">
                     <div class="d-flex justify-content-between align-items-center m-b-4">
-                        <h3 class="h3 m-0" style="color: #0f172a; font-weight: 700;">Transações Recentes</h3>
+                        <h3 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Transações Recentes</h3>
                         <button class="btn btn-blue rounded-lg text-white shadow-sm f-s-3 p-y-2 p-x-3">Ver Todas</button>
                     </div>
                     
                     <div style="overflow-x: auto;">
                         <table style="width: 100%; border-collapse: collapse; text-align: left;">
                             <thead>
-                                <tr style="border-bottom: 2px solid #f1f5f9; color: #64748b;">
+                                <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted);">
                                     <th class="p-y-3 p-x-2">Cliente</th>
                                     <th class="p-y-3 p-x-2">Data</th>
                                     <th class="p-y-3 p-x-2">Valor</th>
@@ -159,10 +162,10 @@
                                 </tr>
                             </thead>
                             <tbody>
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <tr style="border-bottom: 1px solid var(--border-color);">
                                     <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
                                         <img src="https://ui-avatars.com/api/?name=João+Silva&background=random" class="avatar avatar-sm">
-                                        <span class="f-w-bold" style="color: #0f172a;">João Silva</span>
+                                        <span class="f-w-bold" style="color: var(--text-main);">João Silva</span>
                                     </td>
                                     <td class="p-y-3 p-x-2 text-muted">07 Out 2026</td>
                                     <td class="p-y-3 p-x-2 f-w-bold">R$ 1.250,00</td>
@@ -171,10 +174,10 @@
                                         <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
                                     </td>
                                 </tr>
-                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                <tr style="border-bottom: 1px solid var(--border-color);">
                                     <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
                                         <img src="https://ui-avatars.com/api/?name=Maria+Souza&background=random" class="avatar avatar-sm">
-                                        <span class="f-w-bold" style="color: #0f172a;">Maria Souza</span>
+                                        <span class="f-w-bold" style="color: var(--text-main);">Maria Souza</span>
                                     </td>
                                     <td class="p-y-3 p-x-2 text-muted">06 Out 2026</td>
                                     <td class="p-y-3 p-x-2 f-w-bold">R$ 430,00</td>
@@ -186,7 +189,7 @@
                                 <tr>
                                     <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
                                         <img src="https://ui-avatars.com/api/?name=Pedro+Gomes&background=random" class="avatar avatar-sm">
-                                        <span class="f-w-bold" style="color: #0f172a;">Pedro Gomes</span>
+                                        <span class="f-w-bold" style="color: var(--text-main);">Pedro Gomes</span>
                                     </td>
                                     <td class="p-y-3 p-x-2 text-muted">05 Out 2026</td>
                                     <td class="p-y-3 p-x-2 f-w-bold">R$ 90,00</td>

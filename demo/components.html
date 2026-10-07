@@ -24,7 +24,7 @@
         .rounded-xl { border-radius: 1rem; }
         .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         
-        body { background: #f8fafc; }
+        body { background: var(--bg-body); }
         .ui-card { border: 1px solid #e2e8f0; background: white; border-radius: 1rem; box-shadow: 0 1px 3px rgba(0,0,0,0.05); }
     
     </style>
@@ -35,7 +35,7 @@
     <nav class="bg-white border-bottom p-y-3">
         <div class="container-fluid d-flex align-items-center">
             <a href="index.html" class="btn text-muted p-0 m-r-4 hover-text-blue"><i class="icon icon-arrow-left icon-lg"></i></a>
-            <h1 class="h3 m-0" style="color: #0f172a; font-weight: 700;">Biblioteca de Componentes</h1>
+            <h1 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Biblioteca de Componentes</h1>
         </div>
     </nav>
 
@@ -47,7 +47,7 @@
                 
                 <!-- Buttons -->
                 <div class="ui-card p-5">
-                    <h3 class="h4 m-b-4" style="color: #0f172a;">Botões & Badges</h3>
+                    <h3 class="h4 m-b-4" style="color: var(--text-main);">Botões & Badges</h3>
                     <div class="d-flex flex-wrap gap-3 m-b-4">
                         <button class="btn btn-blue rounded-lg shadow-sm">Primário</button>
                         <button class="btn btn-black rounded-lg shadow-sm">Secundário</button>
@@ -64,7 +64,7 @@
 
                 <!-- Forms & Toggles -->
                 <div class="ui-card p-5">
-                    <h3 class="h4 m-b-4" style="color: #0f172a;">Formulários (Switches) & Avatares</h3>
+                    <h3 class="h4 m-b-4" style="color: var(--text-main);">Formulários (Switches) & Avatares</h3>
                     <div class="d-flex align-items-center justify-content-between m-b-4">
                         <span class="f-w-bold text-muted">Notificações por Email</span>
                         <label class="switch m-0">
@@ -91,7 +91,7 @@
 
                 <!-- Progress & Pagination -->
                 <div class="ui-card p-5">
-                    <h3 class="h4 m-b-4" style="color: #0f172a;">Progresso e Paginação</h3>
+                    <h3 class="h4 m-b-4" style="color: var(--text-main);">Progresso e Paginação</h3>
                     <div class="progress m-b-3 rounded-xl" style="height: 1.5rem;">
                         <div class="progress-bar bg-blue" style="width: 65%;">65%</div>
                     </div>
@@ -115,8 +115,8 @@
 
                 <!-- Interatividade (Tabs) -->
                 <div class="ui-card p-5">
-                    <h3 class="h4 m-b-4" style="color: #0f172a;">Navegação em Abas (Tabs)</h3>
-                    <ul class="tabs m-b-4" style="border-bottom-color: #e2e8f0;">
+                    <h3 class="h4 m-b-4" style="color: var(--text-main);">Navegação em Abas (Tabs)</h3>
+                    <ul class="tabs m-b-4" style="border-bottom-color: var(--border-color);">
                         <li class="tab-item"><a class="tab-link active" data-target="#tab-perfil">Perfil</a></li>
                         <li class="tab-item"><a class="tab-link" data-target="#tab-senha">Segurança</a></li>
                     </ul>
@@ -130,7 +130,7 @@
 
                 <!-- Actions (Modals, Offcanvas, Toasts) -->
                 <div class="ui-card p-5">
-                    <h3 class="h4 m-b-4" style="color: #0f172a;">Interatividade Avançada</h3>
+                    <h3 class="h4 m-b-4" style="color: var(--text-main);">Interatividade Avançada</h3>
                     <p class="text-muted m-b-4">Testes de componentes flutuantes controlados via JS nativo.</p>
                     
                     <div class="d-flex flex-wrap gap-3">
@@ -148,14 +148,14 @@
 
                 <!-- Accordion -->
                 <div class="ui-card p-5">
-                    <h3 class="h4 m-b-4" style="color: #0f172a;">Sanfona (Accordion)</h3>
+                    <h3 class="h4 m-b-4" style="color: var(--text-main);">Sanfona (Accordion)</h3>
                     <div class="accordion border rounded-xl" style="overflow:hidden;">
                         <div class="accordion-item border-bottom">
-                            <div class="accordion-header p-4 cursor f-w-bold" style="background:#f8fafc; color:#0f172a;">Como funciona a instalação?</div>
+                            <div class="accordion-header p-4 cursor f-w-bold" style="background: var(--bg-body); color: var(--text-main);">Como funciona a instalação?</div>
                             <div class="accordion-body p-4 text-muted bg-white">É só importar os arquivos CSS e JS compilados no seu HTML. Nenhuma dependência é necessária.</div>
                         </div>
                         <div class="accordion-item">
-                            <div class="accordion-header p-4 cursor f-w-bold" style="background:#f8fafc; color:#0f172a;">Posso customizar as cores?</div>
+                            <div class="accordion-header p-4 cursor f-w-bold" style="background: var(--bg-body); color: var(--text-main);">Posso customizar as cores?</div>
                             <div class="accordion-body p-4 text-muted bg-white">Sim! O projeto usa SCSS, então você pode alterar o mapa de cores facilmente e recompilar o framework.</div>
                         </div>
                     </div>
@@ -169,12 +169,12 @@
     <!-- Offcanvas Container -->
     <div id="demoOffcanvas" class="offcanvas offcanvas-right">
         <div class="offcanvas-header bg-white border-bottom p-4">
-            <h3 class="h4 m-0" style="color: #0f172a;">Carrinho / Menu</h3>
+            <h3 class="h4 m-0" style="color: var(--text-main);">Carrinho / Menu</h3>
             <button class="btn p-0 text-muted hover-text-red" data-dismiss="offcanvas"><i class="icon icon-close icon-lg"></i></button>
         </div>
         <div class="offcanvas-body p-4 text-muted">
             <p>O conteúdo do offcanvas pode ser qualquer coisa: menus, filtros, ou carrinhos de compra.</p>
-            <hr style="border:0; border-top: 1px solid #e2e8f0; margin: 2rem 0;">
+            <hr style="border:0; border-top: 1px solid var(--border-color); margin: 2rem 0;">
             <button class="btn btn-blue w-100 rounded-lg shadow-sm" data-dismiss="offcanvas">Fechar Painel</button>
         </div>
     </div>
