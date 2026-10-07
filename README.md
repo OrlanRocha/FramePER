@@ -1,12 +1,13 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-1.6.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-1.7.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 **Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, animations, and icons.
 
 ## 🚀 Features
 
+- **📱 Mobile First**: A base do Frame PER é totalmente Mobile First. Componentes colapsam nativamente no celular e expandem via utilitários (ex: `.grid-md-3`, `.d-lg-flex`).
 - **Advanced JS Interactivity**: Built-in HTTP Fetch wrappers, Page Loaders, and dynamic Toasts.
 - **Comprehensive UI Kit**: Navbars, Cards, Accordions, Carousels, Toasts, Tooltips, Modals, Badges, Tabs, Offcanvas, Avatars, Pagination, Breadcrumbs and Switch toggles.
 - **Pure CSS Icons**: 20 Built-in SVG icons rendered natively via CSS `mask-image`.
@@ -26,65 +27,67 @@ Include the compiled CSS and JS files in your HTML:
 <script src="dist/framePER.min.js"></script>
 ```
 
-## 🧠 Advanced JavaScript API (New!)
+## 📱 Mobile First & Utilitários Responsivos
 
-O **Frame PER** agora expõe um objeto global `FramePER` contendo métodos utilitários poderosos para facilitar a criação de aplicativos web complexos sem a necessidade de bibliotecas gigantescas como jQuery ou Axios.
+O Grid System do Frame PER prioriza telas pequenas.
 
-### 1. Loader da Página
-Exiba um overlay de carregamento quando estiver executando uma requisição longa.
+**Comportamento Padrão Mobile:**
+Ao usar a classe `.grid`, seu conteúdo ocupará apenas **1 coluna** (100% de largura) para se adaptar às telas dos celulares, sem quebrar layout.
 
-```javascript
-// Exibe a tela de carregamento inteira
-FramePER.Loader.showPageLoad();
-
-// Esconde a tela de carregamento
-FramePER.Loader.hidePageLoad();
+**Evoluindo para Desktop:**
+Para aplicar múltiplas colunas em telas maiores, utilize as classes `.grid-{breakpoint}-{colunas}`.
+```html
+<!-- Fica 1 coluna no celular, e expande para 3 colunas em telas Médias (md) e maiores -->
+<div class="grid grid-md-3">
+  <div>Coluna A</div>
+  <div>Coluna B</div>
+  <div>Coluna C</div>
+</div>
 ```
 
-Você também pode exibir um spinner dentro de um botão durante o carregamento:
+**Utilitários de Display e Flexbox Mobile First:**
+Você pode controlar quando exibir elementos utilizando as classes `.d-{bp}-none` e `.d-{bp}-block`.
+```html
+<!-- Este elemento é escondido no celular, e só aparece em telas Grandes (lg) -->
+<div class="d-none d-lg-block">
+  Exibido apenas no Desktop
+</div>
+
+<!-- Flexbox responsivo: Fica em coluna no celular, e fica em linha no Desktop (lg) -->
+<div class="d-flex flex-column flex-lg-row">...</div>
+```
+
+## 🧠 Advanced JavaScript API
+
+O **Frame PER** agora expõe um objeto global `FramePER` contendo métodos utilitários poderosos.
+
+### 1. Loader da Página
 ```javascript
+FramePER.Loader.showPageLoad();
+FramePER.Loader.hidePageLoad();
+
 const myButton = document.querySelector('#submitBtn');
-FramePER.Loader.buttonLoading(myButton, true); // Adiciona o spinner e desabilita o botão
-FramePER.Loader.buttonLoading(myButton, false); // Restaura o botão original
+FramePER.Loader.buttonLoading(myButton, true);
 ```
 
 ### 2. Notificações Dinâmicas (Toasts)
-Chega de criar HTML manual para cada Toast. Você pode invocá-los dinamicamente!
-
 ```javascript
-// Notificação de sucesso
 FramePER.Notify.success('Sucesso', 'Operação realizada com êxito!', 3000);
-
-// Notificação de erro
 FramePER.Notify.error('Falha', 'Não foi possível salvar os dados.', 5000);
-
-// Informação padrão
 FramePER.Notify.info('Aviso', 'Seu perfil foi atualizado.');
 ```
 
 ### 3. Requisições HTTP (AJAX/Fetch API Wrapper)
-O Frame PER simplifica o uso da Fetch API padrão do navegador, lidando com erros e parseamento de JSON de forma elegante.
-
 ```javascript
 async function carregarUsuarios() {
-    FramePER.Loader.showPageLoad(); // Mostra loader
-    
-    // Faz a requisição GET
-    const response = await FramePER.Http.get('https://api.exemplo.com/usuarios');
-    
-    FramePER.Loader.hidePageLoad(); // Esconde loader
+    FramePER.Loader.showPageLoad();
+    const response = await FramePER.Http.get('/api/usuarios');
+    FramePER.Loader.hidePageLoad();
     
     if (response.ok) {
-        console.log('Dados recebidos:', response.data);
         FramePER.Notify.success('Carregado', 'Usuários recebidos com sucesso!');
-    } else {
-        // Se der erro de rede ou código 400/500, a notificação de erro é disparada automaticamente!
-        console.error('Erro:', response.error);
     }
 }
-
-// Exemplos de POST
-FramePER.Http.post('/api/save', { nome: 'João', idade: 30 });
 ```
 
 ## 📜 License
