@@ -1,0 +1,120 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Componentes UI | Frame PER</title>
+    <link rel="stylesheet" href="../dist/framePER.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .demo-section { padding: 4rem 0; }
+        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    </style>
+</head>
+<body>
+    <div class="demo-container p-y-6 fade-in">
+        <h1 class="h1 txt-center m-b-6">Biblioteca de Componentes</h1>
+        
+        <div class="grid grid-2">
+            <!-- Col 1 -->
+            <div>
+                <!-- Buttons -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3">Botões</h3>
+                        <div class="d-flex gap-2" style="gap: 10px;">
+                            <button class="btn btn-blue">Blue</button>
+                            <button class="btn btn-red">Red</button>
+                            <button class="btn btn-green">Green</button>
+                            <button class="btn btn-yellow">Yellow</button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Alerts -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3">Alertas Dispensáveis</h3>
+                        <div class="alert alert-blue">
+                            Este é um alerta informativo.
+                            <button class="alert-close" data-dismiss="alert"><i class="icon icon-close"></i></button>
+                        </div>
+                        <div class="alert alert-red">
+                            Erro detectado no servidor!
+                            <button class="alert-close" data-dismiss="alert"><i class="icon icon-close"></i></button>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tooltips & Badges -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3">Tooltips e Badges</h3>
+                        <div class="m-b-3">
+                            <button class="btn btn-white shadow" data-tooltip="Isso é muito útil!">Passe o mouse aqui</button>
+                        </div>
+                        <div>
+                            <span class="badge badge-blue">Tag 1</span>
+                            <span class="badge badge-red badge-pill">99+ Notificações</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Col 2 -->
+            <div>
+                <!-- Accordion -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3">Accordion (FAQ)</h3>
+                        <div class="accordion">
+                            <div class="accordion-item">
+                                <div class="accordion-header">O Frame PER é gratuito?</div>
+                                <div class="accordion-body">Sim! Totalmente Open Source via MIT License.</div>
+                            </div>
+                            <div class="accordion-item">
+                                <div class="accordion-header">Precisa de jQuery?</div>
+                                <div class="accordion-body">Não. O Javascript é 100% nativo Vanilla JS de altíssima performance.</div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Carousel -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3 m-b-2">Carrossel de Imagens</h3>
+                        <div class="carousel" style="background: #333; color: white; text-align: center;">
+                            <div class="carousel-inner">
+                                <div class="carousel-item p-6"><h2>Slide 1</h2><p>Puro CSS e Vanilla JS</p></div>
+                                <div class="carousel-item p-6"><h2>Slide 2</h2><p>Sem bibliotecas pesadas</p></div>
+                                <div class="carousel-item p-6"><h2>Slide 3</h2><p>Performance Absoluta</p></div>
+                            </div>
+                            <button class="carousel-control prev"><i class="icon icon-arrow-left"></i></button>
+                            <button class="carousel-control next"><i class="icon icon-arrow-right"></i></button>
+                            <div class="carousel-indicators">
+                                <div class="indicator active"></div>
+                                <div class="indicator"></div>
+                                <div class="indicator"></div>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+                
+                <!-- Icons -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3 m-b-2">Ícones (Mask Image)</h3>
+                        <i class="icon icon-home icon-xl text-blue"></i>
+                        <i class="icon icon-user icon-xl text-red"></i>
+                        <i class="icon icon-settings icon-xl text-green"></i>
+                        <i class="icon icon-heart icon-xl text-orange"></i>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../dist/framePER.min.js"></script>
+</body>
+</html>

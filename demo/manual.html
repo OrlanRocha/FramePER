@@ -1,0 +1,73 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Manual Avançado | Frame PER</title>
+    <link rel="stylesheet" href="../dist/framePER.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .demo-section { padding: 4rem 0; }
+        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    </style>
+</head>
+<body>
+    <nav class="navbar bg-blue text-white">
+        <a href="index.html" class="navbar-brand text-white">Frame PER Docs</a>
+    </nav>
+    <div class="demo-container p-y-6">
+        <div class="grid grid-1-3">
+            <!-- Sidemenu -->
+            <div>
+                <ul class="navbar-nav flex-column p-4 bg-white shadow r-4">
+                    <li class="m-b-2"><a href="#intro" class="f-w-bold text-blue">1. Introdução</a></li>
+                    <li class="m-b-2"><a href="#grid" class="f-w-bold text-blue">2. Grid Responsivo</a></li>
+                    <li class="m-b-2"><a href="#js" class="f-w-bold text-blue">3. Funções JavaScript</a></li>
+                    <li class="m-b-2"><a href="#animations" class="f-w-bold text-blue">4. Animações Nativas</a></li>
+                </ul>
+            </div>
+            <!-- Content -->
+            <div class="p-4 bg-white shadow r-4">
+                <h1 class="h1 m-b-4" id="intro">Manual & Funções Avançadas</h1>
+                
+                <h2 class="h2 m-t-5" id="grid">Grid Flexível Moderno</h2>
+                <p class="p">O sistema de grid usa `display: grid; gap: 1rem;` para o melhor posicionamento possível.</p>
+                <div class="bg-grey p-3 r-2 m-b-4 text-white">
+                    <code>&lt;div class="grid grid-md-3 grid-sm-1"&gt;...&lt;/div&gt;</code>
+                </div>
+
+                <h2 class="h2 m-t-5" id="js">Funções JavaScript (Avançado)</h2>
+                <p class="p">Os modais, dropdowns e toasts não precisam de jQuery e não pesam o navegador. Você pode chamar Toasts programaticamente via JS:</p>
+                <div class="bg-grey p-3 r-2 m-b-4 text-white">
+                    <code>
+                        // Mostra o toast por 3 segundos dinamicamente<br>
+                        FramePER.showToast('meuIdDeToast');
+                    </code>
+                </div>
+                <button class="btn btn-blue w-auto" onclick="FramePER.showToast('toastExemplo')">Testar Função Programática</button>
+                <div class="toast-container">
+                    <div id="toastExemplo" class="toast">
+                        <div class="toast-header">Aviso <button class="toast-close"><i class="icon icon-close"></i></button></div>
+                        <div class="toast-body">Fui chamado pelo JS dinâmico!</div>
+                    </div>
+                </div>
+
+                <h2 class="h2 m-t-5" id="animations">Animações Nativas</h2>
+                <p class="p">Você pode combinar classes de animação para efeitos visuais elegantes na carga da página ou interação:</p>
+                <ul>
+                    <li class="p"><code>.fade-in</code>: Surgimento suave.</li>
+                    <li class="p"><code>.slide-up</code> / <code>.slide-down</code>: Entrada com movimentação.</li>
+                    <li class="p"><code>.hover-scale</code>: Aumenta o tamanho no mouse hover.</li>
+                    <li class="p"><code>.hover-lift</code>: Traz o elemento para a "frente" com sombra no hover.</li>
+                </ul>
+                <div class="d-flex gap-2">
+                    <div class="p-3 bg-blue text-white r-2 hover-lift transition">Hover Lift</div>
+                    <div class="p-3 bg-red text-white r-2 hover-scale transition">Hover Scale</div>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../dist/framePER.min.js"></script>
+</body>
+</html>

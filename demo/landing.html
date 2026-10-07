@@ -1,0 +1,92 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Landing Page Demo | Frame PER</title>
+    <link rel="stylesheet" href="../dist/framePER.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .demo-section { padding: 4rem 0; }
+        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    </style>
+</head>
+<body>
+    <!-- Navbar -->
+    <nav class="navbar bg-white">
+        <a href="index.html" class="navbar-brand text-blue"><i class="icon icon-star"></i> Frame PER</a>
+        <button class="navbar-toggler" data-target="#nav-landing"><i class="icon icon-menu"></i></button>
+        <ul class="navbar-nav" id="nav-landing">
+            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+            <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
+            <li class="nav-item"><a class="btn btn-blue" href="#">Get Started</a></li>
+        </ul>
+    </nav>
+
+    <!-- Hero Section -->
+    <header class="demo-section txt-center bg-blue text-white slide-down">
+        <div class="demo-container">
+            <h1 class="h2 text-white m-b-4">Construa rápido com Frame PER</h1>
+            <p class="p text-white m-b-6 f-s-5 w-50 m-auto">O framework UI mais leve e poderoso para desenvolvedores modernos. Sem jQuery, 100% responsivo.</p>
+            <div>
+                <a href="#features" class="btn btn-white m-r-2 hover-scale transition">Ver Recursos</a>
+                <button class="btn btn-orange hover-lift transition" data-toggle="modal" data-target="#downloadModal">Baixar Agora <i class="icon icon-arrow-down"></i></button>
+            </div>
+        </div>
+    </header>
+
+    <!-- Modal Download -->
+    <div id="downloadModal" class="modal">
+        <div class="modal-content">
+            <div class="modal-header">
+                <h3 class="h3">Baixar Frame PER</h3>
+                <button class="modal-close" data-dismiss="modal"><i class="icon icon-close"></i></button>
+            </div>
+            <p class="m-b-4">Baixe nosso arquivo minificado com CSS e JS pronto para produção!</p>
+            <button class="btn btn-green" data-dismiss="modal" onclick="FramePER.showToast('downloadToast')">Confirmar Download</button>
+        </div>
+    </div>
+
+    <!-- Features Section -->
+    <section id="features" class="demo-section demo-container fade-in">
+        <h2 class="h2 txt-center m-b-6">Por que escolher o Frame PER?</h2>
+        <div class="grid grid-md-3">
+            <div class="card hover-lift">
+                <div class="card-body txt-center">
+                    <i class="icon icon-camera icon-xl text-blue m-b-3"></i>
+                    <h3 class="card-title">Design Lindo</h3>
+                    <p class="card-text">Componentes prontos e bonitos desde o início.</p>
+                </div>
+            </div>
+            <div class="card hover-lift">
+                <div class="card-body txt-center">
+                    <i class="icon icon-settings icon-xl text-green m-b-3"></i>
+                    <h3 class="card-title">Altamente Customizável</h3>
+                    <p class="card-text">Tudo escrito em SCSS com variáveis fáceis de alterar.</p>
+                </div>
+            </div>
+            <div class="card hover-lift">
+                <div class="card-body txt-center">
+                    <i class="icon icon-user icon-xl text-orange m-b-3"></i>
+                    <h3 class="card-title">Foco no Usuário</h3>
+                    <p class="card-text">Acessibilidade, responsividade e interações JavaScript nativas.</p>
+                </div>
+            </div>
+        </div>
+    </section>
+
+    <!-- Toast -->
+    <div class="toast-container">
+        <div id="downloadToast" class="toast">
+            <div class="toast-header">Sucesso <button class="toast-close"><i class="icon icon-close"></i></button></div>
+            <div class="toast-body">O download iniciou automaticamente!</div>
+        </div>
+    </div>
+
+    <footer class="bg-black text-white p-6 txt-center">
+        <p>Frame PER &copy; 2026. Feito com <i class="icon icon-heart text-red"></i></p>
+    </footer>
+    
+    <script src="../dist/framePER.min.js"></script>
+</body>
+</html>

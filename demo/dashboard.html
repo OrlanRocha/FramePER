@@ -1,0 +1,113 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Dashboard Demo | Frame PER</title>
+    <link rel="stylesheet" href="../dist/framePER.min.css">
+    <style>
+        body { background-color: #f8f9fa; }
+        .demo-section { padding: 4rem 0; }
+        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+    </style>
+</head>
+<body>
+    <div class="grid-1-9 h-100 vh-100">
+        <!-- Sidebar -->
+        <div class="bg-black text-white p-4">
+            <h3 class="h3 text-white m-b-6">Admin <span class="badge badge-red">PRO</span></h3>
+            <ul class="navbar-nav flex-column">
+                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-home m-r-2"></i> Dashboard</a></li>
+                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-user m-r-2"></i> Usuários</a></li>
+                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-settings m-r-2"></i> Configurações</a></li>
+                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-envelope m-r-2"></i> Mensagens <span class="badge badge-pill badge-blue f-right">4</span></a></li>
+            </ul>
+        </div>
+        
+        <!-- Main Content -->
+        <div class="p-6 bg-grey" style="background-color: #f1f1f1; overflow-y: auto;">
+            <div class="d-flex justify-content-between align-items-center m-b-5">
+                <h2 class="h2 m-0">Visão Geral</h2>
+                <div class="dropdown">
+                    <button class="btn btn-white dropdown-toggle shadow transition">Meu Perfil <i class="icon icon-arrow-down"></i></button>
+                    <div class="dropdown-menu">
+                        <a href="#" class="dropdown-item">Conta</a>
+                        <a href="#" class="dropdown-item">Sair</a>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Stats -->
+            <div class="grid grid-4 m-b-6 fade-in">
+                <div class="card bg-blue text-white">
+                    <div class="card-body">
+                        <p class="f-s-3">Vendas Totais</p>
+                        <h2 class="h2 text-white">R$ 15.000</h2>
+                    </div>
+                </div>
+                <div class="card bg-green text-white">
+                    <div class="card-body">
+                        <p class="f-s-3">Novos Usuários</p>
+                        <h2 class="h2 text-white">342</h2>
+                    </div>
+                </div>
+                <div class="card bg-orange text-white">
+                    <div class="card-body">
+                        <p class="f-s-3">Alertas</p>
+                        <h2 class="h2 text-white">12</h2>
+                    </div>
+                </div>
+                <div class="card bg-white">
+                    <div class="card-body">
+                        <p class="f-s-3 text-texto">Conversão</p>
+                        <h2 class="h2 text-black">4.5%</h2>
+                    </div>
+                </div>
+            </div>
+
+            <!-- Table -->
+            <div class="card slide-up">
+                <div class="card-body">
+                    <h3 class="h3 m-b-3">Últimas Transações</h3>
+                    <table class="w-100">
+                        <thead>
+                            <tr>
+                                <th>ID</th>
+                                <th>Cliente</th>
+                                <th>Valor</th>
+                                <th>Status</th>
+                                <th>Ação</th>
+                            </tr>
+                        </thead>
+                        <tbody>
+                            <tr>
+                                <td>#1001</td>
+                                <td>João Silva</td>
+                                <td>R$ 150,00</td>
+                                <td><span class="badge badge-green">Aprovado</span></td>
+                                <td><button class="btn btn-blue p-1"><i class="icon icon-edit"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>#1002</td>
+                                <td>Maria Souza</td>
+                                <td>R$ 320,00</td>
+                                <td><span class="badge badge-yellow">Pendente</span></td>
+                                <td><button class="btn btn-blue p-1"><i class="icon icon-edit"></i></button></td>
+                            </tr>
+                            <tr>
+                                <td>#1003</td>
+                                <td>Carlos Alberto</td>
+                                <td>R$ 80,00</td>
+                                <td><span class="badge badge-red">Rejeitado</span></td>
+                                <td><button class="btn btn-blue p-1"><i class="icon icon-edit"></i></button></td>
+                            </tr>
+                        </tbody>
+                    </table>
+                </div>
+            </div>
+        </div>
+    </div>
+    
+    <script src="../dist/framePER.min.js"></script>
+</body>
+</html>
