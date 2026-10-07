@@ -1,0 +1,49 @@
+
+.d-none { display: none !important; }
+.d-block { display: block !important; }
+.d-inline-block { display: inline-block !important; }
+.d-flex { display: flex !important; }
+.d-inline-flex { display: inline-flex !important; }
+
+.flex-row { flex-direction: row !important; }
+.flex-column { flex-direction: column !important; }
+.flex-wrap { flex-wrap: wrap !important; }
+
+.justify-content-center { justify-content: center !important; }
+.justify-content-start { justify-content: flex-start !important; }
+.justify-content-end { justify-content: flex-end !important; }
+.justify-content-between { justify-content: space-between !important; }
+.justify-content-around { justify-content: space-around !important; }
+
+.align-items-center { align-items: center !important; }
+.align-items-start { align-items: flex-start !important; }
+.align-items-end { align-items: flex-end !important; }
+
+.p-relative { position: relative !important; }
+.p-absolute { position: absolute !important; }
+.p-fixed { position: fixed !important; }
+.p-sticky { position: sticky !important; }
+
+.f-left { float: left !important; }
+.f-right { float: right !important; }
+
+.o-h { overflow: hidden !important; }
+.o-s { overflow: scroll !important; }
+.o-auto { overflow: auto !important; }
+.o-h-s { overflow-x: hidden !important; overflow-y: scroll !important; }
+.o-h-v { overflow-y: hidden !important; }
+
+.unselect { user-select: none !important; }
+.cursor { cursor: pointer !important; }
+
+.sombra { box-shadow: 0 3px 20px -2px rgba(45, 45, 45, 0.2); }
+.sombra-hover:hover { box-shadow: 0 8px 25px -5px rgba(45, 45, 45, 0.3); transform: translateY(-2px); transition: all 0.3s ease; }
+
+@keyframes cima-baixo {
+  from { transform: translateY(0); }
+  to { transform: translateY(-10px); }
+}
+.animacao { animation: cima-baixo 2s ease-in-out infinite alternate-reverse both; }
+
+.hidden { visibility: hidden !important; }
+.visible { visibility: visible !important; }

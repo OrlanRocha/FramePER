@@ -1,0 +1,36 @@
+@use '../variables' as *;
+
+h1, h2, h3, h4, h5, h6 {
+  color: rgba(25, 25, 25, 1.0);
+  font-weight: 400;
+  font-family: $font-family-heading;
+  margin-bottom: 0.5rem;
+}
+
+.h1 { font-size: 4.2rem; }
+.h2 { font-size: 5.8rem; }
+.h3 { font-size: 6.4rem; }
+.h4 { font-size: 7.8rem; }
+.h5 { font-size: 8.4rem; }
+
+.p {
+  font-family: $font-family-heading;
+  color: rgba(0, 0, 0, 0.8);
+  font-size: 1.05rem;
+  margin-bottom: 1rem;
+}
+
+.txt-center { text-align: center; }
+.txt-left { text-align: left; }
+.txt-right { text-align: right; }
+
+// Font weights
+@for $i from 1 through 9 {
+  .f-w-#{$i} { font-weight: $i * 100; }
+}
+
+// Font sizes
+$fs: (1: 0.6rem, 2: 0.75rem, 3: 0.9rem, 4: 1.2rem, 5: 1.5rem, 6: 1.8rem, 7: 2.1rem, 8: 2.4rem, 9: 2.7rem);
+@each $num, $size in $fs {
+  .f-s-#{$num} { font-size: $size; }
+}

@@ -1,0 +1,35 @@
+@use '../variables' as *;
+
+button {
+  width: 100%;
+  border-style: none;
+  border: 2px solid transparent;
+  border-radius: .4rem;
+}
+
+.btn {
+  display: inline-block;
+  padding: .8rem 1.5rem;
+  cursor: pointer;
+  border: 1px solid transparent;
+  border-radius: .4rem;
+  font-weight: 500;
+  text-align: center;
+  transition: all .3s ease;
+  
+  &:focus, &:active {
+    outline: none;
+    transform: scale(0.98);
+  }
+}
+
+@each $name, $color in $colors {
+  .btn-#{$name} {
+    background-color: var(--#{$name});
+    color: if($name == 'white' or $name == 'yellow', var(--black), var(--white));
+    
+    &:hover {
+      filter: brightness(90%);
+    }
+  }
+}

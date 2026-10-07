@@ -1,0 +1,17 @@
+@use '../variables' as *;
+
+@each $num, $val in $radius {
+  .r-#{$num} { border-radius: $val !important; }
+  .r-t-#{$num} { border-top-left-radius: $val !important; border-top-right-radius: $val !important; }
+  .r-b-#{$num} { border-bottom-left-radius: $val !important; border-bottom-right-radius: $val !important; }
+  .r-l-#{$num} { border-top-left-radius: $val !important; border-bottom-left-radius: $val !important; }
+  .r-r-#{$num} { border-top-right-radius: $val !important; border-bottom-right-radius: $val !important; }
+}
+
+@for $i from 0 through 6 {
+  .b-#{$i} { border: #{$i}px solid rgba(55,55,55, .2); }
+  .b-t-#{$i} { border-top: #{$i}px solid rgba(55,55,55, .2); }
+  .b-b-#{$i} { border-bottom: #{$i}px solid rgba(55,55,55, .2); }
+  .b-l-#{$i} { border-left: #{$i}px solid rgba(55,55,55, .2); }
+  .b-r-#{$i} { border-right: #{$i}px solid rgba(55,55,55, .2); }
+}

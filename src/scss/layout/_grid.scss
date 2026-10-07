@@ -1,0 +1,45 @@
+@use '../variables' as *;
+
+.container {
+  width: 100%;
+  margin: 0 auto;
+  max-width: 1366px;
+  min-width: 320px;
+  padding: 1rem;
+}
+
+.grid {
+  display: grid;
+  gap: 1rem; // modern grids use gap
+}
+
+// Generate base grids
+@for $i from 1 through 12 {
+  .grid-#{$i} {
+    display: grid;
+    grid-template-columns: repeat($i, 1fr);
+    gap: 1rem;
+  }
+}
+
+// Custom uneven grids from original framework
+.grid-1-9 { display: grid; grid-template-columns: 10% 90%; gap: 1rem; }
+.grid-2-8 { display: grid; grid-template-columns: 20% 80%; gap: 1rem; }
+.grid-3-7 { display: grid; grid-template-columns: 30% 70%; gap: 1rem; }
+.grid-4-6 { display: grid; grid-template-columns: 40% 60%; gap: 1rem; }
+.grid-5-5 { display: grid; grid-template-columns: 50% 50%; gap: 1rem; }
+.grid-6-4 { display: grid; grid-template-columns: 60% 40%; gap: 1rem; }
+.grid-7-3 { display: grid; grid-template-columns: 70% 30%; gap: 1rem; }
+.grid-8-2 { display: grid; grid-template-columns: 80% 20%; gap: 1rem; }
+.grid-9-1 { display: grid; grid-template-columns: 90% 10%; gap: 1rem; }
+
+// Responsive Grids
+@each $bp, $value in $breakpoints {
+  @media (min-width: #{$value}) {
+    @for $i from 1 through 12 {
+      .grid-#{$bp}-#{$i} {
+        grid-template-columns: repeat($i, 1fr);
+      }
+    }
+  }
+}

@@ -1,0 +1,23 @@
+@use '../variables' as *;
+
+input, select, textarea {
+  width: 100%;
+  max-width: 100%;
+  outline: none;
+  border: none;
+}
+
+.input, .textarea, .select {
+  border: 1px solid rgba(0, 0, 0, 0.08);
+  padding: .6rem 1.4rem;
+  border-radius: .4rem;
+  font-size: 1rem;
+  background-color: var(--white);
+  box-shadow: 0 3px 3px 1px rgba(45, 45, 45, 0.1);
+  transition: box-shadow 0.3s ease, border-color 0.3s ease;
+  
+  &:focus {
+    box-shadow: 0 0 5px rgba(50, 150, 225, 0.5);
+    border-color: var(--blue);
+  }
+}

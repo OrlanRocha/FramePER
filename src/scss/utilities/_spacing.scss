@@ -1,0 +1,25 @@
+@use '../variables' as *;
+
+@each $num, $val in $spacing {
+  // Margin
+  .m-#{$num} { margin: $val; }
+  .m-t-#{$num} { margin-top: $val; }
+  .m-b-#{$num} { margin-bottom: $val; }
+  .m-l-#{$num} { margin-left: $val; }
+  .m-r-#{$num} { margin-right: $val; }
+  .m-x-#{$num} { margin-left: $val; margin-right: $val; }
+  .m-y-#{$num} { margin-top: $val; margin-bottom: $val; }
+
+  // Padding
+  .p-#{$num} { padding: $val; }
+  .p-t-#{$num} { padding-top: $val; }
+  .p-b-#{$num} { padding-bottom: $val; }
+  .p-l-#{$num} { padding-left: $val; }
+  .p-r-#{$num} { padding-right: $val; }
+  .p-x-#{$num} { padding-left: $val; padding-right: $val; }
+  .p-y-#{$num} { padding-top: $val; padding-bottom: $val; }
+}
+
+// Auto margins
+.m-auto { margin: auto; }
+.m-x-auto { margin-left: auto; margin-right: auto; }

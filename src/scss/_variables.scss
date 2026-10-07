@@ -1,0 +1,51 @@
+// Colors
+$colors: (
+  "white": rgba(255, 255, 255, 1.0),
+  "black": rgba(75, 75, 75, 1.0),
+  "blue": rgba(50, 150, 225, 1.0),
+  "yellow": rgba(255, 225, 50, 1.0),
+  "green": rgba(50, 175, 75, 1.0),
+  "red": rgba(200, 75, 75, 1.0),
+  "orange": rgba(255, 165, 0, 1.0),
+  "grey": rgba(180, 180, 180, 1.0),
+  "texto": rgba(80, 80, 80, 1.0)
+);
+
+// Breakpoints
+$breakpoints: (
+  "sm": 576px,
+  "md": 768px,
+  "lg": 992px,
+  "xl": 1200px,
+  "xxl": 1400px
+);
+
+// Spacing
+$spacing: (
+  0: 0,
+  1: 0.2rem,
+  2: 0.4rem,
+  3: 0.6rem,
+  4: 0.8rem,
+  5: 1rem,
+  6: 1.2rem,
+  7: 1.4rem,
+  8: 1.6rem
+);
+
+// Fonts
+$font-family-base: Arial, sans-serif;
+$font-family-heading: Calibri, sans-serif;
+
+// Border Radius
+$radius: (
+  0: 0,
+  1: 0.2rem,
+  2: 0.4rem,
+  3: 0.6rem,
+  4: 0.8rem,
+  5: 1rem,
+  6: 1.2rem,
+  7: 1.4rem,
+  "circle": 50%
+);
