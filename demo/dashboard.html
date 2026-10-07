@@ -25,10 +25,10 @@
         .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         
         body { background: #f8fafc; }
-        .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e2e8f0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; }
+        .sidebar { width: 260px; background: var(--bg-surface); border: 1px solid var(--border-color); height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; }
         .main-content { margin-left: 260px; padding: 0; min-height: 100vh; }
-        .topbar { background: #ffffff; height: 70px; border-bottom: 1px solid #e2e8f0; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
-        .stat-card { border: 1px solid #e2e8f0; background: white; border-radius: 1rem; padding: 1.5rem; }
+        .topbar { background: var(--bg-surface); height: 70px; border: 1px solid var(--border-color); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .stat-card { border: 1px solid var(--border-color); background: var(--bg-surface); border-radius: 1rem; padding: 1.5rem; }
         .stat-icon { width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; }
         
         @media (max-width: 768px) {
@@ -87,7 +87,16 @@
             </div>
             
             <div class="d-flex align-items-center gap-4">
+                
+                <div class="d-flex align-items-center gap-2 m-r-4">
+                    <i class="icon icon-settings text-muted"></i>
+                    <label class="switch m-0" data-tooltip="Alternar Tema">
+                        <input type="checkbox" data-toggle="theme" onchange="FramePER.Theme.toggle()">
+                        <span class="slider"></span>
+                    </label>
+                </div>
                 <button class="btn text-muted p-0" onclick="FramePER.Notify.info('Notificações', 'Nenhum alerta novo.')"><i class="icon icon-bell icon-md"></i></button>
+
                 <div class="d-flex align-items-center gap-2 cursor">
                     <img src="https://ui-avatars.com/api/?name=Admin+User&background=0f172a&color=fff" class="avatar avatar-sm">
                     <span class="f-w-bold d-none d-md-inline" style="color: #0f172a;">Admin Silva</span>

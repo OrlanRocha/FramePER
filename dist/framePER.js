@@ -7,6 +7,52 @@
     'use strict';
 
     const FramePER = {
+        
+        // --- Theme Module ---
+        Theme: {
+            init: function() {
+                const savedTheme = localStorage.getItem('frameper_theme');
+                if (savedTheme) {
+                    this.set(savedTheme);
+                } else {
+                    // Check system preference
+                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+                        this.set('dark');
+                    } else {
+                        this.set('light');
+                    }
+                }
+            },
+            set: function(theme) {
+                document.documentElement.setAttribute('data-theme', theme);
+                localStorage.setItem('frameper_theme', theme);
+                // Update switches if they exist
+                document.querySelectorAll('[data-toggle="theme"]').forEach(toggle => {
+                    if(toggle.type === 'checkbox') toggle.checked = (theme === 'dark');
+                });
+            },
+            toggle: function() {
+                const current = document.documentElement.getAttribute('data-theme');
+                this.set(current === 'dark' ? 'light' : 'dark');
+            }
+        },
+        
+        // --- Backgrounds Module ---
+        Backgrounds: {
+            init: function() {
+                document.querySelectorAll('.bg-interactive-wrapper').forEach(wrapper => {
+                    const layer = wrapper.querySelector('.bg-interactive-layer');
+                    if(layer) {
+                        wrapper.addEventListener('mousemove', (e) => {
+                            const x = (e.clientX / window.innerWidth - 0.5) * 40;
+                            const y = (e.clientY / window.innerHeight - 0.5) * 40;
+                            layer.style.transform = `translate(${x}px, ${y}px)`;
+                        });
+                    }
+                });
+            }
+        },
+
         // --- 1. UI Components (Auto-initialized) ---
         UI: {
             init: function() {
@@ -359,6 +405,8 @@
     // Auto-init UI when DOM is ready
 
     document.addEventListener("DOMContentLoaded", () => {
+        FramePER.Theme.init();
+        FramePER.Backgrounds.init();
         FramePER.UI.init();
         
         // Hide global page loader if exists

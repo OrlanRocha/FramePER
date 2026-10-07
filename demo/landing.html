@@ -24,7 +24,7 @@
         .rounded-xl { border-radius: 1rem; }
         .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         
-        .navbar-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid #e2e8f0; }
+        .navbar-glass { background: var(--bg-surface); opacity: 0.95; backdrop-filter: blur(8px); border-bottom: 1px solid #e2e8f0; }
         .hero { padding: 8rem 0 6rem 0; }
         .feature-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
     
@@ -49,8 +49,9 @@
     </nav>
 
     <!-- Hero Section -->
-    <header class="hero bg-gradient-dark text-white slide-down">
-        <div class="container txt-center">
+    <header class="hero bg-animated-gradient text-white slide-down bg-interactive-wrapper">
+        <div class="bg-interactive-layer"></div>
+        <div class="container txt-center bg-interactive-content">
             <span class="badge badge-pill badge-blue m-b-4 bg-white text-blue">V1.8.0 Lançada</span>
             <h1 class="m-b-4" style="font-weight: 800; font-size: 4rem; line-height: 1.1; letter-spacing: -1px;">
                 Construa interfaces<br>incríveis rapidamente.
