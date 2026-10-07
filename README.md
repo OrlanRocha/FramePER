@@ -1,6 +1,6 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-1.7.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-1.8.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 **Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, animations, and icons.
@@ -77,19 +77,36 @@ FramePER.Notify.error('Falha', 'Não foi possível salvar os dados.', 5000);
 FramePER.Notify.info('Aviso', 'Seu perfil foi atualizado.');
 ```
 
-### 3. Requisições HTTP (AJAX/Fetch API Wrapper)
+### 3. Requisições HTTP Avançadas e Seguras (AJAX/Fetch Wrapper)
+O `FramePER.Http` lida com toda a comunicação de backend automaticamente, injetando segurança nativa.
+
+**Funcionalidades de Segurança e UX Automáticas:**
+- **Detector de Internet**: Se o usuário ficar offline, o JS detecta antes mesmo da requisição e exibe um Toast de erro de rede.
+- **CSRF Token Injetado**: Lê automaticamente a meta tag `<meta name="csrf-token" content="...">` e injeta no header `X-CSRF-TOKEN` de todas as mutações (POST/PUT/DELETE) para evitar ataques CSRF.
+- **Tratamento de Mensagens Global**: Se a API retornar erros 401 (Negado), 403 (Proibido), 404 (Não Encontrado) ou 500 (Erro Servidor), um Toast padrão e bonitinho já é invocado avisando o usuário sobre o que houve sem quebrar o site!
+
 ```javascript
-async function carregarUsuarios() {
+async function salvarDados() {
     FramePER.Loader.showPageLoad();
-    const response = await FramePER.Http.get('/api/usuarios');
+    
+    // O Frame PER fará a checagem de internet, injetará o token CSRF e lerá a resposta.
+    const response = await FramePER.Http.post('/api/salvar', { name: "Teste" });
+    
     FramePER.Loader.hidePageLoad();
     
+    // Se response.ok for false, a notificação de erro pertinente JÁ FOI MOSTRADA automaticamente na tela!
     if (response.ok) {
-        FramePER.Notify.success('Carregado', 'Usuários recebidos com sucesso!');
+        FramePER.Notify.success('Feito!', 'Seus dados foram seguros.');
     }
 }
 ```
 
+### 4. Sanitização de Texto (XSS Prevention)
+```javascript
+// Previne execução de scripts injetados pelo usuário (Cross-Site Scripting)
+const htmlSeguro = FramePER.Security.escapeHTML("<script>alert('hack')</script>");
+// Retorna: &lt;script&gt;alert(&#39;hack&#39;)&lt;/script&gt;
+```
 ## 📜 License
 
 This project is licensed under the MIT License.

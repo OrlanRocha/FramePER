@@ -254,17 +254,81 @@
             }
         },
 
-        // --- 4. HTTP / AJAX Requests (Fetch API Wrapper) ---
+        
+        // --- 4. Security Utilities ---
+        Security: {
+            escapeHTML: function(str) {
+                if(typeof str !== 'string') return str;
+                return str.replace(/[&<>'"]/g, 
+                    tag => ({
+                        '&': '&amp;',
+                        '<': '&lt;',
+                        '>': '&gt;',
+                        "'": '&#39;',
+                        '"': '&quot;'
+                    }[tag] || tag)
+                );
+            }
+        },
+
+        // --- 5. HTTP / AJAX Requests (Fetch API Wrapper) ---
         Http: {
+            getCsrfToken: function() {
+                const meta = document.querySelector('meta[name="csrf-token"]');
+                return meta ? meta.content : '';
+            },
+            
             _request: async function(url, options = {}) {
+                // Automatic offline detection
+                if (!navigator.onLine) {
+                    FramePER.Notify.error('Sem conexão', 'Você está offline. Verifique sua conexão com a internet.');
+                    return { ok: false, error: 'Offline', status: 0 };
+                }
+
+                // Automatic CSRF protection for mutations
+                if (options.method && options.method !== 'GET' && options.method !== 'HEAD') {
+                    if (!options.headers) options.headers = {};
+                    const token = this.getCsrfToken();
+                    if (token && !options.headers['X-CSRF-TOKEN']) {
+                        options.headers['X-CSRF-TOKEN'] = token;
+                    }
+                }
+
                 try {
                     const response = await fetch(url, options);
-                    const data = await response.json();
-                    if(!response.ok) throw new Error(data.message || 'Erro na requisição');
+                    
+                    let data = null;
+                    const contentType = response.headers.get("content-type");
+                    if (contentType && contentType.indexOf("application/json") !== -1) {
+                        data = await response.json();
+                    } else {
+                        data = await response.text();
+                    }
+
+                    // Security: Automatic handling of common HTTP Status Errors
+                    if (!response.ok) {
+                        const errorMsg = (data && (data.message || data.error)) || 'Erro inesperado na requisição';
+                        
+                        if (response.status === 401) {
+                            FramePER.Notify.error('Acesso Negado', 'Sua sessão expirou ou você precisa se autenticar.');
+                        } else if (response.status === 403) {
+                            FramePER.Notify.error('Proibido', 'Você não tem permissão para realizar esta ação.');
+                        } else if (response.status === 404) {
+                            FramePER.Notify.error('Não Encontrado', 'O recurso solicitado não existe no servidor.');
+                        } else if (response.status >= 500) {
+                            FramePER.Notify.error('Erro no Servidor', 'Ocorreu um erro interno. Tente novamente mais tarde.');
+                        } else {
+                            // General 4xx errors
+                            FramePER.Notify.error('Atenção', errorMsg);
+                        }
+                        
+                        return { ok: false, error: errorMsg, status: response.status, data };
+                    }
+                    
                     return { ok: true, data, status: response.status };
                 } catch(error) {
-                    FramePER.Notify.error('Erro de Rede', error.message);
-                    return { ok: false, error: error.message };
+                    FramePER.Notify.error('Erro de Rede', 'Não foi possível conectar ao servidor.');
+                    return { ok: false, error: error.message, status: 0 };
                 }
             },
             get: function(url, headers = {}) {
@@ -282,7 +346,18 @@
         }
     };
 
+
+    
+    window.addEventListener('offline', () => {
+        FramePER.Notify.error('Sem conexão', 'Você perdeu a conexão com a internet.', 0);
+    });
+    
+    window.addEventListener('online', () => {
+        FramePER.Notify.success('Conectado', 'A conexão com a internet foi restaurada!', 5000);
+    });
+
     // Auto-init UI when DOM is ready
+
     document.addEventListener("DOMContentLoaded", () => {
         FramePER.UI.init();
         
