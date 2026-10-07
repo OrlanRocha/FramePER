@@ -9,7 +9,7 @@
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: var(--white);
+    background-color: var(--bg-surface);
     min-width: 150px;
     box-shadow: 0 4px 12px rgba(0,0,0,0.1);
     border-radius: 0.4rem;
@@ -31,7 +31,7 @@
 .dropdown-item {
     display: block;
     padding: 0.5rem 1rem;
-    color: var(--black);
+    color: var(--text-main);
     text-decoration: none;
     
     &:hover {

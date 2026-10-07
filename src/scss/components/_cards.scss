@@ -1,7 +1,7 @@
 @use '../variables' as *;
 
 .card {
-    background-color: var(--white);
+    background-color: var(--bg-surface);
     border-radius: 0.5rem;
     box-shadow: 0 4px 15px rgba(0,0,0,0.05);
     overflow: hidden;
@@ -27,16 +27,16 @@
     font-size: 1.25rem;
     font-weight: bold;
     margin-bottom: 0.5rem;
-    color: var(--black);
+    color: var(--text-main);
 }
 
 .card-text {
-    color: var(--texto);
+    color: var(--text-muted);
     margin-bottom: 1rem;
 }
 
 .card-footer {
     padding: 1rem 1.5rem;
     background-color: rgba(0,0,0,0.02);
-    border-top: 1px solid rgba(0,0,0,0.05);
+    border-top: 1px solid var(--border-color);
 }

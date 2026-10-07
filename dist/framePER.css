@@ -851,7 +851,7 @@ input, select, textarea {
   padding: 0.6rem 1.4rem;
   border-radius: 0.4rem;
   font-size: 1rem;
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   box-shadow: 0 3px 3px 1px rgba(45, 45, 45, 0.1);
   transition: box-shadow 0.3s ease, border-color 0.3s ease;
 }
@@ -2487,7 +2487,7 @@ table tbody tr:nth-child(even) {
 }
 
 .modal-content {
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   padding: 2rem;
   border-radius: 0.5rem;
   width: 90%;
@@ -2502,7 +2502,7 @@ table tbody tr:nth-child(even) {
   justify-content: space-between;
   align-items: center;
   margin-bottom: 1rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-color);
   padding-bottom: 0.5rem;
 }
 
@@ -2516,7 +2516,7 @@ table tbody tr:nth-child(even) {
   width: auto;
 }
 .modal-close:hover {
-  color: var(--black);
+  color: var(--text-main);
 }
 
 .dropdown {
@@ -2528,7 +2528,7 @@ table tbody tr:nth-child(even) {
   position: absolute;
   top: 100%;
   left: 0;
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   min-width: 150px;
   box-shadow: 0 4px 12px rgba(0, 0, 0, 0.1);
   border-radius: 0.4rem;
@@ -2549,7 +2549,7 @@ table tbody tr:nth-child(even) {
 .dropdown-item {
   display: block;
   padding: 0.5rem 1rem;
-  color: var(--black);
+  color: var(--text-main);
   text-decoration: none;
 }
 .dropdown-item:hover {
@@ -2602,7 +2602,7 @@ table tbody tr:nth-child(even) {
   justify-content: space-between;
   align-items: center;
   padding: 1rem 2rem;
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
   position: relative;
 }
@@ -2610,7 +2610,7 @@ table tbody tr:nth-child(even) {
 .navbar-brand {
   font-size: 1.5rem;
   font-weight: bold;
-  color: var(--black);
+  color: var(--text-main);
   text-decoration: none;
 }
 
@@ -2621,7 +2621,7 @@ table tbody tr:nth-child(even) {
   margin: 0;
 }
 .navbar-nav .nav-item .nav-link {
-  color: var(--texto);
+  color: var(--text-muted);
   text-decoration: none;
   transition: color 0.3s;
 }
@@ -2648,7 +2648,7 @@ table tbody tr:nth-child(even) {
     position: absolute;
     top: 100%;
     left: 0;
-    background-color: var(--white);
+    background-color: var(--bg-surface);
     padding: 1rem;
     box-shadow: 0 4px 10px rgba(0, 0, 0, 0.1);
     z-index: 1000;
@@ -2658,7 +2658,7 @@ table tbody tr:nth-child(even) {
   }
 }
 .card {
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   border-radius: 0.5rem;
   box-shadow: 0 4px 15px rgba(0, 0, 0, 0.05);
   overflow: hidden;
@@ -2683,36 +2683,36 @@ table tbody tr:nth-child(even) {
   font-size: 1.25rem;
   font-weight: bold;
   margin-bottom: 0.5rem;
-  color: var(--black);
+  color: var(--text-main);
 }
 
 .card-text {
-  color: var(--texto);
+  color: var(--text-muted);
   margin-bottom: 1rem;
 }
 
 .card-footer {
   padding: 1rem 1.5rem;
   background-color: rgba(0, 0, 0, 0.02);
-  border-top: 1px solid rgba(0, 0, 0, 0.05);
+  border-top: 1px solid var(--border-color);
 }
 
 .accordion {
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  border: 1px solid var(--border-color);
   border-radius: 0.4rem;
   overflow: hidden;
   margin-bottom: 1rem;
 }
 
 .accordion-item {
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 .accordion-item:last-child {
   border-bottom: none;
 }
 
 .accordion-header {
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   padding: 1rem 1.5rem;
   cursor: pointer;
   font-weight: bold;
@@ -2741,7 +2741,7 @@ table tbody tr:nth-child(even) {
   max-height: 0;
   overflow: hidden;
   transition: max-height 0.3s ease-out, padding 0.3s ease;
-  background-color: var(--white);
+  background-color: var(--bg-surface);
 }
 .accordion-body.active {
   padding: 1rem 1.5rem;
@@ -2945,7 +2945,7 @@ table tbody tr:nth-child(even) {
   bottom: 100%;
   left: 50%;
   transform: translateX(-50%) translateY(-5px);
-  background-color: var(--black);
+  background-color: var(--text-main);
   color: var(--white);
   padding: 0.4rem 0.8rem;
   border-radius: 0.25rem;
@@ -3159,7 +3159,7 @@ table tbody tr:nth-child(even) {
   left: 0;
   width: 100vw;
   height: 100vh;
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   display: flex;
   justify-content: center;
   align-items: center;
@@ -3239,7 +3239,7 @@ input:checked + .slider:before {
   padding: 0.75rem 1.5rem;
   cursor: pointer;
   text-decoration: none;
-  color: var(--texto);
+  color: var(--text-muted);
   border-bottom: 2px solid transparent;
   transition: color 0.3s, border-color 0.3s;
 }
@@ -3281,7 +3281,7 @@ input:checked + .slider:before {
   text-decoration: underline;
 }
 .breadcrumb-item.active {
-  color: var(--texto);
+  color: var(--text-muted);
 }
 
 .pagination {
@@ -3294,8 +3294,8 @@ input:checked + .slider:before {
   display: block;
   padding: 0.5rem 1rem;
   color: var(--blue);
-  background-color: var(--white);
-  border: 1px solid rgba(0, 0, 0, 0.1);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
   border-radius: 0.25rem;
   transition: background-color 0.3s, color 0.3s;
 }
@@ -3415,7 +3415,7 @@ input:checked + .slider:before {
   position: fixed;
   top: 0;
   bottom: 0;
-  background-color: var(--white);
+  background-color: var(--bg-surface);
   z-index: 1050;
   box-shadow: 0 0 20px rgba(0, 0, 0, 0.2);
   transition: transform 0.3s ease-in-out;
@@ -3439,7 +3439,7 @@ input:checked + .slider:before {
   align-items: center;
   justify-content: space-between;
   padding: 1rem 1.5rem;
-  border-bottom: 1px solid rgba(0, 0, 0, 0.1);
+  border-bottom: 1px solid var(--border-color);
 }
 
 .offcanvas-body {

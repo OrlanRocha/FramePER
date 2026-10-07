@@ -1,19 +1,19 @@
 @use '../variables' as *;
 
 .accordion {
-    border: 1px solid rgba(0,0,0,0.1);
+    border: 1px solid var(--border-color);
     border-radius: 0.4rem;
     overflow: hidden;
     margin-bottom: 1rem;
 }
 
 .accordion-item {
-    border-bottom: 1px solid rgba(0,0,0,0.1);
+    border-bottom: 1px solid var(--border-color);
     &:last-child { border-bottom: none; }
 }
 
 .accordion-header {
-    background-color: var(--white);
+    background-color: var(--bg-surface);
     padding: 1rem 1.5rem;
     cursor: pointer;
     font-weight: bold;
@@ -40,7 +40,7 @@
     max-height: 0;
     overflow: hidden;
     transition: max-height 0.3s ease-out, padding 0.3s ease;
-    background-color: var(--white);
+    background-color: var(--bg-surface);
     
     &.active {
         padding: 1rem 1.5rem;
