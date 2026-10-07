@@ -21,7 +21,7 @@
         .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
         .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
         .rounded-lg { border-radius: 0.75rem; }
-        .rounded-xl { border-radius: 1rem; }
+        .rounded-lg { border-radius: 1rem; }
         .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         
         .navbar-glass { background: var(--bg-surface); opacity: 0.95; backdrop-filter: blur(8px); border-bottom: 1px solid #e2e8f0; }
@@ -43,7 +43,7 @@
                 <li class="nav-item m-r-4"><a class="nav-link text-muted hover-text-blue" href="#">Soluções</a></li>
                 <li class="nav-item m-r-4"><a class="nav-link text-muted hover-text-blue" href="#">Preços</a></li>
                 <li class="nav-item m-r-4"><a class="nav-link text-muted hover-text-blue" href="#">Blog</a></li>
-                <li class="nav-item"><a class="btn btn-black rounded-lg shadow-sm" href="#">Criar Conta Grátis</a></li>
+                <li class="nav-item"><a class="btn btn-black shadow-sm" href="#">Criar Conta Grátis</a></li>
             </ul>
         </div>
     </nav>
@@ -72,15 +72,15 @@
 
     <!-- Modal Download -->
     <div id="downloadModal" class="modal">
-        <div class="modal-content rounded-xl shadow-lg p-6" style="max-width: 500px;">
+        <div class="modal-content rounded-lg shadow-lg p-4" style="max-width: 500px;">
             <div class="modal-header border-0 m-b-3 p-0">
                 <h3 class="h2 m-0" style="color: #0f172a; font-weight: 700;">Pronto para baixar!</h3>
                 <button class="modal-close" data-dismiss="modal"><i class="icon icon-close text-muted"></i></button>
             </div>
             <p class="m-b-5 text-muted f-s-4">Você está prestes a baixar a versão minificada do Frame PER, contendo CSS e JS altamente otimizados.</p>
             <div class="d-flex justify-content-end gap-2">
-                <button class="btn btn-white rounded-lg" data-dismiss="modal">Cancelar</button>
-                <button class="btn btn-blue rounded-lg shadow-sm" data-dismiss="modal" onclick="FramePER.Notify.success('Sucesso', 'Seu download iniciou automaticamente!', 4000)">
+                <button class="btn btn-white" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-blue shadow-sm" data-dismiss="modal" onclick="FramePER.Notify.success('Sucesso', 'Seu download iniciou automaticamente!', 4000)">
                     Confirmar Download
                 </button>
             </div>
@@ -88,29 +88,29 @@
     </div>
 
     <!-- Features Section -->
-    <section id="features" class="container p-y-8 fade-in">
+    <section id="features" class="container p-y-5 fade-in">
         <div class="txt-center m-b-8">
             <h2 class="h1 m-b-3" style="color: #0f172a; font-weight: 800;">Tudo que você precisa</h2>
             <p class="text-muted f-s-4 m-auto" style="max-width: 600px;">Não reinvente a roda. Nossa biblioteca tem os padrões de mercado integrados nativamente.</p>
         </div>
         
-        <div class="grid grid-md-3 gap-5">
-            <div class="card rounded-xl shadow-sm border-0 bg-surface hover-lift transition">
-                <div class="card-body p-6">
+        <div class="grid grid-md-3 gap-4">
+            <div class="card rounded-lg shadow-sm border-0 bg-surface hover-lift transition">
+                <div class="card-body p-4">
                     <div class="feature-icon bg-blue m-b-4 text-white"><i class="icon icon-settings icon-md"></i></div>
                     <h3 class="h3 m-b-2" style="color: #0f172a;">Design Moderno</h3>
                     <p class="text-muted">Sombras suaves, bordas arredondadas e cores vibrantes. Seus projetos ficarão com cara de SaaS profissional instantaneamente.</p>
                 </div>
             </div>
-            <div class="card rounded-xl shadow-sm border-0 bg-surface hover-lift transition">
-                <div class="card-body p-6">
+            <div class="card rounded-lg shadow-sm border-0 bg-surface hover-lift transition">
+                <div class="card-body p-4">
                     <div class="feature-icon m-b-4 text-white" style="background: #10b981;"><i class="icon icon-camera icon-md"></i></div>
                     <h3 class="h3 m-b-2" style="color: #0f172a;">Totalmente Responsivo</h3>
                     <p class="text-muted">Arquitetura Mobile First com utilitários flexíveis. Seus sites funcionam perfeitamente em telas pequenas, médias e gigantes.</p>
                 </div>
             </div>
-            <div class="card rounded-xl shadow-sm border-0 bg-surface hover-lift transition">
-                <div class="card-body p-6">
+            <div class="card rounded-lg shadow-sm border-0 bg-surface hover-lift transition">
+                <div class="card-body p-4">
                     <div class="feature-icon bg-black m-b-4 text-white"><i class="icon icon-check icon-md"></i></div>
                     <h3 class="h3 m-b-2" style="color: #0f172a;">APIs Poderosas</h3>
                     <p class="text-muted">Toasts dinâmicos, Fetch HTTP e Loaders nativos de página. Esqueça jQuery e bibliotecas gigantescas.</p>
@@ -120,7 +120,7 @@
     </section>
 
     <!-- Footer -->
-    <footer class="bg-surface border-top p-y-6" style="border-top: 1px solid #e2e8f0;">
+    <footer class="bg-surface border-top p-y-4" style="border-top: 1px solid #e2e8f0;">
         <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-muted">
             <p class="m-0">&copy; 2026 Frame PER. Construído com <i class="icon icon-heart text-red"></i></p>
             <ul class="d-flex list-unstyled gap-4 m-0 m-t-3 m-md-t-0" style="list-style: none;">

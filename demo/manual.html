@@ -17,7 +17,7 @@
         .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
         .bg-gradient-dark { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
         .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-        .rounded-xl { border-radius: 1rem; }
+        .rounded-lg { border-radius: 1rem; }
         .rounded-lg { border-radius: 0.5rem; }
         .container-fluid { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
         
@@ -35,8 +35,8 @@
         </div>
     </nav>
     
-    <div class="container-fluid p-y-6 fade-in">
-        <div class="grid grid-1 grid-lg-3 gap-5">
+    <div class="container-fluid p-y-4 fade-in">
+        <div class="grid grid-1 grid-lg-3 gap-4">
             <!-- Sidemenu -->
             <div class="d-none d-lg-block">
                 <div class="p-sticky" style="top: 2rem;">
@@ -68,7 +68,7 @@ if(response.ok) {
                 <div class="doc-card shadow-sm" id="notify">
                     <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Toasts de Notificação</h2>
                     <p class="text-muted m-b-4">Chame notificações elegantes dinamicamente pelo JS sem sujar o seu HTML.</p>
-                    <button class="btn btn-blue rounded-lg m-b-4" onclick="FramePER.Notify.success('Documentação', 'Exemplo de sucesso renderizado na hora!')">Testar Toast</button>
+                    <button class="btn btn-blue m-b-4" onclick="FramePER.Notify.success('Documentação', 'Exemplo de sucesso renderizado na hora!')">Testar Toast</button>
                     <div class="code-block m-b-4">
 FramePER.Notify.success('Sucesso', 'Salvo com sucesso!', 3000);
 FramePER.Notify.error('Erro', 'Falha ao salvar.', 5000);
@@ -79,7 +79,7 @@ FramePER.Notify.info('Aviso', 'Ação processada.');
                 <div class="doc-card shadow-sm" id="loaders">
                     <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Loaders</h2>
                     <p class="text-muted m-b-4">Tranque a interface do usuário enquanto algo crucial carrega, ou insira spinners dentro de botões.</p>
-                    <button id="btnLoadEx" class="btn btn-black rounded-lg m-b-4" onclick="demoLoader(this)">Testar Loader no Botão</button>
+                    <button id="btnLoadEx" class="btn btn-black m-b-4" onclick="demoLoader(this)">Testar Loader no Botão</button>
                     <div class="code-block m-b-4">
 // Travar tela
 FramePER.Loader.showPageLoad();

@@ -21,7 +21,7 @@
         .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
         .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
         .rounded-lg { border-radius: 0.75rem; }
-        .rounded-xl { border-radius: 1rem; }
+        .rounded-lg { border-radius: 1rem; }
         .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
         
         
@@ -29,7 +29,7 @@
         .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; transition: all 0.3s; }
         .main-content { margin-left: 280px; padding: 0; min-height: 100vh; }
         .topbar { background: var(--bg-surface); height: 80px; border-bottom: 1px solid var(--border-color); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s; }
-        .stat-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 1.25rem; padding: 1.5rem; transition: transform 0.3s; }
+        .stat-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; transition: transform 0.2s; box-shadow: var(--shadow-sm); }
         .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
         .stat-icon { width: 56px; height: 56px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; }
 
@@ -71,7 +71,7 @@
             </a>
         </nav>
         
-        <div class="mt-auto m-t-auto p-4 rounded-xl text-white mt-auto" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+        <div class="mt-auto m-t-auto p-4 rounded-lg text-white mt-auto" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
             <p class="f-w-bold m-b-1">Pro Plan</p>
             <p class="f-s-2 m-b-3" style="opacity: 0.9;">Mais recursos incríveis.</p>
             <button class="btn btn-white w-100 rounded-lg shadow-sm text-blue f-s-2">Fazer Upgrade</button>
@@ -143,11 +143,11 @@
             </div>
 
             <!-- Table Card -->
-            <div class="card rounded-xl shadow-sm border-0 bg-surface">
+            <div class="card rounded-lg shadow-sm border-0 bg-surface">
                 <div class="card-body p-5">
                     <div class="d-flex justify-content-between align-items-center m-b-4">
                         <h3 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Transações Recentes</h3>
-                        <button class="btn btn-blue rounded-lg text-white shadow-sm f-s-3 p-y-2 p-x-3">Ver Todas</button>
+                        <button class="btn btn-blue text-white shadow-sm f-s-3 p-y-2 p-x-3">Ver Todas</button>
                     </div>
                     
                     <div style="overflow-x: auto;">
