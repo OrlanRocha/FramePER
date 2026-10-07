@@ -64,121 +64,155 @@ body {
 }
 
 h1, h2, h3, h4, h5, h6 {
-  color: rgb(25, 25, 25);
-  font-weight: 400;
+  color: var(--texto);
+  font-weight: 600;
   font-family: Calibri, sans-serif;
   margin-bottom: 0.5rem;
+  line-height: 1.2;
 }
 
-.h1 {
-  font-size: 4.2rem;
+h1, .h1 {
+  font-size: 2.5rem;
 }
 
-.h2 {
-  font-size: 5.8rem;
+h2, .h2 {
+  font-size: 2rem;
 }
 
-.h3 {
-  font-size: 6.4rem;
+h3, .h3 {
+  font-size: 1.75rem;
 }
 
-.h4 {
-  font-size: 7.8rem;
+h4, .h4 {
+  font-size: 1.5rem;
 }
 
-.h5 {
-  font-size: 8.4rem;
+h5, .h5 {
+  font-size: 1.25rem;
 }
 
-.p {
+h6, .h6 {
+  font-size: 1rem;
+}
+
+p, .p {
   font-family: Calibri, sans-serif;
-  color: rgba(0, 0, 0, 0.8);
-  font-size: 1.05rem;
+  color: rgba(0, 0, 0, 0.7);
+  font-size: 1rem;
+  line-height: 1.6;
   margin-bottom: 1rem;
 }
 
 .txt-center {
-  text-align: center;
+  text-align: center !important;
 }
 
 .txt-left {
-  text-align: left;
+  text-align: left !important;
 }
 
 .txt-right {
-  text-align: right;
+  text-align: right !important;
+}
+
+.txt-justify {
+  text-align: justify !important;
+}
+
+.f-w-light {
+  font-weight: 300 !important;
+}
+
+.f-w-normal {
+  font-weight: 400 !important;
+}
+
+.f-w-bold {
+  font-weight: 700 !important;
 }
 
 .f-w-1 {
-  font-weight: 100;
+  font-weight: 100 !important;
 }
 
 .f-w-2 {
-  font-weight: 200;
+  font-weight: 200 !important;
 }
 
 .f-w-3 {
-  font-weight: 300;
+  font-weight: 300 !important;
 }
 
 .f-w-4 {
-  font-weight: 400;
+  font-weight: 400 !important;
 }
 
 .f-w-5 {
-  font-weight: 500;
+  font-weight: 500 !important;
 }
 
 .f-w-6 {
-  font-weight: 600;
+  font-weight: 600 !important;
 }
 
 .f-w-7 {
-  font-weight: 700;
+  font-weight: 700 !important;
 }
 
 .f-w-8 {
-  font-weight: 800;
+  font-weight: 800 !important;
 }
 
 .f-w-9 {
-  font-weight: 900;
+  font-weight: 900 !important;
 }
 
 .f-s-1 {
-  font-size: 0.6rem;
+  font-size: 0.75rem !important;
 }
 
 .f-s-2 {
-  font-size: 0.75rem;
+  font-size: 0.875rem !important;
 }
 
 .f-s-3 {
-  font-size: 0.9rem;
+  font-size: 1rem !important;
 }
 
 .f-s-4 {
-  font-size: 1.2rem;
+  font-size: 1.125rem !important;
 }
 
 .f-s-5 {
-  font-size: 1.5rem;
+  font-size: 1.25rem !important;
 }
 
 .f-s-6 {
-  font-size: 1.8rem;
+  font-size: 1.5rem !important;
 }
 
 .f-s-7 {
-  font-size: 2.1rem;
+  font-size: 1.875rem !important;
 }
 
 .f-s-8 {
-  font-size: 2.4rem;
+  font-size: 2.25rem !important;
 }
 
 .f-s-9 {
-  font-size: 2.7rem;
+  font-size: 3rem !important;
+}
+
+.text-uppercase {
+  text-transform: uppercase !important;
+}
+
+.text-lowercase {
+  text-transform: lowercase !important;
+}
+
+.text-capitalize {
+  text-transform: capitalize !important;
 }
 
 .container {
@@ -604,25 +638,43 @@ h1, h2, h3, h4, h5, h6 {
   }
 }
 button {
-  width: 100%;
   border-style: none;
   border: 2px solid transparent;
   border-radius: 0.4rem;
+  background: transparent;
+  font-family: inherit;
+  cursor: pointer;
 }
 
 .btn {
   display: inline-block;
-  padding: 0.8rem 1.5rem;
+  padding: 0.6rem 1.2rem;
   cursor: pointer;
   border: 1px solid transparent;
   border-radius: 0.4rem;
   font-weight: 500;
   text-align: center;
-  transition: all 0.3s ease;
+  transition: all 0.2s ease;
+  text-decoration: none;
+  line-height: 1.5;
 }
 .btn:focus, .btn:active {
   outline: none;
   transform: scale(0.98);
+}
+
+.btn-sm {
+  padding: 0.4rem 0.8rem;
+  font-size: 0.875rem;
+}
+
+.btn-lg {
+  padding: 0.8rem 1.6rem;
+  font-size: 1.125rem;
+}
+
+.w-100 {
+  width: 100% !important;
 }
 
 .btn-white {
@@ -633,12 +685,32 @@ button {
   filter: brightness(90%);
 }
 
+.btn-outline-white {
+  background-color: transparent;
+  color: var(--white);
+  border-color: var(--white);
+}
+.btn-outline-white:hover {
+  background-color: var(--white);
+  color: var(--black);
+}
+
 .btn-black {
   background-color: var(--black);
   color: var(--white);
 }
 .btn-black:hover {
   filter: brightness(90%);
+}
+
+.btn-outline-black {
+  background-color: transparent;
+  color: var(--black);
+  border-color: var(--black);
+}
+.btn-outline-black:hover {
+  background-color: var(--black);
+  color: var(--white);
 }
 
 .btn-blue {
@@ -649,12 +721,32 @@ button {
   filter: brightness(90%);
 }
 
+.btn-outline-blue {
+  background-color: transparent;
+  color: var(--blue);
+  border-color: var(--blue);
+}
+.btn-outline-blue:hover {
+  background-color: var(--blue);
+  color: var(--white);
+}
+
 .btn-yellow {
   background-color: var(--yellow);
   color: var(--black);
 }
 .btn-yellow:hover {
   filter: brightness(90%);
+}
+
+.btn-outline-yellow {
+  background-color: transparent;
+  color: var(--yellow);
+  border-color: var(--yellow);
+}
+.btn-outline-yellow:hover {
+  background-color: var(--yellow);
+  color: var(--black);
 }
 
 .btn-green {
@@ -665,12 +757,32 @@ button {
   filter: brightness(90%);
 }
 
+.btn-outline-green {
+  background-color: transparent;
+  color: var(--green);
+  border-color: var(--green);
+}
+.btn-outline-green:hover {
+  background-color: var(--green);
+  color: var(--white);
+}
+
 .btn-red {
   background-color: var(--red);
   color: var(--white);
 }
 .btn-red:hover {
   filter: brightness(90%);
+}
+
+.btn-outline-red {
+  background-color: transparent;
+  color: var(--red);
+  border-color: var(--red);
+}
+.btn-outline-red:hover {
+  background-color: var(--red);
+  color: var(--white);
 }
 
 .btn-orange {
@@ -681,6 +793,16 @@ button {
   filter: brightness(90%);
 }
 
+.btn-outline-orange {
+  background-color: transparent;
+  color: var(--orange);
+  border-color: var(--orange);
+}
+.btn-outline-orange:hover {
+  background-color: var(--orange);
+  color: var(--white);
+}
+
 .btn-grey {
   background-color: var(--grey);
   color: var(--white);
@@ -689,12 +811,32 @@ button {
   filter: brightness(90%);
 }
 
+.btn-outline-grey {
+  background-color: transparent;
+  color: var(--grey);
+  border-color: var(--grey);
+}
+.btn-outline-grey:hover {
+  background-color: var(--grey);
+  color: var(--white);
+}
+
 .btn-texto {
   background-color: var(--texto);
   color: var(--white);
 }
 .btn-texto:hover {
   filter: brightness(90%);
+}
+
+.btn-outline-texto {
+  background-color: transparent;
+  color: var(--texto);
+  border-color: var(--texto);
+}
+.btn-outline-texto:hover {
+  background-color: var(--texto);
+  color: var(--white);
 }
 
 input, select, textarea {

@@ -18,6 +18,10 @@
 @each $name, $color in $colors {
     .badge-#{$name} {
         background-color: var(--#{$name});
-        color: if($name == 'white' or $name == 'yellow', var(--black), var(--white));
+        @if $name == 'white' or $name == 'yellow' {
+            color: var(--black);
+        } @else {
+            color: var(--white);
+        }
     }
 }

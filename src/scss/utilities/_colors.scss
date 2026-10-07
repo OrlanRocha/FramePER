@@ -1,7 +1,14 @@
 @use '../variables' as *;
 
 @each $name, $color in $colors {
-  .bg-#{$name} { background-color: var(--#{$name}) !important; color: if($name == 'white' or $name == 'yellow', var(--black), var(--white)); }
+  .bg-#{$name} { 
+    background-color: var(--#{$name}) !important; 
+    @if $name == 'white' or $name == 'yellow' {
+      color: var(--black);
+    } @else {
+      color: var(--white);
+    }
+  }
   .text-#{$name} { color: var(--#{$name}) !important; }
   .b-#{$name} { border-color: var(--#{$name}) !important; }
 }
