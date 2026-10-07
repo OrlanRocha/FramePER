@@ -6,68 +6,109 @@
     <title>Manual Avançado | Frame PER</title>
     <link rel="stylesheet" href="../dist/framePER.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .demo-section { padding: 4rem 0; }
-        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f8fafc;
+            color: #333;
+            line-height: 1.6;
+        }
+        .text-muted { color: #64748b; }
+        .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
+        .bg-gradient-dark { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
+        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
+        .rounded-xl { border-radius: 1rem; }
+        .rounded-lg { border-radius: 0.5rem; }
+        .container-fluid { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+        
+        .doc-card { background: white; border: 1px solid #e2e8f0; border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; }
+        .code-block { background: #0f172a; color: #f8fafc; padding: 1.5rem; border-radius: 0.5rem; font-family: monospace; overflow-x: auto; }
+    
     </style>
 </head>
-<body>
-    <nav class="navbar bg-blue text-white">
-        <a href="index.html" class="navbar-brand text-white">Frame PER Docs</a>
-    </nav>
-    <div class="demo-container p-y-6">
-        <div class="grid grid-1-3">
-            <!-- Sidemenu -->
-            <div>
-                <ul class="navbar-nav flex-column p-4 bg-white shadow r-4">
-                    <li class="m-b-2"><a href="#intro" class="f-w-bold text-blue">1. Introdução</a></li>
-                    <li class="m-b-2"><a href="#grid" class="f-w-bold text-blue">2. Grid Responsivo</a></li>
-                    <li class="m-b-2"><a href="#js" class="f-w-bold text-blue">3. Funções JavaScript</a></li>
-                    <li class="m-b-2"><a href="#animations" class="f-w-bold text-blue">4. Animações Nativas</a></li>
-                </ul>
-            </div>
-            <!-- Content -->
-            <div class="p-4 bg-white shadow r-4">
-                <h1 class="h1 m-b-4" id="intro">Manual & Funções Avançadas</h1>
-                
-                <h2 class="h2 m-t-5" id="grid">Grid Flexível Moderno</h2>
-                <p class="p">O sistema de grid usa `display: grid; gap: 1rem;` para o melhor posicionamento possível.</p>
-                <div class="bg-grey p-3 r-2 m-b-4 text-white">
-                    <code>&lt;div class="grid grid-md-3 grid-sm-1"&gt;...&lt;/div&gt;</code>
-                </div>
+<body class="">
 
-                <h2 class="h2 m-t-5" id="js">Funções JavaScript (Avançado)</h2>
-                <p class="p">Os modais, dropdowns e toasts não precisam de jQuery e não pesam o navegador. Você pode chamar Toasts programaticamente via JS:</p>
-                <div class="bg-grey p-3 r-2 m-b-4 text-white">
-                    <code>
-                        // Mostra o toast por 3 segundos dinamicamente<br>
-                        FramePER.showToast('meuIdDeToast');
-                    </code>
+    <nav class="bg-gradient-dark p-y-4">
+        <div class="container-fluid d-flex align-items-center">
+            <a href="index.html" class="btn text-white p-0 m-r-4 opacity-75 hover-opacity-100"><i class="icon icon-arrow-left icon-lg"></i></a>
+            <h1 class="h3 m-0 text-white" style="font-weight: 700;">Manual de APIs Javascript</h1>
+        </div>
+    </nav>
+    
+    <div class="container-fluid p-y-6 fade-in">
+        <div class="grid grid-1 grid-lg-3 gap-5">
+            <!-- Sidemenu -->
+            <div class="d-none d-lg-block">
+                <div class="p-sticky" style="top: 2rem;">
+                    <ul class="list-unstyled d-flex flex-column gap-2" style="list-style: none; padding:0;">
+                        <li><a href="#http" class="f-w-bold text-blue" style="text-decoration:none;">HTTP / Fetch API</a></li>
+                        <li><a href="#notify" class="text-muted hover-text-blue" style="text-decoration:none;">Toasts / Notificações</a></li>
+                        <li><a href="#loaders" class="text-muted hover-text-blue" style="text-decoration:none;">Loaders de Tela</a></li>
+                        <li><a href="#security" class="text-muted hover-text-blue" style="text-decoration:none;">Segurança (CSRF/XSS)</a></li>
+                    </ul>
                 </div>
-                <button class="btn btn-blue w-auto" onclick="FramePER.showToast('toastExemplo')">Testar Função Programática</button>
-                <div class="toast-container">
-                    <div id="toastExemplo" class="toast">
-                        <div class="toast-header">Aviso <button class="toast-close"><i class="icon icon-close"></i></button></div>
-                        <div class="toast-body">Fui chamado pelo JS dinâmico!</div>
+            </div>
+            
+            <!-- Content -->
+            <div class="grid-lg-span-2">
+                <div class="doc-card shadow-sm" id="http">
+                    <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Módulo HTTP</h2>
+                    <p class="text-muted m-b-4">O wrapper HTTP cuida de toda comunicação com seu backend (GET, POST, PUT, DELETE), com tratamento automático de erros, CSRF e offline.</p>
+                    <div class="code-block m-b-4">
+// Exemplo de Chamada GET
+const response = await FramePER.Http.get('/api/users');
+
+if(response.ok) {
+    console.log(response.data);
+}
+// Se der erro 401, 404, 500, o próprio FramePER exibirá um alerta visual!
                     </div>
                 </div>
 
-                <h2 class="h2 m-t-5" id="animations">Animações Nativas</h2>
-                <p class="p">Você pode combinar classes de animação para efeitos visuais elegantes na carga da página ou interação:</p>
-                <ul>
-                    <li class="p"><code>.fade-in</code>: Surgimento suave.</li>
-                    <li class="p"><code>.slide-up</code> / <code>.slide-down</code>: Entrada com movimentação.</li>
-                    <li class="p"><code>.hover-scale</code>: Aumenta o tamanho no mouse hover.</li>
-                    <li class="p"><code>.hover-lift</code>: Traz o elemento para a "frente" com sombra no hover.</li>
-                </ul>
-                <div class="d-flex gap-2">
-                    <div class="p-3 bg-blue text-white r-2 hover-lift transition">Hover Lift</div>
-                    <div class="p-3 bg-red text-white r-2 hover-scale transition">Hover Scale</div>
+                <div class="doc-card shadow-sm" id="notify">
+                    <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Toasts de Notificação</h2>
+                    <p class="text-muted m-b-4">Chame notificações elegantes dinamicamente pelo JS sem sujar o seu HTML.</p>
+                    <button class="btn btn-blue rounded-lg m-b-4" onclick="FramePER.Notify.success('Documentação', 'Exemplo de sucesso renderizado na hora!')">Testar Toast</button>
+                    <div class="code-block m-b-4">
+FramePER.Notify.success('Sucesso', 'Salvo com sucesso!', 3000);
+FramePER.Notify.error('Erro', 'Falha ao salvar.', 5000);
+FramePER.Notify.info('Aviso', 'Ação processada.');
+                    </div>
+                </div>
+
+                <div class="doc-card shadow-sm" id="loaders">
+                    <h2 class="h3 m-b-3" style="color: #0f172a; font-weight: 700;">Loaders</h2>
+                    <p class="text-muted m-b-4">Tranque a interface do usuário enquanto algo crucial carrega, ou insira spinners dentro de botões.</p>
+                    <button id="btnLoadEx" class="btn btn-black rounded-lg m-b-4" onclick="demoLoader(this)">Testar Loader no Botão</button>
+                    <div class="code-block m-b-4">
+// Travar tela
+FramePER.Loader.showPageLoad();
+FramePER.Loader.hidePageLoad();
+
+// Loading no botão
+const btn = document.querySelector('#btnSalvar');
+FramePER.Loader.buttonLoading(btn, true);  // Inicia
+FramePER.Loader.buttonLoading(btn, false); // Restaura
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     
+    <script>
+        function demoLoader(btn) {
+            FramePER.Loader.buttonLoading(btn, true);
+            setTimeout(() => {
+                FramePER.Loader.buttonLoading(btn, false);
+            }, 2000);
+        }
+    </script>
+    
     <script src="../dist/framePER.min.js"></script>
+    <script>
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+    </script>
 </body>
 </html>

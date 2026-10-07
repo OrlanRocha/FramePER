@@ -3,28 +3,83 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Demos Frame PER | Frame PER</title>
+    <title>Frame PER Demos | Frame PER</title>
     <link rel="stylesheet" href="../dist/framePER.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .demo-section { padding: 4rem 0; }
-        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .text-muted { color: #6c757d; }
+        .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
+        .bg-gradient-dark { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
+        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+        .rounded-lg { border-radius: 0.75rem; }
+        .rounded-xl { border-radius: 1rem; }
+        .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        
+        body { min-height: 100vh; background: #f8fafc; }
+        .demo-card { border: 1px solid #e2e8f0; background: white; transition: all 0.3s ease; }
+        .demo-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); border-color: #cbd5e1; }
+        .icon-wrapper { width: 60px; height: 60px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
+    
     </style>
 </head>
-<body>
-    <div class="demo-container p-y-8 txt-center slide-up">
-        <i class="icon icon-star icon-xl text-yellow m-b-4 bounce"></i>
-        <h1 class="h1 m-b-2">Frame PER</h1>
-        <p class="p f-s-5 m-b-6">Páginas de Demonstração Oficiais</p>
+<body class="d-flex align-items-center justify-content-center">
+
+    <div class="container txt-center slide-up" style="max-width: 1000px;">
+        <div class="m-b-6">
+            <div class="d-inline-flex bg-white p-3 rounded-xl shadow-sm m-b-4">
+                <i class="icon icon-star icon-xl text-blue"></i>
+            </div>
+            <h1 class="h1" style="font-weight: 800; font-size: 3rem; color: #0f172a;">Frame PER UI</h1>
+            <p class="text-muted f-s-4 w-75 m-auto" style="max-width: 600px;">Páginas de demonstração oficiais construídas com elegância, utilizando as classes utilitárias e interatividade nativa do framework.</p>
+        </div>
         
-        <div class="grid grid-2 w-75 m-auto">
-            <a href="landing.html" class="btn btn-blue p-4 f-s-4 hover-lift transition d-flex align-items-center justify-content-center"><i class="icon icon-home m-r-2"></i> Landing Page</a>
-            <a href="dashboard.html" class="btn btn-black p-4 f-s-4 hover-lift transition d-flex align-items-center justify-content-center"><i class="icon icon-user m-r-2"></i> Dashboard Admin</a>
-            <a href="components.html" class="btn btn-green p-4 f-s-4 hover-lift transition d-flex align-items-center justify-content-center"><i class="icon icon-settings m-r-2"></i> Componentes UI</a>
-            <a href="manual.html" class="btn btn-orange p-4 f-s-4 hover-lift transition d-flex align-items-center justify-content-center"><i class="icon icon-info m-r-2"></i> Manual & Docs</a>
+        <div class="grid grid-md-2 grid-lg-4 gap-4 txt-left">
+            <a href="landing.html" style="text-decoration: none; color: inherit;">
+                <div class="demo-card p-5 rounded-xl h-100">
+                    <div class="icon-wrapper bg-blue text-white"><i class="icon icon-home icon-lg"></i></div>
+                    <h3 class="h3 m-b-2">Landing Page</h3>
+                    <p class="text-muted f-s-3">Exemplo corporativo com hero section, features e modais.</p>
+                </div>
+            </a>
+            <a href="dashboard.html" style="text-decoration: none; color: inherit;">
+                <div class="demo-card p-5 rounded-xl h-100">
+                    <div class="icon-wrapper" style="background: #10b981; color: white;"><i class="icon icon-user icon-lg"></i></div>
+                    <h3 class="h3 m-b-2">Admin Dashboard</h3>
+                    <p class="text-muted f-s-3">Painel administrativo completo com sidebar, gráficos e tabelas.</p>
+                </div>
+            </a>
+            <a href="components.html" style="text-decoration: none; color: inherit;">
+                <div class="demo-card p-5 rounded-xl h-100">
+                    <div class="icon-wrapper" style="background: #f59e0b; color: white;"><i class="icon icon-settings icon-lg"></i></div>
+                    <h3 class="h3 m-b-2">Componentes UI</h3>
+                    <p class="text-muted f-s-3">Vitrine com botões, badges, offcanvas, tabs e mais.</p>
+                </div>
+            </a>
+            <a href="manual.html" style="text-decoration: none; color: inherit;">
+                <div class="demo-card p-5 rounded-xl h-100">
+                    <div class="icon-wrapper bg-black text-white"><i class="icon icon-info icon-lg"></i></div>
+                    <h3 class="h3 m-b-2">Manual Técnico</h3>
+                    <p class="text-muted f-s-3">Documentação das APIs de Notificação, Loader e requisições HTTP.</p>
+                </div>
+            </a>
         </div>
     </div>
     
     <script src="../dist/framePER.min.js"></script>
+    <script>
+        // Smooth initialization for beautiful load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+    </script>
 </body>
 </html>

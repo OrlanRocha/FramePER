@@ -3,90 +3,139 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Landing Page Demo | Frame PER</title>
+    <title>Landing Page | Frame PER</title>
     <link rel="stylesheet" href="../dist/framePER.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .demo-section { padding: 4rem 0; }
-        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .text-muted { color: #6c757d; }
+        .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
+        .bg-gradient-dark { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
+        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+        .rounded-lg { border-radius: 0.75rem; }
+        .rounded-xl { border-radius: 1rem; }
+        .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        
+        .navbar-glass { background: rgba(255, 255, 255, 0.95); backdrop-filter: blur(8px); border-bottom: 1px solid #e2e8f0; }
+        .hero { padding: 8rem 0 6rem 0; }
+        .feature-icon { width: 50px; height: 50px; border-radius: 50%; display: flex; align-items: center; justify-content: center; }
+    
     </style>
 </head>
-<body>
+<body class="">
+
     <!-- Navbar -->
-    <nav class="navbar bg-white">
-        <a href="index.html" class="navbar-brand text-blue"><i class="icon icon-star"></i> Frame PER</a>
-        <button class="navbar-toggler" data-target="#nav-landing"><i class="icon icon-menu"></i></button>
-        <ul class="navbar-nav" id="nav-landing">
-            <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
-            <li class="nav-item"><a class="nav-link" href="#features">Features</a></li>
-            <li class="nav-item"><a class="btn btn-blue" href="#">Get Started</a></li>
-        </ul>
+    <nav class="navbar navbar-glass p-sticky p-y-3" style="top:0; z-index: 1000;">
+        <div class="container d-flex justify-content-between align-items-center">
+            <a href="index.html" class="navbar-brand text-blue f-w-bold d-flex align-items-center" style="font-size: 1.5rem;">
+                <i class="icon icon-star m-r-2"></i> Frame PER
+            </a>
+            <button class="navbar-toggler d-md-none" data-target="#nav-landing"><i class="icon icon-menu"></i></button>
+            <ul class="navbar-nav d-none d-md-flex align-items-center" id="nav-landing">
+                <li class="nav-item m-r-4"><a class="nav-link text-muted hover-text-blue" href="#">Soluções</a></li>
+                <li class="nav-item m-r-4"><a class="nav-link text-muted hover-text-blue" href="#">Preços</a></li>
+                <li class="nav-item m-r-4"><a class="nav-link text-muted hover-text-blue" href="#">Blog</a></li>
+                <li class="nav-item"><a class="btn btn-black rounded-lg shadow-sm" href="#">Criar Conta Grátis</a></li>
+            </ul>
+        </div>
     </nav>
 
     <!-- Hero Section -->
-    <header class="demo-section txt-center bg-blue text-white slide-down">
-        <div class="demo-container">
-            <h1 class="h2 text-white m-b-4">Construa rápido com Frame PER</h1>
-            <p class="p text-white m-b-6 f-s-5 w-50 m-auto">O framework UI mais leve e poderoso para desenvolvedores modernos. Sem jQuery, 100% responsivo.</p>
-            <div>
-                <a href="#features" class="btn btn-white m-r-2 hover-scale transition">Ver Recursos</a>
-                <button class="btn btn-orange hover-lift transition" data-toggle="modal" data-target="#downloadModal">Baixar Agora <i class="icon icon-arrow-down"></i></button>
+    <header class="hero bg-gradient-dark text-white slide-down">
+        <div class="container txt-center">
+            <span class="badge badge-pill badge-blue m-b-4 bg-white text-blue">V1.8.0 Lançada</span>
+            <h1 class="m-b-4" style="font-weight: 800; font-size: 4rem; line-height: 1.1; letter-spacing: -1px;">
+                Construa interfaces<br>incríveis rapidamente.
+            </h1>
+            <p class="m-b-6 f-s-4 m-auto" style="max-width: 650px; color: #94a3b8;">
+                O framework CSS e JS que respeita o seu tempo. Componentes bonitos por padrão, sistema Mobile First e APIs prontas para produção.
+            </p>
+            <div class="d-flex justify-content-center flex-column flex-md-row gap-3">
+                <button class="btn btn-blue btn-lg rounded-lg shadow-md hover-scale transition p-x-5" data-toggle="modal" data-target="#downloadModal">
+                    Baixar Framework <i class="icon icon-arrow-down m-l-2"></i>
+                </button>
+                <a href="#features" class="btn btn-white btn-lg rounded-lg shadow-sm hover-scale transition p-x-5" style="color: #0f172a;">
+                    Ler a Documentação
+                </a>
             </div>
         </div>
     </header>
 
     <!-- Modal Download -->
     <div id="downloadModal" class="modal">
-        <div class="modal-content">
-            <div class="modal-header">
-                <h3 class="h3">Baixar Frame PER</h3>
-                <button class="modal-close" data-dismiss="modal"><i class="icon icon-close"></i></button>
+        <div class="modal-content rounded-xl shadow-lg p-6" style="max-width: 500px;">
+            <div class="modal-header border-0 m-b-3 p-0">
+                <h3 class="h2 m-0" style="color: #0f172a; font-weight: 700;">Pronto para baixar!</h3>
+                <button class="modal-close" data-dismiss="modal"><i class="icon icon-close text-muted"></i></button>
             </div>
-            <p class="m-b-4">Baixe nosso arquivo minificado com CSS e JS pronto para produção!</p>
-            <button class="btn btn-green" data-dismiss="modal" onclick="FramePER.showToast('downloadToast')">Confirmar Download</button>
+            <p class="m-b-5 text-muted f-s-4">Você está prestes a baixar a versão minificada do Frame PER, contendo CSS e JS altamente otimizados.</p>
+            <div class="d-flex justify-content-end gap-2">
+                <button class="btn btn-white rounded-lg" data-dismiss="modal">Cancelar</button>
+                <button class="btn btn-blue rounded-lg shadow-sm" data-dismiss="modal" onclick="FramePER.Notify.success('Sucesso', 'Seu download iniciou automaticamente!', 4000)">
+                    Confirmar Download
+                </button>
+            </div>
         </div>
     </div>
 
     <!-- Features Section -->
-    <section id="features" class="demo-section demo-container fade-in">
-        <h2 class="h2 txt-center m-b-6">Por que escolher o Frame PER?</h2>
-        <div class="grid grid-md-3">
-            <div class="card hover-lift">
-                <div class="card-body txt-center">
-                    <i class="icon icon-camera icon-xl text-blue m-b-3"></i>
-                    <h3 class="card-title">Design Lindo</h3>
-                    <p class="card-text">Componentes prontos e bonitos desde o início.</p>
+    <section id="features" class="container p-y-8 fade-in">
+        <div class="txt-center m-b-8">
+            <h2 class="h1 m-b-3" style="color: #0f172a; font-weight: 800;">Tudo que você precisa</h2>
+            <p class="text-muted f-s-4 m-auto" style="max-width: 600px;">Não reinvente a roda. Nossa biblioteca tem os padrões de mercado integrados nativamente.</p>
+        </div>
+        
+        <div class="grid grid-md-3 gap-5">
+            <div class="card rounded-xl shadow-sm border-0 bg-white hover-lift transition">
+                <div class="card-body p-6">
+                    <div class="feature-icon bg-blue m-b-4 text-white"><i class="icon icon-settings icon-md"></i></div>
+                    <h3 class="h3 m-b-2" style="color: #0f172a;">Design Moderno</h3>
+                    <p class="text-muted">Sombras suaves, bordas arredondadas e cores vibrantes. Seus projetos ficarão com cara de SaaS profissional instantaneamente.</p>
                 </div>
             </div>
-            <div class="card hover-lift">
-                <div class="card-body txt-center">
-                    <i class="icon icon-settings icon-xl text-green m-b-3"></i>
-                    <h3 class="card-title">Altamente Customizável</h3>
-                    <p class="card-text">Tudo escrito em SCSS com variáveis fáceis de alterar.</p>
+            <div class="card rounded-xl shadow-sm border-0 bg-white hover-lift transition">
+                <div class="card-body p-6">
+                    <div class="feature-icon m-b-4 text-white" style="background: #10b981;"><i class="icon icon-camera icon-md"></i></div>
+                    <h3 class="h3 m-b-2" style="color: #0f172a;">Totalmente Responsivo</h3>
+                    <p class="text-muted">Arquitetura Mobile First com utilitários flexíveis. Seus sites funcionam perfeitamente em telas pequenas, médias e gigantes.</p>
                 </div>
             </div>
-            <div class="card hover-lift">
-                <div class="card-body txt-center">
-                    <i class="icon icon-user icon-xl text-orange m-b-3"></i>
-                    <h3 class="card-title">Foco no Usuário</h3>
-                    <p class="card-text">Acessibilidade, responsividade e interações JavaScript nativas.</p>
+            <div class="card rounded-xl shadow-sm border-0 bg-white hover-lift transition">
+                <div class="card-body p-6">
+                    <div class="feature-icon bg-black m-b-4 text-white"><i class="icon icon-check icon-md"></i></div>
+                    <h3 class="h3 m-b-2" style="color: #0f172a;">APIs Poderosas</h3>
+                    <p class="text-muted">Toasts dinâmicos, Fetch HTTP e Loaders nativos de página. Esqueça jQuery e bibliotecas gigantescas.</p>
                 </div>
             </div>
         </div>
     </section>
 
-    <!-- Toast -->
-    <div class="toast-container">
-        <div id="downloadToast" class="toast">
-            <div class="toast-header">Sucesso <button class="toast-close"><i class="icon icon-close"></i></button></div>
-            <div class="toast-body">O download iniciou automaticamente!</div>
+    <!-- Footer -->
+    <footer class="bg-white border-top p-y-6" style="border-top: 1px solid #e2e8f0;">
+        <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center text-muted">
+            <p class="m-0">&copy; 2026 Frame PER. Construído com <i class="icon icon-heart text-red"></i></p>
+            <ul class="d-flex list-unstyled gap-4 m-0 m-t-3 m-md-t-0" style="list-style: none;">
+                <li><a href="#" class="text-muted hover-text-blue" style="text-decoration:none;">Termos</a></li>
+                <li><a href="#" class="text-muted hover-text-blue" style="text-decoration:none;">Privacidade</a></li>
+                <li><a href="#" class="text-muted hover-text-blue" style="text-decoration:none;">GitHub</a></li>
+            </ul>
         </div>
-    </div>
-
-    <footer class="bg-black text-white p-6 txt-center">
-        <p>Frame PER &copy; 2026. Feito com <i class="icon icon-heart text-red"></i></p>
     </footer>
     
     <script src="../dist/framePER.min.js"></script>
+    <script>
+        // Smooth initialization for beautiful load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+    </script>
 </body>
 </html>

@@ -3,111 +3,203 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Dashboard Demo | Frame PER</title>
+    <title>Admin Dashboard | Frame PER</title>
     <link rel="stylesheet" href="../dist/framePER.min.css">
     <style>
-        body { background-color: #f8f9fa; }
-        .demo-section { padding: 4rem 0; }
-        .demo-container { max-width: 1200px; margin: 0 auto; padding: 0 1rem; }
+        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
+        body {
+            font-family: 'Inter', sans-serif;
+            background-color: #f4f7f6;
+            color: #333;
+            line-height: 1.6;
+        }
+        .text-muted { color: #6c757d; }
+        .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
+        .bg-gradient-dark { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
+        .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
+        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
+        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
+        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
+        .rounded-lg { border-radius: 0.75rem; }
+        .rounded-xl { border-radius: 1rem; }
+        .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
+        
+        body { background: #f8fafc; }
+        .sidebar { width: 260px; background: #ffffff; border-right: 1px solid #e2e8f0; height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; }
+        .main-content { margin-left: 260px; padding: 0; min-height: 100vh; }
+        .topbar { background: #ffffff; height: 70px; border-bottom: 1px solid #e2e8f0; padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; }
+        .stat-card { border: 1px solid #e2e8f0; background: white; border-radius: 1rem; padding: 1.5rem; }
+        .stat-icon { width: 48px; height: 48px; border-radius: 0.75rem; display: flex; align-items: center; justify-content: center; }
+        
+        @media (max-width: 768px) {
+            .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
+            .sidebar.show { transform: translateX(0); }
+            .main-content { margin-left: 0; }
+        }
+    
     </style>
 </head>
-<body>
-    <div class="grid-1-9 h-100 vh-100">
-        <!-- Sidebar -->
-        <div class="bg-black text-white p-4">
-            <h3 class="h3 text-white m-b-6">Admin <span class="badge badge-red">PRO</span></h3>
-            <ul class="navbar-nav flex-column">
-                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-home m-r-2"></i> Dashboard</a></li>
-                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-user m-r-2"></i> Usuários</a></li>
-                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-settings m-r-2"></i> Configurações</a></li>
-                <li class="m-b-3"><a href="#" class="text-white hover-scale transition d-block"><i class="icon icon-envelope m-r-2"></i> Mensagens <span class="badge badge-pill badge-blue f-right">4</span></a></li>
-            </ul>
-        </div>
+<body class="">
+
+    <!-- Sidebar -->
+    <aside class="sidebar p-y-4 p-x-3 d-flex flex-column">
+        <a href="index.html" class="d-flex align-items-center text-blue f-w-bold m-b-6 p-x-2" style="font-size: 1.5rem; text-decoration: none;">
+            <i class="icon icon-star m-r-2"></i> Frame Admin
+        </a>
         
-        <!-- Main Content -->
-        <div class="p-6 bg-grey" style="background-color: #f1f1f1; overflow-y: auto;">
-            <div class="d-flex justify-content-between align-items-center m-b-5">
-                <h2 class="h2 m-0">Visão Geral</h2>
-                <div class="dropdown">
-                    <button class="btn btn-white dropdown-toggle shadow transition">Meu Perfil <i class="icon icon-arrow-down"></i></button>
-                    <div class="dropdown-menu">
-                        <a href="#" class="dropdown-item">Conta</a>
-                        <a href="#" class="dropdown-item">Sair</a>
-                    </div>
+        <p class="text-muted f-s-2 text-uppercase f-w-bold m-b-2 p-x-2">Menu Principal</p>
+        <nav class="d-flex flex-column gap-1 m-b-5">
+            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg bg-blue text-white" style="text-decoration:none;">
+                <i class="icon icon-home m-r-3"></i> Dashboard
+            </a>
+            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition" style="text-decoration:none;">
+                <i class="icon icon-user m-r-3"></i> Usuários
+            </a>
+            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition justify-content-between" style="text-decoration:none;">
+                <span class="d-flex align-items-center"><i class="icon icon-envelope m-r-3"></i> Mensagens</span>
+                <span class="badge badge-pill bg-red text-white">4</span>
+            </a>
+        </nav>
+        
+        <p class="text-muted f-s-2 text-uppercase f-w-bold m-b-2 p-x-2">Ajustes</p>
+        <nav class="d-flex flex-column gap-1">
+            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition" style="text-decoration:none;">
+                <i class="icon icon-settings m-r-3"></i> Configurações
+            </a>
+        </nav>
+        
+        <div class="mt-auto m-t-auto p-4 rounded-xl text-white mt-auto" style="background: linear-gradient(135deg, #3b82f6, #1d4ed8);">
+            <p class="f-w-bold m-b-1">Pro Plan</p>
+            <p class="f-s-2 m-b-3" style="opacity: 0.9;">Mais recursos incríveis.</p>
+            <button class="btn btn-white w-100 rounded-lg shadow-sm text-blue f-s-2">Fazer Upgrade</button>
+        </div>
+    </aside>
+
+    <!-- Main Content -->
+    <main class="main-content fade-in">
+        <!-- Topbar -->
+        <header class="topbar">
+            <button class="btn btn-white d-md-none rounded-lg p-2" onclick="document.querySelector('.sidebar').classList.toggle('show')">
+                <i class="icon icon-menu"></i>
+            </button>
+            <div class="d-none d-md-block">
+                <h2 class="h3 m-0" style="color: #0f172a; font-weight: 700;">Visão Geral</h2>
+            </div>
+            
+            <div class="d-flex align-items-center gap-4">
+                <button class="btn text-muted p-0" onclick="FramePER.Notify.info('Notificações', 'Nenhum alerta novo.')"><i class="icon icon-bell icon-md"></i></button>
+                <div class="d-flex align-items-center gap-2 cursor">
+                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=0f172a&color=fff" class="avatar avatar-sm">
+                    <span class="f-w-bold d-none d-md-inline" style="color: #0f172a;">Admin Silva</span>
+                    <i class="icon icon-arrow-down text-muted f-s-2"></i>
                 </div>
             </div>
+        </header>
 
+        <!-- Page Content -->
+        <div class="p-4 p-md-6">
             <!-- Stats -->
-            <div class="grid grid-4 m-b-6 fade-in">
-                <div class="card bg-blue text-white">
-                    <div class="card-body">
-                        <p class="f-s-3">Vendas Totais</p>
-                        <h2 class="h2 text-white">R$ 15.000</h2>
+            <div class="grid grid-1 grid-md-2 grid-lg-4 gap-4 m-b-6">
+                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
+                    <div class="stat-icon" style="background: #eff6ff; color: #3b82f6;"><i class="icon icon-user icon-lg"></i></div>
+                    <div>
+                        <p class="text-muted m-0 f-s-3">Usuários Ativos</p>
+                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">24,592</h3>
                     </div>
                 </div>
-                <div class="card bg-green text-white">
-                    <div class="card-body">
-                        <p class="f-s-3">Novos Usuários</p>
-                        <h2 class="h2 text-white">342</h2>
+                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
+                    <div class="stat-icon" style="background: #ecfdf5; color: #10b981;"><i class="icon icon-check icon-lg"></i></div>
+                    <div>
+                        <p class="text-muted m-0 f-s-3">Vendas</p>
+                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">R$ 84.000</h3>
                     </div>
                 </div>
-                <div class="card bg-orange text-white">
-                    <div class="card-body">
-                        <p class="f-s-3">Alertas</p>
-                        <h2 class="h2 text-white">12</h2>
+                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
+                    <div class="stat-icon" style="background: #fef2f2; color: #ef4444;"><i class="icon icon-trash icon-lg"></i></div>
+                    <div>
+                        <p class="text-muted m-0 f-s-3">Cancelamentos</p>
+                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">143</h3>
                     </div>
                 </div>
-                <div class="card bg-white">
-                    <div class="card-body">
-                        <p class="f-s-3 text-texto">Conversão</p>
-                        <h2 class="h2 text-black">4.5%</h2>
+                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
+                    <div class="stat-icon" style="background: #fffbeb; color: #f59e0b;"><i class="icon icon-star icon-lg"></i></div>
+                    <div>
+                        <p class="text-muted m-0 f-s-3">Avaliação Média</p>
+                        <h3 class="m-0" style="color: #0f172a; font-size: 1.5rem; font-weight: 700;">4.8</h3>
                     </div>
                 </div>
             </div>
 
-            <!-- Table -->
-            <div class="card slide-up">
-                <div class="card-body">
-                    <h3 class="h3 m-b-3">Últimas Transações</h3>
-                    <table class="w-100">
-                        <thead>
-                            <tr>
-                                <th>ID</th>
-                                <th>Cliente</th>
-                                <th>Valor</th>
-                                <th>Status</th>
-                                <th>Ação</th>
-                            </tr>
-                        </thead>
-                        <tbody>
-                            <tr>
-                                <td>#1001</td>
-                                <td>João Silva</td>
-                                <td>R$ 150,00</td>
-                                <td><span class="badge badge-green">Aprovado</span></td>
-                                <td><button class="btn btn-blue p-1"><i class="icon icon-edit"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>#1002</td>
-                                <td>Maria Souza</td>
-                                <td>R$ 320,00</td>
-                                <td><span class="badge badge-yellow">Pendente</span></td>
-                                <td><button class="btn btn-blue p-1"><i class="icon icon-edit"></i></button></td>
-                            </tr>
-                            <tr>
-                                <td>#1003</td>
-                                <td>Carlos Alberto</td>
-                                <td>R$ 80,00</td>
-                                <td><span class="badge badge-red">Rejeitado</span></td>
-                                <td><button class="btn btn-blue p-1"><i class="icon icon-edit"></i></button></td>
-                            </tr>
-                        </tbody>
-                    </table>
+            <!-- Table Card -->
+            <div class="card rounded-xl shadow-sm border-0 bg-white">
+                <div class="card-body p-5">
+                    <div class="d-flex justify-content-between align-items-center m-b-4">
+                        <h3 class="h3 m-0" style="color: #0f172a; font-weight: 700;">Transações Recentes</h3>
+                        <button class="btn btn-blue rounded-lg text-white shadow-sm f-s-3 p-y-2 p-x-3">Ver Todas</button>
+                    </div>
+                    
+                    <div style="overflow-x: auto;">
+                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
+                            <thead>
+                                <tr style="border-bottom: 2px solid #f1f5f9; color: #64748b;">
+                                    <th class="p-y-3 p-x-2">Cliente</th>
+                                    <th class="p-y-3 p-x-2">Data</th>
+                                    <th class="p-y-3 p-x-2">Valor</th>
+                                    <th class="p-y-3 p-x-2">Status</th>
+                                    <th class="p-y-3 p-x-2 txt-right">Ações</th>
+                                </tr>
+                            </thead>
+                            <tbody>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
+                                        <img src="https://ui-avatars.com/api/?name=João+Silva&background=random" class="avatar avatar-sm">
+                                        <span class="f-w-bold" style="color: #0f172a;">João Silva</span>
+                                    </td>
+                                    <td class="p-y-3 p-x-2 text-muted">07 Out 2026</td>
+                                    <td class="p-y-3 p-x-2 f-w-bold">R$ 1.250,00</td>
+                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill bg-green text-white">Completado</span></td>
+                                    <td class="p-y-3 p-x-2 txt-right">
+                                        <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr style="border-bottom: 1px solid #f1f5f9;">
+                                    <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
+                                        <img src="https://ui-avatars.com/api/?name=Maria+Souza&background=random" class="avatar avatar-sm">
+                                        <span class="f-w-bold" style="color: #0f172a;">Maria Souza</span>
+                                    </td>
+                                    <td class="p-y-3 p-x-2 text-muted">06 Out 2026</td>
+                                    <td class="p-y-3 p-x-2 f-w-bold">R$ 430,00</td>
+                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill bg-yellow text-white">Pendente</span></td>
+                                    <td class="p-y-3 p-x-2 txt-right">
+                                        <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
+                                    </td>
+                                </tr>
+                                <tr>
+                                    <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
+                                        <img src="https://ui-avatars.com/api/?name=Pedro+Gomes&background=random" class="avatar avatar-sm">
+                                        <span class="f-w-bold" style="color: #0f172a;">Pedro Gomes</span>
+                                    </td>
+                                    <td class="p-y-3 p-x-2 text-muted">05 Out 2026</td>
+                                    <td class="p-y-3 p-x-2 f-w-bold">R$ 90,00</td>
+                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill bg-red text-white">Falhou</span></td>
+                                    <td class="p-y-3 p-x-2 txt-right">
+                                        <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
+                                    </td>
+                                </tr>
+                            </tbody>
+                        </table>
+                    </div>
                 </div>
             </div>
         </div>
-    </div>
+    </main>
     
     <script src="../dist/framePER.min.js"></script>
+    <script>
+        // Smooth initialization for beautiful load
+        document.addEventListener('DOMContentLoaded', () => {
+            document.body.classList.add('fade-in');
+        });
+    </script>
 </body>
 </html>
