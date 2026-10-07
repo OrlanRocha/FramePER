@@ -1,0 +1,34 @@
+@use '../variables' as *;
+
+.tabs {
+    display: flex;
+    list-style: none;
+    border-bottom: 2px solid rgba(0,0,0,0.1);
+    margin-bottom: 1rem;
+}
+
+.tab-item {
+    margin-bottom: -2px;
+}
+
+.tab-link {
+    display: block;
+    padding: 0.75rem 1.5rem;
+    cursor: pointer;
+    text-decoration: none;
+    color: var(--texto);
+    border-bottom: 2px solid transparent;
+    transition: color 0.3s, border-color 0.3s;
+    
+    &:hover { color: var(--blue); }
+    &.active {
+        color: var(--blue);
+        border-bottom-color: var(--blue);
+        font-weight: bold;
+    }
+}
+
+.tab-content {
+    display: none;
+    &.active { display: block; animation: fadeIn 0.4s ease; }
+}

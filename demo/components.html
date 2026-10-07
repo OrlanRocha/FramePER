@@ -61,6 +61,72 @@
                 </div>
             </div>
 
+            
+                <!-- Advanced Forms & Progress -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3">Switches e Progress Bar</h3>
+                        <div class="m-b-3">
+                            <label class="switch">
+                                <input type="checkbox" checked>
+                                <span class="slider"></span>
+                            </label>
+                            <label class="switch">
+                                <input type="checkbox">
+                                <span class="slider"></span>
+                            </label>
+                        </div>
+                        <div class="progress m-b-2">
+                            <div class="progress-bar bg-blue" style="width: 75%;">75%</div>
+                        </div>
+                        <div class="progress">
+                            <div class="progress-bar bg-green" style="width: 40%;">40%</div>
+                        </div>
+                    </div>
+                </div>
+
+                <!-- Tabs & Pagination -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3">Tabs e Paginação</h3>
+                        <ul class="tabs">
+                            <li class="tab-item"><a class="tab-link active" data-target="#tab1">Aba 1</a></li>
+                            <li class="tab-item"><a class="tab-link" data-target="#tab2">Aba 2</a></li>
+                        </ul>
+                        <div class="m-b-4">
+                            <div id="tab1" class="tab-content active">Conteúdo da Aba 1. Navegação em Tabs integrada via JS nativo.</div>
+                            <div id="tab2" class="tab-content">Conteúdo dinâmico da Aba 2 renderizado!</div>
+                        </div>
+                        
+                        <ul class="pagination">
+                            <li class="page-item disabled"><a class="page-link" href="#">&laquo;</a></li>
+                            <li class="page-item active"><a class="page-link" href="#">1</a></li>
+                            <li class="page-item"><a class="page-link" href="#">2</a></li>
+                            <li class="page-item"><a class="page-link" href="#">&raquo;</a></li>
+                        </ul>
+                    </div>
+                </div>
+
+                <!-- Breadcrumbs & Avatars & Offcanvas -->
+                <div class="card m-b-4">
+                    <div class="card-body">
+                        <h3 class="h3">Breadcrumbs, Avatares e Offcanvas</h3>
+                        <ul class="breadcrumb m-b-3">
+                            <li class="breadcrumb-item"><a href="#">Home</a></li>
+                            <li class="breadcrumb-item"><a href="#">Admin</a></li>
+                            <li class="breadcrumb-item active">Perfil</li>
+                        </ul>
+                        
+                        <div class="avatar-group m-b-3">
+                            <img src="https://ui-avatars.com/api/?name=User+A&background=random" class="avatar">
+                            <img src="https://ui-avatars.com/api/?name=User+B&background=random" class="avatar">
+                            <div class="avatar bg-black">+3</div>
+                        </div>
+
+                        <button class="btn btn-orange" data-toggle="offcanvas" data-target="#myOffcanvas">Abrir Menu Lateral (Offcanvas)</button>
+                    </div>
+                </div>
+
             <!-- Col 2 -->
             <div>
                 <!-- Accordion -->
@@ -116,5 +182,22 @@
     </div>
     
     <script src="../dist/framePER.min.js"></script>
+
+    <!-- Offcanvas Example -->
+    <div id="myOffcanvas" class="offcanvas offcanvas-left">
+        <div class="offcanvas-header">
+            <h3 class="h3 m-0">Menu Lateral</h3>
+            <button class="btn p-0 w-auto" data-dismiss="offcanvas"><i class="icon icon-close"></i></button>
+        </div>
+        <div class="offcanvas-body">
+            <p>Este é o conteúdo do menu lateral (Offcanvas).</p>
+            <ul class="navbar-nav flex-column">
+                <li class="m-b-2"><a href="#">Link 1</a></li>
+                <li class="m-b-2"><a href="#">Link 2</a></li>
+                <li class="m-b-2"><a href="#">Link 3</a></li>
+            </ul>
+        </div>
+    </div>
+
 </body>
 </html>

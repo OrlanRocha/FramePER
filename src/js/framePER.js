@@ -15,6 +15,8 @@
                 this.initAccordions();
                 this.initCarousels();
                 this.initAlerts();
+                this.initTabs();
+                this.initOffcanvas();
             },
             initModals: function() {
                 document.querySelectorAll("[data-toggle='modal']").forEach(trigger => {
@@ -89,6 +91,65 @@
                     if(nextBtn) nextBtn.addEventListener('click', () => { currentIndex = (currentIndex + 1) % items.length; update(); });
                     if(prevBtn) prevBtn.addEventListener('click', () => { currentIndex = (currentIndex - 1 + items.length) % items.length; update(); });
                     indicators.forEach((ind, i) => ind.addEventListener('click', () => { currentIndex = i; update(); }));
+                });
+            },
+            initTabs: function() {
+                document.querySelectorAll('.tab-link').forEach(tab => {
+                    tab.addEventListener('click', (e) => {
+                        e.preventDefault();
+                        const targetId = tab.getAttribute('data-target');
+                        const parent = tab.closest('.tabs');
+                        const wrapper = parent.nextElementSibling; // assuming content is next to tabs
+                        
+                        // Remove active from all tabs in this group
+                        parent.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
+                        tab.classList.add('active');
+                        
+                        // Hide all content panes
+                        const allContent = document.querySelectorAll(targetId).length > 0 ? 
+                            document.querySelector(targetId).parentNode.querySelectorAll('.tab-content') : [];
+                        allContent.forEach(c => c.classList.remove('active'));
+                        
+                        // Show target
+                        const targetContent = document.querySelector(targetId);
+                        if(targetContent) targetContent.classList.add('active');
+                    });
+                });
+            },
+            initOffcanvas: function() {
+                let backdrop = document.querySelector('.offcanvas-backdrop');
+                if(!backdrop) {
+                    backdrop = document.createElement('div');
+                    backdrop.className = 'offcanvas-backdrop';
+                    document.body.appendChild(backdrop);
+                }
+
+                const closeAll = () => {
+                    document.querySelectorAll('.offcanvas.show').forEach(oc => oc.classList.remove('show'));
+                    backdrop.classList.remove('show');
+                    document.body.style.overflow = "";
+                };
+
+                backdrop.addEventListener('click', closeAll);
+
+                document.querySelectorAll("[data-toggle='offcanvas']").forEach(trigger => {
+                    trigger.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const targetId = trigger.getAttribute("data-target");
+                        const offcanvas = document.querySelector(targetId);
+                        if(offcanvas) {
+                            offcanvas.classList.add("show");
+                            backdrop.classList.add("show");
+                            document.body.style.overflow = "hidden";
+                        }
+                    });
+                });
+
+                document.querySelectorAll("[data-dismiss='offcanvas']").forEach(btn => {
+                    btn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        closeAll();
+                    });
                 });
             },
             initAlerts: function() {

@@ -1,0 +1,25 @@
+@use '../variables' as *;
+
+.breadcrumb {
+    display: flex;
+    list-style: none;
+    background-color: rgba(0,0,0,0.03);
+    padding: 0.75rem 1.2rem;
+    border-radius: 0.4rem;
+}
+
+.breadcrumb-item {
+    & + .breadcrumb-item::before {
+        content: "/";
+        padding: 0 0.5rem;
+        color: var(--grey);
+    }
+    
+    a {
+        color: var(--blue);
+        text-decoration: none;
+        &:hover { text-decoration: underline; }
+    }
+    
+    &.active { color: var(--texto); }
+}

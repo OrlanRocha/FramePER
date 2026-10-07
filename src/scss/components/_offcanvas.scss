@@ -1,0 +1,44 @@
+@use '../variables' as *;
+
+.offcanvas {
+    position: fixed;
+    top: 0;
+    bottom: 0;
+    background-color: var(--white);
+    z-index: 1050;
+    box-shadow: 0 0 20px rgba(0,0,0,0.2);
+    transition: transform 0.3s ease-in-out;
+    width: 300px;
+    max-width: 100%;
+    
+    &.offcanvas-left { left: 0; transform: translateX(-100%); }
+    &.offcanvas-right { right: 0; transform: translateX(100%); }
+    
+    &.show { transform: translateX(0); }
+}
+
+.offcanvas-header {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    padding: 1rem 1.5rem;
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+}
+
+.offcanvas-body {
+    padding: 1.5rem;
+    overflow-y: auto;
+    height: calc(100% - 70px);
+}
+
+.offcanvas-backdrop {
+    position: fixed;
+    top: 0; left: 0; width: 100vw; height: 100vh;
+    background-color: rgba(0,0,0,0.5);
+    z-index: 1040;
+    opacity: 0;
+    visibility: hidden;
+    transition: opacity 0.3s;
+    
+    &.show { opacity: 1; visibility: visible; }
+}

@@ -1,0 +1,33 @@
+@use '../variables' as *;
+
+.pagination {
+    display: flex;
+    list-style: none;
+    gap: 0.25rem;
+}
+
+.page-item {
+    .page-link {
+        display: block;
+        padding: 0.5rem 1rem;
+        color: var(--blue);
+        background-color: var(--white);
+        border: 1px solid rgba(0,0,0,0.1);
+        border-radius: 0.25rem;
+        transition: background-color 0.3s, color 0.3s;
+        
+        &:hover { background-color: rgba(0,0,0,0.05); }
+    }
+    
+    &.active .page-link {
+        background-color: var(--blue);
+        color: var(--white);
+        border-color: var(--blue);
+    }
+    
+    &.disabled .page-link {
+        color: var(--grey);
+        pointer-events: none;
+        background-color: rgba(0,0,0,0.02);
+    }
+}

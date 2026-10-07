@@ -1,6 +1,6 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-1.5.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-1.6.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 **Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, animations, and icons.
@@ -8,7 +8,7 @@
 ## 🚀 Features
 
 - **Advanced JS Interactivity**: Built-in HTTP Fetch wrappers, Page Loaders, and dynamic Toasts.
-- **Comprehensive UI Kit**: Navbars, Cards, Accordions, Carousels, Toasts, Tooltips, Modals, and Badges.
+- **Comprehensive UI Kit**: Navbars, Cards, Accordions, Carousels, Toasts, Tooltips, Modals, Badges, Tabs, Offcanvas, Avatars, Pagination, Breadcrumbs and Switch toggles.
 - **Pure CSS Icons**: 20 Built-in SVG icons rendered natively via CSS `mask-image`.
 - **Smooth Animations & Transitions**: Built-in CSS utilities for `fade-in`, `slide-up`, `hover-scale`, and Loaders.
 - **Responsive Grid System**: Modern CSS Grid based layout with breakpoints (`sm`, `md`, `lg`, `xl`).
