@@ -2461,6 +2461,21 @@ table tbody tr:nth-child(even) {
   color: var(--texto);
 }
 
+.toast-success .toast-header {
+  background-color: rgba(50, 175, 75, 0.2);
+  color: var(--green);
+}
+
+.toast-error .toast-header {
+  background-color: rgba(200, 75, 75, 0.2);
+  color: var(--red);
+}
+
+.toast-info .toast-header {
+  background-color: rgba(50, 150, 225, 0.2);
+  color: var(--blue);
+}
+
 [data-tooltip] {
   position: relative;
   cursor: help;
@@ -2641,6 +2656,62 @@ table tbody tr:nth-child(even) {
 .icon-xl {
   width: 3em;
   height: 3em;
+}
+
+/* CSS Spinner */
+.spinner {
+  display: inline-block;
+  width: 1.5rem;
+  height: 1.5rem;
+  border: 0.2rem solid rgba(0, 0, 0, 0.1);
+  border-radius: 50%;
+  border-top-color: currentColor;
+  animation: spin 1s ease-in-out infinite;
+  vertical-align: middle;
+}
+
+.spinner-sm {
+  width: 1rem;
+  height: 1rem;
+  border-width: 0.15rem;
+}
+
+.spinner-lg {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-width: 0.25rem;
+}
+
+.spinner-xl {
+  width: 4rem;
+  height: 4rem;
+  border-width: 0.3rem;
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+/* Page Loader Overlay */
+.page-loader-overlay {
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100vw;
+  height: 100vh;
+  background-color: var(--white);
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  z-index: 99999;
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s ease, visibility 0.3s ease;
+}
+.page-loader-overlay.show {
+  opacity: 1;
+  visibility: visible;
 }
 
 /*# sourceMappingURL=framePER.css.map */

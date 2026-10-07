@@ -48,3 +48,7 @@
     padding: 1rem;
     color: var(--texto);
 }
+
+.toast-success .toast-header { background-color: rgba(50, 175, 75, 0.2); color: var(--green); }
+.toast-error .toast-header { background-color: rgba(200, 75, 75, 0.2); color: var(--red); }
+.toast-info .toast-header { background-color: rgba(50, 150, 225, 0.2); color: var(--blue); }
