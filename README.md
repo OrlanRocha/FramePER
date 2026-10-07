@@ -1,13 +1,14 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-1.2.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-1.3.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, and animations.
+**Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, animations, and icons.
 
 ## 🚀 Features
 
 - **Comprehensive UI Kit**: Now includes Navbars, Cards, Accordions, Carousels, Toasts, Tooltips, Modals, and Badges.
+- **Pure CSS Icons**: 20 Built-in SVG icons rendered natively via CSS `mask-image`, easily colorable with `currentColor`.
 - **CSS & JS Integrated**: Includes a Vanilla JS library for interactive components.
 - **Smooth Animations & Transitions**: Built-in CSS utilities for `fade-in`, `slide-up`, `hover-scale`, and more.
 - **Responsive Grid System**: Modern CSS Grid based layout with breakpoints (`sm`, `md`, `lg`, `xl`).
@@ -26,16 +27,30 @@ Include the compiled CSS and JS files in your HTML:
 <script src="dist/framePER.min.js"></script>
 ```
 
-## 🛠️ Components Showcase (New! ✨)
+## 🛠️ Components Showcase
 
-Frame PER now comes with a massive arsenal of UI components!
+### 🌟 CSS Icons (New!)
+Frame PER includes 20 native vector icons rendered via CSS. Because they use masks, they automatically inherit the text color!
+
+```html
+<i class="icon icon-home"></i>
+<i class="icon icon-user text-blue"></i>
+<i class="icon icon-settings icon-lg text-red"></i>
+<button class="btn btn-blue"><i class="icon icon-check"></i> Submit</button>
+```
+
+**Available Icons:**
+`home`, `user`, `settings`, `search`, `bell`, `check`, `close`, `menu`, `arrow-left`, `arrow-right`, `arrow-up`, `arrow-down`, `info`, `heart`, `star`, `trash`, `edit`, `envelope`, `calendar`, `camera`.
+
+**Sizes:**
+`icon-sm`, `icon-md`, `icon-lg`, `icon-xl`.
 
 ### Navbar
 Responsive navigation with mobile toggle:
 ```html
 <nav class="navbar">
   <a href="#" class="navbar-brand">Brand</a>
-  <button class="navbar-toggler" data-target="#nav-menu">☰</button>
+  <button class="navbar-toggler" data-target="#nav-menu"><i class="icon icon-menu"></i></button>
   <ul class="navbar-nav" id="nav-menu">
     <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
   </ul>
@@ -76,7 +91,7 @@ Floating notifications:
 ```html
 <div class="toast-container">
   <div id="myToast" class="toast">
-    <div class="toast-header">Notification <button class="toast-close">&times;</button></div>
+    <div class="toast-header">Notification <button class="toast-close"><i class="icon icon-close"></i></button></div>
     <div class="toast-body">Task completed!</div>
   </div>
 </div>
@@ -99,8 +114,8 @@ Simple image slider:
     <div class="carousel-item">Slide 1</div>
     <div class="carousel-item">Slide 2</div>
   </div>
-  <button class="carousel-control prev"><</button>
-  <button class="carousel-control next">></button>
+  <button class="carousel-control prev"><i class="icon icon-arrow-left"></i></button>
+  <button class="carousel-control next"><i class="icon icon-arrow-right"></i></button>
   <div class="carousel-indicators">
     <div class="indicator active"></div>
     <div class="indicator"></div>
