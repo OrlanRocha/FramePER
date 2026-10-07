@@ -1,22 +1,20 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-1.1.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-1.2.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 **Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, and animations.
 
 ## 🚀 Features
 
-- **CSS & JS Integrated**: Now includes a Vanilla JS library for interactive components (Modals, Dropdowns, Alerts).
+- **Comprehensive UI Kit**: Now includes Navbars, Cards, Accordions, Carousels, Toasts, Tooltips, Modals, and Badges.
+- **CSS & JS Integrated**: Includes a Vanilla JS library for interactive components.
 - **Smooth Animations & Transitions**: Built-in CSS utilities for `fade-in`, `slide-up`, `hover-scale`, and more.
 - **Responsive Grid System**: Modern CSS Grid based layout with breakpoints (`sm`, `md`, `lg`, `xl`).
 - **SCSS Architecture**: Highly modular, organized by variables, base, components, layouts, and utilities.
-- **Utility-First**: Extensive classes for margins, paddings, sizing, borders, colors, typography, and flexbox/grid.
-- **Production Ready**: Automated build process via PostCSS & Terser resulting in optimized `framePER.min.css` and `framePER.min.js`.
+- **Production Ready**: Automated build process via PostCSS & Terser.
 
 ## 📦 Getting Started
-
-### Using the Pre-compiled Version
 
 Include the compiled CSS and JS files in your HTML:
 
@@ -28,71 +26,86 @@ Include the compiled CSS and JS files in your HTML:
 <script src="dist/framePER.min.js"></script>
 ```
 
-### Building from Source
+## 🛠️ Components Showcase (New! ✨)
 
-1. Clone the repository:
-   ```bash
-   git clone https://github.com/OrlanRocha/FramePER-CSS.git
-   ```
-2. Install dependencies:
-   ```bash
-   npm install
-   ```
-3. Build the assets:
-   ```bash
-   npm run build
-   ```
-   This will generate the `/dist` folder with both CSS and JS compiled files.
+Frame PER now comes with a massive arsenal of UI components!
 
-## 🛠️ Components & Utilities
-
-### 1. Interactive Components (New! ✨)
-Frame PER now comes with pure JavaScript behaviors (No jQuery needed!).
-
-**Modals:**
+### Navbar
+Responsive navigation with mobile toggle:
 ```html
-<button class="btn btn-blue" data-toggle="modal" data-target="#myModal">Open Modal</button>
+<nav class="navbar">
+  <a href="#" class="navbar-brand">Brand</a>
+  <button class="navbar-toggler" data-target="#nav-menu">☰</button>
+  <ul class="navbar-nav" id="nav-menu">
+    <li class="nav-item"><a class="nav-link" href="#">Home</a></li>
+  </ul>
+</nav>
+```
 
-<div id="myModal" class="modal">
-  <div class="modal-content">
-    <div class="modal-header">
-      <h3 class="h3">Modal Title</h3>
-      <button class="modal-close" data-dismiss="modal">&times;</button>
-    </div>
-    <p>Modal body content goes here.</p>
+### Cards
+Clean cards with hover animations:
+```html
+<div class="card">
+  <img src="img.jpg" class="card-img">
+  <div class="card-body">
+    <h3 class="card-title">Card Title</h3>
+    <p class="card-text">Content goes here.</p>
   </div>
 </div>
 ```
 
-**Dismissible Alerts:**
+### Accordions
+Expandable FAQs or lists:
 ```html
-<div class="alert alert-blue">
-  This is a primary alert!
-  <button class="alert-close" data-dismiss="alert">&times;</button>
+<div class="accordion">
+  <div class="accordion-item">
+    <div class="accordion-header">Section 1</div>
+    <div class="accordion-body">Content here...</div>
+  </div>
 </div>
 ```
 
-### 2. Animations & Transitions (New! ✨)
-Add life to your UI with simple classes:
+### Badges
 ```html
-<div class="fade-in">Fades in on load</div>
-<div class="slide-up">Slides up on load</div>
-<button class="btn btn-green hover-lift transition">Hover me to lift</button>
+<span class="badge badge-blue">New!</span>
+<span class="badge badge-pill badge-red">99+</span>
 ```
 
-### 3. Grid System
-Frame PER offers a powerful grid system:
+### Toasts
+Floating notifications:
 ```html
-<div class="grid grid-3">
-  <div>1</div><div>2</div><div>3</div>
+<div class="toast-container">
+  <div id="myToast" class="toast">
+    <div class="toast-header">Notification <button class="toast-close">&times;</button></div>
+    <div class="toast-body">Task completed!</div>
+  </div>
 </div>
+<script>
+  FramePER.showToast('myToast'); // triggers toast
+</script>
 ```
 
-### 4. Typography & Spacing
-Clean heading styles and text utilities:
+### Tooltips
+Pure CSS tooltips:
 ```html
-<h1 class="h1 m-b-4">Display Heading</h1>
-<p class="p txt-center f-w-7">Paragraph text, centered, bold (700)</p>
+<button data-tooltip="This is a tooltip">Hover me</button>
+```
+
+### Carousels
+Simple image slider:
+```html
+<div class="carousel">
+  <div class="carousel-inner">
+    <div class="carousel-item">Slide 1</div>
+    <div class="carousel-item">Slide 2</div>
+  </div>
+  <button class="carousel-control prev"><</button>
+  <button class="carousel-control next">></button>
+  <div class="carousel-indicators">
+    <div class="indicator active"></div>
+    <div class="indicator"></div>
+  </div>
+</div>
 ```
 
 ## 📜 License

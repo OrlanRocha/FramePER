@@ -1,0 +1,42 @@
+@use '../variables' as *;
+
+.card {
+    background-color: var(--white);
+    border-radius: 0.5rem;
+    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
+    overflow: hidden;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    
+    &:hover {
+        transform: translateY(-5px);
+        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
+    }
+}
+
+.card-img {
+    width: 100%;
+    height: 200px;
+    object-fit: cover;
+}
+
+.card-body {
+    padding: 1.5rem;
+}
+
+.card-title {
+    font-size: 1.25rem;
+    font-weight: bold;
+    margin-bottom: 0.5rem;
+    color: var(--black);
+}
+
+.card-text {
+    color: var(--texto);
+    margin-bottom: 1rem;
+}
+
+.card-footer {
+    padding: 1rem 1.5rem;
+    background-color: rgba(0,0,0,0.02);
+    border-top: 1px solid rgba(0,0,0,0.05);
+}

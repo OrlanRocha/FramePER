@@ -1,0 +1,50 @@
+@use '../variables' as *;
+
+.toast-container {
+    position: fixed;
+    bottom: 20px;
+    right: 20px;
+    display: flex;
+    flex-direction: column;
+    gap: 10px;
+    z-index: 9999;
+}
+
+.toast {
+    min-width: 250px;
+    background-color: var(--white);
+    box-shadow: 0 4px 12px rgba(0,0,0,0.15);
+    border-radius: 0.4rem;
+    overflow: hidden;
+    transform: translateX(120%);
+    transition: transform 0.3s ease-out, opacity 0.3s ease;
+    opacity: 0;
+    
+    &.show {
+        transform: translateX(0);
+        opacity: 1;
+    }
+}
+
+.toast-header {
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    padding: 0.5rem 1rem;
+    background-color: rgba(0,0,0,0.03);
+    border-bottom: 1px solid rgba(0,0,0,0.05);
+    font-weight: bold;
+}
+
+.toast-close {
+    background: none;
+    border: none;
+    font-size: 1.2rem;
+    cursor: pointer;
+    color: var(--grey);
+}
+
+.toast-body {
+    padding: 1rem;
+    color: var(--texto);
+}

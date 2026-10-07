@@ -1,0 +1,49 @@
+@use '../variables' as *;
+
+.accordion {
+    border: 1px solid rgba(0,0,0,0.1);
+    border-radius: 0.4rem;
+    overflow: hidden;
+    margin-bottom: 1rem;
+}
+
+.accordion-item {
+    border-bottom: 1px solid rgba(0,0,0,0.1);
+    &:last-child { border-bottom: none; }
+}
+
+.accordion-header {
+    background-color: var(--white);
+    padding: 1rem 1.5rem;
+    cursor: pointer;
+    font-weight: bold;
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+    transition: background-color 0.3s;
+    
+    &:hover { background-color: rgba(0,0,0,0.02); }
+    
+    &::after {
+        content: '+';
+        font-size: 1.2rem;
+        transition: transform 0.3s;
+    }
+    
+    &.active {
+        background-color: rgba(0,0,0,0.05);
+        &::after { content: '-'; transform: rotate(180deg); }
+    }
+}
+
+.accordion-body {
+    max-height: 0;
+    overflow: hidden;
+    transition: max-height 0.3s ease-out, padding 0.3s ease;
+    background-color: var(--white);
+    
+    &.active {
+        padding: 1rem 1.5rem;
+        max-height: 1000px; /* arbitrary max height for transition */
+    }
+}

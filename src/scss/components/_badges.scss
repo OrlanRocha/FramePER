@@ -1,0 +1,23 @@
+@use '../variables' as *;
+
+.badge {
+    display: inline-block;
+    padding: 0.25em 0.6em;
+    font-size: 0.75rem;
+    font-weight: bold;
+    line-height: 1;
+    text-align: center;
+    white-space: nowrap;
+    vertical-align: baseline;
+    border-radius: 0.25rem;
+    color: var(--white);
+    
+    &.badge-pill { border-radius: 10rem; }
+}
+
+@each $name, $color in $colors {
+    .badge-#{$name} {
+        background-color: var(--#{$name});
+        color: if($name == 'white' or $name == 'yellow', var(--black), var(--white));
+    }
+}

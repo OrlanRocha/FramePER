@@ -78,3 +78,83 @@ document.addEventListener("DOMContentLoaded", () => {
         });
     });
 });
+
+    // 4. Navbar Mobile Toggle
+    const navbarToggles = document.querySelectorAll('.navbar-toggler');
+    navbarToggles.forEach(toggle => {
+        toggle.addEventListener('click', () => {
+            const target = document.querySelector(toggle.getAttribute('data-target'));
+            if(target) target.classList.toggle('active');
+        });
+    });
+
+    // 5. Accordions
+    const accordionHeaders = document.querySelectorAll('.accordion-header');
+    accordionHeaders.forEach(header => {
+        header.addEventListener('click', () => {
+            header.classList.toggle('active');
+            const body = header.nextElementSibling;
+            if(body) body.classList.toggle('active');
+        });
+    });
+
+    // 6. Carousels
+    const carousels = document.querySelectorAll('.carousel');
+    carousels.forEach(carousel => {
+        const inner = carousel.querySelector('.carousel-inner');
+        const items = carousel.querySelectorAll('.carousel-item');
+        const nextBtn = carousel.querySelector('.carousel-control.next');
+        const prevBtn = carousel.querySelector('.carousel-control.prev');
+        const indicators = carousel.querySelectorAll('.carousel-indicators .indicator');
+        
+        let currentIndex = 0;
+        
+        function updateCarousel() {
+            inner.style.transform = `translateX(-${currentIndex * 100}%)`;
+            indicators.forEach((ind, i) => {
+                ind.classList.toggle('active', i === currentIndex);
+            });
+        }
+        
+        if(nextBtn) {
+            nextBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex + 1) % items.length;
+                updateCarousel();
+            });
+        }
+        
+        if(prevBtn) {
+            prevBtn.addEventListener('click', () => {
+                currentIndex = (currentIndex - 1 + items.length) % items.length;
+                updateCarousel();
+            });
+        }
+        
+        indicators.forEach((ind, i) => {
+            ind.addEventListener('click', () => {
+                currentIndex = i;
+                updateCarousel();
+            });
+        });
+    });
+
+    // 7. Toasts (Global function)
+    window.FramePER = window.FramePER || {};
+    window.FramePER.showToast = function(id) {
+        const toast = document.getElementById(id);
+        if(toast) {
+            toast.classList.add('show');
+            setTimeout(() => {
+                toast.classList.remove('show');
+            }, 3000); // Auto hide after 3s
+        }
+    };
+    
+    // Toast close buttons
+    const toastCloseBtns = document.querySelectorAll('.toast-close');
+    toastCloseBtns.forEach(btn => {
+        btn.addEventListener('click', () => {
+            const toast = btn.closest('.toast');
+            if(toast) toast.classList.remove('show');
+        });
+    });
