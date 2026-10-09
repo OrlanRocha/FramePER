@@ -89,57 +89,60 @@
                 this.initTables();
             },
             initTables: function() {
-                document.querySelectorAll('th.sortable').forEach(th => {
-                    th.addEventListener('click', () => {
-                        const table = th.closest('table');
-                        if (!table) return;
-                        const tbody = table.querySelector('tbody');
-                        if (!tbody) return;
+                document.addEventListener('click', (e) => {
+                    const th = e.target.closest('th.sortable');
+                    if (!th) return;
 
-                        const colIndex = Array.prototype.indexOf.call(th.parentNode.children, th);
-                        const isAsc = !th.classList.contains('sorted-asc');
+                    const table = th.closest('table');
+                    if (!table) return;
+                    const tbody = table.querySelector('tbody');
+                    if (!tbody) return;
 
-                        th.parentNode.querySelectorAll('th.sortable').forEach(sibling => {
-                            sibling.classList.remove('sorted-asc', 'sorted-desc');
-                        });
+                    const colIndex = Array.prototype.indexOf.call(th.parentNode.children, th);
+                    const isAsc = !th.classList.contains('sorted-asc');
 
-                        th.classList.add(isAsc ? 'sorted-asc' : 'sorted-desc');
-
-                        const rows = Array.from(tbody.querySelectorAll('tr'));
-                        rows.sort((rowA, rowB) => {
-                            const cellA = rowA.children[colIndex] ? rowA.children[colIndex].textContent.trim() : '';
-                            const cellB = rowB.children[colIndex] ? rowB.children[colIndex].textContent.trim() : '';
-
-                            const numA = parseFloat(cellA.replace(/[^\d.-]/g, ''));
-                            const numB = parseFloat(cellB.replace(/[^\d.-]/g, ''));
-
-                            if (!isNaN(numA) && !isNaN(numB) && cellA.match(/[\d]/) && cellB.match(/[\d]/) && !cellA.match(/[a-zA-Z]{3,}/)) {
-                                return isAsc ? numA - numB : numB - numA;
-                            }
-
-                            return isAsc ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
-                        });
-
-                        rows.forEach(row => tbody.appendChild(row));
+                    th.parentNode.querySelectorAll('th.sortable').forEach(sibling => {
+                        sibling.classList.remove('sorted-asc', 'sorted-desc');
                     });
+
+                    th.classList.add(isAsc ? 'sorted-asc' : 'sorted-desc');
+
+                    const rows = Array.from(tbody.querySelectorAll('tr'));
+                    rows.sort((rowA, rowB) => {
+                        const cellA = rowA.children[colIndex] ? rowA.children[colIndex].textContent.trim() : '';
+                        const cellB = rowB.children[colIndex] ? rowB.children[colIndex].textContent.trim() : '';
+
+                        const numA = parseFloat(cellA.replace(/[^\d.-]/g, ''));
+                        const numB = parseFloat(cellB.replace(/[^\d.-]/g, ''));
+
+                        if (!isNaN(numA) && !isNaN(numB) && cellA.match(/[\d]/) && cellB.match(/[\d]/) && !cellA.match(/[a-zA-Z]{3,}/)) {
+                            return isAsc ? numA - numB : numB - numA;
+                        }
+
+                        return isAsc ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                    });
+
+                    rows.forEach(row => tbody.appendChild(row));
                 });
 
-                document.querySelectorAll('[data-table-filter]').forEach(input => {
-                    input.addEventListener('input', () => {
-                        const targetSelector = input.getAttribute('data-table-filter');
-                        const table = document.querySelector(targetSelector);
-                        if (!table) return;
+                document.addEventListener('input', (e) => {
+                    const input = e.target.closest('[data-table-filter]');
+                    if (!input) return;
 
-                        const query = input.value.toLowerCase().trim();
-                        const rows = table.querySelectorAll('tbody tr');
+                    const targetSelector = input.getAttribute('data-table-filter');
+                    const table = document.querySelector(targetSelector);
+                    if (!table) return;
 
-                        rows.forEach(row => {
-                            const text = row.textContent.toLowerCase();
-                            row.style.display = text.indexOf(query) !== -1 ? '' : 'none';
-                        });
+                    const query = input.value.toLowerCase().trim();
+                    const rows = table.querySelectorAll('tbody tr');
+
+                    rows.forEach(row => {
+                        const text = row.textContent.toLowerCase();
+                        row.style.display = text.indexOf(query) !== -1 ? '' : 'none';
                     });
                 });
             },
+
 
             // [data-toggle="collapse"][data-target="#menu"] → toggles .active on the target
             // (used by .navbar-toggler to open the mobile menu)
@@ -199,52 +202,69 @@
                 });
             },
             initModals: function() {
-                document.querySelectorAll("[data-toggle='modal']").forEach(trigger => {
-                    trigger.addEventListener("click", (e) => {
+                document.addEventListener("click", (e) => {
+                    const toggleBtn = e.target.closest("[data-toggle='modal']");
+                    const dismissBtn = e.target.closest("[data-dismiss='modal']");
+
+                    if (toggleBtn) {
                         e.preventDefault();
-                        const targetId = trigger.getAttribute("data-target");
-                        const modal = document.querySelector(targetId);
-                        if(modal) {
-                            modal.classList.add("show");
-                            document.body.style.overflow = "hidden";
+                        const targetSelector = toggleBtn.getAttribute("data-target") || toggleBtn.getAttribute("href");
+                        if (targetSelector && targetSelector.startsWith("#")) {
+                            const targetModal = document.querySelector(targetSelector);
+                            if (targetModal) {
+                                document.querySelectorAll(".modal.show").forEach(m => {
+                                    if (m !== targetModal) m.classList.remove("show");
+                                });
+                                targetModal.classList.add("show");
+                                document.body.style.overflow = "hidden";
+                                return;
+                            }
                         }
-                    });
-                });
-                document.querySelectorAll("[data-dismiss='modal']").forEach(btn => {
-                    btn.addEventListener("click", (e) => {
+                    }
+
+                    if (dismissBtn) {
                         e.preventDefault();
-                        const modal = btn.closest(".modal");
-                        if(modal) {
-                            modal.classList.remove("show");
+                        const currentModal = dismissBtn.closest(".modal");
+                        if (currentModal) {
+                            currentModal.classList.remove("show");
+                            if (!document.querySelector(".modal.show")) {
+                                document.body.style.overflow = "";
+                            }
+                        }
+                        return;
+                    }
+
+                    if (e.target.classList && e.target.classList.contains("modal") && e.target.classList.contains("show")) {
+                        e.target.classList.remove("show");
+                        if (!document.querySelector(".modal.show")) {
                             document.body.style.overflow = "";
                         }
-                    });
-                });
-                document.querySelectorAll(".modal").forEach(modal => {
-                    modal.addEventListener("click", (e) => {
-                        if(e.target === modal) {
-                            modal.classList.remove("show");
-                            document.body.style.overflow = "";
-                        }
-                    });
+                    }
                 });
             },
             initDropdowns: function() {
-                document.querySelectorAll(".dropdown-toggle").forEach(toggle => {
-                    toggle.addEventListener("click", (e) => {
+                document.addEventListener("click", (e) => {
+                    const toggle = e.target.closest(".dropdown-toggle");
+                    if (toggle) {
                         e.preventDefault();
-                        e.stopPropagation();
                         const parent = toggle.closest(".dropdown");
-                        if(parent) {
+                        if (parent) {
                             const menu = parent.querySelector(".dropdown-menu");
-                            if(menu) menu.classList.toggle("show");
+                            if (menu) {
+                                const isShown = menu.classList.contains("show");
+                                document.querySelectorAll(".dropdown-menu.show").forEach(m => m.classList.remove("show"));
+                                if (!isShown) menu.classList.add("show");
+                            }
                         }
-                    });
-                });
-                document.addEventListener("click", () => {
-                    document.querySelectorAll(".dropdown-menu.show").forEach(menu => menu.classList.remove("show"));
+                        return;
+                    }
+
+                    if (!e.target.closest(".dropdown-menu")) {
+                        document.querySelectorAll(".dropdown-menu.show").forEach(menu => menu.classList.remove("show"));
+                    }
                 });
             },
+
             initAccordions: function() {
                 document.querySelectorAll('.accordion-header').forEach(header => {
                     header.addEventListener('click', () => {
@@ -274,28 +294,31 @@
                 });
             },
             initTabs: function() {
-                document.querySelectorAll('.tab-link').forEach(tab => {
-                    tab.addEventListener('click', (e) => {
+                document.addEventListener("click", (e) => {
+                    const tab = e.target.closest(".tab-link");
+                    if (!tab) return;
+                    const targetId = tab.getAttribute("data-target");
+
+                    const parent = tab.closest(".tabs");
+                    if (parent) {
+                        parent.querySelectorAll(".tab-link").forEach(t => t.classList.remove("active"));
+                    }
+                    tab.classList.add("active");
+
+                    if (targetId && targetId.startsWith("#")) {
                         e.preventDefault();
-                        const targetId = tab.getAttribute('data-target');
-                        const parent = tab.closest('.tabs');
-                        const wrapper = parent.nextElementSibling; // assuming content is next to tabs
-                        
-                        // Remove active from all tabs in this group
-                        parent.querySelectorAll('.tab-link').forEach(t => t.classList.remove('active'));
-                        tab.classList.add('active');
-                        
-                        // Hide all content panes
-                        const allContent = document.querySelectorAll(targetId).length > 0 ? 
-                            document.querySelector(targetId).parentNode.querySelectorAll('.tab-content') : [];
-                        allContent.forEach(c => c.classList.remove('active'));
-                        
-                        // Show target
                         const targetContent = document.querySelector(targetId);
-                        if(targetContent) targetContent.classList.add('active');
-                    });
+                        if (targetContent) {
+                            const parentContainer = targetContent.parentElement;
+                            if (parentContainer) {
+                                parentContainer.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
+                            }
+                            targetContent.classList.add("active");
+                        }
+                    }
                 });
             },
+
             initOffcanvas: function() {
                 let backdrop = document.querySelector('.offcanvas-backdrop');
                 if(!backdrop) {

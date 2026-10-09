@@ -254,6 +254,10 @@
             </div>
             
             <div class="cluster gap-2">
+              <div class="input-icon" style="width: 14rem;">
+                <i class="icon icon-search"></i>
+                <input type="text" class="input input-sm" placeholder="Filtrar agendamento..." data-table-filter="#tableReports">
+              </div>
               <select class="select select-sm" style="width: 9rem;">
                 <option value="">Todos os Status</option>
                 <option value="confirmado">Confirmado</option>
@@ -264,15 +268,15 @@
           </div>
 
           <div class="table-responsive">
-            <table class="table">
+            <table id="tableReports" class="table">
               <thead>
                 <tr>
-                  <th>Código</th>
-                  <th>Cliente</th>
-                  <th>Serviço</th>
-                  <th>Data & Horário</th>
-                  <th>Valor Est.</th>
-                  <th>Status</th>
+                  <th class="sortable">Código</th>
+                  <th class="sortable">Cliente</th>
+                  <th class="sortable">Serviço</th>
+                  <th class="sortable">Data & Horário</th>
+                  <th class="sortable">Valor Est.</th>
+                  <th class="sortable">Status</th>
                   <th class="txt-right">Ações</th>
                 </tr>
               </thead>

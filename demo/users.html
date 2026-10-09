@@ -155,7 +155,7 @@
             <div class="cluster gap-2 flex-grow-1 flex-md-grow-0">
               <div class="input-icon" style="width: 15rem;">
                 <i class="icon icon-search"></i>
-                <input type="text" class="input input-sm" placeholder="Buscar por nome ou e-mail...">
+                <input type="text" class="input input-sm" placeholder="Buscar por nome ou e-mail..." data-table-filter="#tableUsers">
               </div>
               <select class="select select-sm" style="width: 9rem;">
                 <option value="">Todos os Cargos</option>
@@ -178,15 +178,15 @@
 
           <!-- Table Content -->
           <div class="table-responsive">
-            <table class="table">
+            <table id="tableUsers" class="table">
               <thead>
                 <tr>
                   <th style="width: 2.5rem;"><input type="checkbox" class="check"></th>
-                  <th>Usuário</th>
-                  <th>Cargo</th>
-                  <th>Status</th>
-                  <th>Data de Cadastro</th>
-                  <th>Último Acesso</th>
+                  <th class="sortable">Usuário</th>
+                  <th class="sortable">Cargo</th>
+                  <th class="sortable">Status</th>
+                  <th class="sortable">Data de Cadastro</th>
+                  <th class="sortable">Último Acesso</th>
                   <th class="txt-right">Ações</th>
                 </tr>
               </thead>
