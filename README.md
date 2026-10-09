@@ -1,9 +1,9 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.4.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.5.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, componentes avançados de interface, biblioteca de 69 ícones vetoriais (incluindo um pacote especializado para Beleza, Nails & Estética) e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, componentes avançados de interface, biblioteca de **104 ícones vetoriais** Pure CSS (cobrindo Tecnologia & Redes, Espaço, Animais, Atletismo/Esportes, Jornalismo/Mídia, Beleza & Nails e Sistema/E-Commerce) e utilitários interativos de ponta.
 
 ---
 
@@ -11,10 +11,15 @@
 
 - **📱 Mobile First**: Layouts responsivos baseados em CSS Grid que se adaptam automaticamente a telas menores e expandem via breakpoints (`.grid-sm-*`, `.grid-md-*`, `.grid-lg-*`, `.grid-xl-*`).
 - **🌙 Dark Mode & Light Mode Nativo**: Alternância automática de temas detectando a preferência do sistema operacional, com transições suaves e contraste otimizado.
-- **🎨 Biblioteca de 69 Ícones Pure CSS**: Ícones SVG incorporados via máscara CSS com `currentColor`:
-  - **Beleza & Nail Design**: Esmalte (`icon-nail-polish`), batom (`icon-lipstick`), tesoura de cabeleireiro (`icon-scissors`), brilho (`icon-sparkles`), pincel de make (`icon-makeup-brush`), pente (`icon-comb`), secador (`icon-hairdryer`), espelho (`icon-mirror`), perfume (`icon-perfume`), flor de lótus spa (`icon-lotus`), diamante (`icon-gem`), coroa (`icon-crown`), sérum hidratante (`icon-droplet`), pena (`icon-feather`), paleta (`icon-palette`), creme (`icon-cream`), varinha (`icon-wand`), mão/manicure (`icon-hand`), flor (`icon-flower`), spray fixador (`icon-spray`), vela aromática (`icon-candle`), laço (`icon-ribbon`).
-  - **E-Commerce & Vendas**: Carrinho, tag, cartão de crédito, pacote, caminhão de entrega.
-  - **Comunicação, Mídia & Sistema**: Mensagens, avião/envio, telefone, compartilhar, cadeado, olho, terminal, código, etc.
+- **🎨 Biblioteca de 104 Ícones Pure CSS**: Ícones SVG incorporados via máscara CSS (`-webkit-mask-image` / `mask-image`) com `currentColor`:
+  - **Tecnologia, Computação & Redes (12)**: Processador/CPU (`icon-cpu`), Servidor rack (`icon-server`), Banco de dados (`icon-database`), Wi-Fi (`icon-wifi`), Nuvem (`icon-cloud`), Escudo (`icon-shield`), Bug/Depuração (`icon-bug`), Laptop (`icon-laptop`), Monitor (`icon-monitor`), Rede/Nodes (`icon-network`), Bluetooth (`icon-bluetooth`), Bateria com carga (`icon-battery`).
+  - **Espaço & Cosmos (5)**: Foguete (`icon-rocket`), Planeta com anel (`icon-planet`), Satélite em órbita (`icon-satellite`), Telescópio (`icon-telescope`), Cometa (`icon-comet`).
+  - **Animais & Pets (5)**: Pegada/Pata (`icon-paw`), Gato (`icon-cat`), Cachorro (`icon-dog`), Peixe (`icon-fish`), Pássaro (`icon-bird`).
+  - **Atletismo, Esportes & Fitness (7)**: Troféu campeão (`icon-trophy`), Medalha de honra (`icon-medal`), Haltere/Musculação (`icon-dumbbell`), Frequência cardíaca/Atividade (`icon-activity`), Chama de calorias (`icon-flame`), Cronômetro de corrida (`icon-stopwatch`), Alvo/Precisão (`icon-target`).
+  - **Jornalismo, Imprensa & Mídia (7)**: Jornal impresso (`icon-newspaper`), Artigo/Pauta (`icon-article`), Megafone/Divulgação (`icon-megaphone`), Câmera fotográfica (`icon-camera`), Microfone de reportagem (`icon-mic`), Rádio transmissor (`icon-radio`), Livro/Documento (`icon-book`).
+  - **Beleza, Nail Design & Spa (22)**: Esmalte (`icon-nail-polish`), batom (`icon-lipstick`), tesoura (`icon-scissors`), brilho (`icon-sparkles`), pincel de maquiagem (`icon-makeup-brush`), pente (`icon-comb`), secador (`icon-hairdryer`), espelho (`icon-mirror`), perfume (`icon-perfume`), flor de lótus spa (`icon-lotus`), diamante (`icon-gem`), coroa (`icon-crown`), sérum hidratante (`icon-droplet`), pena (`icon-feather`), paleta de cores (`icon-palette`), creme facial (`icon-cream`), varinha de brilho (`icon-wand`), mão/manicure (`icon-hand`), flor floral (`icon-flower`), spray fixador (`icon-spray`), vela aromática (`icon-candle`), laço decorativo (`icon-ribbon`).
+  - **E-Commerce & Vendas (5)**: Carrinho (`icon-cart`), etiqueta de preço (`icon-tag`), cartão de crédito (`icon-credit-card`), caixa/pacote (`icon-package`), caminhão de entrega (`icon-truck`).
+  - **Comunicação, Mídia & Sistema (46)**: Mensagem (`icon-message`), envio/avião (`icon-send`), telefone (`icon-phone`), compartilhar (`icon-share`), play (`icon-play`), cadeado (`icon-lock`), destravar (`icon-unlock`), olho (`icon-eye`), olho fechado (`icon-eye-off`), copiar (`icon-copy`), favoritos (`icon-bookmark`), ajuda (`icon-help`), pasta (`icon-folder`), código (`icon-code`), terminal (`icon-terminal`), upload (`icon-upload`), download (`icon-download`), adicionar (`icon-plus`), editar (`icon-edit`), lixeira (`icon-trash`), link externo (`icon-external`), setas direcionais e chevrons.
 - **✨ Componentes Avançados de Interface**:
   - **Skeleton Loaders Shimmer**: Efeito ondulante suave (`.skeleton-avatar`, `.skeleton-title`, `.skeleton-text`, `.skeleton-rect`) para melhorar o carregamento percebido.
   - **Chips & Tags**: Pílulas compactas interativas, filtros clicáveis e tags removíveis (`.chip`, `.chip-clickable`, `.chip-remove`).
