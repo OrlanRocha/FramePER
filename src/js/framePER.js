@@ -1011,11 +1011,6 @@
                 }
 
                 _renderLineArea(width, height) {
-                    const padding = { top: 20, right: 20, bottom: 35, left: 45 };
-                    const plotW = width - padding.left - padding.right;
-                    const plotH = height - padding.top - padding.bottom;
-                    if (plotW <= 0 || plotH <= 0) return;
-
                     const visibleSeries = this.series.filter(s => !s.hidden && s.data && s.data.length);
                     let allVals = [];
                     visibleSeries.forEach(s => allVals.push(...s.data));
@@ -1023,6 +1018,15 @@
 
                     const { min, max, ticks } = calculateNiceTicks(Math.min(...allVals), Math.max(...allVals));
                     const valRange = max - min || 1;
+
+                    // Dynamic left padding based on longest formatted tick string
+                    const sampleTicks = ticks.map(t => formatVal(t, this.options.format));
+                    const maxTickLen = Math.max(...sampleTicks.map(s => (s || '').length), 1);
+                    const dynamicLeft = Math.min(Math.max(Math.ceil(maxTickLen * 7.5) + 18, 50), 96);
+                    const padding = { top: 34, right: 24, bottom: 35, left: dynamicLeft };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    if (plotW <= 0 || plotH <= 0) return;
 
                     // Grid & Y labels
                     if (this.options.showGrid) {
@@ -1047,7 +1051,11 @@
                     const numPoints = Math.max(this.labels.length, ...visibleSeries.map(s => s.data.length), 1);
                     const stepX = numPoints > 1 ? plotW / (numPoints - 1) : plotW / 2;
                     const xLabelsG = createSVG('g', { class: 'frame-chart-labels' });
+                    const isCompact = width < 460 && this.labels.length > 5;
                     this.labels.forEach((lbl, i) => {
+                        if (isCompact && i % 2 !== 0 && i !== this.labels.length - 1) {
+                            return;
+                        }
                         const x = padding.left + (numPoints > 1 ? i * stepX : plotW / 2);
                         const text = createSVG('text', {
                             x,
@@ -1128,11 +1136,6 @@
                 }
 
                 _renderBar(width, height) {
-                    const padding = { top: 20, right: 20, bottom: 35, left: 45 };
-                    const plotW = width - padding.left - padding.right;
-                    const plotH = height - padding.top - padding.bottom;
-                    if (plotW <= 0 || plotH <= 0) return;
-
                     const visibleSeries = this.series.filter(s => !s.hidden && s.data && s.data.length);
                     let allVals = [];
                     visibleSeries.forEach(s => allVals.push(...s.data));
@@ -1140,6 +1143,15 @@
 
                     const { min, max, ticks } = calculateNiceTicks(Math.min(0, Math.min(...allVals)), Math.max(...allVals));
                     const valRange = max - min || 1;
+
+                    // Dynamic left padding based on longest formatted tick string
+                    const sampleTicks = ticks.map(t => formatVal(t, this.options.format));
+                    const maxTickLen = Math.max(...sampleTicks.map(s => (s || '').length), 1);
+                    const dynamicLeft = Math.min(Math.max(Math.ceil(maxTickLen * 7.5) + 18, 50), 96);
+                    const padding = { top: 30, right: 24, bottom: 35, left: dynamicLeft };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    if (plotW <= 0 || plotH <= 0) return;
 
                     // Grid & Y labels
                     if (this.options.showGrid) {
@@ -1167,7 +1179,11 @@
                     const singleBarWidth = Math.max(barGroupWidth / numSeries - 3, 4);
 
                     const xLabelsG = createSVG('g', { class: 'frame-chart-labels' });
+                    const isCompact = width < 460 && this.labels.length > 5;
                     this.labels.forEach((lbl, i) => {
+                        if (isCompact && i % 2 !== 0 && i !== this.labels.length - 1) {
+                            return;
+                        }
                         const x = padding.left + i * catWidth + catWidth / 2;
                         const text = createSVG('text', { x, y: height - 10, 'text-anchor': 'middle' });
                         text.textContent = lbl;
@@ -1204,18 +1220,32 @@
                 }
 
                 _renderHorizontalBar(width, height) {
-                    const padding = { top: 15, right: 45, bottom: 20, left: 85 };
-                    const plotW = width - padding.left - padding.right;
-                    const plotH = height - padding.top - padding.bottom;
-                    if (plotW <= 0 || plotH <= 0) return;
-
                     const visibleSeries = this.series.filter(s => !s.hidden);
                     const s = visibleSeries[0] || { data: [], color: DEFAULT_PALETTE[0] };
                     const vals = Array.isArray(s.data) ? s.data : (visibleSeries.map(item => item.value || 0));
                     const maxVal = Math.max(...vals, 10);
-                    const numBars = vals.length;
+                    const numBars = Math.max(vals.length, 1);
+
+                    // Dynamic left padding based on longest label text
+                    const labelLengths = vals.map((v, i) => {
+                        const lbl = this.labels[i] || (visibleSeries[i] ? visibleSeries[i].name : `Item ${i + 1}`);
+                        return (lbl || '').length;
+                    });
+                    const maxLabelLen = Math.max(...labelLengths, 1);
+                    const dynamicLeft = Math.min(Math.max(Math.ceil(maxLabelLen * 7.2) + 20, 85), 140);
+
+                    // Dynamic right padding based on longest formatted value string
+                    const sampleVals = vals.map(v => formatVal(v, this.options.format));
+                    const maxValLen = Math.max(...sampleVals.map(str => (str || '').length), 1);
+                    const dynamicRight = Math.min(Math.max(Math.ceil(maxValLen * 7.5) + 24, 55), 105);
+
+                    const padding = { top: 20, right: dynamicRight, bottom: 25, left: dynamicLeft };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    if (plotW <= 0 || plotH <= 0) return;
+
                     const rowH = plotH / numBars;
-                    const barH = Math.min(rowH * 0.6, 26);
+                    const barH = Math.min(rowH * 0.58, 24);
 
                     const barsG = createSVG('g', { class: 'frame-chart-bars' });
                     const labelsG = createSVG('g', { class: 'frame-chart-labels' });
@@ -1340,8 +1370,8 @@
 
                 _renderGauge(width, height) {
                     const cx = width / 2;
-                    const cy = height * 0.72;
-                    const r = Math.min(width * 0.45, height * 0.55);
+                    const cy = height * 0.70;
+                    const r = Math.min(width * 0.38, height * 0.48);
                     const strokeWidth = r * 0.22;
                     const startAngle = -100;
                     const endAngle = 100;
@@ -1407,7 +1437,7 @@
                 _renderRadar(width, height) {
                     const cx = width / 2;
                     const cy = height / 2;
-                    const r = Math.min(width, height) / 2 - 35;
+                    const r = Math.min(width, height) / 2 - 46;
                     const categories = this.labels;
                     const numAxes = categories.length;
                     if (numAxes < 3 || r <= 10) return;

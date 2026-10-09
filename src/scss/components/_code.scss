@@ -14,7 +14,11 @@
 pre, .code-block {
   margin: 0;
   padding: 1rem 1.25rem;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
   overflow-x: auto;
+  -webkit-overflow-scrolling: touch;
   font-size: 0.8125rem;
   line-height: 1.7;
   tab-size: 2;
@@ -32,7 +36,12 @@ pre, .code-block {
   }
 }
 
-pre { white-space: pre; }
+pre {
+  white-space: pre;
+  min-width: 0;
+  max-width: 100%;
+  box-sizing: border-box;
+}
 
 // Optional tokens for hand-highlighted snippets
 .tok-k { color: #c4b5fd; }   // keyword

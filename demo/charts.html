@@ -11,6 +11,9 @@
   <link rel="stylesheet" href="demo.css">
   <style>
     .chart-card {
+      min-width: 0;
+      max-width: 100%;
+      overflow: hidden;
       transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
     }
     .chart-card:hover {
@@ -24,11 +27,21 @@
       flex-wrap: wrap;
     }
     .kpi-stat-number {
-      font-size: 1.75rem;
+      font-size: clamp(1.25rem, 5vw, 1.75rem);
       font-weight: 700;
       letter-spacing: -0.02em;
       color: var(--text-main);
       font-variant-numeric: tabular-nums;
+      word-break: break-word;
+      line-height: 1.2;
+    }
+    pre {
+      min-width: 0;
+      max-width: 100%;
+      overflow-x: auto;
+      box-sizing: border-box;
+      white-space: pre-wrap;
+      word-break: break-word;
     }
   </style>
 </head>
@@ -289,7 +302,8 @@
 
       <pre><code><span class="tok-k">// 1. Instanciação rápida</span>
 <span class="tok-k">const</span> chart = <span class="tok-k">new</span> <span class="tok-k">FramePER</span>.<span class="tok-k">Chart</span>(<span class="tok-s">'#meu-grafico'</span>, {
-  type: <span class="tok-s">'line'</span>, <span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar' | 'donut' | 'pie' | 'gauge' | 'radar' | 'sparkline'</span>
+  type: <span class="tok-s">'line'</span>, <span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar'</span>
+                <span class="tok-c">// 'donut' | 'pie' | 'gauge' | 'radar' | 'sparkline'</span>
   data: {
     labels: [<span class="tok-s">'Jan'</span>, <span class="tok-s">'Fev'</span>, <span class="tok-s">'Mar'</span>, <span class="tok-s">'Abr'</span>, <span class="tok-s">'Mai'</span>, <span class="tok-s">'Jun'</span>],
     series: [
@@ -299,7 +313,7 @@
   options: {
     height: <span class="tok-s">280</span>,
     curved: <span class="tok-s">true</span>,
-    format: <span class="tok-s">'currency'</span>, <span class="tok-c">// 'currency' (R$), 'percent' (%), 'number' ou (val) =&gt; string</span>
+    format: <span class="tok-s">'currency'</span>, <span class="tok-c">// 'currency' (R$), 'percent' (%), 'number'</span>
     tooltip: <span class="tok-s">true</span>,
     legend: <span class="tok-s">true</span>
   }

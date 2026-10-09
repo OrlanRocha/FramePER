@@ -1,6 +1,6 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.6.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.6.1-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
 **Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, componentes avançados de interface, **Framework de Gráficos Vetoriais SVG**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
