@@ -163,3 +163,22 @@
   margin-left: auto;
 }
 
+/* Floating back to top button */
+.back-to-top-btn {
+  position: fixed;
+  bottom: 2rem;
+  right: 2rem;
+  z-index: 99;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: var(--radius-full);
+  box-shadow: var(--shadow-lg);
+  opacity: 0;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease), transform 0.2s var(--ease);
+}
+.back-to-top-btn:hover {
+  transform: translateY(-2px);
+}
+
+

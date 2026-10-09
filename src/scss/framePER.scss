@@ -40,6 +40,9 @@
 @use 'components/loader';
 @use 'components/carousel';
 @use 'components/code';
+@use 'components/skeleton';
+@use 'components/chips';
+@use 'components/stepper';
 
 // Utilities
 @use 'utilities/icons';

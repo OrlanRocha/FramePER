@@ -546,6 +546,216 @@
             delete: function(url, headers = {}) {
                 return this._request(url, { method: 'DELETE', headers: { 'Content-Type': 'application/json', ...headers } });
             }
+        },
+
+        // --- 6. Clipboard Module ---
+        Clipboard: {
+            copy: function(text, successMsg = 'Copiado para a área de transferência!') {
+                if (navigator.clipboard && navigator.clipboard.writeText) {
+                    navigator.clipboard.writeText(text).then(() => {
+                        FramePER.Notify.success('Copiado', successMsg);
+                    }).catch(() => {
+                        this._fallbackCopy(text, successMsg);
+                    });
+                } else {
+                    this._fallbackCopy(text, successMsg);
+                }
+            },
+            _fallbackCopy: function(text, successMsg) {
+                const ta = document.createElement('textarea');
+                ta.value = text;
+                ta.style.position = 'fixed';
+                ta.style.opacity = '0';
+                document.body.appendChild(ta);
+                ta.select();
+                try {
+                    document.execCommand('copy');
+                    FramePER.Notify.success('Copiado', successMsg);
+                } catch(e) {
+                    FramePER.Notify.error('Falha', 'Não foi possível copiar.');
+                }
+                ta.remove();
+            },
+            init: function() {
+                document.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-copy]');
+                    if (!btn) return;
+                    e.preventDefault();
+                    let text = btn.getAttribute('data-copy');
+                    const targetSel = btn.getAttribute('data-copy-target');
+                    if (targetSel) {
+                        const targetEl = document.querySelector(targetSel);
+                        if (targetEl) text = targetEl.value !== undefined ? targetEl.value : targetEl.textContent.trim();
+                    }
+                    if (text) FramePER.Clipboard.copy(text);
+                });
+            }
+        },
+
+        // --- 7. Form Masks & Input Helpers ---
+        Form: {
+            masks: {
+                cpf: function(v) {
+                    return v.replace(/\D/g, '')
+                            .replace(/(\d{3})(\d)/, '$1.$2')
+                            .replace(/(\d{3})(\d)/, '$1.$2')
+                            .replace(/(\d{3})(\d{1,2})$/, '$1-$2')
+                            .substring(0, 14);
+                },
+                cnpj: function(v) {
+                    return v.replace(/\D/g, '')
+                            .replace(/^(\d{2})(\d)/, '$1.$2')
+                            .replace(/^(\d{2})\.(\d{3})(\d)/, '$1.$2.$3')
+                            .replace(/\.(\d{3})(\d)/, '.$1/$2')
+                            .replace(/(\d{4})(\d)/, '$1-$2')
+                            .substring(0, 18);
+                },
+                phone: function(v) {
+                    v = v.replace(/\D/g, '');
+                    if (v.length > 10) {
+                        return v.replace(/^(\d{2})(\d{5})(\d{4}).*/, '($1) $2-$3');
+                    } else if (v.length > 5) {
+                        return v.replace(/^(\d{2})(\d{4})(\d{0,4}).*/, '($1) $2-$3');
+                    } else if (v.length > 2) {
+                        return v.replace(/^(\d{2})(\d{0,5})/, '($1) $2');
+                    }
+                    return v;
+                },
+                cep: function(v) {
+                    return v.replace(/\D/g, '').replace(/^(\d{5})(\d)/, '$1-$2').substring(0, 9);
+                },
+                date: function(v) {
+                    return v.replace(/\D/g, '')
+                            .replace(/(\d{2})(\d)/, '$1/$2')
+                            .replace(/(\d{2})(\d)/, '$1/$2')
+                            .substring(0, 10);
+                },
+                money: function(v) {
+                    v = v.replace(/\D/g, '');
+                    if (!v) return '';
+                    const n = (parseFloat(v) / 100).toFixed(2);
+                    if (isNaN(n)) return '';
+                    return 'R$ ' + n.replace('.', ',').replace(/\B(?=(\d{3})+(?!\d))/g, '.');
+                }
+            },
+            init: function() {
+                document.addEventListener('input', (e) => {
+                    const input = e.target.closest('[data-mask]');
+                    if (!input) return;
+                    const maskType = input.getAttribute('data-mask');
+                    const fn = this.masks[maskType];
+                    if (fn) {
+                        input.value = fn(input.value);
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    const btn = e.target.closest('[data-toggle="password"]');
+                    if (!btn) return;
+                    e.preventDefault();
+                    const targetSel = btn.getAttribute('data-target');
+                    const input = targetSel ? document.querySelector(targetSel) : btn.previousElementSibling;
+                    if (input && input.type) {
+                        const isPass = input.type === 'password';
+                        input.type = isPass ? 'text' : 'password';
+                        const icon = btn.querySelector('.icon');
+                        if (icon) {
+                            icon.classList.toggle('icon-eye', !isPass);
+                            icon.classList.toggle('icon-eye-off', isPass);
+                        }
+                    }
+                });
+            }
+        },
+
+        // --- 8. Animated Counters ---
+        Counter: {
+            animate: function(el, target, duration = 1200) {
+                const start = 0;
+                const startTime = performance.now();
+                const isFloat = target.toString().includes('.');
+                const prefix = el.getAttribute('data-counter-prefix') || '';
+                const suffix = el.getAttribute('data-counter-suffix') || '';
+
+                const step = (now) => {
+                    const elapsed = now - startTime;
+                    const progress = Math.min(elapsed / duration, 1);
+                    const ease = 1 - Math.pow(1 - progress, 3);
+                    const current = start + (target - start) * ease;
+
+                    el.textContent = prefix + (isFloat ? current.toFixed(1) : Math.round(current).toLocaleString('pt-BR')) + suffix;
+
+                    if (progress < 1) {
+                        requestAnimationFrame(step);
+                    }
+                };
+                requestAnimationFrame(step);
+            },
+            init: function() {
+                const elements = document.querySelectorAll('[data-counter]');
+                if (!elements.length) return;
+
+                if ('IntersectionObserver' in window) {
+                    const observer = new IntersectionObserver((entries) => {
+                        entries.forEach(entry => {
+                            if (entry.isIntersecting && !entry.target.classList.contains('counted')) {
+                                entry.target.classList.add('counted');
+                                const targetVal = parseFloat(entry.target.getAttribute('data-counter'));
+                                if (!isNaN(targetVal)) {
+                                    FramePER.Counter.animate(entry.target, targetVal);
+                                }
+                            }
+                        });
+                    }, { threshold: 0.2 });
+
+                    elements.forEach(el => observer.observe(el));
+                } else {
+                    elements.forEach(el => {
+                        const val = parseFloat(el.getAttribute('data-counter'));
+                        if (!isNaN(val)) el.textContent = val.toLocaleString('pt-BR');
+                    });
+                }
+            }
+        },
+
+        // --- 9. Scroll Helpers ---
+        Scroll: {
+            toTop: function() {
+                window.scrollTo({ top: 0, behavior: 'smooth' });
+            },
+            init: function() {
+                const backToTopBtns = document.querySelectorAll('[data-scroll-top]');
+                if (backToTopBtns.length) {
+                    const checkScroll = () => {
+                        const show = window.scrollY > 300;
+                        backToTopBtns.forEach(btn => {
+                            btn.style.opacity = show ? '1' : '0';
+                            btn.style.pointerEvents = show ? 'auto' : 'none';
+                            btn.style.transition = 'opacity 0.2s var(--ease)';
+                        });
+                    };
+                    window.addEventListener('scroll', checkScroll);
+                    checkScroll();
+
+                    document.addEventListener('click', (e) => {
+                        if (e.target.closest('[data-scroll-top]')) {
+                            e.preventDefault();
+                            FramePER.Scroll.toTop();
+                        }
+                    });
+                }
+
+                document.addEventListener('click', (e) => {
+                    const anchor = e.target.closest('[data-scroll-to]');
+                    if (!anchor) return;
+                    const targetSel = anchor.getAttribute('data-scroll-to');
+                    const targetEl = document.querySelector(targetSel);
+                    if (targetEl) {
+                        e.preventDefault();
+                        targetEl.scrollIntoView({ behavior: 'smooth', block: 'start' });
+                    }
+                });
+            }
         }
     };
 
@@ -565,6 +775,10 @@
         FramePER.Theme.init();
         FramePER.Backgrounds.init();
         FramePER.UI.init();
+        FramePER.Clipboard.init();
+        FramePER.Form.init();
+        FramePER.Counter.init();
+        FramePER.Scroll.init();
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -578,3 +792,4 @@
     window.FramePER = FramePER;
 
 })(window, document);
+

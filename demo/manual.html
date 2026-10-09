@@ -55,6 +55,10 @@
       <a href="#m-theme" class="active">Tema & Dark Mode</a>
       <a href="#m-tables">Tabelas & Ordenação</a>
       <a href="#m-modals">Modais & Side Modals</a>
+      <a href="#m-forms">Formulários & Máscaras</a>
+      <a href="#m-clipboard">Clipboard & Cópia</a>
+      <a href="#m-counter">Contadores Animados</a>
+      <a href="#m-scroll">Rolagem & Scroll</a>
       <a href="#m-http">HTTP & AJAX Fetch</a>
       <a href="#m-notify">Notificações (Notify)</a>
       <a href="#m-loader">Loaders & Spinner</a>
@@ -116,6 +120,72 @@
 <span class="tok-k">&lt;/div&gt;</span></code></pre>
       </section>
 
+      <!-- Forms & Masks Module -->
+      <section id="m-forms" class="docs-section">
+        <h2>Máscaras de Entrada & Formulários (FramePER.Form)</h2>
+        <p class="lead">Formatação automática em tempo real para CPF, CNPJ, telefone celular/fixo, CEP, data e moeda brasileira (R$). Também gerencia alternância de campos de senha.</p>
+
+        <pre><code><span class="tok-c">&lt;!-- Máscaras automáticas com data-mask="..." --&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">data-mask</span>=<span class="tok-s">"cpf"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"000.000.000-00"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">data-mask</span>=<span class="tok-s">"cnpj"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"00.000.000/0000-00"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">data-mask</span>=<span class="tok-s">"phone"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"(11) 98765-4321"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">data-mask</span>=<span class="tok-s">"cep"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"00000-000"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">data-mask</span>=<span class="tok-s">"date"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"DD/MM/AAAA"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">data-mask</span>=<span class="tok-s">"money"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"R$ 0,00"</span><span class="tok-k">&gt;</span>
+
+<span class="tok-c">&lt;!-- Alternador de visualização de senha com data-toggle="password" --&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"password"</span> <span class="tok-f">id</span>=<span class="tok-s">"campoSenha"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">type</span>=<span class="tok-s">"button"</span> <span class="tok-f">data-toggle</span>=<span class="tok-s">"password"</span> <span class="tok-f">data-target</span>=<span class="tok-s">"#campoSenha"</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;i</span> <span class="tok-f">class</span>=<span class="tok-s">"icon icon-eye"</span><span class="tok-k">&gt;&lt;/i&gt;</span>
+<span class="tok-k">&lt;/button&gt;</span></code></pre>
+      </section>
+
+      <!-- Clipboard Module -->
+      <section id="m-clipboard" class="docs-section">
+        <h2>Área de Transferência (FramePER.Clipboard)</h2>
+        <p class="lead">Copia strings fixas ou valores de campos selecionados para o clipboard do usuário com notificação toast automática.</p>
+
+        <pre><code><span class="tok-c">&lt;!-- Atributo data-copy com valor fixo --&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">class</span>=<span class="tok-s">"btn btn-outline"</span> <span class="tok-f">data-copy</span>=<span class="tok-s">"npm install frame-per"</span><span class="tok-k">&gt;</span>Copiar Comando<span class="tok-k">&lt;/button&gt;</span>
+
+<span class="tok-c">&lt;!-- Atributo data-copy-target com seletor de campo --&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">id</span>=<span class="tok-s">"chavePix"</span> <span class="tok-f">value</span>=<span class="tok-s">"00.000.000/0001-99"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">class</span>=<span class="tok-s">"btn btn-primary"</span> <span class="tok-f">data-copy-target</span>=<span class="tok-s">"#chavePix"</span><span class="tok-k">&gt;</span>Copiar PIX<span class="tok-k">&lt;/button&gt;</span>
+
+<span class="tok-c">// Invocação programática via JavaScript:</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">Clipboard</span>.<span class="tok-f">copy</span>(<span class="tok-s">'Texto copiado'</span>, <span class="tok-s">'Copiado com sucesso!'</span>);</code></pre>
+      </section>
+
+      <!-- Counter Module -->
+      <section id="m-counter" class="docs-section">
+        <h2>Contadores Animados (FramePER.Counter)</h2>
+        <p class="lead">Animação suave de contagem com curva cúbica ease-out, acionada automaticamente quando visível na tela.</p>
+
+        <pre><code><span class="tok-c">&lt;!-- Disparo automático via IntersectionObserver --&gt;</span>
+<span class="tok-k">&lt;span</span> <span class="tok-f">data-counter</span>=<span class="tok-s">"14500"</span> <span class="tok-f">data-counter-prefix</span>=<span class="tok-s">"R$ "</span><span class="tok-k">&gt;</span>R$ 0<span class="tok-k">&lt;/span&gt;</span>
+<span class="tok-k">&lt;span</span> <span class="tok-f">data-counter</span>=<span class="tok-s">"99.5"</span> <span class="tok-f">data-counter-suffix</span>=<span class="tok-s">"%"</span><span class="tok-k">&gt;</span>0%<span class="tok-k">&lt;/span&gt;</span>
+
+<span class="tok-c">// Execução programática manual:</span>
+<span class="tok-f">const</span> <span class="tok-n">el</span> = <span class="tok-n">document</span>.<span class="tok-f">querySelector</span>(<span class="tok-s">'#meuContador'</span>);
+<span class="tok-k">FramePER</span>.<span class="tok-k">Counter</span>.<span class="tok-f">animate</span>(<span class="tok-n">el</span>, <span class="tok-n">5000</span>, <span class="tok-n">1500</span>); <span class="tok-c">// elemento, valor, duração ms</span></code></pre>
+      </section>
+
+      <!-- Scroll Module -->
+      <section id="m-scroll" class="docs-section">
+        <h2>Rolagem Suave & Voltar ao Topo (FramePER.Scroll)</h2>
+        <p class="lead">Atributos declarativos para rolar a tela suavemente para o topo ou para qualquer elemento âncora.</p>
+
+        <pre><code><span class="tok-c">&lt;!-- Botão flutuante que aparece automaticamente após 300px de rolagem --&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">class</span>=<span class="tok-s">"btn btn-primary btn-icon"</span> <span class="tok-f">data-scroll-top</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;i</span> <span class="tok-f">class</span>=<span class="tok-s">"icon icon-arrow-up"</span><span class="tok-k">&gt;&lt;/i&gt;</span>
+<span class="tok-k">&lt;/button&gt;</span>
+
+<span class="tok-c">&lt;!-- Âncora para rolar suavemente até uma seção específica --&gt;</span>
+<span class="tok-k">&lt;a</span> <span class="tok-f">href</span>=<span class="tok-s">"#recursos"</span> <span class="tok-f">data-scroll-to</span>=<span class="tok-s">"#recursos"</span><span class="tok-k">&gt;</span>Ir para Recursos<span class="tok-k">&lt;/a&gt;</span>
+
+<span class="tok-c">// Execução programática:</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">Scroll</span>.<span class="tok-f">toTop</span>();</code></pre>
+      </section>
 
       <!-- HTTP Module -->
       <section id="m-http" class="docs-section">
@@ -181,6 +251,11 @@
     </main>
 
   </div>
+
+  <!-- Floating Back to Top Button -->
+  <button class="btn btn-primary btn-icon back-to-top-btn" data-scroll-top aria-label="Voltar ao topo" title="Voltar ao topo">
+    <i class="icon icon-arrow-up"></i>
+  </button>
 
   <script src="../dist/framePER.min.js"></script>
   <script src="demo.js"></script>

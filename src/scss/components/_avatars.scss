@@ -34,3 +34,29 @@
     &:hover { transform: translateY(-2px); z-index: 1; }
   }
 }
+
+.avatar-wrapper {
+  position: relative;
+  display: inline-flex;
+
+  .avatar-status {
+    position: absolute;
+    bottom: 0;
+    right: 0;
+    width: 0.6875rem;
+    height: 0.6875rem;
+    border-radius: 50%;
+    border: 2px solid var(--bg-surface);
+    background-color: var(--text-muted);
+
+    &.status-online,
+    &.online { background-color: var(--green); }
+    &.status-busy,
+    &.busy { background-color: var(--red); }
+    &.status-away,
+    &.away { background-color: var(--yellow); }
+    &.status-offline,
+    &.offline { background-color: var(--text-muted); }
+  }
+}
+
