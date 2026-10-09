@@ -1,0 +1,558 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Gráficos Interativos (Pure SVG) | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+  <style>
+    .chart-card {
+      transition: box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
+    }
+    .chart-card:hover {
+      box-shadow: var(--shadow-md);
+      border-color: var(--border-strong);
+    }
+    .chart-controls {
+      display: flex;
+      align-items: center;
+      gap: 0.5rem;
+      flex-wrap: wrap;
+    }
+    .kpi-stat-number {
+      font-size: 1.75rem;
+      font-weight: 700;
+      letter-spacing: -0.02em;
+      color: var(--text-main);
+      font-variant-numeric: tabular-nums;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Navigation -->
+  <header class="navbar navbar-sticky navbar-glass">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-activity"></i></span>
+        <span>Frame PER</span>
+      </a>
+
+      <nav class="navbar-nav d-none d-md-flex">
+        <a class="nav-link" href="landing.html">Início</a>
+        <a class="nav-link" href="dashboard.html">Dashboard</a>
+        <a class="nav-link active" href="charts.html">Gráficos SVG</a>
+        <a class="nav-link" href="components.html">Componentes</a>
+        <a class="nav-link" href="manual.html">Manual API</a>
+      </nav>
+
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+          <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+        </button>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#mobileMenu" aria-label="Menu Mobile">
+          <i class="icon icon-menu"></i>
+        </button>
+      </div>
+    </div>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="navbar-nav d-md-none">
+      <a class="nav-link" href="landing.html">Início</a>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link active" href="charts.html">Gráficos SVG</a>
+      <a class="nav-link" href="components.html">Componentes</a>
+      <a class="nav-link" href="manual.html">Manual API</a>
+    </div>
+  </header>
+
+  <main class="container p-y-6 stack gap-6">
+
+    <!-- Hero Header -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-4 border-b p-b-5">
+      <div>
+        <div class="d-flex align-items-center gap-2 m-b-2">
+          <span class="badge badge-primary badge-pill">Novo recurso v2.6.0</span>
+          <span class="badge badge-green badge-dot">Zero Dependências</span>
+        </div>
+        <h1 class="f-s-7 m-0">Framework de Gráficos Vetoriais</h1>
+        <p class="text-muted m-t-1 m-b-0" style="max-width: 48rem;">
+          Gráficos 100% puros em SVG, CSS e Vanilla JS integrados nativamente ao <strong>Frame PER</strong>. Curvas bezier perfeitas, tooltips flutuantes reativos, legendas com alternância de séries, suporte nativo a dark mode e download em PNG/SVG.
+        </p>
+      </div>
+
+      <!-- Action Toolbar -->
+      <div class="cluster gap-2">
+        <button id="btnRandomize" class="btn btn-primary">
+          <i class="icon icon-refresh"></i> Gerar Novos Dados
+        </button>
+        <button id="btnExportAll" class="btn btn-outline">
+          <i class="icon icon-download"></i> Baixar PNG
+        </button>
+      </div>
+    </div>
+
+    <!-- KPI Sparkline Cards -->
+    <section>
+      <div class="d-flex align-items-center justify-content-between m-b-3">
+        <span class="eyebrow text-main"><i class="icon icon-flame text-primary m-r-1"></i> Mini Gráficos de Tendência (Sparklines)</span>
+        <span class="text-muted f-s-2">Perfeitos para cartões de métricas e tabelas</span>
+      </div>
+
+      <div class="grid grid-sm-2 grid-lg-4 gap-4">
+        <!-- KPI 1 -->
+        <div class="card chart-card p-4 stack gap-2">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="text-muted f-s-2">Faturamento Mensal</span>
+            <span class="badge badge-green badge-pill"><i class="icon icon-arrow-up"></i> +18.4%</span>
+          </div>
+          <div class="kpi-stat-number">R$ 142.850</div>
+          <div id="spark1" class="m-t-2"></div>
+        </div>
+
+        <!-- KPI 2 -->
+        <div class="card chart-card p-4 stack gap-2">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="text-muted f-s-2">Novos Clientes</span>
+            <span class="badge badge-green badge-pill"><i class="icon icon-arrow-up"></i> +24.1%</span>
+          </div>
+          <div class="kpi-stat-number">1.840</div>
+          <div id="spark2" class="m-t-2"></div>
+        </div>
+
+        <!-- KPI 3 -->
+        <div class="card chart-card p-4 stack gap-2">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="text-muted f-s-2">Taxa de Conversão</span>
+            <span class="badge badge-yellow badge-pill"><i class="icon icon-arrow-down"></i> -1.2%</span>
+          </div>
+          <div class="kpi-stat-number">4.65%</div>
+          <div id="spark3" class="m-t-2"></div>
+        </div>
+
+        <!-- KPI 4 -->
+        <div class="card chart-card p-4 stack gap-2">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="text-muted f-s-2">Ticket Médio</span>
+            <span class="badge badge-green badge-pill"><i class="icon icon-arrow-up"></i> +6.8%</span>
+          </div>
+          <div class="kpi-stat-number">R$ 385,00</div>
+          <div id="spark4" class="m-t-2"></div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Main Charts Grid: Area & Bar -->
+    <div class="grid grid-lg-2 gap-5">
+
+      <!-- Area Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <h3 class="card-title">Fluxo Financeiro & Receita</h3>
+            <p class="card-subtitle">Área sombreada em degradê com curvas bezier suaves</p>
+          </div>
+          <div class="chart-controls">
+            <button class="btn btn-ghost btn-sm" id="btnToggleCurved">Linhas Retas/Curvas</button>
+          </div>
+        </div>
+
+        <div id="areaChart"></div>
+      </div>
+
+      <!-- Line Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <h3 class="card-title">Comparativo de Vendas (2025 vs 2026)</h3>
+            <p class="card-subtitle">Linhas com pontos interativos, crosshair vertical e legenda interativa</p>
+          </div>
+          <div class="chart-controls">
+            <button class="btn btn-ghost btn-sm" id="btnExportLine">Exportar PNG</button>
+          </div>
+        </div>
+
+        <div id="lineChart"></div>
+      </div>
+
+    </div>
+
+    <!-- Second Charts Grid: Column Bar & Horizontal Bar -->
+    <div class="grid grid-lg-2 gap-5">
+
+      <!-- Grouped Column Bar Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <h3 class="card-title">Volume de Vendas por Canal</h3>
+            <p class="card-subtitle">Barras agrupadas com cantos arredondados e efeito spotlight</p>
+          </div>
+        </div>
+
+        <div id="barChart"></div>
+      </div>
+
+      <!-- Horizontal Bar Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <h3 class="card-title">Origem de Aquisição de Tráfego</h3>
+            <p class="card-subtitle">Barras horizontais para rankings e comparações proporcionais</p>
+          </div>
+        </div>
+
+        <div id="horizBarChart"></div>
+      </div>
+
+    </div>
+
+    <!-- Circular & Specialty Charts: Donut, Pie, Gauge, Radar -->
+    <div class="grid grid-md-2 grid-lg-4 gap-4">
+
+      <!-- Donut Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div>
+          <h3 class="card-title">Mix de Produtos</h3>
+          <p class="card-subtitle">Rosca com valor central e cálculo de fatias</p>
+        </div>
+        <div id="donutChart"></div>
+      </div>
+
+      <!-- Pie Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div>
+          <h3 class="card-title">Métodos de Pagamento</h3>
+          <p class="card-subtitle">Gráfico de pizza com fatias expansivas</p>
+        </div>
+        <div id="pieChart"></div>
+      </div>
+
+      <!-- Gauge Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div>
+          <h3 class="card-title">Meta do Trimestre</h3>
+          <p class="card-subtitle">Velocímetro de progresso e limites</p>
+        </div>
+        <div id="gaugeChart"></div>
+      </div>
+
+      <!-- Radar Chart -->
+      <div class="card chart-card p-4 stack gap-3">
+        <div>
+          <h3 class="card-title">Métricas de Qualidade</h3>
+          <p class="card-subtitle">Análise teia multi-eixos para performance</p>
+        </div>
+        <div id="radarChart"></div>
+      </div>
+
+    </div>
+
+    <!-- Interactive Declarative HTML Data-Attributes Demo -->
+    <section class="card p-5 stack gap-4">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+          <h3 class="card-title">Inicialização Declarativa via HTML (Zero JS)</h3>
+          <p class="card-subtitle">Basta adicionar o atributo <code>data-chart</code> e fornecer dados via <code>data-chart-data</code></p>
+        </div>
+        <span class="badge badge-primary badge-pill">HTML5 Nativo</span>
+      </div>
+
+      <div class="grid grid-md-2 gap-5 align-items-center">
+        <!-- Live Chart Rendered via HTML data-attribute -->
+        <div class="p-4 border rounded bg-subtle">
+          <div class="frame-chart"
+               data-chart="area"
+               data-chart-options='{"height":220,"format":"currency","curved":true,"fill":true}'
+               data-chart-data='{"labels":["Jan","Fev","Mar","Abr","Mai","Jun"],"series":[{"name":"Faturamento","data":[18000,24000,21000,32000,29000,38000],"color":"#06b6d4"}]}'>
+          </div>
+        </div>
+
+        <!-- Code Snippet -->
+        <pre class="m-0"><code><span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"frame-chart"</span>
+     <span class="tok-f">data-chart</span>=<span class="tok-s">"area"</span>
+     <span class="tok-f">data-chart-options</span>=<span class="tok-s">'{"height":220,"format":"currency"}'</span>
+     <span class="tok-f">data-chart-data</span>=<span class="tok-s">'{"labels":["Jan","Fev",...],"series":[{"name":"Faturamento","data":[18000,...]}]}'</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;/div&gt;</span></code></pre>
+      </div>
+    </section>
+
+    <!-- Developer API & Usage Documentation -->
+    <section class="card p-5 stack gap-4">
+      <div>
+        <h3 class="card-title">Guia de Uso & API Completa</h3>
+        <p class="card-subtitle">Como instanciar e manipular instâncias de gráficos programaticamente</p>
+      </div>
+
+      <pre><code><span class="tok-k">// 1. Instanciação rápida</span>
+<span class="tok-k">const</span> chart = <span class="tok-k">new</span> <span class="tok-k">FramePER</span>.<span class="tok-k">Chart</span>(<span class="tok-s">'#meu-grafico'</span>, {
+  type: <span class="tok-s">'line'</span>, <span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar' | 'donut' | 'pie' | 'gauge' | 'radar' | 'sparkline'</span>
+  data: {
+    labels: [<span class="tok-s">'Jan'</span>, <span class="tok-s">'Fev'</span>, <span class="tok-s">'Mar'</span>, <span class="tok-s">'Abr'</span>, <span class="tok-s">'Mai'</span>, <span class="tok-s">'Jun'</span>],
+    series: [
+      { name: <span class="tok-s">'Vendas'</span>, data: [120, 190, 160, 240, 210, 310], color: <span class="tok-s">'var(--primary)'</span> }
+    ]
+  },
+  options: {
+    height: <span class="tok-s">280</span>,
+    curved: <span class="tok-s">true</span>,
+    format: <span class="tok-s">'currency'</span>, <span class="tok-c">// 'currency' (R$), 'percent' (%), 'number' ou (val) =&gt; string</span>
+    tooltip: <span class="tok-s">true</span>,
+    legend: <span class="tok-s">true</span>
+  }
+});
+
+<span class="tok-k">// 2. Atualização reativa de dados (com animação)</span>
+chart.<span class="tok-f">update</span>({
+  series: [{ name: <span class="tok-s">'Vendas'</span>, data: [150, 230, 190, 280, 260, 390] }]
+});
+
+<span class="tok-k">// 3. Exportar como imagem</span>
+chart.<span class="tok-f">exportPNG</span>(<span class="tok-s">'relatorio-vendas.png'</span>);</code></pre>
+    </section>
+
+  </main>
+
+  <!-- Scripts -->
+  <script src="../dist/framePER.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // 1. Sparklines
+      const spark1 = new FramePER.Chart('#spark1', {
+        type: 'sparkline',
+        data: { series: [{ data: [110, 125, 118, 134, 128, 142], color: '#10b981' }] },
+        options: { height: 45 }
+      });
+
+      const spark2 = new FramePER.Chart('#spark2', {
+        type: 'sparkline',
+        data: { series: [{ data: [80, 95, 120, 110, 145, 160], color: '#3b82f6' }] },
+        options: { height: 45 }
+      });
+
+      const spark3 = new FramePER.Chart('#spark3', {
+        type: 'sparkline',
+        data: { series: [{ data: [65, 58, 62, 54, 50, 48], color: '#f59e0b' }] },
+        options: { height: 45 }
+      });
+
+      const spark4 = new FramePER.Chart('#spark4', {
+        type: 'sparkline',
+        data: { series: [{ data: [310, 330, 325, 360, 350, 385], color: '#8b5cf6' }] },
+        options: { height: 45 }
+      });
+
+      // 2. Area Chart
+      const areaChart = new FramePER.Chart('#areaChart', {
+        type: 'area',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago'],
+          series: [
+            { name: 'Receita Bruta', data: [28000, 35000, 31000, 44000, 41000, 52000, 49000, 61000], color: '#3b82f6' },
+            { name: 'Custos Operacionais', data: [15000, 18000, 17000, 22000, 20000, 24000, 23000, 27000], color: '#f59e0b' }
+          ]
+        },
+        options: {
+          height: 300,
+          curved: true,
+          fill: true,
+          format: 'currency',
+          tooltip: true,
+          legend: true
+        }
+      });
+
+      // 3. Line Chart
+      const lineChart = new FramePER.Chart('#lineChart', {
+        type: 'line',
+        data: {
+          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+          series: [
+            { name: 'Vendas 2026', data: [145, 210, 180, 290, 270, 340, 420], color: '#10b981' },
+            { name: 'Vendas 2025', data: [110, 160, 140, 220, 210, 260, 310], color: '#8b5cf6' }
+          ]
+        },
+        options: {
+          height: 300,
+          curved: true,
+          format: 'number',
+          showDots: true,
+          tooltip: true,
+          legend: true
+        }
+      });
+
+      // 4. Bar Chart
+      const barChart = new FramePER.Chart('#barChart', {
+        type: 'bar',
+        data: {
+          labels: ['1º Tri', '2º Tri', '3º Tri', '4º Tri'],
+          series: [
+            { name: 'Online (E-Commerce)', data: [42000, 56000, 68000, 89000], color: '#3b82f6' },
+            { name: 'Loja Física', data: [31000, 34000, 38000, 45000], color: '#06b6d4' }
+          ]
+        },
+        options: {
+          height: 280,
+          format: 'currency',
+          tooltip: true,
+          legend: true
+        }
+      });
+
+      // 5. Horizontal Bar Chart
+      const horizBarChart = new FramePER.Chart('#horizBarChart', {
+        type: 'horizontal-bar',
+        data: {
+          labels: ['Google Ads', 'Busca Orgânica', 'Instagram', 'Indicação Direta', 'E-mail'],
+          series: [
+            { name: 'Visitantes', data: [48500, 36200, 28400, 19800, 14200], color: '#8b5cf6' }
+          ]
+        },
+        options: {
+          height: 280,
+          format: 'number',
+          tooltip: true
+        }
+      });
+
+      // 6. Donut Chart
+      const donutChart = new FramePER.Chart('#donutChart', {
+        type: 'donut',
+        data: {
+          labels: ['Smartphones', 'Notebooks', 'Acessórios', 'Wearables'],
+          series: [
+            { name: 'Smartphones', value: 45, color: '#3b82f6' },
+            { name: 'Notebooks', value: 25, color: '#10b981' },
+            { name: 'Acessórios', value: 18, color: '#f59e0b' },
+            { name: 'Wearables', value: 12, color: '#ec4899' }
+          ]
+        },
+        options: {
+          height: 260,
+          donutCutout: 0.65,
+          centerText: '100%',
+          centerSubtext: 'Mix Total',
+          tooltip: true,
+          legend: true
+        }
+      });
+
+      // 7. Pie Chart
+      const pieChart = new FramePER.Chart('#pieChart', {
+        type: 'pie',
+        data: {
+          labels: ['PIX', 'Cartão Crédito', 'Boleto'],
+          series: [
+            { name: 'PIX', value: 55, color: '#10b981' },
+            { name: 'Cartão Crédito', value: 33, color: '#8b5cf6' },
+            { name: 'Boleto', value: 12, color: '#f97316' }
+          ]
+        },
+        options: {
+          height: 260,
+          tooltip: true,
+          legend: true
+        }
+      });
+
+      // 8. Gauge Chart
+      const gaugeChart = new FramePER.Chart('#gaugeChart', {
+        type: 'gauge',
+        data: {
+          series: [{ name: 'Meta', value: 78.5, color: '#3b82f6' }]
+        },
+        options: {
+          height: 260,
+          min: 0,
+          max: 100,
+          centerText: '78.5%',
+          centerSubtext: 'Meta Atingida',
+          tooltip: true
+        }
+      });
+
+      // 9. Radar Chart
+      const radarChart = new FramePER.Chart('#radarChart', {
+        type: 'radar',
+        data: {
+          labels: ['Velocidade', 'Acessibilidade', 'SEO', 'Segurança', 'Design', 'PWA'],
+          series: [
+            { name: 'Atual', data: [95, 88, 92, 98, 85, 90], color: '#10b981' }
+          ]
+        },
+        options: {
+          height: 260,
+          max: 100,
+          tooltip: true
+        }
+      });
+
+      // --- Interactive Event Listeners ---
+      document.getElementById('btnRandomize').addEventListener('click', () => {
+        function randList(len, min, max) {
+          return Array.from({ length: len }, () => Math.floor(Math.random() * (max - min + 1)) + min);
+        }
+
+        areaChart.update({
+          series: [
+            { name: 'Receita Bruta', data: randList(8, 25000, 65000), color: '#3b82f6' },
+            { name: 'Custos Operacionais', data: randList(8, 12000, 28000), color: '#f59e0b' }
+          ]
+        });
+
+        lineChart.update({
+          series: [
+            { name: 'Vendas 2026', data: randList(7, 120, 450), color: '#10b981' },
+            { name: 'Vendas 2025', data: randList(7, 90, 320), color: '#8b5cf6' }
+          ]
+        });
+
+        barChart.update({
+          series: [
+            { name: 'Online (E-Commerce)', data: randList(4, 35000, 95000), color: '#3b82f6' },
+            { name: 'Loja Física', data: randList(4, 25000, 50000), color: '#06b6d4' }
+          ]
+        });
+
+        donutChart.update({
+          series: [
+            { name: 'Smartphones', value: Math.floor(Math.random() * 40) + 20, color: '#3b82f6' },
+            { name: 'Notebooks', value: Math.floor(Math.random() * 30) + 15, color: '#10b981' },
+            { name: 'Acessórios', value: Math.floor(Math.random() * 25) + 10, color: '#f59e0b' },
+            { name: 'Wearables', value: Math.floor(Math.random() * 20) + 5, color: '#ec4899' }
+          ]
+        });
+
+        gaugeChart.update({
+          series: [{ name: 'Meta', value: Math.floor(Math.random() * 60) + 40, color: '#3b82f6' }]
+        }, {
+          centerText: (Math.floor(Math.random() * 60) + 40) + '%'
+        });
+
+        FramePER.Notify.success('Dados Atualizados', 'Todos os gráficos foram recalculados com animação fluida!');
+      });
+
+      let isCurved = true;
+      document.getElementById('btnToggleCurved').addEventListener('click', () => {
+        isCurved = !isCurved;
+        areaChart.update(null, { curved: isCurved });
+        lineChart.update(null, { curved: isCurved });
+      });
+
+      document.getElementById('btnExportLine').addEventListener('click', () => {
+        lineChart.exportPNG('vendas-comparativo.png');
+        FramePER.Notify.success('Download Concluído', 'O gráfico foi exportado como imagem PNG em alta resolução.');
+      });
+
+      document.getElementById('btnExportAll').addEventListener('click', () => {
+        areaChart.exportPNG('fluxo-financeiro.png');
+        FramePER.Notify.success('Exportação PNG', 'Gráfico financeiro baixado com sucesso!');
+      });
+    });
+  </script>
+</body>
+</html>

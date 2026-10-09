@@ -23,6 +23,7 @@
       <nav class="navbar-nav d-none d-md-flex">
         <a class="nav-link" href="landing.html">Início</a>
         <a class="nav-link" href="dashboard.html">Dashboard</a>
+        <a class="nav-link" href="charts.html">Gráficos SVG</a>
         <a class="nav-link" href="components.html">Componentes</a>
         <a class="nav-link active" href="manual.html">Manual API</a>
       </nav>
@@ -41,6 +42,7 @@
     <div id="mobileMenu" class="navbar-nav d-md-none">
       <a class="nav-link" href="landing.html">Início</a>
       <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="charts.html">Gráficos SVG</a>
       <a class="nav-link" href="components.html">Componentes</a>
       <a class="nav-link active" href="manual.html">Manual API</a>
     </div>
@@ -58,6 +60,7 @@
       <a href="#m-forms">Formulários & Máscaras</a>
       <a href="#m-clipboard">Clipboard & Cópia</a>
       <a href="#m-counter">Contadores Animados</a>
+      <a href="#m-chart">Gráficos SVG (Chart)</a>
       <a href="#m-scroll">Rolagem & Scroll</a>
       <a href="#m-http">HTTP & AJAX Fetch</a>
       <a href="#m-notify">Notificações (Notify)</a>
@@ -168,6 +171,48 @@
 <span class="tok-c">// Execução programática manual:</span>
 <span class="tok-f">const</span> <span class="tok-n">el</span> = <span class="tok-n">document</span>.<span class="tok-f">querySelector</span>(<span class="tok-s">'#meuContador'</span>);
 <span class="tok-k">FramePER</span>.<span class="tok-k">Counter</span>.<span class="tok-f">animate</span>(<span class="tok-n">el</span>, <span class="tok-n">5000</span>, <span class="tok-n">1500</span>); <span class="tok-c">// elemento, valor, duração ms</span></code></pre>
+      </section>
+
+      <!-- Charts Framework Module -->
+      <section id="m-chart" class="docs-section">
+        <h2>Framework de Gráficos SVG (FramePER.Chart)</h2>
+        <p class="lead">Biblioteca nativa de gráficos vetoriais construída em puro SVG, CSS e JavaScript Vanilla, com 9 modelos, animação suave, tooltips flutuantes reativos e exportação para imagem.</p>
+
+        <pre><code><span class="tok-c">// Instanciação com qualquer um dos 9 modelos:</span>
+<span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar' | 'donut' | 'pie' | 'gauge' | 'radar' | 'sparkline'</span>
+<span class="tok-k">const</span> <span class="tok-n">chart</span> = <span class="tok-k">new</span> <span class="tok-k">FramePER</span>.<span class="tok-k">Chart</span>(<span class="tok-s">'#chartContainer'</span>, {
+  type: <span class="tok-s">'area'</span>,
+  data: {
+    labels: [<span class="tok-s">'Jan'</span>, <span class="tok-s">'Fev'</span>, <span class="tok-s">'Mar'</span>, <span class="tok-s">'Abr'</span>, <span class="tok-s">'Mai'</span>, <span class="tok-s">'Jun'</span>],
+    series: [
+      { name: <span class="tok-s">'Receita'</span>, data: [<span class="tok-s">12000</span>, <span class="tok-s">19000</span>, <span class="tok-s">16000</span>, <span class="tok-s">25000</span>, <span class="tok-s">22000</span>, <span class="tok-s">31000</span>], color: <span class="tok-s">'#3b82f6'</span> }
+    ]
+  },
+  options: {
+    height: <span class="tok-s">280</span>,
+    curved: <span class="tok-s">true</span>,          <span class="tok-c">// Linhas curvas bezier suaves</span>
+    fill: <span class="tok-s">true</span>,            <span class="tok-c">// Degradê vertical translúcido</span>
+    showDots: <span class="tok-s">true</span>,        <span class="tok-c">// Pontos interativos com hover</span>
+    showGrid: <span class="tok-s">true</span>,        <span class="tok-c">// Grade e eixos automáticos</span>
+    format: <span class="tok-s">'currency'</span>,    <span class="tok-c">// 'currency' (R$), 'percent', 'number' ou fn(val)</span>
+    tooltip: <span class="tok-s">true</span>,         <span class="tok-c">// Tooltip flutuante com crosshair</span>
+    legend: <span class="tok-s">true</span>           <span class="tok-c">// Legenda interativa com clique para ocultar</span>
+  }
+});
+
+<span class="tok-c">// Métodos da Instância:</span>
+<span class="tok-n">chart</span>.<span class="tok-f">update</span>({ series: [{ name: <span class="tok-s">'Receita'</span>, data: [<span class="tok-s">15000</span>, <span class="tok-s">28000</span>, <span class="tok-s">21000</span>, <span class="tok-s">34000</span>, <span class="tok-s">30000</span>, <span class="tok-s">42000</span>] }] });
+<span class="tok-n">chart</span>.<span class="tok-f">toggleSeries</span>(<span class="tok-s">0</span>);       <span class="tok-c">// Alternar visibilidade da série</span>
+<span class="tok-n">chart</span>.<span class="tok-f">exportPNG</span>(<span class="tok-s">'vendas.png'</span>); <span class="tok-c">// Download de PNG 2x Retina</span>
+<span class="tok-n">chart</span>.<span class="tok-f">exportSVG</span>();            <span class="tok-c">// Retorna string SVG</span>
+<span class="tok-n">chart</span>.<span class="tok-f">destroy</span>();              <span class="tok-c">// Limpa observadores e eventos</span>
+
+<span class="tok-c">&lt;!-- Inicialização Declarativa via HTML5 (Zero JS): --&gt;</span>
+<span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"frame-chart"</span>
+     <span class="tok-f">data-chart</span>=<span class="tok-s">"donut"</span>
+     <span class="tok-f">data-chart-options</span>=<span class="tok-s">'{"height":200,"donutCutout":0.65,"centerText":"100%"}'</span>
+     <span class="tok-f">data-chart-data</span>=<span class="tok-s">'{"series":[{"name":"Online","value":70},{"name":"Físico","value":30}]}'</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;/div&gt;</span></code></pre>
       </section>
 
       <!-- Scroll Module -->

@@ -23,6 +23,7 @@
       <nav class="navbar-nav d-none d-md-flex">
         <a class="nav-link" href="landing.html">Início</a>
         <a class="nav-link" href="dashboard.html">Dashboard</a>
+        <a class="nav-link" href="charts.html">Gráficos SVG</a>
         <a class="nav-link active" href="components.html">Componentes</a>
         <a class="nav-link" href="manual.html">Manual API</a>
       </nav>
@@ -41,6 +42,7 @@
     <div id="mobileMenu" class="navbar-nav d-md-none">
       <a class="nav-link" href="landing.html">Início</a>
       <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="charts.html">Gráficos SVG</a>
       <a class="nav-link active" href="components.html">Componentes</a>
       <a class="nav-link" href="manual.html">Manual API</a>
     </div>
@@ -59,6 +61,7 @@
       <a href="#sec-icons">Biblioteca de Ícones</a>
       <a href="#sec-cards">Cards & Estatísticas</a>
       <a href="#sec-counters">Contadores Animados</a>
+      <a href="#sec-charts">Gráficos Vetoriais (SVG)</a>
       <a href="#sec-stepper">Steppers de Progresso</a>
       <a href="#sec-skeleton">Skeleton Loading</a>
       <a href="#sec-tabs">Abas & Navegação</a>
@@ -522,6 +525,42 @@
         </div>
         <pre><code><span class="tok-k">&lt;span</span> <span class="tok-f">data-counter</span>=<span class="tok-s">"28450"</span> <span class="tok-f">data-counter-prefix</span>=<span class="tok-s">"R$ "</span><span class="tok-k">&gt;</span>R$ 0<span class="tok-k">&lt;/span&gt;</span>
 <span class="tok-k">&lt;span</span> <span class="tok-f">data-counter</span>=<span class="tok-s">"99.9"</span> <span class="tok-f">data-counter-suffix</span>=<span class="tok-s">"%"</span><span class="tok-k">&gt;</span>0%<span class="tok-k">&lt;/span&gt;</span></code></pre>
+      </section>
+
+      <!-- Charts (Pure SVG Framework) -->
+      <section id="sec-charts" class="docs-section">
+        <h2>Gráficos Vetoriais Interativos (Pure SVG & CSS)</h2>
+        <p class="lead">Framework completo de gráficos incorporado ao Frame PER sem nenhuma dependência externa. Suporta múltiplos modelos com inicialização declarativa (<code>data-chart</code>) ou via API JavaScript (<code>new FramePER.Chart</code>). <a href="charts.html" class="f-w-semibold">Ver demonstração completa com todos os 9 modelos &rarr;</a></p>
+
+        <div class="preview grid grid-md-2 gap-4">
+          <!-- Area Chart Preview -->
+          <div class="card p-4 stack gap-2">
+            <span class="eyebrow text-main">Gráfico de Área Suave (Spline)</span>
+            <div class="frame-chart"
+                 data-chart="area"
+                 data-chart-options='{"height":180,"format":"currency","curved":true,"fill":true}'
+                 data-chart-data='{"labels":["Jan","Fev","Mar","Abr","Mai","Jun"],"series":[{"name":"Receita","data":[15000,22000,19000,28000,26000,34000],"color":"#3b82f6"}]}'>
+            </div>
+          </div>
+
+          <!-- Donut Chart Preview -->
+          <div class="card p-4 stack gap-2">
+            <span class="eyebrow text-main">Gráfico de Rosca (Donut)</span>
+            <div class="frame-chart"
+                 data-chart="donut"
+                 data-chart-options='{"height":180,"donutCutout":0.65,"centerText":"100%","centerSubtext":"Mix"}'
+                 data-chart-data='{"series":[{"name":"Online","value":60,"color":"#10b981"},{"name":"Físico","value":25,"color":"#3b82f6"},{"name":"Parceiros","value":15,"color":"#f59e0b"}]}'>
+            </div>
+          </div>
+        </div>
+        <pre><code><span class="tok-k">&lt;!-- Inicialização via HTML --&gt;</span>
+<span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"frame-chart"</span> <span class="tok-f">data-chart</span>=<span class="tok-s">"area"</span> <span class="tok-f">data-chart-data</span>=<span class="tok-s">'{"labels":["Jan",...],"series":[{"name":"Receita","data":[15000,...]}]}'</span><span class="tok-k">&gt;&lt;/div&gt;</span>
+
+<span class="tok-k">&lt;!-- Ou via JavaScript --&gt;</span>
+<span class="tok-k">const</span> chart = <span class="tok-k">new</span> <span class="tok-k">FramePER</span>.<span class="tok-k">Chart</span>(<span class="tok-s">'#meu-grafico'</span>, {
+  type: <span class="tok-s">'donut'</span>,
+  data: { series: [{ name: <span class="tok-s">'A'</span>, value: <span class="tok-s">60</span> }, { name: <span class="tok-s">'B'</span>, value: <span class="tok-s">40</span> }] }
+});</code></pre>
       </section>
 
       <!-- Stepper -->

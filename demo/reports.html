@@ -33,6 +33,10 @@
       </a>
 
       <span class="sidebar-label">Relatórios</span>
+      <a href="charts.html" class="sidebar-link">
+        <i class="icon icon-activity"></i> Gráficos SVG
+        <span class="badge badge-pill badge-primary">Novo</span>
+      </a>
       <a href="reports.html" class="sidebar-link active">
         <i class="icon icon-calendar"></i> Agendamentos
       </a>
@@ -168,75 +172,23 @@
                 <p class="card-subtitle">Volume diário de horários ocupados</p>
               </div>
               <div class="cluster gap-2">
-                <button class="btn btn-secondary btn-sm">Semanal</button>
-                <button class="btn btn-outline btn-sm">Mensal</button>
+                <button class="btn btn-secondary btn-sm" id="btnRepWeekly">Semanal</button>
+                <button class="btn btn-outline btn-sm" id="btnRepMonthly">Mensal</button>
               </div>
             </div>
 
-            <div>
-              <div class="bars">
-                <div class="bar muted" style="height: 35%;" data-tooltip="Seg: 12 agendamentos"></div>
-                <div class="bar" style="height: 75%;" data-tooltip="Ter: 28 agendamentos"></div>
-                <div class="bar" style="height: 90%;" data-tooltip="Qua: 34 agendamentos"></div>
-                <div class="bar muted" style="height: 60%;" data-tooltip="Qui: 22 agendamentos"></div>
-                <div class="bar" style="height: 98%;" data-tooltip="Sex: 38 agendamentos"></div>
-                <div class="bar muted" style="height: 40%;" data-tooltip="Sáb: 15 agendamentos"></div>
-                <div class="bar muted" style="height: 20%;" data-tooltip="Dom: 6 agendamentos"></div>
-              </div>
-              <div class="bar-labels">
-                <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
-              </div>
-            </div>
+            <!-- Interactive Vector Bar Chart -->
+            <div id="reportsBarChart"></div>
           </div>
 
-          <!-- Category Breakdown Progress Card -->
+          <!-- Category Breakdown Interactive Donut Chart -->
           <div class="card p-4 stack gap-4">
             <div>
               <h3 class="card-title">Categorias de Serviço</h3>
               <p class="card-subtitle">Distribuição das solicitações de clientes</p>
             </div>
 
-            <div class="stack gap-3">
-              <div>
-                <div class="d-flex justify-content-between f-s-2 m-b-1">
-                  <span class="f-w-medium">Consultoria Técnica</span>
-                  <span class="text-muted">45% (666)</span>
-                </div>
-                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
-                  <div class="bg-primary h-100" style="width: 45%;"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between f-s-2 m-b-1">
-                  <span class="f-w-medium">Suporte & Integração</span>
-                  <span class="text-muted">30% (444)</span>
-                </div>
-                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
-                  <div class="bg-blue h-100" style="width: 30%;"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between f-s-2 m-b-1">
-                  <span class="f-w-medium">Reunião Comercial</span>
-                  <span class="text-muted">18% (266)</span>
-                </div>
-                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
-                  <div class="bg-yellow h-100" style="width: 18%;"></div>
-                </div>
-              </div>
-
-              <div>
-                <div class="d-flex justify-content-between f-s-2 m-b-1">
-                  <span class="f-w-medium">Treinamento de Equipe</span>
-                  <span class="text-muted">7% (104)</span>
-                </div>
-                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
-                  <div class="bg-green h-100" style="width: 7%;"></div>
-                </div>
-              </div>
-            </div>
+            <div id="reportsDonutChart"></div>
 
             <div class="alert alert-blue p-3 m-t-auto">
               <span class="f-s-2"><strong>Dica:</strong> A taxa de ocupação das sextas-feiras atingiu 98%. Considere abrir novos horários.</span>
@@ -428,5 +380,67 @@
 
   <script src="../dist/framePER.min.js"></script>
   <script src="demo.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const repBarChart = new FramePER.Chart('#reportsBarChart', {
+        type: 'bar',
+        data: {
+          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+          series: [
+            { name: 'Agendamentos', data: [12, 28, 34, 22, 38, 15, 6], color: '#3b82f6' }
+          ]
+        },
+        options: {
+          height: 250,
+          format: 'number',
+          tooltip: true,
+          legend: false
+        }
+      });
+
+      const repDonutChart = new FramePER.Chart('#reportsDonutChart', {
+        type: 'donut',
+        data: {
+          labels: ['Consultoria', 'Suporte', 'Comercial', 'Treinamento'],
+          series: [
+            { name: 'Consultoria', value: 45, color: '#3b82f6' },
+            { name: 'Suporte', value: 30, color: '#06b6d4' },
+            { name: 'Comercial', value: 18, color: '#f59e0b' },
+            { name: 'Treinamento', value: 7, color: '#10b981' }
+          ]
+        },
+        options: {
+          height: 230,
+          donutCutout: 0.65,
+          centerText: '1.480',
+          centerSubtext: 'Sessões',
+          tooltip: true,
+          legend: true
+        }
+      });
+
+      const btnWeekly = document.getElementById('btnRepWeekly');
+      const btnMonthly = document.getElementById('btnRepMonthly');
+      if (btnWeekly && btnMonthly) {
+        btnWeekly.addEventListener('click', () => {
+          btnWeekly.className = 'btn btn-secondary btn-sm';
+          btnMonthly.className = 'btn btn-outline btn-sm';
+          repBarChart.update({
+            labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+            series: [{ name: 'Agendamentos', data: [12, 28, 34, 22, 38, 15, 6], color: '#3b82f6' }]
+          });
+        });
+
+        btnMonthly.addEventListener('click', () => {
+          btnMonthly.className = 'btn btn-secondary btn-sm';
+          btnWeekly.className = 'btn btn-outline btn-sm';
+          repBarChart.update({
+            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+            series: [{ name: 'Agendamentos', data: [85, 110, 135, 160], color: '#3b82f6' }]
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>

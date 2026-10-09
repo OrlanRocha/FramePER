@@ -756,7 +756,949 @@
                     }
                 });
             }
-        }
+        },
+
+        // --- 10. Interactive SVG Charts Framework ---
+        Chart: (function() {
+            const SVG_NS = 'http://www.w3.org/2000/svg';
+            const DEFAULT_PALETTE = ['#3b82f6', '#10b981', '#f59e0b', '#8b5cf6', '#ec4899', '#06b6d4', '#f97316', '#64748b'];
+
+            function createSVG(tag, attrs = {}) {
+                const el = document.createElementNS(SVG_NS, tag);
+                for (const [k, v] of Object.entries(attrs)) {
+                    if (v !== undefined && v !== null) el.setAttribute(k, v);
+                }
+                return el;
+            }
+
+            function calculateNiceTicks(min, max, maxTicks = 5) {
+                if (min === max) {
+                    if (min === 0) { max = 10; }
+                    else { min = min > 0 ? 0 : min * 2; max = max > 0 ? max * 1.5 : 0; }
+                }
+                if (min > 0 && min < max * 0.25) min = 0;
+                const range = max - min;
+                const roughStep = range / (maxTicks - 1);
+                const exponent = Math.floor(Math.log10(Math.max(roughStep, 0.0001)));
+                const fraction = roughStep / Math.pow(10, exponent);
+                let niceFraction = 10;
+                if (fraction <= 1.5) niceFraction = 1;
+                else if (fraction <= 3) niceFraction = 2;
+                else if (fraction <= 7) niceFraction = 5;
+                const niceStep = niceFraction * Math.pow(10, exponent);
+                const niceMin = Math.floor(min / niceStep) * niceStep;
+                const niceMax = Math.ceil(max / niceStep) * niceStep;
+                const ticks = [];
+                for (let v = niceMin; v <= niceMax + niceStep * 0.01; v += niceStep) {
+                    ticks.push(Number(v.toFixed(6)));
+                }
+                return { min: niceMin, max: niceMax, ticks };
+            }
+
+            function getSplinePath(points) {
+                if (!points || !points.length) return '';
+                if (points.length === 1) return `M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)}`;
+                if (points.length === 2) return `M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)} L ${points[1].x.toFixed(2)} ${points[1].y.toFixed(2)}`;
+                let d = `M ${points[0].x.toFixed(2)} ${points[0].y.toFixed(2)}`;
+                for (let i = 0; i < points.length - 1; i++) {
+                    const p0 = i > 0 ? points[i - 1] : points[i];
+                    const p1 = points[i];
+                    const p2 = points[i + 1];
+                    const p3 = i < points.length - 2 ? points[i + 2] : p2;
+                    const cp1x = p1.x + (p2.x - p0.x) / 6;
+                    const cp1y = p1.y + (p2.y - p0.y) / 6;
+                    const cp2x = p2.x - (p3.x - p1.x) / 6;
+                    const cp2y = p2.y - (p3.y - p1.y) / 6;
+                    d += ` C ${cp1x.toFixed(2)} ${cp1y.toFixed(2)}, ${cp2x.toFixed(2)} ${cp2y.toFixed(2)}, ${p2.x.toFixed(2)} ${p2.y.toFixed(2)}`;
+                }
+                return d;
+            }
+
+            function getLinearPath(points) {
+                if (!points || !points.length) return '';
+                return points.map((p, i) => `${i === 0 ? 'M' : 'L'} ${p.x.toFixed(2)} ${p.y.toFixed(2)}`).join(' ');
+            }
+
+            function describeDonutSlice(cx, cy, innerR, outerR, startAngle, endAngle) {
+                const angleDiff = endAngle - startAngle;
+                if (angleDiff >= 360) endAngle = startAngle + 359.999;
+                const startRad = (startAngle - 90) * Math.PI / 180;
+                const endRad = (endAngle - 90) * Math.PI / 180;
+                const x1 = cx + outerR * Math.cos(startRad);
+                const y1 = cy + outerR * Math.sin(startRad);
+                const x2 = cx + outerR * Math.cos(endRad);
+                const y2 = cy + outerR * Math.sin(endRad);
+                const largeArc = (endAngle - startAngle) > 180 ? 1 : 0;
+
+                if (innerR <= 0) {
+                    return `M ${cx} ${cy} L ${x1.toFixed(2)} ${y1.toFixed(2)} A ${outerR} ${outerR} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} Z`;
+                }
+                const x3 = cx + innerR * Math.cos(endRad);
+                const y3 = cy + innerR * Math.sin(endRad);
+                const x4 = cx + innerR * Math.cos(startRad);
+                const y4 = cy + innerR * Math.sin(startRad);
+                return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${outerR} ${outerR} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)} L ${x3.toFixed(2)} ${y3.toFixed(2)} A ${innerR} ${innerR} 0 ${largeArc} 0 ${x4.toFixed(2)} ${y4.toFixed(2)} Z`;
+            }
+
+            function describeArc(cx, cy, r, startAngle, endAngle) {
+                const startRad = (startAngle - 90) * Math.PI / 180;
+                const endRad = (endAngle - 90) * Math.PI / 180;
+                const x1 = cx + r * Math.cos(startRad);
+                const y1 = cy + r * Math.sin(startRad);
+                const x2 = cx + r * Math.cos(endRad);
+                const y2 = cy + r * Math.sin(endRad);
+                const largeArc = (endAngle - startAngle) > 180 ? 1 : 0;
+                return `M ${x1.toFixed(2)} ${y1.toFixed(2)} A ${r} ${r} 0 ${largeArc} 1 ${x2.toFixed(2)} ${y2.toFixed(2)}`;
+            }
+
+            function formatVal(val, fmt) {
+                if (typeof fmt === 'function') return fmt(val);
+                if (val === undefined || val === null || isNaN(val)) return '0';
+                const n = Number(val);
+                if (fmt === 'currency') {
+                    return n.toLocaleString('pt-BR', { style: 'currency', currency: 'BRL' });
+                }
+                if (fmt === 'percent') {
+                    return n.toLocaleString('pt-BR') + '%';
+                }
+                return n.toLocaleString('pt-BR');
+            }
+
+            class FramePERChart {
+                constructor(target, config = {}) {
+                    this.container = typeof target === 'string' ? document.querySelector(target) : target;
+                    if (!this.container) {
+                        console.warn('FramePER.Chart: Elemento alvo não encontrado.', target);
+                        return;
+                    }
+                    this.id = 'fpc-' + Math.random().toString(36).substring(2, 9);
+                    this.config = Object.assign({}, config);
+                    this.type = this.config.type || 'line';
+                    this.data = this.config.data || { labels: [], series: [] };
+                    this.options = Object.assign({
+                        height: this.type === 'sparkline' ? 50 : 280,
+                        curved: true,
+                        fill: true,
+                        showDots: true,
+                        showGrid: true,
+                        format: 'number',
+                        tooltip: true,
+                        legend: true,
+                        animated: true,
+                        donutCutout: 0.65,
+                        strokeWidth: 2.5
+                    }, this.config.options || {});
+
+                    this._normalizeData();
+                    this._setupDOM();
+                    this._bindEvents();
+                    this.render();
+
+                    if ('ResizeObserver' in window) {
+                        this._resizeObserver = new ResizeObserver(() => {
+                            this.render();
+                        });
+                        this._resizeObserver.observe(this.container);
+                    }
+                }
+
+                _normalizeData() {
+                    if (Array.isArray(this.data.series)) {
+                        this.series = this.data.series.map((s, idx) => {
+                            const color = s.color || DEFAULT_PALETTE[idx % DEFAULT_PALETTE.length];
+                            if (typeof s === 'number') {
+                                return { name: this.data.labels ? this.data.labels[idx] || `Item ${idx + 1}` : `Item ${idx + 1}`, value: s, color, hidden: false };
+                            }
+                            if (s.value !== undefined && s.data === undefined) {
+                                return { name: s.name || `Série ${idx + 1}`, value: s.value, color, hidden: !!s.hidden };
+                            }
+                            const rawData = Array.isArray(s.data) ? s.data : [];
+                            return {
+                                name: s.name || `Série ${idx + 1}`,
+                                data: rawData,
+                                color,
+                                hidden: !!s.hidden
+                            };
+                        });
+                    } else {
+                        this.series = [];
+                    }
+                    this.labels = Array.isArray(this.data.labels) ? this.data.labels : [];
+                }
+
+                _setupDOM() {
+                    this.container.innerHTML = '';
+                    this.container.classList.add('frame-chart-container');
+                    if (this.type === 'sparkline') {
+                        this.container.classList.add('frame-chart-sparkline');
+                    }
+
+                    if (this.config.title || this.config.subtitle) {
+                        const header = document.createElement('div');
+                        header.className = 'frame-chart-header';
+                        if (this.config.title) {
+                            const title = document.createElement('h4');
+                            title.className = 'frame-chart-title';
+                            title.textContent = this.config.title;
+                            header.appendChild(title);
+                        }
+                        if (this.config.subtitle) {
+                            const sub = document.createElement('span');
+                            sub.className = 'frame-chart-subtitle';
+                            sub.textContent = this.config.subtitle;
+                            header.appendChild(sub);
+                        }
+                        this.container.appendChild(header);
+                    }
+
+                    this.svgWrap = document.createElement('div');
+                    this.svgWrap.className = 'frame-chart-svg-wrap';
+                    this.svgWrap.style.height = (this.options.height || 280) + 'px';
+                    this.container.appendChild(this.svgWrap);
+
+                    this.tooltip = document.createElement('div');
+                    this.tooltip.className = 'frame-chart-tooltip';
+                    this.container.appendChild(this.tooltip);
+
+                    if (this.options.legend && this.type !== 'sparkline') {
+                        this.legendWrap = document.createElement('div');
+                        this.legendWrap.className = 'frame-chart-legend';
+                        this.container.appendChild(this.legendWrap);
+                    }
+                }
+
+                _bindEvents() {
+                    this._onMouseMove = (e) => this._handleMouseMove(e);
+                    this._onMouseLeave = () => this._handleMouseLeave();
+                    this.svgWrap.addEventListener('mousemove', this._onMouseMove);
+                    this.svgWrap.addEventListener('mouseleave', this._onMouseLeave);
+                }
+
+                render() {
+                    if (!this.svgWrap) return;
+                    this.svgWrap.innerHTML = '';
+                    const width = Math.max(this.svgWrap.clientWidth || this.container.clientWidth || 320, 100);
+                    const height = this.options.height || (this.type === 'sparkline' ? 50 : 280);
+
+                    this.svg = createSVG('svg', {
+                        class: 'frame-chart-svg',
+                        viewBox: `0 0 ${width} ${height}`,
+                        width: '100%',
+                        height: '100%'
+                    });
+                    this.svgWrap.appendChild(this.svg);
+
+                    this.defs = createSVG('defs');
+                    this.svg.appendChild(this.defs);
+
+                    if (this.type === 'line' || this.type === 'area') {
+                        this._renderLineArea(width, height);
+                    } else if (this.type === 'bar') {
+                        this._renderBar(width, height);
+                    } else if (this.type === 'horizontal-bar') {
+                        this._renderHorizontalBar(width, height);
+                    } else if (this.type === 'donut' || this.type === 'pie') {
+                        this._renderDonutPie(width, height);
+                    } else if (this.type === 'gauge') {
+                        this._renderGauge(width, height);
+                    } else if (this.type === 'radar') {
+                        this._renderRadar(width, height);
+                    } else if (this.type === 'sparkline') {
+                        this._renderSparkline(width, height);
+                    }
+
+                    this._renderLegend();
+                }
+
+                _renderLineArea(width, height) {
+                    const padding = { top: 20, right: 20, bottom: 35, left: 45 };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    if (plotW <= 0 || plotH <= 0) return;
+
+                    const visibleSeries = this.series.filter(s => !s.hidden && s.data && s.data.length);
+                    let allVals = [];
+                    visibleSeries.forEach(s => allVals.push(...s.data));
+                    if (!allVals.length) allVals = [0, 10];
+
+                    const { min, max, ticks } = calculateNiceTicks(Math.min(...allVals), Math.max(...allVals));
+                    const valRange = max - min || 1;
+
+                    // Grid & Y labels
+                    if (this.options.showGrid) {
+                        const gridG = createSVG('g', { class: 'frame-chart-grid' });
+                        const labelsG = createSVG('g', { class: 'frame-chart-labels' });
+                        ticks.forEach(t => {
+                            const y = padding.top + plotH - ((t - min) / valRange) * plotH;
+                            gridG.appendChild(createSVG('line', { x1: padding.left, y1: y, x2: width - padding.right, y2: y }));
+                            const text = createSVG('text', {
+                                x: padding.left - 8,
+                                y: y + 4,
+                                'text-anchor': 'end'
+                            });
+                            text.textContent = formatVal(t, this.options.format);
+                            labelsG.appendChild(text);
+                        });
+                        this.svg.appendChild(gridG);
+                        this.svg.appendChild(labelsG);
+                    }
+
+                    // X labels
+                    const numPoints = Math.max(this.labels.length, ...visibleSeries.map(s => s.data.length), 1);
+                    const stepX = numPoints > 1 ? plotW / (numPoints - 1) : plotW / 2;
+                    const xLabelsG = createSVG('g', { class: 'frame-chart-labels' });
+                    this.labels.forEach((lbl, i) => {
+                        const x = padding.left + (numPoints > 1 ? i * stepX : plotW / 2);
+                        const text = createSVG('text', {
+                            x,
+                            y: height - 10,
+                            'text-anchor': 'middle'
+                        });
+                        text.textContent = lbl;
+                        xLabelsG.appendChild(text);
+                    });
+                    this.svg.appendChild(xLabelsG);
+
+                    // Crosshair guideline
+                    this.crosshair = createSVG('line', {
+                        class: 'frame-chart-crosshair',
+                        y1: padding.top,
+                        y2: padding.top + plotH,
+                        style: 'opacity: 0'
+                    });
+                    this.svg.appendChild(this.crosshair);
+
+                    // Plot points and paths
+                    this.computedPoints = [];
+                    visibleSeries.forEach((s, sIdx) => {
+                        const pts = s.data.map((val, i) => {
+                            const x = padding.left + (numPoints > 1 ? i * stepX : plotW / 2);
+                            const y = padding.top + plotH - ((val - min) / valRange) * plotH;
+                            return { x, y, val, label: this.labels[i] || '', seriesName: s.name, color: s.color };
+                        });
+                        this.computedPoints.push({ series: s, points: pts });
+
+                        // Gradient for Area
+                        const isArea = this.type === 'area' || this.options.fill;
+                        if (isArea) {
+                            const gradId = `${this.id}-grad-${sIdx}`;
+                            const grad = createSVG('linearGradient', { id: gradId, x1: '0', y1: '0', x2: '0', y2: '1' });
+                            grad.appendChild(createSVG('stop', { offset: '0%', 'stop-color': s.color, 'stop-opacity': '0.35' }));
+                            grad.appendChild(createSVG('stop', { offset: '100%', 'stop-color': s.color, 'stop-opacity': '0.02' }));
+                            this.defs.appendChild(grad);
+
+                            const linePath = this.options.curved ? getSplinePath(pts) : getLinearPath(pts);
+                            const baselineY = padding.top + plotH;
+                            const areaD = `${linePath} L ${pts[pts.length - 1].x.toFixed(2)} ${baselineY} L ${pts[0].x.toFixed(2)} ${baselineY} Z`;
+                            this.svg.appendChild(createSVG('path', {
+                                class: 'frame-chart-area',
+                                d: areaD,
+                                fill: `url(#${gradId})`
+                            }));
+                        }
+
+                        // Line stroke
+                        const lineD = this.options.curved ? getSplinePath(pts) : getLinearPath(pts);
+                        const line = createSVG('path', {
+                            class: 'frame-chart-line',
+                            d: lineD,
+                            stroke: s.color,
+                            'stroke-width': this.options.strokeWidth || 2.5
+                        });
+                        this.svg.appendChild(line);
+
+                        // Dots
+                        if (this.options.showDots) {
+                            const dotsG = createSVG('g', { class: 'frame-chart-dots' });
+                            pts.forEach(p => {
+                                const dot = createSVG('circle', {
+                                    class: 'frame-chart-dot',
+                                    cx: p.x.toFixed(2),
+                                    cy: p.y.toFixed(2),
+                                    r: 4,
+                                    fill: s.color
+                                });
+                                dotsG.appendChild(dot);
+                            });
+                            this.svg.appendChild(dotsG);
+                        }
+                    });
+
+                    this.plotArea = { padding, plotW, plotH, stepX, numPoints, min, max };
+                }
+
+                _renderBar(width, height) {
+                    const padding = { top: 20, right: 20, bottom: 35, left: 45 };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    if (plotW <= 0 || plotH <= 0) return;
+
+                    const visibleSeries = this.series.filter(s => !s.hidden && s.data && s.data.length);
+                    let allVals = [];
+                    visibleSeries.forEach(s => allVals.push(...s.data));
+                    if (!allVals.length) allVals = [0, 10];
+
+                    const { min, max, ticks } = calculateNiceTicks(Math.min(0, Math.min(...allVals)), Math.max(...allVals));
+                    const valRange = max - min || 1;
+
+                    // Grid & Y labels
+                    if (this.options.showGrid) {
+                        const gridG = createSVG('g', { class: 'frame-chart-grid' });
+                        const labelsG = createSVG('g', { class: 'frame-chart-labels' });
+                        ticks.forEach(t => {
+                            const y = padding.top + plotH - ((t - min) / valRange) * plotH;
+                            gridG.appendChild(createSVG('line', { x1: padding.left, y1: y, x2: width - padding.right, y2: y }));
+                            const text = createSVG('text', {
+                                x: padding.left - 8,
+                                y: y + 4,
+                                'text-anchor': 'end'
+                            });
+                            text.textContent = formatVal(t, this.options.format);
+                            labelsG.appendChild(text);
+                        });
+                        this.svg.appendChild(gridG);
+                        this.svg.appendChild(labelsG);
+                    }
+
+                    const numCategories = Math.max(this.labels.length, ...visibleSeries.map(s => s.data.length), 1);
+                    const catWidth = plotW / numCategories;
+                    const numSeries = Math.max(visibleSeries.length, 1);
+                    const barGroupWidth = catWidth * 0.72;
+                    const singleBarWidth = Math.max(barGroupWidth / numSeries - 3, 4);
+
+                    const xLabelsG = createSVG('g', { class: 'frame-chart-labels' });
+                    this.labels.forEach((lbl, i) => {
+                        const x = padding.left + i * catWidth + catWidth / 2;
+                        const text = createSVG('text', { x, y: height - 10, 'text-anchor': 'middle' });
+                        text.textContent = lbl;
+                        xLabelsG.appendChild(text);
+                    });
+                    this.svg.appendChild(xLabelsG);
+
+                    const barsG = createSVG('g', { class: 'frame-chart-bars' });
+                    visibleSeries.forEach((s, sIdx) => {
+                        s.data.forEach((val, cIdx) => {
+                            const catStartX = padding.left + cIdx * catWidth + (catWidth - barGroupWidth) / 2;
+                            const barX = catStartX + sIdx * (singleBarWidth + 3);
+                            const barH = Math.max(((val - min) / valRange) * plotH, 2);
+                            const barY = padding.top + plotH - barH;
+
+                            const rect = createSVG('rect', {
+                                class: 'frame-chart-bar',
+                                x: barX.toFixed(2),
+                                y: barY.toFixed(2),
+                                width: singleBarWidth.toFixed(2),
+                                height: barH.toFixed(2),
+                                fill: s.color,
+                                'data-series': s.name,
+                                'data-val': val,
+                                'data-label': this.labels[cIdx] || '',
+                                'data-color': s.color
+                            });
+                            rect.addEventListener('mouseenter', (e) => this._showElementTooltip(e, rect, this.labels[cIdx] || '', s.name, val, s.color));
+                            rect.addEventListener('mouseleave', () => this.tooltip.classList.remove('active'));
+                            barsG.appendChild(rect);
+                        });
+                    });
+                    this.svg.appendChild(barsG);
+                }
+
+                _renderHorizontalBar(width, height) {
+                    const padding = { top: 15, right: 45, bottom: 20, left: 85 };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    if (plotW <= 0 || plotH <= 0) return;
+
+                    const visibleSeries = this.series.filter(s => !s.hidden);
+                    const s = visibleSeries[0] || { data: [], color: DEFAULT_PALETTE[0] };
+                    const vals = Array.isArray(s.data) ? s.data : (visibleSeries.map(item => item.value || 0));
+                    const maxVal = Math.max(...vals, 10);
+                    const numBars = vals.length;
+                    const rowH = plotH / numBars;
+                    const barH = Math.min(rowH * 0.6, 26);
+
+                    const barsG = createSVG('g', { class: 'frame-chart-bars' });
+                    const labelsG = createSVG('g', { class: 'frame-chart-labels' });
+
+                    vals.forEach((v, i) => {
+                        const y = padding.top + i * rowH + (rowH - barH) / 2;
+                        const barW = Math.max((v / maxVal) * plotW, 3);
+                        const labelText = this.labels[i] || (visibleSeries[i] ? visibleSeries[i].name : `Item ${i + 1}`);
+                        const color = (visibleSeries[i] && visibleSeries[i].color) || s.color || DEFAULT_PALETTE[i % DEFAULT_PALETTE.length];
+
+                        // Y label
+                        const text = createSVG('text', {
+                            x: padding.left - 10,
+                            y: y + barH / 2 + 4,
+                            'text-anchor': 'end'
+                        });
+                        text.textContent = labelText;
+                        labelsG.appendChild(text);
+
+                        // Background track
+                        barsG.appendChild(createSVG('rect', {
+                            x: padding.left,
+                            y: y.toFixed(2),
+                            width: plotW.toFixed(2),
+                            height: barH.toFixed(2),
+                            fill: 'var(--bg-subtle)',
+                            rx: 4,
+                            ry: 4
+                        }));
+
+                        // Value bar
+                        const rect = createSVG('rect', {
+                            class: 'frame-chart-bar',
+                            x: padding.left,
+                            y: y.toFixed(2),
+                            width: barW.toFixed(2),
+                            height: barH.toFixed(2),
+                            fill: color,
+                            rx: 4,
+                            ry: 4
+                        });
+                        rect.addEventListener('mouseenter', (e) => this._showElementTooltip(e, rect, labelText, '', v, color));
+                        rect.addEventListener('mouseleave', () => this.tooltip.classList.remove('active'));
+                        barsG.appendChild(rect);
+
+                        // Value label at end
+                        const valText = createSVG('text', {
+                            x: padding.left + barW + 8,
+                            y: y + barH / 2 + 4,
+                            'text-anchor': 'start',
+                            'font-weight': '600',
+                            fill: 'var(--text-main)'
+                        });
+                        valText.textContent = formatVal(v, this.options.format);
+                        labelsG.appendChild(valText);
+                    });
+
+                    this.svg.appendChild(barsG);
+                    this.svg.appendChild(labelsG);
+                }
+
+                _renderDonutPie(width, height) {
+                    const cx = width / 2;
+                    const cy = height / 2;
+                    const r = Math.min(width, height) / 2 - 20;
+                    if (r <= 10) return;
+                    const innerR = this.type === 'donut' ? r * (this.options.donutCutout || 0.65) : 0;
+
+                    const visibleSeries = this.series.filter(s => !s.hidden);
+                    const values = visibleSeries.map(s => s.value !== undefined ? s.value : (Array.isArray(s.data) ? s.data[0] || 0 : 0));
+                    const total = values.reduce((acc, v) => acc + (Number(v) || 0), 0) || 1;
+
+                    let currentAngle = 0;
+                    const slicesG = createSVG('g', { class: 'frame-chart-slices' });
+
+                    visibleSeries.forEach((s, i) => {
+                        const val = values[i];
+                        const sliceAngle = (val / total) * 360;
+                        const startA = currentAngle;
+                        const endA = currentAngle + sliceAngle;
+                        currentAngle = endA;
+
+                        const d = describeDonutSlice(cx, cy, innerR, r, startA, endA);
+                        const slice = createSVG('path', {
+                            class: 'frame-chart-slice',
+                            d,
+                            fill: s.color
+                        });
+                        const pct = ((val / total) * 100).toFixed(1) + '%';
+                        slice.addEventListener('mouseenter', (e) => {
+                            this._showElementTooltip(e, slice, s.name, pct, val, s.color);
+                        });
+                        slice.addEventListener('mouseleave', () => this.tooltip.classList.remove('active'));
+                        slicesG.appendChild(slice);
+                    });
+                    this.svg.appendChild(slicesG);
+
+                    // Donut center text
+                    if (this.type === 'donut') {
+                        const centerVal = this.options.centerText !== undefined ? this.options.centerText : formatVal(total, this.options.format);
+                        const centerLbl = this.options.centerSubtext !== undefined ? this.options.centerSubtext : 'Total';
+
+                        const valText = createSVG('text', {
+                            class: 'frame-chart-center-val',
+                            x: cx,
+                            y: cy - 4
+                        });
+                        valText.textContent = centerVal;
+                        this.svg.appendChild(valText);
+
+                        if (centerLbl) {
+                            const lblText = createSVG('text', {
+                                class: 'frame-chart-center-lbl',
+                                x: cx,
+                                y: cy + 18
+                            });
+                            lblText.textContent = centerLbl;
+                            this.svg.appendChild(lblText);
+                        }
+                    }
+                }
+
+                _renderGauge(width, height) {
+                    const cx = width / 2;
+                    const cy = height * 0.72;
+                    const r = Math.min(width * 0.45, height * 0.55);
+                    const strokeWidth = r * 0.22;
+                    const startAngle = -100;
+                    const endAngle = 100;
+                    const totalAngle = endAngle - startAngle;
+
+                    const val = (this.series[0] && (this.series[0].value !== undefined ? this.series[0].value : (this.series[0].data && this.series[0].data[0]))) || 75;
+                    const maxVal = this.options.max || 100;
+                    const minVal = this.options.min || 0;
+                    const pct = Math.min(Math.max((val - minVal) / (maxVal - minVal), 0), 1);
+                    const valAngle = startAngle + totalAngle * pct;
+                    const color = (this.series[0] && this.series[0].color) || DEFAULT_PALETTE[0];
+
+                    // Track arc
+                    const bgArc = createSVG('path', {
+                        class: 'frame-chart-gauge-bg',
+                        d: describeArc(cx, cy, r, startAngle, endAngle),
+                        'stroke-width': strokeWidth
+                    });
+                    this.svg.appendChild(bgArc);
+
+                    // Progress arc
+                    if (pct > 0) {
+                        const valArc = createSVG('path', {
+                            class: 'frame-chart-gauge-val',
+                            d: describeArc(cx, cy, r, startAngle, valAngle),
+                            stroke: color,
+                            'stroke-width': strokeWidth
+                        });
+                        this.svg.appendChild(valArc);
+                    }
+
+                    // Value and Subtitle text
+                    const centerVal = this.options.centerText || (formatVal(val, this.options.format));
+                    const valText = createSVG('text', {
+                        class: 'frame-chart-center-val',
+                        x: cx,
+                        y: cy - 10
+                    });
+                    valText.textContent = centerVal;
+                    this.svg.appendChild(valText);
+
+                    const subText = createSVG('text', {
+                        class: 'frame-chart-center-lbl',
+                        x: cx,
+                        y: cy + 15
+                    });
+                    subText.textContent = this.options.centerSubtext || `${Math.round(pct * 100)}% da Meta`;
+                    this.svg.appendChild(subText);
+
+                    // Min & Max indicator labels
+                    const labelsG = createSVG('g', { class: 'frame-chart-labels' });
+                    const minRad = (startAngle - 90) * Math.PI / 180;
+                    const maxRad = (endAngle - 90) * Math.PI / 180;
+                    const minLabel = createSVG('text', { x: cx + (r + strokeWidth * 0.8) * Math.cos(minRad), y: cy + (r + strokeWidth * 0.8) * Math.sin(minRad) + 12, 'text-anchor': 'middle' });
+                    minLabel.textContent = minVal;
+                    const maxLabel = createSVG('text', { x: cx + (r + strokeWidth * 0.8) * Math.cos(maxRad), y: cy + (r + strokeWidth * 0.8) * Math.sin(maxRad) + 12, 'text-anchor': 'middle' });
+                    maxLabel.textContent = maxVal;
+                    labelsG.appendChild(minLabel);
+                    labelsG.appendChild(maxLabel);
+                    this.svg.appendChild(labelsG);
+                }
+
+                _renderRadar(width, height) {
+                    const cx = width / 2;
+                    const cy = height / 2;
+                    const r = Math.min(width, height) / 2 - 35;
+                    const categories = this.labels;
+                    const numAxes = categories.length;
+                    if (numAxes < 3 || r <= 10) return;
+
+                    const levels = 4;
+                    const maxVal = this.options.max || 100;
+
+                    // Concentric polygon web
+                    for (let l = 1; l <= levels; l++) {
+                        const levelR = (r / levels) * l;
+                        const polyPts = [];
+                        for (let i = 0; i < numAxes; i++) {
+                            const angle = ((i / numAxes) * 360 - 90) * Math.PI / 180;
+                            polyPts.push(`${(cx + levelR * Math.cos(angle)).toFixed(2)},${(cy + levelR * Math.sin(angle)).toFixed(2)}`);
+                        }
+                        this.svg.appendChild(createSVG('polygon', {
+                            class: 'frame-chart-radar-grid',
+                            points: polyPts.join(' ')
+                        }));
+                    }
+
+                    // Axis lines & labels
+                    const labelsG = createSVG('g', { class: 'frame-chart-labels' });
+                    for (let i = 0; i < numAxes; i++) {
+                        const angle = ((i / numAxes) * 360 - 90) * Math.PI / 180;
+                        const axX = cx + r * Math.cos(angle);
+                        const axY = cy + r * Math.sin(angle);
+                        this.svg.appendChild(createSVG('line', {
+                            class: 'frame-chart-radar-axis',
+                            x1: cx,
+                            y1: cy,
+                            x2: axX,
+                            y2: axY
+                        }));
+
+                        const lblX = cx + (r + 18) * Math.cos(angle);
+                        const lblY = cy + (r + 18) * Math.sin(angle);
+                        const text = createSVG('text', {
+                            x: lblX,
+                            y: lblY + 4,
+                            'text-anchor': Math.abs(Math.cos(angle)) < 0.2 ? 'middle' : (Math.cos(angle) > 0 ? 'start' : 'end')
+                        });
+                        text.textContent = categories[i];
+                        labelsG.appendChild(text);
+                    }
+                    this.svg.appendChild(labelsG);
+
+                    // Series polygons
+                    const visibleSeries = this.series.filter(s => !s.hidden && s.data);
+                    visibleSeries.forEach(s => {
+                        const pts = [];
+                        s.data.forEach((val, i) => {
+                            const pct = Math.min(Math.max(val / maxVal, 0), 1);
+                            const curR = r * pct;
+                            const angle = ((i / numAxes) * 360 - 90) * Math.PI / 180;
+                            pts.push({ x: cx + curR * Math.cos(angle), y: cy + curR * Math.sin(angle), val, label: categories[i] });
+                        });
+
+                        const polyStr = pts.map(p => `${p.x.toFixed(2)},${p.y.toFixed(2)}`).join(' ');
+                        const poly = createSVG('polygon', {
+                            class: 'frame-chart-radar-poly',
+                            points: polyStr,
+                            fill: s.color,
+                            stroke: s.color
+                        });
+                        this.svg.appendChild(poly);
+
+                        // Dots
+                        pts.forEach(p => {
+                            const dot = createSVG('circle', {
+                                class: 'frame-chart-dot',
+                                cx: p.x.toFixed(2),
+                                cy: p.y.toFixed(2),
+                                r: 3.5,
+                                fill: s.color
+                            });
+                            dot.addEventListener('mouseenter', (e) => this._showElementTooltip(e, dot, p.label, s.name, p.val, s.color));
+                            dot.addEventListener('mouseleave', () => this.tooltip.classList.remove('active'));
+                            this.svg.appendChild(dot);
+                        });
+                    });
+                }
+
+                _renderSparkline(width, height) {
+                    const padding = { top: 4, right: 4, bottom: 4, left: 4 };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    const s = this.series[0] || { data: [5, 12, 8, 16, 10, 20], color: DEFAULT_PALETTE[0] };
+                    const rawData = Array.isArray(s.data) ? s.data : [10, 20];
+                    const min = Math.min(...rawData);
+                    const max = Math.max(...rawData);
+                    const range = max - min || 1;
+                    const stepX = plotW / (rawData.length - 1);
+
+                    const pts = rawData.map((val, i) => ({
+                        x: padding.left + i * stepX,
+                        y: padding.top + plotH - ((val - min) / range) * plotH
+                    }));
+
+                    // Area fill gradient
+                    const gradId = `${this.id}-spark-grad`;
+                    const grad = createSVG('linearGradient', { id: gradId, x1: '0', y1: '0', x2: '0', y2: '1' });
+                    grad.appendChild(createSVG('stop', { offset: '0%', 'stop-color': s.color, 'stop-opacity': '0.35' }));
+                    grad.appendChild(createSVG('stop', { offset: '100%', 'stop-color': s.color, 'stop-opacity': '0.0' }));
+                    this.defs.appendChild(grad);
+
+                    const lineD = getSplinePath(pts);
+                    const areaD = `${lineD} L ${pts[pts.length - 1].x.toFixed(2)} ${height} L ${pts[0].x.toFixed(2)} ${height} Z`;
+
+                    this.svg.appendChild(createSVG('path', { d: areaD, fill: `url(#${gradId})` }));
+                    this.svg.appendChild(createSVG('path', { d: lineD, fill: 'none', stroke: s.color, 'stroke-width': 2, 'stroke-linecap': 'round' }));
+                }
+
+                _renderLegend() {
+                    if (!this.legendWrap || !this.options.legend || this.type === 'sparkline') return;
+                    this.legendWrap.innerHTML = '';
+
+                    const isDonutOrPie = this.type === 'donut' || this.type === 'pie';
+                    const items = isDonutOrPie
+                        ? this.series.map(s => ({ name: s.name, color: s.color, hidden: s.hidden, ref: s }))
+                        : this.series.map(s => ({ name: s.name, color: s.color, hidden: s.hidden, ref: s }));
+
+                    items.forEach((item, idx) => {
+                        const el = document.createElement('div');
+                        el.className = 'frame-chart-legend-item' + (item.hidden ? ' dimmed' : '');
+                        el.innerHTML = `<span class="frame-chart-legend-color" style="background-color: ${item.color}"></span><span>${item.name}</span>`;
+
+                        el.addEventListener('click', () => {
+                            this.toggleSeries(idx);
+                        });
+                        this.legendWrap.appendChild(el);
+                    });
+                }
+
+                _handleMouseMove(e) {
+                    if (!this.computedPoints || !this.computedPoints.length || !this.options.tooltip) return;
+                    const rect = this.svgWrap.getBoundingClientRect();
+                    const mouseX = e.clientX - rect.left;
+                    const { padding, plotW, numPoints } = this.plotArea;
+                    const stepX = numPoints > 1 ? plotW / (numPoints - 1) : plotW / 2;
+                    let idx = Math.round((mouseX - padding.left) / stepX);
+                    idx = Math.max(0, Math.min(idx, numPoints - 1));
+
+                    const curX = padding.left + (numPoints > 1 ? idx * stepX : plotW / 2);
+
+                    // Move crosshair
+                    if (this.crosshair) {
+                        this.crosshair.setAttribute('x1', curX.toFixed(2));
+                        this.crosshair.setAttribute('x2', curX.toFixed(2));
+                        this.crosshair.style.opacity = '1';
+                    }
+
+                    // Build tooltip
+                    const headerText = this.labels[idx] || `Item ${idx + 1}`;
+                    let itemsHtml = '';
+                    let topY = Infinity;
+
+                    this.computedPoints.forEach(cp => {
+                        const p = cp.points[idx];
+                        if (p && !cp.series.hidden) {
+                            topY = Math.min(topY, p.y);
+                            itemsHtml += `
+                                <div class="frame-chart-tooltip-item">
+                                    <div class="frame-chart-tooltip-left">
+                                        <span class="frame-chart-tooltip-dot" style="background-color: ${p.color}"></span>
+                                        <span class="frame-chart-tooltip-label">${p.seriesName}</span>
+                                    </div>
+                                    <span class="frame-chart-tooltip-value">${formatVal(p.val, this.options.format)}</span>
+                                </div>
+                            `;
+                        }
+                    });
+
+                    this.tooltip.innerHTML = `
+                        <div class="frame-chart-tooltip-header">${headerText}</div>
+                        <div class="frame-chart-tooltip-items">${itemsHtml}</div>
+                    `;
+
+                    this.tooltip.style.left = curX + 'px';
+                    this.tooltip.style.top = Math.max(topY, 30) + 'px';
+                    this.tooltip.classList.add('active');
+                }
+
+                _handleMouseLeave() {
+                    if (this.crosshair) this.crosshair.style.opacity = '0';
+                    if (this.tooltip) this.tooltip.classList.remove('active');
+                }
+
+                _showElementTooltip(e, targetEl, title, subtitle, val, color) {
+                    if (!this.options.tooltip) return;
+                    const rect = this.svgWrap.getBoundingClientRect();
+                    const elRect = targetEl.getBoundingClientRect();
+                    const posX = elRect.left - rect.left + elRect.width / 2;
+                    const posY = elRect.top - rect.top;
+
+                    this.tooltip.innerHTML = `
+                        <div class="frame-chart-tooltip-header">${title}</div>
+                        <div class="frame-chart-tooltip-items">
+                            <div class="frame-chart-tooltip-item">
+                                <div class="frame-chart-tooltip-left">
+                                    <span class="frame-chart-tooltip-dot" style="background-color: ${color}"></span>
+                                    <span class="frame-chart-tooltip-label">${subtitle || title}</span>
+                                </div>
+                                <span class="frame-chart-tooltip-value">${formatVal(val, this.options.format)}</span>
+                            </div>
+                        </div>
+                    `;
+                    this.tooltip.style.left = posX + 'px';
+                    this.tooltip.style.top = posY + 'px';
+                    this.tooltip.classList.add('active');
+                }
+
+                toggleSeries(idx) {
+                    if (this.series[idx]) {
+                        this.series[idx].hidden = !this.series[idx].hidden;
+                        this.render();
+                    }
+                }
+
+                update(newData, newOptions = {}) {
+                    if (newData) {
+                        this.data = newData;
+                        this._normalizeData();
+                    }
+                    if (newOptions) {
+                        this.options = Object.assign(this.options, newOptions);
+                    }
+                    this.render();
+                }
+
+                destroy() {
+                    if (this._resizeObserver) this._resizeObserver.disconnect();
+                    if (this.svgWrap) {
+                        this.svgWrap.removeEventListener('mousemove', this._onMouseMove);
+                        this.svgWrap.removeEventListener('mouseleave', this._onMouseLeave);
+                    }
+                    this.container.innerHTML = '';
+                }
+
+                exportSVG() {
+                    if (!this.svg) return '';
+                    return new XMLSerializer().serializeToString(this.svg);
+                }
+
+                exportPNG(filename = 'chart.png') {
+                    const svgString = this.exportSVG();
+                    if (!svgString) return;
+                    const svgBlob = new Blob([svgString], { type: 'image/svg+xml;charset=utf-8' });
+                    const URL = window.URL || window.webkitURL || window;
+                    const blobURL = URL.createObjectURL(svgBlob);
+                    const image = new Image();
+                    image.onload = () => {
+                        const canvas = document.createElement('canvas');
+                        const scale = 2; // Retina 2x resolution
+                        canvas.width = (this.svgWrap.clientWidth || 600) * scale;
+                        canvas.height = (this.options.height || 280) * scale;
+                        const ctx = canvas.getContext('2d');
+                        ctx.scale(scale, scale);
+                        ctx.drawImage(image, 0, 0);
+                        const png = canvas.toDataURL('image/png');
+                        const a = document.createElement('a');
+                        a.download = filename;
+                        a.href = png;
+                        a.click();
+                        URL.revokeObjectURL(blobURL);
+                    };
+                    image.src = blobURL;
+                }
+
+                static autoInit() {
+                    const elements = document.querySelectorAll('[data-chart]');
+                    elements.forEach(el => {
+                        if (el._frameChart) return;
+                        const type = el.getAttribute('data-chart') || 'line';
+                        let data = { labels: [], series: [] };
+                        let options = {};
+                        try {
+                            const rawData = el.getAttribute('data-chart-data');
+                            if (rawData) data = JSON.parse(rawData);
+                            const rawOptions = el.getAttribute('data-chart-options');
+                            if (rawOptions) options = JSON.parse(rawOptions);
+                        } catch (err) {
+                            console.error('FramePER.Chart autoInit erro ao fazer parse do JSON:', err);
+                        }
+                        el._frameChart = new FramePERChart(el, { type, data, options });
+                    });
+                }
+            }
+
+            return FramePERChart;
+        })()
     };
 
 
@@ -779,6 +1721,9 @@
         FramePER.Form.init();
         FramePER.Counter.init();
         FramePER.Scroll.init();
+        if (FramePER.Chart && FramePER.Chart.autoInit) {
+            FramePER.Chart.autoInit();
+        }
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -790,6 +1735,7 @@
 
     // Expose globally
     window.FramePER = FramePER;
+    window.FramePERChart = FramePER.Chart;
 
 })(window, document);
 

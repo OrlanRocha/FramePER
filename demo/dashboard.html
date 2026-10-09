@@ -33,6 +33,10 @@
       </a>
 
       <span class="sidebar-label">Relatórios</span>
+      <a href="charts.html" class="sidebar-link">
+        <i class="icon icon-activity"></i> Gráficos SVG
+        <span class="badge badge-pill badge-primary">Novo</span>
+      </a>
       <a href="reports.html" class="sidebar-link">
         <i class="icon icon-calendar"></i> Agendamentos
       </a>
@@ -165,26 +169,13 @@
                 <p class="card-subtitle">Volume diário de transações processadas</p>
               </div>
               <div class="cluster gap-2">
-                <button class="btn btn-secondary btn-sm">Semanal</button>
-                <button class="btn btn-outline btn-sm">Mensal</button>
+                <button class="btn btn-secondary btn-sm" id="btnSalesWeekly">Semanal</button>
+                <button class="btn btn-outline btn-sm" id="btnSalesMonthly">Mensal</button>
               </div>
             </div>
 
-            <!-- Custom Bar Chart Preview -->
-            <div>
-              <div class="bars">
-                <div class="bar muted" style="height: 45%;" data-tooltip="Seg: R$ 4.200"></div>
-                <div class="bar muted" style="height: 60%;" data-tooltip="Ter: R$ 6.800"></div>
-                <div class="bar" style="height: 85%;" data-tooltip="Qua: R$ 9.400"></div>
-                <div class="bar muted" style="height: 50%;" data-tooltip="Qui: R$ 5.100"></div>
-                <div class="bar" style="height: 95%;" data-tooltip="Sex: R$ 11.200"></div>
-                <div class="bar muted" style="height: 70%;" data-tooltip="Sáb: R$ 7.900"></div>
-                <div class="bar muted" style="height: 40%;" data-tooltip="Dom: R$ 3.800"></div>
-              </div>
-              <div class="bar-labels">
-                <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
-              </div>
-            </div>
+            <!-- Interactive Vector Chart -->
+            <div id="salesChart"></div>
           </div>
 
           <!-- Activity List (1 Column) -->
@@ -292,5 +283,48 @@
 
   <script src="../dist/framePER.min.js"></script>
   <script src="demo.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      const salesChart = new FramePER.Chart('#salesChart', {
+        type: 'area',
+        data: {
+          labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+          series: [
+            { name: 'Receita', data: [4200, 6800, 9400, 5100, 11200, 7900, 3800], color: 'var(--primary)' }
+          ]
+        },
+        options: {
+          height: 250,
+          curved: true,
+          fill: true,
+          format: 'currency',
+          tooltip: true,
+          legend: false
+        }
+      });
+
+      const btnWeekly = document.getElementById('btnSalesWeekly');
+      const btnMonthly = document.getElementById('btnSalesMonthly');
+      if (btnWeekly && btnMonthly) {
+        btnWeekly.addEventListener('click', () => {
+          btnWeekly.className = 'btn btn-secondary btn-sm';
+          btnMonthly.className = 'btn btn-outline btn-sm';
+          salesChart.update({
+            labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
+            series: [{ name: 'Receita', data: [4200, 6800, 9400, 5100, 11200, 7900, 3800], color: 'var(--primary)' }]
+          });
+        });
+
+        btnMonthly.addEventListener('click', () => {
+          btnMonthly.className = 'btn btn-secondary btn-sm';
+          btnWeekly.className = 'btn btn-outline btn-sm';
+          salesChart.update({
+            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+            series: [{ name: 'Receita', data: [28400, 36200, 41800, 52300], color: 'var(--primary)' }]
+          });
+        });
+      }
+    });
+  </script>
 </body>
 </html>
