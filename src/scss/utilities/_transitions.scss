@@ -1,17 +1,33 @@
+@use '../variables' as *;
 
-.transition { transition: all 0.3s ease !important; }
-.transition-fast { transition: all 0.15s ease !important; }
-.transition-slow { transition: all 0.5s ease !important; }
+.transition      { transition: all 0.2s var(--ease) !important; }
+.transition-fast { transition: all 0.12s var(--ease) !important; }
+.transition-slow { transition: all 0.4s var(--ease) !important; }
 
 .hover-scale {
-    transition: transform 0.3s ease;
-    &:hover { transform: scale(1.05); }
+  transition: transform 0.2s var(--ease);
+  &:hover { transform: scale(1.03); }
 }
 
 .hover-lift {
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 20px rgba(0,0,0,0.15);
-    }
+  transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease);
+  &:hover { transform: translateY(-3px); box-shadow: var(--shadow-md); }
+}
+
+.hover-bg {
+  transition: background-color 0.15s var(--ease);
+  &:hover { background-color: var(--bg-hover); }
+}
+
+// Muted link that brightens on hover
+.link-muted {
+  color: var(--text-muted);
+  transition: color 0.15s var(--ease);
+  &:hover { color: var(--text-main); }
+}
+
+.link {
+  color: var(--primary);
+  text-underline-offset: 3px;
+  &:hover { text-decoration: underline; }
 }

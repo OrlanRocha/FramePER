@@ -1,85 +1,102 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Frame PER Demos | Frame PER</title>
-    <link rel="stylesheet" href="../dist/framePER.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
-        }
-        .text-muted { color: #6c757d; }
-        .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
-        .bg-gradient-dark { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
-        .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
-        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
-        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
-        .rounded-lg { border-radius: 0.75rem; }
-        .rounded-lg { border-radius: 1rem; }
-        .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
-        
-        body { min-height: 100vh; background: var(--bg-body); }
-        .demo-card { border: 1px solid var(--border-color); background: var(--bg-surface); transition: all 0.3s ease; }
-        .demo-card:hover { transform: translateY(-5px); box-shadow: 0 20px 25px -5px rgba(0,0,0,0.1), 0 10px 10px -5px rgba(0,0,0,0.04); border-color: var(--border-color); }
-        .icon-wrapper { width: 60px; height: 60px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; margin-bottom: 1.5rem; }
-    
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Frame PER | Demos</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
 </head>
-<body class="d-flex align-items-center justify-content-center">
+<body>
+  <main class="min-h-screen p-relative o-h d-flex flex-column">
+    <div class="bg-grid"></div>
 
-    <div class="container txt-center slide-up" style="max-width: 1000px;">
-        <div class="m-b-6">
-            <div class="d-inline-flex bg-surface p-3 rounded-lg shadow-sm m-b-4">
-                <i class="icon icon-star icon-xl text-blue"></i>
+    <header class="container d-flex justify-content-between align-items-center p-y-4 p-relative z-10">
+      <a class="navbar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        Frame PER
+      </a>
+      <div class="cluster">
+        <a class="btn btn-ghost btn-sm" href="https://github.com/OrlanRocha/FramePER" target="_blank" rel="noopener">GitHub <i class="icon icon-external"></i></a>
+        <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar tema">
+          <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+        </button>
+      </div>
+    </header>
+
+    <section class="container container-narrow txt-center p-y-7 p-relative z-10">
+      <span class="badge badge-pill badge-dot badge-green m-b-4 slide-up">v2.0 · Novo design system</span>
+      <h1 class="display-2 m-b-3 text-balance slide-up delay-1">Conheça o Frame PER</h1>
+      <p class="lead max-w-md m-x-auto slide-up delay-2">Quatro páginas de demonstração construídas apenas com as classes e a API JavaScript do próprio framework.</p>
+    </section>
+
+    <section class="container p-b-8 p-relative z-10 flex-1">
+      <div class="grid grid-md-2 grid-lg-4 gap-4">
+
+        <a class="demo-link slide-up delay-2" href="landing.html">
+          <div class="card card-hover h-100">
+            <div class="card-body stack gap-3 h-100">
+              <span class="icon-box icon-box-lg"><i class="icon icon-home"></i></span>
+              <div>
+                <h3 class="card-title f-s-5">Landing page</h3>
+                <p class="card-text">Hero animado, recursos, trecho de código e chamada para ação.</p>
+              </div>
+              <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
             </div>
-            <h1 class="h1" style="font-weight: 800; font-size: 3rem; color: var(--text-main);">Frame PER UI</h1>
-            <p class="text-muted f-s-4 w-75 m-auto" style="max-width: 600px;">Páginas de demonstração oficiais construídas com elegância, utilizando as classes utilitárias e interatividade nativa do framework.</p>
-        </div>
-        
-        <div class="grid grid-md-2 grid-lg-4 gap-4 txt-left">
-            <a href="landing.html" style="text-decoration: none; color: inherit;">
-                <div class="demo-card p-5 rounded-lg h-100">
-                    <div class="icon-wrapper border text-muted"><i class="icon icon-home icon-lg"></i></div>
-                    <h3 class="h3 m-b-2">Landing Page</h3>
-                    <p class="text-muted f-s-3">Exemplo corporativo com hero section, features e modais.</p>
-                </div>
-            </a>
-            <a href="dashboard.html" style="text-decoration: none; color: inherit;">
-                <div class="demo-card p-5 rounded-lg h-100">
-                    <div class="icon-wrapper border text-muted"><i class="icon icon-user icon-lg"></i></div>
-                    <h3 class="h3 m-b-2">Admin Dashboard</h3>
-                    <p class="text-muted f-s-3">Painel administrativo completo com sidebar, gráficos e tabelas.</p>
-                </div>
-            </a>
-            <a href="components.html" style="text-decoration: none; color: inherit;">
-                <div class="demo-card p-5 rounded-lg h-100">
-                    <div class="icon-wrapper border text-muted"><i class="icon icon-settings icon-lg"></i></div>
-                    <h3 class="h3 m-b-2">Componentes UI</h3>
-                    <p class="text-muted f-s-3">Vitrine com botões, badges, offcanvas, tabs e mais.</p>
-                </div>
-            </a>
-            <a href="manual.html" style="text-decoration: none; color: inherit;">
-                <div class="demo-card p-5 rounded-lg h-100">
-                    <div class="icon-wrapper border text-muted"><i class="icon icon-info icon-lg"></i></div>
-                    <h3 class="h3 m-b-2">Manual Técnico</h3>
-                    <p class="text-muted f-s-3">Documentação das APIs de Notificação, Loader e requisições HTTP.</p>
-                </div>
-            </a>
-        </div>
-    </div>
-    
-    <script src="../dist/framePER.min.js"></script>
-    <script>
-        // Smooth initialization for beautiful load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('fade-in');
-        });
-    </script>
+          </div>
+        </a>
+
+        <a class="demo-link slide-up delay-3" href="dashboard.html">
+          <div class="card card-hover h-100">
+            <div class="card-body stack gap-3 h-100">
+              <span class="icon-box icon-box-lg"><i class="icon icon-user"></i></span>
+              <div>
+                <h3 class="card-title f-s-5">Dashboard</h3>
+                <p class="card-text">Sidebar responsiva, métricas, gráfico, tabela e atividade recente.</p>
+              </div>
+              <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+            </div>
+          </div>
+        </a>
+
+        <a class="demo-link slide-up delay-4" href="components.html">
+          <div class="card card-hover h-100">
+            <div class="card-body stack gap-3 h-100">
+              <span class="icon-box icon-box-lg"><i class="icon icon-settings"></i></span>
+              <div>
+                <h3 class="card-title f-s-5">Componentes</h3>
+                <p class="card-text">Todos os componentes com pré-visualização ao vivo e código.</p>
+              </div>
+              <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+            </div>
+          </div>
+        </a>
+
+        <a class="demo-link slide-up delay-5" href="manual.html">
+          <div class="card card-hover h-100">
+            <div class="card-body stack gap-3 h-100">
+              <span class="icon-box icon-box-lg"><i class="icon icon-info"></i></span>
+              <div>
+                <h3 class="card-title f-s-5">Manual</h3>
+                <p class="card-text">Tema, layout, espaçamento e a API JavaScript passo a passo.</p>
+              </div>
+              <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+            </div>
+          </div>
+        </a>
+
+      </div>
+    </section>
+
+    <footer class="container p-y-5 txt-center f-s-2 text-muted p-relative z-10">
+      Frame PER v2.0 · CSS + JS sem dependências
+    </footer>
+  </main>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
 </body>
 </html>

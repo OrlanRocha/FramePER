@@ -1,44 +1,52 @@
 @use '../variables' as *;
 
 .offcanvas {
-    position: fixed;
-    top: 0;
-    bottom: 0;
-    background-color: var(--bg-surface);
-    z-index: 1050;
-    box-shadow: 0 0 20px rgba(0,0,0,0.2);
-    transition: transform 0.3s ease-in-out;
-    width: 300px;
-    max-width: 100%;
-    
-    &.offcanvas-left { left: 0; transform: translateX(-100%); }
-    &.offcanvas-right { right: 0; transform: translateX(100%); }
-    
-    &.show { transform: translateX(0); }
+  position: fixed;
+  top: 0;
+  bottom: 0;
+  z-index: 1250;
+  display: flex;
+  flex-direction: column;
+  width: 22rem;
+  max-width: 100%;
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+  box-shadow: var(--shadow-lg);
+  visibility: hidden;
+  transition: transform 0.3s var(--ease), visibility 0.3s var(--ease);
+
+  &.offcanvas-left { left: 0; border-right: 1px solid var(--border-color); transform: translateX(-100%); }
+  &.offcanvas-right { right: 0; border-left: 1px solid var(--border-color); transform: translateX(100%); }
+  &.show { transform: translateX(0); visibility: visible; }
 }
 
 .offcanvas-header {
-    display: flex;
-    align-items: center;
-    justify-content: space-between;
-    padding: 1rem 1.5rem;
-    border-bottom: 1px solid var(--border-color);
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
 }
 
+.offcanvas-title { margin: 0; font-size: 1rem; font-weight: 600; }
+
 .offcanvas-body {
-    padding: 1.5rem;
-    overflow-y: auto;
-    height: calc(100% - 70px);
+  flex: 1;
+  padding: 1.25rem;
+  overflow-y: auto;
 }
 
 .offcanvas-backdrop {
-    position: fixed;
-    top: 0; left: 0; width: 100vw; height: 100vh;
-    background-color: rgba(0,0,0,0.5);
-    z-index: 1040;
-    opacity: 0;
-    visibility: hidden;
-    transition: opacity 0.3s;
-    
-    &.show { opacity: 1; visibility: visible; }
+  position: fixed;
+  inset: 0;
+  z-index: 1240;
+  background-color: var(--overlay);
+  -webkit-backdrop-filter: blur(3px);
+  backdrop-filter: blur(3px);
+  opacity: 0;
+  visibility: hidden;
+  transition: opacity 0.3s var(--ease), visibility 0.3s var(--ease);
+
+  &.show { opacity: 1; visibility: visible; }
 }

@@ -1,0 +1,44 @@
+@use '../variables' as *;
+
+// Theme-independent tokens
+:root {
+  --primary: var(--blue);
+  --primary-hover: color-mix(in srgb, var(--primary) 86%, #000);
+  --primary-soft: color-mix(in srgb, var(--primary) 10%, transparent);
+  --ring: color-mix(in srgb, var(--primary) 32%, transparent);
+
+  --radius-sm: 0.375rem;
+  --radius-md: 0.5rem;
+  --radius-lg: 0.75rem;
+  --radius-xl: 1rem;
+
+  --ease: cubic-bezier(0.4, 0, 0.2, 1);
+}
+
+// Light (default)
+:root {
+  @include light-tokens;
+}
+
+// Dark: explicit choice
+[data-theme="dark"] {
+  @include dark-tokens;
+}
+
+// Dark: follow the OS until a theme has been chosen (prevents a flash on load)
+@media (prefers-color-scheme: dark) {
+  :root:not([data-theme]) {
+    @include dark-tokens;
+  }
+}
+
+// Scoped sections: a dark hero on a light page (or the opposite)
+.theme-dark {
+  @include dark-tokens;
+  color: var(--text-main);
+}
+
+.theme-light {
+  @include light-tokens;
+  color: var(--text-main);
+}

@@ -1,52 +1,79 @@
+@use 'sass:list';
 @use '../variables' as *;
 
-.container {
+// Containers
+.container,
+.container-fluid {
   width: 100%;
-  margin: 0 auto;
-  max-width: 1366px;
-  padding: 1rem;
+  margin-inline: auto;
+  padding-inline: 1rem;
 }
 
-// Mobile-first default: 1 column
+.container        { max-width: 1200px; }
+.container-narrow { max-width: 760px; }
+.container-wide   { max-width: 1400px; }
+
+@media (min-width: 768px) {
+  .container,
+  .container-fluid { padding-inline: 1.5rem; }
+}
+
+// Grid - mobile first: a single column until a breakpoint says otherwise
 .grid {
   display: grid;
-  grid-template-columns: 1fr;
+  grid-template-columns: minmax(0, 1fr);
   gap: 1rem;
 }
 
-// Base grids (apply to all sizes)
 @for $i from 1 through 12 {
-  .grid-#{$i} {
-    grid-template-columns: repeat($i, 1fr);
-  }
+  .grid-#{$i} { grid-template-columns: repeat($i, minmax(0, 1fr)); }
 }
 
-.grid-1-9 { grid-template-columns: 10% 90%; }
-.grid-2-8 { grid-template-columns: 20% 80%; }
-.grid-3-7 { grid-template-columns: 30% 70%; }
-.grid-4-6 { grid-template-columns: 40% 60%; }
-.grid-5-5 { grid-template-columns: 50% 50%; }
-.grid-6-4 { grid-template-columns: 60% 40%; }
-.grid-7-3 { grid-template-columns: 70% 30%; }
-.grid-8-2 { grid-template-columns: 80% 20%; }
-.grid-9-1 { grid-template-columns: 90% 10%; }
+// Fluid cards: as many columns as fit, no breakpoints needed
+.grid-auto { grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
 
-// Responsive Grids (Mobile-First overrides)
+// Asymmetric splits
+$splits: (
+  "1-9": (10%, 90%), "2-8": (20%, 80%), "3-7": (30%, 70%), "4-6": (40%, 60%), "5-5": (50%, 50%),
+  "6-4": (60%, 40%), "7-3": (70%, 30%), "8-2": (80%, 20%), "9-1": (90%, 10%)
+);
+
+@each $name, $pair in $splits {
+  .grid-#{$name} { grid-template-columns: #{list.nth($pair, 1)} #{list.nth($pair, 2)}; }
+}
+
+// Column spans
+@for $i from 1 through 12 {
+  .span-#{$i} { grid-column: span #{$i} / span #{$i}; }
+}
+.span-full { grid-column: 1 / -1; }
+
+// Responsive variants
 @each $bp, $value in $breakpoints {
   @media (min-width: #{$value}) {
     @for $i from 1 through 12 {
-      .grid-#{$bp}-#{$i} {
-        grid-template-columns: repeat($i, 1fr);
-      }
+      .grid-#{$bp}-#{$i} { grid-template-columns: repeat($i, minmax(0, 1fr)); }
+      .span-#{$bp}-#{$i} { grid-column: span #{$i} / span #{$i}; }
     }
-    .grid-#{$bp}-1-9 { grid-template-columns: 10% 90%; }
-    .grid-#{$bp}-2-8 { grid-template-columns: 20% 80%; }
-    .grid-#{$bp}-3-7 { grid-template-columns: 30% 70%; }
-    .grid-#{$bp}-4-6 { grid-template-columns: 40% 60%; }
-    .grid-#{$bp}-5-5 { grid-template-columns: 50% 50%; }
-    .grid-#{$bp}-6-4 { grid-template-columns: 60% 40%; }
-    .grid-#{$bp}-7-3 { grid-template-columns: 70% 30%; }
-    .grid-#{$bp}-8-2 { grid-template-columns: 80% 20%; }
-    .grid-#{$bp}-9-1 { grid-template-columns: 90% 10%; }
+    .grid-#{$bp}-auto { grid-template-columns: repeat(auto-fit, minmax(min(100%, 16rem), 1fr)); }
+    .span-#{$bp}-full { grid-column: 1 / -1; }
+
+    @each $name, $pair in $splits {
+      .grid-#{$bp}-#{$name} { grid-template-columns: #{list.nth($pair, 1)} #{list.nth($pair, 2)}; }
+    }
   }
+}
+
+// Layout primitives
+.stack {
+  display: flex;
+  flex-direction: column;
+  gap: var(--stack-gap, 1rem);
+}
+
+.cluster {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: var(--cluster-gap, 0.75rem);
 }

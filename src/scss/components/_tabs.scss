@@ -1,34 +1,49 @@
 @use '../variables' as *;
 
 .tabs {
-    display: flex;
-    list-style: none;
-    border-bottom: 2px solid var(--border-color);
-    margin-bottom: 1rem;
+  display: flex;
+  gap: 0.25rem;
+  margin-bottom: 1rem;
+  overflow-x: auto;
+  border-bottom: 1px solid var(--border-color);
 }
 
-.tab-item {
-    margin-bottom: -2px;
-}
+.tab-item { flex: none; margin-bottom: -1px; }
 
 .tab-link {
-    display: block;
-    padding: 0.75rem 1.5rem;
-    cursor: pointer;
-    text-decoration: none;
-    color: var(--text-muted);
-    border-bottom: 2px solid transparent;
-    transition: color 0.3s, border-color 0.3s;
-    
-    &:hover { color: var(--blue); }
-    &.active {
-        color: var(--blue);
-        border-bottom-color: var(--blue);
-        font-weight: bold;
-    }
+  display: block;
+  padding: 0.625rem 0.875rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-bottom: 2px solid transparent;
+  transition: color 0.15s var(--ease), border-color 0.15s var(--ease);
+
+  &:hover { color: var(--text-main); }
+  &.active { color: var(--text-main); border-bottom-color: var(--text-main); }
 }
 
 .tab-content {
-    display: none;
-    &.active { display: block; animation: fadeIn 0.4s ease; }
+  display: none;
+  &.active { display: block; animation: fadeIn 0.25s var(--ease); }
+}
+
+// Segmented / pill variant
+.tabs-pills {
+  display: inline-flex;
+  padding: 0.1875rem;
+  gap: 0.125rem;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  background-color: var(--bg-subtle);
+
+  .tab-item { margin-bottom: 0; }
+  .tab-link {
+    padding: 0.3125rem 0.75rem;
+    border: 0;
+    border-radius: calc(var(--radius-md) - 2px);
+    &.active { color: var(--text-main); background-color: var(--bg-surface); box-shadow: var(--shadow-sm); }
+  }
 }

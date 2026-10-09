@@ -1,47 +1,32 @@
 @use '../variables' as *;
 
-.fade-in {
-    animation: fadeIn 0.3s ease-in-out forwards;
-}
+// Entrance animations. fill-mode "both" keeps delayed elements hidden until
+// their turn, so staggering with .delay-N works without a flash.
+.fade-in    { animation: fadeIn 0.4s var(--ease) both; }
+.fade-out   { animation: fadeOut 0.3s var(--ease) both; }
+.slide-up   { animation: slideUp 0.5s var(--ease) both; }
+.slide-down { animation: slideDown 0.5s var(--ease) both; }
+.scale-in   { animation: scaleIn 0.35s var(--ease) both; }
+.bounce     { animation: bounce 2s infinite; }
+.pulse      { animation: pulse 2s var(--ease) infinite; }
+.animacao   { animation: float 2.5s ease-in-out infinite alternate; }
 
-.fade-out {
-    animation: fadeOut 0.3s ease-in-out forwards;
-}
+// Stagger
+.delay-1 { animation-delay: 0.08s; }
+.delay-2 { animation-delay: 0.16s; }
+.delay-3 { animation-delay: 0.24s; }
+.delay-4 { animation-delay: 0.32s; }
+.delay-5 { animation-delay: 0.4s; }
 
-.slide-up {
-    animation: slideUp 0.4s ease-out forwards;
-}
-
-.slide-down {
-    animation: slideDown 0.4s ease-out forwards;
-}
-
-.bounce {
-    animation: bounce 2s infinite;
-}
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
-@keyframes fadeOut {
-    from { opacity: 1; }
-    to { opacity: 0; }
-}
-
-@keyframes slideUp {
-    from { transform: translateY(20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
-@keyframes slideDown {
-    from { transform: translateY(-20px); opacity: 0; }
-    to { transform: translateY(0); opacity: 1; }
-}
-
+@keyframes fadeIn    { from { opacity: 0; } to { opacity: 1; } }
+@keyframes fadeOut   { from { opacity: 1; } to { opacity: 0; } }
+@keyframes slideUp   { from { transform: translateY(16px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes slideDown { from { transform: translateY(-16px); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes scaleIn   { from { transform: scale(0.96); opacity: 0; } to { transform: none; opacity: 1; } }
+@keyframes pulse     { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+@keyframes float     { from { transform: translateY(0); } to { transform: translateY(-8px); } }
 @keyframes bounce {
-    0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
-    40% { transform: translateY(-20px); }
-    60% { transform: translateY(-10px); }
+  0%, 20%, 50%, 80%, 100% { transform: translateY(0); }
+  40% { transform: translateY(-14px); }
+  60% { transform: translateY(-7px); }
 }

@@ -1,27 +1,48 @@
 @use '../variables' as *;
 
+// Neutral by default; tinted when a color is given. Uses --badge-color so one
+// rule handles every palette color in both light and dark themes.
 .badge {
-    display: inline-block;
-    padding: 0.25em 0.6em;
-    font-size: 0.75rem;
-    font-weight: bold;
-    line-height: 1;
-    text-align: center;
-    white-space: nowrap;
-    vertical-align: baseline;
-    border-radius: 0.25rem;
-    color: var(--white);
-    
-    &.badge-pill { border-radius: 10rem; }
+  --badge-color: var(--text-muted);
+
+  display: inline-flex;
+  align-items: center;
+  gap: 0.375rem;
+  padding: 0.125rem 0.5rem;
+  font-size: 0.75rem;
+  font-weight: 500;
+  line-height: 1.25rem;
+  white-space: nowrap;
+  vertical-align: middle;
+  color: var(--badge-color);
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+
+  &.badge-pill { border-radius: 999px; }
 }
 
-@each $name, $color in $colors {
-    .badge-#{$name} {
-        background-color: var(--#{$name});
-        @if $name == 'white' or $name == 'yellow' {
-            color: var(--black);
-        } @else {
-            color: var(--white);
-        }
-    }
+@each $name in $semantic {
+  .badge-#{$name} {
+    --badge-color: #{readable($name, 80%)};
+    background-color: tint($name, 12%);
+    border-color: tint($name, 25%);
+  }
+}
+
+.badge-black {
+  color: var(--bg-body);
+  background-color: var(--text-main);
+  border-color: var(--text-main);
+}
+
+.badge-outline { background-color: transparent; }
+
+// Little status dot before the label
+.badge-dot::before {
+  content: "";
+  width: 0.375rem;
+  height: 0.375rem;
+  border-radius: 50%;
+  background-color: currentColor;
 }

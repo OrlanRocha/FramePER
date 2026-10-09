@@ -1,217 +1,296 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Admin Dashboard | Frame PER</title>
-    <link rel="stylesheet" href="../dist/framePER.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f4f7f6;
-            color: #333;
-            line-height: 1.6;
-        }
-        .text-muted { color: #6c757d; }
-        .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
-        .bg-gradient-dark { background: linear-gradient(135deg, #1e293b 0%, #0f172a 100%); }
-        .glass { background: rgba(255,255,255,0.9); backdrop-filter: blur(10px); }
-        .shadow-sm { box-shadow: 0 1px 3px rgba(0,0,0,0.1); }
-        .shadow-md { box-shadow: 0 4px 6px -1px rgba(0,0,0,0.1), 0 2px 4px -1px rgba(0,0,0,0.06); }
-        .shadow-lg { box-shadow: 0 10px 15px -3px rgba(0,0,0,0.1), 0 4px 6px -2px rgba(0,0,0,0.05); }
-        .rounded-lg { border-radius: 0.75rem; }
-        .rounded-lg { border-radius: 1rem; }
-        .container-fluid { max-width: 1400px; margin: 0 auto; padding: 0 2rem; }
-        
-        
-        body { background: var(--bg-body); }
-        .sidebar { width: 280px; background: var(--bg-surface); border-right: 1px solid var(--border-color); height: 100vh; position: fixed; left: 0; top: 0; z-index: 10; transition: all 0.3s; }
-        .main-content { margin-left: 280px; padding: 0; min-height: 100vh; }
-        .topbar { background: var(--bg-surface); height: 80px; border-bottom: 1px solid var(--border-color); padding: 0 2rem; display: flex; align-items: center; justify-content: space-between; transition: all 0.3s; }
-        .stat-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: var(--radius-md); padding: 1.25rem; transition: transform 0.2s; box-shadow: var(--shadow-sm); }
-        .stat-card:hover { transform: translateY(-5px); box-shadow: var(--shadow-md); }
-        .stat-icon { width: 56px; height: 56px; border-radius: 1rem; display: flex; align-items: center; justify-content: center; }
-
-        
-        @media (max-width: 768px) {
-            .sidebar { transform: translateX(-100%); transition: transform 0.3s; }
-            .sidebar.show { transform: translateX(0); }
-            .main-content { margin-left: 0; }
-        }
-    
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Admin Dashboard | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
 </head>
-<body class="">
+<body>
+  <div class="app-shell">
 
-    <!-- Sidebar -->
-    <aside class="sidebar p-y-4 p-x-3 d-flex flex-column">
-        <a href="index.html" class="d-flex align-items-center text-blue f-w-bold m-b-6 p-x-2" style="font-size: 1.5rem; text-decoration: none;">
-            <i class="icon icon-star m-r-2"></i> Frame Admin
-        </a>
-        
-        <p class="text-muted f-s-2 text-uppercase f-w-bold m-b-2 p-x-2">Menu Principal</p>
-        <nav class="d-flex flex-column gap-1 m-b-5">
-            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg bg-surface border text-main f-w-bold" style="text-decoration:none;">
-                <i class="icon icon-home m-r-3"></i> Dashboard
-            </a>
-            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition" style="text-decoration:none;">
-                <i class="icon icon-user m-r-3"></i> Usuários
-            </a>
-            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition justify-content-between" style="text-decoration:none;">
-                <span class="d-flex align-items-center"><i class="icon icon-envelope m-r-3"></i> Mensagens</span>
-                <span class="badge badge-pill border text-muted  ">4</span>
-            </a>
-        </nav>
-        
-        <p class="text-muted f-s-2 text-uppercase f-w-bold m-b-2 p-x-2">Ajustes</p>
-        <nav class="d-flex flex-column gap-1">
-            <a href="#" class="d-flex align-items-center p-x-2 p-y-2 rounded-lg text-muted hover-text-blue transition" style="text-decoration:none;">
-                <i class="icon icon-settings m-r-3"></i> Configurações
-            </a>
-        </nav>
-        
-        <div class="mt-auto m-t-auto p-4 rounded-lg mt-auto" style="background: var(--bg-body); border: 1px solid var(--border-color);">
-            <p class="f-w-bold m-b-1">Pro Plan</p>
-            <p class="f-s-2 m-b-3" style="opacity: 0.9;">Mais recursos incríveis.</p>
-            <button class="btn btn-blue w-100 rounded-lg shadow-sm text-blue f-s-2">Fazer Upgrade</button>
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        <span>Frame Admin</span>
+      </a>
+
+      <span class="sidebar-label">Menu Principal</span>
+      <a href="dashboard.html" class="sidebar-link active">
+        <i class="icon icon-home"></i> Visão Geral
+      </a>
+      <a href="#" class="sidebar-link">
+        <i class="icon icon-user"></i> Usuários
+      </a>
+      <a href="#" class="sidebar-link">
+        <i class="icon icon-envelope"></i> Mensagens
+        <span class="badge badge-pill badge-blue">4</span>
+      </a>
+
+      <span class="sidebar-label">Relatórios</span>
+      <a href="#" class="sidebar-link">
+        <i class="icon icon-calendar"></i> Agendamentos
+      </a>
+
+      <span class="sidebar-label">Ajustes</span>
+      <a href="#" class="sidebar-link">
+        <i class="icon icon-settings"></i> Configurações
+      </a>
+
+      <!-- Bottom Card in Sidebar -->
+      <div class="sidebar-footer">
+        <div class="card card-flat p-3 stack gap-2 bg-subtle">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="f-w-semibold f-s-3">Plano Pro</span>
+            <span class="badge badge-green">Ativo</span>
+          </div>
+          <p class="f-s-2 text-muted m-0">Armazenamento em 84% de capacidade.</p>
+          <button class="btn btn-secondary btn-sm w-100 m-t-1" data-demo="toast-info">Gerenciar Conta</button>
         </div>
+      </div>
     </aside>
 
-    <!-- Main Content -->
-    <main class="main-content fade-in">
-        <!-- Topbar -->
-        <header class="topbar">
-            <button class="btn btn-white d-md-none rounded-lg p-2" onclick="document.querySelector('.sidebar').classList.toggle('show')">
-                <i class="icon icon-menu"></i>
-            </button>
-            <div class="d-none d-md-block">
-                <h2 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Visão Geral</h2>
-            </div>
-            
-            <div class="d-flex align-items-center gap-4">
-                
-                <div class="d-flex align-items-center gap-2 m-r-4">
-                    <i class="icon icon-settings text-muted"></i>
-                    <label class="switch m-0" data-tooltip="Alternar Tema">
-                        <input type="checkbox" data-toggle="theme" onchange="FramePER.Theme.toggle()">
-                        <span class="slider"></span>
-                    </label>
-                </div>
-                <button class="btn text-muted p-0" onclick="FramePER.Notify.info('Notificações', 'Nenhum alerta novo.')"><i class="icon icon-bell icon-md"></i></button>
+    <!-- Main Content Shell -->
+    <div class="app-main">
 
-                <div class="d-flex align-items-center gap-2 cursor">
-                    <img src="https://ui-avatars.com/api/?name=Admin+User&background=0f172a&color=fff" class="avatar avatar-sm">
-                    <span class="f-w-bold d-none d-md-inline" style="color: var(--text-main);">Admin Silva</span>
-                    <i class="icon icon-arrow-down text-muted f-s-2"></i>
-                </div>
-            </div>
-        </header>
-
-        <!-- Page Content -->
-        <div class="p-4 p-md-6">
-            <!-- Stats -->
-            <div class="grid grid-1 grid-md-2 grid-lg-4 gap-4 m-b-6">
-                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" class="border text-muted"><i class="icon icon-user icon-lg"></i></div>
-                    <div>
-                        <p class="text-muted m-0 f-s-3">Usuários Ativos</p>
-                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">24,592</h3>
-                    </div>
-                </div>
-                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" class="border text-muted"><i class="icon icon-check icon-lg"></i></div>
-                    <div>
-                        <p class="text-muted m-0 f-s-3">Vendas</p>
-                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">R$ 84.000</h3>
-                    </div>
-                </div>
-                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" class="border text-muted"><i class="icon icon-trash icon-lg"></i></div>
-                    <div>
-                        <p class="text-muted m-0 f-s-3">Cancelamentos</p>
-                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">143</h3>
-                    </div>
-                </div>
-                <div class="stat-card shadow-sm d-flex align-items-center gap-4">
-                    <div class="stat-icon" class="border text-muted"><i class="icon icon-star icon-lg"></i></div>
-                    <div>
-                        <p class="text-muted m-0 f-s-3">Avaliação Média</p>
-                        <h3 class="m-0" style="color: var(--text-main); font-size: 1.5rem; font-weight: 700;">4.8</h3>
-                    </div>
-                </div>
-            </div>
-
-            <!-- Table Card -->
-            <div class="card rounded-lg shadow-sm border-0 bg-surface">
-                <div class="card-body p-5">
-                    <div class="d-flex justify-content-between align-items-center m-b-4">
-                        <h3 class="h3 m-0" style="color: var(--text-main); font-weight: 700;">Transações Recentes</h3>
-                        <button class="btn btn-blue shadow-sm f-s-3 p-y-2 p-x-3">Ver Todas</button>
-                    </div>
-                    
-                    <div style="overflow-x: auto;">
-                        <table style="width: 100%; border-collapse: collapse; text-align: left;">
-                            <thead>
-                                <tr style="border-bottom: 2px solid var(--border-color); color: var(--text-muted);">
-                                    <th class="p-y-3 p-x-2">Cliente</th>
-                                    <th class="p-y-3 p-x-2">Data</th>
-                                    <th class="p-y-3 p-x-2">Valor</th>
-                                    <th class="p-y-3 p-x-2">Status</th>
-                                    <th class="p-y-3 p-x-2 txt-right">Ações</th>
-                                </tr>
-                            </thead>
-                            <tbody>
-                                <tr style="border-bottom: 1px solid var(--border-color);">
-                                    <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
-                                        <img src="https://ui-avatars.com/api/?name=João+Silva&background=random" class="avatar avatar-sm">
-                                        <span class="f-w-bold" style="color: var(--text-main);">João Silva</span>
-                                    </td>
-                                    <td class="p-y-3 p-x-2 text-muted">07 Out 2026</td>
-                                    <td class="p-y-3 p-x-2 f-w-bold">R$ 1.250,00</td>
-                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill border text-muted  ">Completado</span></td>
-                                    <td class="p-y-3 p-x-2 txt-right">
-                                        <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
-                                    </td>
-                                </tr>
-                                <tr style="border-bottom: 1px solid var(--border-color);">
-                                    <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
-                                        <img src="https://ui-avatars.com/api/?name=Maria+Souza&background=random" class="avatar avatar-sm">
-                                        <span class="f-w-bold" style="color: var(--text-main);">Maria Souza</span>
-                                    </td>
-                                    <td class="p-y-3 p-x-2 text-muted">06 Out 2026</td>
-                                    <td class="p-y-3 p-x-2 f-w-bold">R$ 430,00</td>
-                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill border text-muted  ">Pendente</span></td>
-                                    <td class="p-y-3 p-x-2 txt-right">
-                                        <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
-                                    </td>
-                                </tr>
-                                <tr>
-                                    <td class="p-y-3 p-x-2 d-flex align-items-center gap-3">
-                                        <img src="https://ui-avatars.com/api/?name=Pedro+Gomes&background=random" class="avatar avatar-sm">
-                                        <span class="f-w-bold" style="color: var(--text-main);">Pedro Gomes</span>
-                                    </td>
-                                    <td class="p-y-3 p-x-2 text-muted">05 Out 2026</td>
-                                    <td class="p-y-3 p-x-2 f-w-bold">R$ 90,00</td>
-                                    <td class="p-y-3 p-x-2"><span class="badge badge-pill border text-muted  ">Falhou</span></td>
-                                    <td class="p-y-3 p-x-2 txt-right">
-                                        <button class="btn p-2 text-muted hover-text-blue"><i class="icon icon-edit"></i></button>
-                                    </td>
-                                </tr>
-                            </tbody>
-                        </table>
-                    </div>
-                </div>
-            </div>
+      <!-- Header Bar -->
+      <header class="app-header">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-ghost btn-icon d-lg-none" data-toggle="sidebar" aria-label="Abrir Menu">
+            <i class="icon icon-menu"></i>
+          </button>
+          <h1 class="h4 m-0">Dashboard</h1>
         </div>
-    </main>
-    
-    <script src="../dist/framePER.min.js"></script>
-    <script>
-        // Smooth initialization for beautiful load
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('fade-in');
-        });
-    </script>
+
+        <div class="cluster gap-3">
+          <!-- Search Bar -->
+          <div class="input-icon d-none d-md-block search-field">
+            <i class="icon icon-search"></i>
+            <input type="text" class="input input-sm" placeholder="Buscar registros...">
+          </div>
+
+          <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+            <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+          </button>
+
+          <button class="btn btn-ghost btn-icon p-relative" data-demo="toast-warning" aria-label="Notificações">
+            <i class="icon icon-bell"></i>
+          </button>
+
+          <div class="divider d-none d-sm-block" style="height: 1.5rem;"></div>
+
+          <!-- Profile Menu -->
+          <div class="dropdown">
+            <button class="btn btn-ghost p-1 dropdown-toggle">
+              <span class="avatar avatar-sm">AD</span>
+              <span class="f-w-medium f-s-3 d-none d-sm-inline">Admin Silva</span>
+              <i class="icon icon-arrow-down f-s-1 text-muted"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <span class="dropdown-header">Conectado como Admin</span>
+              <a href="#" class="dropdown-item"><i class="icon icon-user"></i> Meu Perfil</a>
+              <a href="#" class="dropdown-item"><i class="icon icon-settings"></i> Preferências</a>
+              <div class="dropdown-divider"></div>
+              <a href="index.html" class="dropdown-item danger"><i class="icon icon-close"></i> Sair do Painel</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- App Content Area -->
+      <main class="app-content stack gap-5 fade-in">
+
+        <!-- Stat Cards Grid -->
+        <div class="grid grid-sm-2 grid-xl-4 gap-4">
+
+          <div class="card p-4">
+            <div class="d-flex align-items-center justify-content-between m-b-2">
+              <span class="stat-label">Usuários Ativos</span>
+              <span class="icon-box"><i class="icon icon-user"></i></span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">24.592</span>
+              <span class="stat-delta up"><i class="icon icon-arrow-up"></i> +12.5% este mês</span>
+            </div>
+          </div>
+
+          <div class="card p-4">
+            <div class="d-flex align-items-center justify-content-between m-b-2">
+              <span class="stat-label">Vendas Totais</span>
+              <span class="icon-box"><i class="icon icon-check"></i></span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">R$ 84.200</span>
+              <span class="stat-delta up"><i class="icon icon-arrow-up"></i> +8.2% vs semana passada</span>
+            </div>
+          </div>
+
+          <div class="card p-4">
+            <div class="d-flex align-items-center justify-content-between m-b-2">
+              <span class="stat-label">Taxa de Cancelamento</span>
+              <span class="icon-box"><i class="icon icon-trash"></i></span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">1.4%</span>
+              <span class="stat-delta down"><i class="icon icon-arrow-down"></i> -0.3% estabilizado</span>
+            </div>
+          </div>
+
+          <div class="card p-4">
+            <div class="d-flex align-items-center justify-content-between m-b-2">
+              <span class="stat-label">Avaliação Média</span>
+              <span class="icon-box"><i class="icon icon-star"></i></span>
+            </div>
+            <div class="stat">
+              <span class="stat-value">4.9 / 5.0</span>
+              <span class="stat-delta up"><i class="icon icon-arrow-up"></i> 1.420 avaliações</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Main Chart & Activity Grid -->
+        <div class="grid grid-lg-3 gap-5">
+
+          <!-- Chart Card (2 Columns) -->
+          <div class="card span-lg-2 p-4 stack gap-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <div>
+                <h3 class="card-title">Desempenho de Vendas</h3>
+                <p class="card-subtitle">Volume diário de transações processadas</p>
+              </div>
+              <div class="cluster gap-2">
+                <button class="btn btn-secondary btn-sm">Semanal</button>
+                <button class="btn btn-outline btn-sm">Mensal</button>
+              </div>
+            </div>
+
+            <!-- Custom Bar Chart Preview -->
+            <div>
+              <div class="bars">
+                <div class="bar muted" style="height: 45%;" data-tooltip="Seg: R$ 4.200"></div>
+                <div class="bar muted" style="height: 60%;" data-tooltip="Ter: R$ 6.800"></div>
+                <div class="bar" style="height: 85%;" data-tooltip="Qua: R$ 9.400"></div>
+                <div class="bar muted" style="height: 50%;" data-tooltip="Qui: R$ 5.100"></div>
+                <div class="bar" style="height: 95%;" data-tooltip="Sex: R$ 11.200"></div>
+                <div class="bar muted" style="height: 70%;" data-tooltip="Sáb: R$ 7.900"></div>
+                <div class="bar muted" style="height: 40%;" data-tooltip="Dom: R$ 3.800"></div>
+              </div>
+              <div class="bar-labels">
+                <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Activity List (1 Column) -->
+          <div class="card p-4 stack gap-3">
+            <h3 class="card-title">Atividade Recente</h3>
+
+            <ul class="activity list-unstyled">
+              <li>
+                <span class="avatar avatar-sm">JS</span>
+                <div>
+                  <span class="f-w-medium">João Silva</span> contratou o Plano Pro.
+                  <small>há 10 minutos</small>
+                </div>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <span class="avatar avatar-sm">MS</span>
+                <div>
+                  <span class="f-w-medium">Maria Souza</span> atualizou os dados de pagamento.
+                  <small>há 42 minutos</small>
+                </div>
+              </li>
+              <li class="divider"></li>
+              <li>
+                <span class="avatar avatar-sm">PG</span>
+                <div>
+                  <span class="f-w-medium">Pedro Gomes</span> abriu um chamado de suporte.
+                  <small>há 2 horas</small>
+                </div>
+              </li>
+            </ul>
+
+            <button class="btn btn-outline btn-sm m-t-auto w-100">Ver Histórico Completo</button>
+          </div>
+
+        </div>
+
+        <!-- Recent Transactions Table Card -->
+        <div class="card">
+          <div class="card-header">
+            <div>
+              <h3 class="card-title">Transações Recentes</h3>
+              <p class="card-subtitle">Últimas operações aprovadas no gateway</p>
+            </div>
+            <button class="btn btn-secondary btn-sm" data-demo="btn-loading">Exportar CSV</button>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Cliente</th>
+                  <th>Data</th>
+                  <th>Valor</th>
+                  <th>Status</th>
+                  <th class="txt-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="d-flex align-items-center gap-3">
+                    <span class="avatar avatar-sm">JS</span>
+                    <span class="f-w-medium">João Silva</span>
+                  </td>
+                  <td class="text-muted">08 Out 2026</td>
+                  <td class="f-w-medium tabular">R$ 1.250,00</td>
+                  <td><span class="badge badge-green badge-dot">Concluído</span></td>
+                  <td class="txt-right">
+                    <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar"><i class="icon icon-edit"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="d-flex align-items-center gap-3">
+                    <span class="avatar avatar-sm">MS</span>
+                    <span class="f-w-medium">Maria Souza</span>
+                  </td>
+                  <td class="text-muted">07 Out 2026</td>
+                  <td class="f-w-medium tabular">R$ 430,00</td>
+                  <td><span class="badge badge-yellow badge-dot">Pendente</span></td>
+                  <td class="txt-right">
+                    <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar"><i class="icon icon-edit"></i></button>
+                  </td>
+                </tr>
+                <tr>
+                  <td class="d-flex align-items-center gap-3">
+                    <span class="avatar avatar-sm">PG</span>
+                    <span class="f-w-medium">Pedro Gomes</span>
+                  </td>
+                  <td class="text-muted">06 Out 2026</td>
+                  <td class="f-w-medium tabular">R$ 90,00</td>
+                  <td><span class="badge badge-red badge-dot">Falhou</span></td>
+                  <td class="txt-right">
+                    <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar"><i class="icon icon-edit"></i></button>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
 </body>
 </html>

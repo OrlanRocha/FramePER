@@ -9,46 +9,65 @@
     const FramePER = {
         
         // --- Theme Module ---
+        // Follows the OS preference until the user makes an explicit choice
+        // (toggle / set), which is then remembered in localStorage.
         Theme: {
+            _storageKey: 'frameper_theme',
+            _stored: function() {
+                try { return localStorage.getItem(this._storageKey); } catch (e) { return null; }
+            },
+            _systemTheme: function() {
+                return (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) ? 'dark' : 'light';
+            },
             init: function() {
-                const savedTheme = localStorage.getItem('frameper_theme');
-                if (savedTheme) {
-                    this.set(savedTheme);
-                } else {
-                    // Check system preference
-                    if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
-                        this.set('dark');
-                    } else {
-                        this.set('light');
-                    }
+                this._apply(this._stored() || this._systemTheme());
+
+                // Keep following the OS while the user has not chosen
+                if (window.matchMedia) {
+                    const mq = window.matchMedia('(prefers-color-scheme: dark)');
+                    const onChange = () => { if (!this._stored()) this._apply(this._systemTheme()); };
+                    if (mq.addEventListener) mq.addEventListener('change', onChange);
+                    else if (mq.addListener) mq.addListener(onChange);
                 }
             },
-            set: function(theme) {
+            _apply: function(theme) {
                 document.documentElement.setAttribute('data-theme', theme);
-                localStorage.setItem('frameper_theme', theme);
-                // Update switches if they exist
+                // Keep any [data-toggle="theme"] switches in sync
                 document.querySelectorAll('[data-toggle="theme"]').forEach(toggle => {
-                    if(toggle.type === 'checkbox') toggle.checked = (theme === 'dark');
+                    if (toggle.type === 'checkbox') toggle.checked = (theme === 'dark');
                 });
             },
+            get: function() {
+                return document.documentElement.getAttribute('data-theme') || this._systemTheme();
+            },
+            // Explicit choice: persisted
+            set: function(theme) {
+                try { localStorage.setItem(this._storageKey, theme); } catch (e) { /* storage unavailable */ }
+                this._apply(theme);
+            },
             toggle: function() {
-                const current = document.documentElement.getAttribute('data-theme');
-                this.set(current === 'dark' ? 'light' : 'dark');
+                this.set(this.get() === 'dark' ? 'light' : 'dark');
+            },
+            // Forget the choice and go back to following the OS
+            reset: function() {
+                try { localStorage.removeItem(this._storageKey); } catch (e) { /* storage unavailable */ }
+                this._apply(this._systemTheme());
             }
         },
-        
+
         // --- Backgrounds Module ---
+        // .bg-interactive-wrapper > .bg-interactive-layer: a spotlight that follows the cursor
         Backgrounds: {
             init: function() {
                 document.querySelectorAll('.bg-interactive-wrapper').forEach(wrapper => {
                     const layer = wrapper.querySelector('.bg-interactive-layer');
-                    if(layer) {
-                        wrapper.addEventListener('mousemove', (e) => {
-                            const x = (e.clientX / window.innerWidth - 0.5) * 40;
-                            const y = (e.clientY / window.innerHeight - 0.5) * 40;
-                            layer.style.transform = `translate(${x}px, ${y}px)`;
-                        });
-                    }
+                    if (!layer) return;
+
+                    wrapper.addEventListener('mousemove', (e) => {
+                        const rect = wrapper.getBoundingClientRect();
+                        layer.style.setProperty('--mx', (e.clientX - rect.left) + 'px');
+                        layer.style.setProperty('--my', (e.clientY - rect.top) + 'px');
+                    });
                 });
             }
         },
@@ -63,6 +82,67 @@
                 this.initAlerts();
                 this.initTabs();
                 this.initOffcanvas();
+                this.initCollapse();
+                this.initSidebar();
+                this.initThemeToggle();
+                this.initKeyboard();
+            },
+            // [data-toggle="collapse"][data-target="#menu"] → toggles .active on the target
+            // (used by .navbar-toggler to open the mobile menu)
+            initCollapse: function() {
+                document.querySelectorAll("[data-toggle='collapse']").forEach(trigger => {
+                    trigger.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        const target = document.querySelector(trigger.getAttribute("data-target"));
+                        if (!target) return;
+                        const open = target.classList.toggle("active");
+                        trigger.setAttribute("aria-expanded", open ? "true" : "false");
+                    });
+                });
+            },
+            // [data-toggle="sidebar"] → opens the .sidebar drawer (below the lg breakpoint)
+            initSidebar: function() {
+                const sidebar = document.querySelector(".sidebar");
+                if (!sidebar) return;
+
+                let backdrop = document.querySelector(".sidebar-backdrop");
+                if (!backdrop) {
+                    backdrop = document.createElement("div");
+                    backdrop.className = "sidebar-backdrop";
+                    document.body.appendChild(backdrop);
+                }
+
+                const close = () => { sidebar.classList.remove("show"); backdrop.classList.remove("show"); };
+                const open = () => { sidebar.classList.add("show"); backdrop.classList.add("show"); };
+
+                document.querySelectorAll("[data-toggle='sidebar']").forEach(trigger => {
+                    trigger.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        sidebar.classList.contains("show") ? close() : open();
+                    });
+                });
+                backdrop.addEventListener("click", close);
+                sidebar.querySelectorAll(".sidebar-link").forEach(link => link.addEventListener("click", close));
+            },
+            // [data-theme-toggle] → switches between light and dark
+            initThemeToggle: function() {
+                document.querySelectorAll("[data-theme-toggle]").forEach(btn => {
+                    btn.addEventListener("click", (e) => {
+                        e.preventDefault();
+                        FramePER.Theme.toggle();
+                    });
+                });
+            },
+            // Escape closes the top-most overlay
+            initKeyboard: function() {
+                document.addEventListener("keydown", (e) => {
+                    if (e.key !== "Escape") return;
+                    document.querySelectorAll(".modal.show").forEach(m => m.classList.remove("show"));
+                    document.querySelectorAll(".offcanvas.show").forEach(o => o.classList.remove("show"));
+                    document.querySelectorAll(".offcanvas-backdrop.show, .sidebar.show, .sidebar-backdrop.show").forEach(el => el.classList.remove("show"));
+                    document.querySelectorAll(".dropdown-menu.show").forEach(m => m.classList.remove("show"));
+                    document.body.style.overflow = "";
+                });
             },
             initModals: function() {
                 document.querySelectorAll("[data-toggle='modal']").forEach(trigger => {

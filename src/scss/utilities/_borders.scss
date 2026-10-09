@@ -1,17 +1,49 @@
 @use '../variables' as *;
 
+// Border (sides + none)
+.border     { border: 1px solid var(--border-color) !important; }
+.border-0   { border: 0 !important; }
+.border-t   { border-top: 1px solid var(--border-color) !important; }
+.border-b   { border-bottom: 1px solid var(--border-color) !important; }
+.border-l   { border-left: 1px solid var(--border-color) !important; }
+.border-r   { border-right: 1px solid var(--border-color) !important; }
+.border-t-0 { border-top: 0 !important; }
+.border-b-0 { border-bottom: 0 !important; }
+.border-l-0 { border-left: 0 !important; }
+.border-r-0 { border-right: 0 !important; }
+.border-strong { border-color: var(--border-strong) !important; }
+
+// Radius: numeric scale (.r-3) and named aliases (.rounded-lg)
 @each $num, $val in $radius {
-  .r-#{$num} { border-radius: $val !important; }
+  .r-#{$num}   { border-radius: $val !important; }
   .r-t-#{$num} { border-top-left-radius: $val !important; border-top-right-radius: $val !important; }
   .r-b-#{$num} { border-bottom-left-radius: $val !important; border-bottom-right-radius: $val !important; }
   .r-l-#{$num} { border-top-left-radius: $val !important; border-bottom-left-radius: $val !important; }
   .r-r-#{$num} { border-top-right-radius: $val !important; border-bottom-right-radius: $val !important; }
 }
 
+.rounded-none   { border-radius: 0 !important; }
+.rounded-sm     { border-radius: var(--radius-sm) !important; }
+.rounded, .rounded-md { border-radius: var(--radius-md) !important; }
+.rounded-lg     { border-radius: var(--radius-lg) !important; }
+.rounded-xl     { border-radius: var(--radius-xl) !important; }
+.rounded-pill   { border-radius: 999px !important; }
+.rounded-circle { border-radius: 50% !important; }
+
+// Legacy numeric border widths (.b-1 ... .b-6)
 @for $i from 0 through 6 {
-  .b-#{$i} { border: #{$i}px solid rgba(55,55,55, .2); }
-  .b-t-#{$i} { border-top: #{$i}px solid rgba(55,55,55, .2); }
-  .b-b-#{$i} { border-bottom: #{$i}px solid rgba(55,55,55, .2); }
-  .b-l-#{$i} { border-left: #{$i}px solid rgba(55,55,55, .2); }
-  .b-r-#{$i} { border-right: #{$i}px solid rgba(55,55,55, .2); }
+  .b-#{$i}   { border: #{$i}px solid var(--border-color); }
+  .b-t-#{$i} { border-top: #{$i}px solid var(--border-color); }
+  .b-b-#{$i} { border-bottom: #{$i}px solid var(--border-color); }
+  .b-l-#{$i} { border-left: #{$i}px solid var(--border-color); }
+  .b-r-#{$i} { border-right: #{$i}px solid var(--border-color); }
 }
+
+// Elevation
+.shadow-none { box-shadow: none !important; }
+.shadow-xs   { box-shadow: var(--shadow-xs) !important; }
+.shadow-sm   { box-shadow: var(--shadow-sm) !important; }
+.shadow-md   { box-shadow: var(--shadow-md) !important; }
+.shadow-lg   { box-shadow: var(--shadow-lg) !important; }
+.sombra      { box-shadow: var(--shadow-md); }
+.sombra-hover { transition: box-shadow 0.2s var(--ease), transform 0.2s var(--ease); &:hover { box-shadow: var(--shadow-lg); transform: translateY(-2px); } }

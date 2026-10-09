@@ -1,37 +1,53 @@
+// ==========================================================================
+// Frame PER — modern UI framework (CSS + JS)
+//
+// Order matters: tokens → base → layout → components → utilities.
+// Utilities come last so a class like .p-0 or .gap-4 always wins over the
+// default spacing of a component.
+// ==========================================================================
 
-// FramePER CSS - Professional Edition
 @use 'variables';
+
+// Foundation
+@use 'base/tokens';
 @use 'base/reset';
 @use 'base/typography';
+
+// Layout
 @use 'layout/grid';
+
+// Components
 @use 'components/buttons';
 @use 'components/forms';
-@use 'components/tables';
-@use 'utilities/spacing';
-@use 'utilities/colors';
-@use 'utilities/borders';
-@use 'utilities/sizing';
-@use 'utilities/misc';
-@use 'utilities/animations';
-@use 'utilities/transitions';
-@use 'components/modals';
-@use 'components/dropdowns';
-@use 'components/alerts';
-@use 'components/navbar';
-@use 'components/cards';
-@use 'components/accordions';
-@use 'components/badges';
-@use 'components/carousel';
-@use 'components/toasts';
-@use 'components/tooltips';
-@use 'utilities/icons';
-@use 'components/loader';
 @use 'components/forms-advanced';
+@use 'components/tables';
+@use 'components/cards';
+@use 'components/badges';
+@use 'components/alerts';
+@use 'components/avatars';
+@use 'components/navbar';
+@use 'components/sidebar';
 @use 'components/tabs';
 @use 'components/breadcrumbs';
 @use 'components/pagination';
-@use 'components/progress';
-@use 'components/avatars';
+@use 'components/accordions';
+@use 'components/dropdowns';
+@use 'components/modals';
 @use 'components/offcanvas';
-@use 'base/theme';
+@use 'components/toasts';
+@use 'components/tooltips';
+@use 'components/progress';
+@use 'components/loader';
+@use 'components/carousel';
+@use 'components/code';
+
+// Utilities
+@use 'utilities/icons';
+@use 'utilities/spacing';
+@use 'utilities/borders';
+@use 'utilities/sizing';
+@use 'utilities/misc';
+@use 'utilities/colors';
 @use 'utilities/backgrounds';
+@use 'utilities/animations';
+@use 'utilities/transitions';

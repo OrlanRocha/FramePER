@@ -1,114 +1,148 @@
 <!DOCTYPE html>
 <html lang="pt-BR">
 <head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Manual Avançado | Frame PER</title>
-    <link rel="stylesheet" href="../dist/framePER.min.css">
-    <style>
-        @import url('https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap');
-        body {
-            font-family: 'Inter', sans-serif;
-            background-color: #f8fafc;
-            color: #333;
-            line-height: 1.6;
-        }
-        .text-muted { color: #64748b; }
-        .bg-gradient { background: linear-gradient(135deg, #0056b3 0%, #00d2ff 100%); }
-        .bg-gradient-dark { background: linear-gradient(135deg, #0f172a 0%, #1e293b 100%); }
-        .shadow-sm { box-shadow: 0 1px 2px 0 rgba(0, 0, 0, 0.05); }
-        .rounded-lg { border-radius: 1rem; }
-        .rounded-lg { border-radius: 0.5rem; }
-        .container-fluid { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
-        
-        .doc-card { background: var(--bg-surface); border: 1px solid var(--border-color); border-radius: 1rem; padding: 2rem; margin-bottom: 2rem; }
-        .code-block { background: #0f172a; color: #f8fafc; padding: 1.5rem; border-radius: 0.5rem; font-family: monospace; overflow-x: auto; }
-    
-    </style>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Manual Técnico & APIs | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
 </head>
-<body class="">
+<body>
 
-    <nav class="bg-gradient-dark p-y-4">
-        <div class="container-fluid d-flex align-items-center">
-            <a href="index.html" class="btn text-white p-0 m-r-4 opacity-75 hover-opacity-100"><i class="icon icon-arrow-left icon-lg"></i></a>
-            <h1 class="h3 m-0 text-white" style="font-weight: 700;">Manual de APIs Javascript</h1>
-        </div>
-    </nav>
-    
-    <div class="container-fluid p-y-4 fade-in">
-        <div class="grid grid-1 grid-lg-3 gap-4">
-            <!-- Sidemenu -->
-            <div class="d-none d-lg-block">
-                <div class="p-sticky" style="top: 2rem;">
-                    <ul class="list-unstyled d-flex flex-column gap-2" style="list-style: none; padding:0;">
-                        <li><a href="#http" class="f-w-bold text-blue" style="text-decoration:none;">HTTP / Fetch API</a></li>
-                        <li><a href="#notify" class="text-muted hover-text-blue" style="text-decoration:none;">Toasts / Notificações</a></li>
-                        <li><a href="#loaders" class="text-muted hover-text-blue" style="text-decoration:none;">Loaders de Tela</a></li>
-                        <li><a href="#security" class="text-muted hover-text-blue" style="text-decoration:none;">Segurança (CSRF/XSS)</a></li>
-                    </ul>
-                </div>
-            </div>
-            
-            <!-- Content -->
-            <div class="grid-lg-span-2">
-                <div class="doc-card shadow-sm" id="http">
-                    <h2 class="h3 m-b-3" style="color: var(--text-main); font-weight: 700;">Módulo HTTP</h2>
-                    <p class="text-muted m-b-4">O wrapper HTTP cuida de toda comunicação com seu backend (GET, POST, PUT, DELETE), com tratamento automático de erros, CSRF e offline.</p>
-                    <div class="code-block m-b-4">
-// Exemplo de Chamada GET
-const response = await FramePER.Http.get('/api/users');
+  <!-- Navigation -->
+  <header class="navbar navbar-sticky navbar-glass">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        <span>Frame PER</span>
+      </a>
 
-if(response.ok) {
-    console.log(response.data);
-}
-// Se der erro 401, 404, 500, o próprio FramePER exibirá um alerta visual!
-                    </div>
-                </div>
+      <nav class="navbar-nav d-none d-md-flex">
+        <a class="nav-link" href="landing.html">Início</a>
+        <a class="nav-link" href="dashboard.html">Dashboard</a>
+        <a class="nav-link" href="components.html">Componentes</a>
+        <a class="nav-link active" href="manual.html">Manual API</a>
+      </nav>
 
-                <div class="doc-card shadow-sm" id="notify">
-                    <h2 class="h3 m-b-3" style="color: var(--text-main); font-weight: 700;">Toasts de Notificação</h2>
-                    <p class="text-muted m-b-4">Chame notificações elegantes dinamicamente pelo JS sem sujar o seu HTML.</p>
-                    <button class="btn btn-blue m-b-4" onclick="FramePER.Notify.success('Documentação', 'Exemplo de sucesso renderizado na hora!')">Testar Toast</button>
-                    <div class="code-block m-b-4">
-FramePER.Notify.success('Sucesso', 'Salvo com sucesso!', 3000);
-FramePER.Notify.error('Erro', 'Falha ao salvar.', 5000);
-FramePER.Notify.info('Aviso', 'Ação processada.');
-                    </div>
-                </div>
-
-                <div class="doc-card shadow-sm" id="loaders">
-                    <h2 class="h3 m-b-3" style="color: var(--text-main); font-weight: 700;">Loaders</h2>
-                    <p class="text-muted m-b-4">Tranque a interface do usuário enquanto algo crucial carrega, ou insira spinners dentro de botões.</p>
-                    <button id="btnLoadEx" class="btn btn-black m-b-4" onclick="demoLoader(this)">Testar Loader no Botão</button>
-                    <div class="code-block m-b-4">
-// Travar tela
-FramePER.Loader.showPageLoad();
-FramePER.Loader.hidePageLoad();
-
-// Loading no botão
-const btn = document.querySelector('#btnSalvar');
-FramePER.Loader.buttonLoading(btn, true);  // Inicia
-FramePER.Loader.buttonLoading(btn, false); // Restaura
-                    </div>
-                </div>
-            </div>
-        </div>
+      <div class="navbar-actions">
+        <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+          <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+        </button>
+        <button class="navbar-toggler" data-toggle="collapse" data-target="#mobileMenu" aria-label="Menu Mobile">
+          <i class="icon icon-menu"></i>
+        </button>
+      </div>
     </div>
-    
-    <script>
-        function demoLoader(btn) {
-            FramePER.Loader.buttonLoading(btn, true);
-            setTimeout(() => {
-                FramePER.Loader.buttonLoading(btn, false);
-            }, 2000);
-        }
-    </script>
-    
-    <script src="../dist/framePER.min.js"></script>
-    <script>
-        document.addEventListener('DOMContentLoaded', () => {
-            document.body.classList.add('fade-in');
-        });
-    </script>
+
+    <!-- Mobile Menu -->
+    <div id="mobileMenu" class="navbar-nav d-md-none">
+      <a class="nav-link" href="landing.html">Início</a>
+      <a class="nav-link" href="dashboard.html">Dashboard</a>
+      <a class="nav-link" href="components.html">Componentes</a>
+      <a class="nav-link active" href="manual.html">Manual API</a>
+    </div>
+  </header>
+
+  <!-- Docs Layout Container -->
+  <div class="container docs">
+
+    <!-- Sticky Table of Contents -->
+    <aside class="docs-nav stack gap-1">
+      <span class="sidebar-label">Manual Técnico</span>
+      <a href="#m-theme" class="active">Tema & Dark Mode</a>
+      <a href="#m-http">HTTP & AJAX Fetch</a>
+      <a href="#m-notify">Notificações (Notify)</a>
+      <a href="#m-loader">Loaders & Spinner</a>
+      <a href="#m-security">Segurança & XSS</a>
+    </aside>
+
+    <!-- Main Docs Content -->
+    <main class="stack gap-6">
+
+      <!-- Theme Module -->
+      <section id="m-theme" class="docs-section">
+        <h2>Módulo de Tema (FramePER.Theme)</h2>
+        <p class="lead">Gerencia a alternância entre modo claro e escuro respeitando a preferência do sistema operacional.</p>
+
+        <pre><code><span class="tok-c">// Alternar tema manualmente (Light &lt;-&gt; Dark)</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">Theme</span>.<span class="tok-f">toggle</span>();
+
+<span class="tok-c">// Definir tema específico ('light' ou 'dark')</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">Theme</span>.<span class="tok-f">set</span>(<span class="tok-s">'dark'</span>);
+
+<span class="tok-c">// Obter tema atual em execução</span>
+<span class="tok-f">const</span> <span class="tok-n">atual</span> = <span class="tok-k">FramePER</span>.<span class="tok-k">Theme</span>.<span class="tok-f">get</span>(); <span class="tok-c">// 'light' | 'dark'</span></code></pre>
+      </section>
+
+      <!-- HTTP Module -->
+      <section id="m-http" class="docs-section">
+        <h2>Módulo HTTP (FramePER.Http)</h2>
+        <p class="lead">Wrapper assíncrono para requisições Fetch com tratamento global de erros HTTP, detecção de conectividade e injeção automática de token CSRF.</p>
+
+        <div class="preview cluster gap-3 m-b-0">
+          <button class="btn btn-outline" data-demo="http-ok">Testar Requisição Sucesso (200)</button>
+          <button class="btn btn-outline" data-demo="http-404">Testar Erro HTTP 404</button>
+        </div>
+        <pre><code><span class="tok-c">// Requisição GET com retorno padronizado { ok, data, status }</span>
+<span class="tok-f">const</span> <span class="tok-n">res</span> = <span class="tok-f">await</span> <span class="tok-k">FramePER</span>.<span class="tok-k">Http</span>.<span class="tok-f">get</span>(<span class="tok-s">'/api/usuarios'</span>);
+
+<span class="tok-f">if</span> (<span class="tok-n">res</span>.<span class="tok-f">ok</span>) {
+  <span class="tok-n">console</span>.<span class="tok-f">log</span>(<span class="tok-s">'Dados:'</span>, <span class="tok-n">res</span>.<span class="tok-f">data</span>);
+} <span class="tok-f">else</span> {
+  <span class="tok-c">// Notificações de erro (401, 403, 404, 500) são disparadas automaticamente!</span>
+}</code></pre>
+      </section>
+
+      <!-- Notify Module -->
+      <section id="m-notify" class="docs-section">
+        <h2>Módulo de Notificações (FramePER.Notify)</h2>
+        <p class="lead">Gera alertas visuais não-bloqueantes (toasts) no canto da tela.</p>
+
+        <pre><code><span class="tok-k">FramePER</span>.<span class="tok-k">Notify</span>.<span class="tok-f">success</span>(<span class="tok-s">'Título'</span>, <span class="tok-s">'Mensagem de sucesso'</span>);
+<span class="tok-k">FramePER</span>.<span class="tok-k">Notify</span>.<span class="tok-f">error</span>(<span class="tok-s">'Erro'</span>, <span class="tok-s">'Houve uma falha de conexão'</span>);
+<span class="tok-k">FramePER</span>.<span class="tok-k">Notify</span>.<span class="tok-f">info</span>(<span class="tok-s">'Aviso'</span>, <span class="tok-s">'Atualização disponível'</span>);</code></pre>
+      </section>
+
+      <!-- Loader Module -->
+      <section id="m-loader" class="docs-section">
+        <h2>Módulo de Carregamento (FramePER.Loader)</h2>
+        <p class="lead">Gerencia telas de carregamento globais e spinners embutidos em botões.</p>
+
+        <pre><code><span class="tok-c">// Exibir e ocultar overlay de tela inteira</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">Loader</span>.<span class="tok-f">showPageLoad</span>();
+<span class="tok-k">FramePER</span>.<span class="tok-k">Loader</span>.<span class="tok-f">hidePageLoad</span>();
+
+<span class="tok-c">// Travar botão com spinner interno</span>
+<span class="tok-f">const</span> <span class="tok-n">btn</span> = <span class="tok-n">document</span>.<span class="tok-f">querySelector</span>(<span class="tok-s">'#meuBotao'</span>);
+<span class="tok-k">FramePER</span>.<span class="tok-k">Loader</span>.<span class="tok-f">buttonLoading</span>(<span class="tok-n">btn</span>, <span class="tok-f">true</span>);  <span class="tok-c">// Carregando...</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">Loader</span>.<span class="tok-f">buttonLoading</span>(<span class="tok-n">btn</span>, <span class="tok-f">false</span>); <span class="tok-c">// Restaura texto original</span></code></pre>
+      </section>
+
+      <!-- Security Module -->
+      <section id="m-security" class="docs-section">
+        <h2>Módulo de Segurança (FramePER.Security)</h2>
+        <p class="lead">Sanitização de strings contra ataques XSS antes de inserção no DOM.</p>
+
+        <div class="preview stack gap-3 m-b-0">
+          <label for="escape-input">Digite HTML para testar a sanitização:</label>
+          <input type="text" id="escape-input" class="input" value="<script>alert('xss')</script> & 'teste'">
+          <div class="card p-3 bg-subtle">
+            <span class="eyebrow m-b-1">Resultado Sanitizado:</span>
+            <code id="escape-output" class="text-main"></code>
+          </div>
+        </div>
+        <pre><code><span class="tok-f">const</span> <span class="tok-n">limpo</span> = <span class="tok-k">FramePER</span>.<span class="tok-k">Security</span>.<span class="tok-f">escapeHTML</span>(<span class="tok-s">'&lt;script&gt;alert(1)&lt;/script&gt;'</span>);
+<span class="tok-c">// Retorna: &amp;lt;script&amp;gt;alert(1)&amp;lt;/script&amp;gt;</span></code></pre>
+      </section>
+
+    </main>
+
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
 </body>
 </html>

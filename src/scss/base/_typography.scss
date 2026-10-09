@@ -1,49 +1,107 @@
 @use '../variables' as *;
 
 h1, h2, h3, h4, h5, h6 {
-  color: var(--texto);
+  font-family: $font-family-heading;
   font-weight: 600;
-  font-family: $font-family-heading;
-  margin-bottom: 0.5rem;
-  line-height: 1.2;
+  line-height: 1.25;
+  letter-spacing: -0.02em;
+  color: var(--text-main);
+  margin-bottom: 0.5em;
 }
 
-h1, .h1 { font-size: 2.5rem; }
-h2, .h2 { font-size: 2rem; }
-h3, .h3 { font-size: 1.75rem; }
-h4, .h4 { font-size: 1.5rem; }
-h5, .h5 { font-size: 1.25rem; }
-h6, .h6 { font-size: 1rem; }
+h1, .h1 { font-size: 2.25rem; letter-spacing: -0.03em; }
+h2, .h2 { font-size: 1.75rem; }
+h3, .h3 { font-size: 1.375rem; }
+h4, .h4 { font-size: 1.125rem; }
+h5, .h5 { font-size: 1rem; }
+h6, .h6 { font-size: 0.875rem; }
 
-p, .p {
-  font-family: $font-family-heading;
-  color: rgba(0, 0, 0, 0.7);
-  font-size: 1rem;
-  line-height: 1.6;
-  margin-bottom: 1rem;
+@media (min-width: 768px) {
+  h1, .h1 { font-size: 2.75rem; }
+  h2, .h2 { font-size: 2rem; }
+  h3, .h3 { font-size: 1.5rem; }
 }
 
-.txt-center { text-align: center !important; }
-.txt-left { text-align: left !important; }
-.txt-right { text-align: right !important; }
+.display-1 {
+  font-size: clamp(2.5rem, 6.5vw, 4.5rem);
+  font-weight: 700;
+  letter-spacing: -0.045em;
+  line-height: 1.04;
+}
+
+.display-2 {
+  font-size: clamp(2rem, 4.5vw, 3.25rem);
+  font-weight: 700;
+  letter-spacing: -0.035em;
+  line-height: 1.1;
+}
+
+.lead {
+  font-size: 1.125rem;
+  line-height: 1.7;
+  color: var(--text-muted);
+}
+
+.eyebrow {
+  font-size: 0.75rem;
+  font-weight: 600;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+  color: var(--text-muted);
+}
+
+.p { margin-bottom: 1rem; }
+
+small, .small { font-size: 0.8125rem; }
+strong, b { font-weight: 600; }
+
+code, kbd, samp, pre { font-family: $font-family-mono; }
+
+// Alignment
+.txt-left,   .text-left   { text-align: left !important; }
+.txt-center, .text-center { text-align: center !important; }
+.txt-right,  .text-right  { text-align: right !important; }
 .txt-justify { text-align: justify !important; }
 
 // Font weights
-.f-w-light { font-weight: 300 !important; }
+.f-w-light  { font-weight: 300 !important; }
 .f-w-normal { font-weight: 400 !important; }
-.f-w-bold { font-weight: 700 !important; }
+.f-w-medium { font-weight: 500 !important; }
+.f-w-semibold { font-weight: 600 !important; }
+.f-w-bold   { font-weight: 700 !important; }
 
 @for $i from 1 through 9 {
   .f-w-#{$i} { font-weight: $i * 100 !important; }
 }
 
 // Font sizes
-$fs: (1: 0.75rem, 2: 0.875rem, 3: 1rem, 4: 1.125rem, 5: 1.25rem, 6: 1.5rem, 7: 1.875rem, 8: 2.25rem, 9: 3rem);
+$fs: (
+  1: 0.75rem,
+  2: 0.8125rem,
+  3: 0.875rem,
+  4: 1rem,
+  5: 1.125rem,
+  6: 1.25rem,
+  7: 1.5rem,
+  8: 1.875rem,
+  9: 2.25rem
+);
+
 @each $num, $size in $fs {
   .f-s-#{$num} { font-size: $size !important; }
 }
 
-// Text Transform
-.text-uppercase { text-transform: uppercase !important; }
-.text-lowercase { text-transform: lowercase !important; }
+// Text helpers
+.text-uppercase  { text-transform: uppercase !important; }
+.text-lowercase  { text-transform: lowercase !important; }
 .text-capitalize { text-transform: capitalize !important; }
+.text-balance    { text-wrap: balance; }
+.text-nowrap     { white-space: nowrap !important; }
+.tabular         { font-variant-numeric: tabular-nums; }
+.mono            { font-family: $font-family-mono; }
+
+.text-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}

@@ -1,42 +1,99 @@
 @use '../variables' as *;
 
 .card {
-    background-color: var(--bg-surface);
-    border-radius: 0.5rem;
-    box-shadow: 0 4px 15px rgba(0,0,0,0.05);
-    overflow: hidden;
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
-    
-    &:hover {
-        transform: translateY(-5px);
-        box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-    }
+  position: relative;
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
+  transition: border-color 0.2s var(--ease), box-shadow 0.2s var(--ease), transform 0.2s var(--ease);
 }
 
-.card-img {
-    width: 100%;
-    height: 200px;
-    object-fit: cover;
+// Opt-in interactive card (the old default lifted every card on hover)
+.card-hover {
+  cursor: pointer;
+  &:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-2px);
+  }
 }
 
-.card-body {
-    padding: 1.5rem;
+.card-flat { box-shadow: none; }
+
+.card-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+
+.card-body { padding: 1.25rem; }
+
+.card-footer {
+  padding: 0.875rem 1.25rem;
+  background-color: var(--bg-subtle);
+  border-top: 1px solid var(--border-color);
+  border-radius: 0 0 var(--radius-lg) var(--radius-lg);
 }
 
 .card-title {
-    font-size: 1.25rem;
-    font-weight: bold;
-    margin-bottom: 0.5rem;
-    color: var(--text-main);
+  margin-bottom: 0.25rem;
+  font-size: 1rem;
+  font-weight: 600;
+  letter-spacing: -0.01em;
+  color: var(--text-main);
 }
 
-.card-text {
-    color: var(--text-muted);
-    margin-bottom: 1rem;
+.card-subtitle { font-size: 0.8125rem; color: var(--text-muted); }
+.card-text { font-size: 0.875rem; color: var(--text-muted); }
+
+.card-img {
+  width: 100%;
+  height: 12rem;
+  object-fit: cover;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
 }
 
-.card-footer {
-    padding: 1rem 1.5rem;
-    background-color: rgba(0,0,0,0.02);
-    border-top: 1px solid var(--border-color);
+// Icon in a soft square
+.icon-box {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  font-size: 1.125rem;
+  color: var(--text-main);
+  background-color: var(--bg-subtle);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+
+  &.icon-box-lg { width: 3rem; height: 3rem; font-size: 1.375rem; border-radius: var(--radius-lg); }
+  &.icon-box-primary { color: var(--primary); background-color: var(--primary-soft); border-color: transparent; }
+}
+
+// KPI / metric
+.stat { display: flex; flex-direction: column; gap: 0.25rem; }
+.stat-label { font-size: 0.8125rem; color: var(--text-muted); }
+
+.stat-value {
+  font-size: 1.75rem;
+  font-weight: 600;
+  line-height: 1.2;
+  letter-spacing: -0.03em;
+  font-variant-numeric: tabular-nums;
+}
+
+.stat-delta {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  &.up { color: readable("green", 85%); }
+  &.down { color: readable("red", 85%); }
 }

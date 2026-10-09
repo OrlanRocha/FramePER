@@ -1,51 +1,147 @@
-// Colors
+@use 'sass:string';
+
+// ==========================================================================
+// Frame PER - compile-time variables, helpers and theme token mixins
+// ==========================================================================
+
+// Brand / semantic palette (light-theme values; dark overrides live in dark-tokens)
 $colors: (
-  "white": rgba(255, 255, 255, 1.0),
-  "black": rgba(75, 75, 75, 1.0),
-  "blue": rgba(50, 150, 225, 1.0),
-  "yellow": rgba(255, 225, 50, 1.0),
-  "green": rgba(50, 175, 75, 1.0),
-  "red": rgba(200, 75, 75, 1.0),
-  "orange": rgba(255, 165, 0, 1.0),
-  "grey": rgba(180, 180, 180, 1.0),
-  "texto": rgba(80, 80, 80, 1.0)
+  "white":  #ffffff,
+  "black":  #18181b,
+  "blue":   #2563eb,
+  "yellow": #eab308,
+  "green":  #16a34a,
+  "red":    #dc2626,
+  "orange": #f97316,
+  "grey":   #a1a1aa,
+  "texto":  #52525b
 );
 
-// Breakpoints
+// Colors that get tinted ("soft") variants for badges, alerts, toasts...
+$semantic: ("blue", "green", "red", "yellow", "orange");
+
+// Breakpoints (mobile-first, min-width)
 $breakpoints: (
-  "sm": 576px,
-  "md": 768px,
-  "lg": 992px,
-  "xl": 1200px,
+  "sm":  576px,
+  "md":  768px,
+  "lg":  992px,
+  "xl":  1200px,
   "xxl": 1400px
 );
 
-// Spacing
+// Spacing scale (4px base)
 $spacing: (
   0: 0,
-  1: 0.2rem,
-  2: 0.4rem,
-  3: 0.6rem,
-  4: 0.8rem,
-  5: 1rem,
-  6: 1.2rem,
-  7: 1.4rem,
-  8: 1.6rem
+  1: 0.25rem,
+  2: 0.5rem,
+  3: 0.75rem,
+  4: 1rem,
+  5: 1.5rem,
+  6: 2rem,
+  7: 3rem,
+  8: 4rem
 );
 
-// Fonts
-$font-family-base: Arial, sans-serif;
-$font-family-heading: Calibri, sans-serif;
+// Typography
+$font-family-base:    "Inter", ui-sans-serif, system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, sans-serif;
+$font-family-heading: $font-family-base;
+$font-family-mono:    ui-monospace, SFMono-Regular, "SF Mono", Menlo, Consolas, "Liberation Mono", monospace;
 
-// Border Radius
+// Border radius scale
 $radius: (
   0: 0,
-  1: 0.2rem,
-  2: 0.4rem,
-  3: 0.6rem,
-  4: 0.8rem,
+  1: 0.25rem,
+  2: 0.375rem,
+  3: 0.5rem,
+  4: 0.75rem,
   5: 1rem,
-  6: 1.2rem,
-  7: 1.4rem,
+  6: 1.5rem,
+  7: 2rem,
+  "pill": 999px,
   "circle": 50%
 );
+
+// --------------------------------------------------------------------------
+// Helpers returning runtime color-mix() expressions (theme-aware)
+// --------------------------------------------------------------------------
+
+// A transparent tint of a palette color:  tint("blue", 12%)
+@function tint($name, $pct) {
+  @return string.unquote("color-mix(in srgb, var(--#{$name}) #{$pct}, transparent)");
+}
+
+// Text-safe version of a palette color (blended with the theme text color so
+// it stays readable on tinted backgrounds in both light and dark themes)
+@function readable($name, $pct: 72%) {
+  @return string.unquote("color-mix(in srgb, var(--#{$name}) #{$pct}, var(--text-main))");
+}
+
+// A darker shade of a palette color (hover states)
+@function shade($name, $pct: 12%) {
+  @return string.unquote("color-mix(in srgb, var(--#{$name}) #{100% - $pct}, #000)");
+}
+
+// --------------------------------------------------------------------------
+// Theme token sets
+// --------------------------------------------------------------------------
+@mixin light-tokens {
+  color-scheme: light;
+  @each $name, $color in $colors {
+    --#{$name}: #{$color};
+  }
+
+  --bg-body: #fafafa;
+  --bg-surface: #ffffff;
+  --bg-subtle: #f4f4f5;
+  --bg-hover: rgba(24, 24, 27, 0.045);
+
+  --text-main: #18181b;
+  --text-muted: #71717a;
+  --text-subtle: #a1a1aa;
+
+  --border-color: #e4e4e7;
+  --border-strong: #d4d4d8;
+
+  --overlay: rgba(9, 9, 11, 0.5);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.07), 0 1px 2px rgba(0, 0, 0, 0.05);
+  --shadow-md: 0 6px 16px -4px rgba(0, 0, 0, 0.09), 0 2px 6px -2px rgba(0, 0, 0, 0.05);
+  --shadow-lg: 0 20px 48px -12px rgba(0, 0, 0, 0.18), 0 4px 12px -4px rgba(0, 0, 0, 0.06);
+
+  --code-bg: #18181b;
+  --code-text: #e4e4e7;
+}
+
+@mixin dark-tokens {
+  color-scheme: dark;
+
+  // Brighter accents for dark backgrounds
+  --blue: #3b82f6;
+  --green: #22c55e;
+  --red: #ef4444;
+  --yellow: #facc15;
+  --orange: #fb923c;
+
+  --bg-body: #09090b;
+  --bg-surface: #111113;
+  --bg-subtle: #1a1a1d;
+  --bg-hover: rgba(255, 255, 255, 0.055);
+
+  --text-main: #fafafa;
+  --text-muted: #a1a1aa;
+  --text-subtle: #71717a;
+
+  --border-color: #27272a;
+  --border-strong: #3f3f46;
+
+  --overlay: rgba(0, 0, 0, 0.65);
+
+  --shadow-xs: 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-sm: 0 1px 3px rgba(0, 0, 0, 0.5), 0 1px 2px rgba(0, 0, 0, 0.4);
+  --shadow-md: 0 8px 20px -4px rgba(0, 0, 0, 0.6), 0 2px 6px -2px rgba(0, 0, 0, 0.5);
+  --shadow-lg: 0 24px 56px -12px rgba(0, 0, 0, 0.75), 0 4px 12px -4px rgba(0, 0, 0, 0.5);
+
+  --code-bg: #0c0c0e;
+  --code-text: #e4e4e7;
+}

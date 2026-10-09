@@ -1,25 +1,48 @@
 @use '../variables' as *;
 
-@each $num, $val in $spacing {
-  // Margin
-  .m-#{$num} { margin: $val; }
-  .m-t-#{$num} { margin-top: $val; }
-  .m-b-#{$num} { margin-bottom: $val; }
-  .m-l-#{$num} { margin-left: $val; }
-  .m-r-#{$num} { margin-right: $val; }
-  .m-x-#{$num} { margin-left: $val; margin-right: $val; }
-  .m-y-#{$num} { margin-top: $val; margin-bottom: $val; }
+// Margin / padding / gap on a 4px-based scale.
+//   m-4, m-t-4, m-b-4, m-l-4, m-r-4, m-x-4, m-y-4
+//   p-4, p-t-4, p-b-4, p-l-4, p-r-4, p-x-4, p-y-4
+//   gap-4, gap-x-4, gap-y-4
+// Responsive (mobile-first): p-md-4, m-t-lg-6, gap-md-5 ...
 
-  // Padding
-  .p-#{$num} { padding: $val; }
-  .p-t-#{$num} { padding-top: $val; }
-  .p-b-#{$num} { padding-bottom: $val; }
-  .p-l-#{$num} { padding-left: $val; }
-  .p-r-#{$num} { padding-right: $val; }
-  .p-x-#{$num} { padding-left: $val; padding-right: $val; }
-  .p-y-#{$num} { padding-top: $val; padding-bottom: $val; }
+@mixin spacing-rules($infix: "") {
+  @each $num, $val in $spacing {
+    .m#{$infix}-#{$num}   { margin: $val; }
+    .m-t#{$infix}-#{$num} { margin-top: $val; }
+    .m-b#{$infix}-#{$num} { margin-bottom: $val; }
+    .m-l#{$infix}-#{$num} { margin-left: $val; }
+    .m-r#{$infix}-#{$num} { margin-right: $val; }
+    .m-x#{$infix}-#{$num} { margin-left: $val; margin-right: $val; }
+    .m-y#{$infix}-#{$num} { margin-top: $val; margin-bottom: $val; }
+
+    .p#{$infix}-#{$num}   { padding: $val; }
+    .p-t#{$infix}-#{$num} { padding-top: $val; }
+    .p-b#{$infix}-#{$num} { padding-bottom: $val; }
+    .p-l#{$infix}-#{$num} { padding-left: $val; }
+    .p-r#{$infix}-#{$num} { padding-right: $val; }
+    .p-x#{$infix}-#{$num} { padding-left: $val; padding-right: $val; }
+    .p-y#{$infix}-#{$num} { padding-top: $val; padding-bottom: $val; }
+
+    .gap#{$infix}-#{$num}   { gap: $val; }
+    .gap-x#{$infix}-#{$num} { column-gap: $val; }
+    .gap-y#{$infix}-#{$num} { row-gap: $val; }
+  }
 }
 
+@include spacing-rules;
+
 // Auto margins
-.m-auto { margin: auto; }
+.m-auto   { margin: auto; }
 .m-x-auto { margin-left: auto; margin-right: auto; }
+.m-y-auto { margin-top: auto; margin-bottom: auto; }
+.m-t-auto { margin-top: auto; }
+.m-b-auto { margin-bottom: auto; }
+.m-l-auto { margin-left: auto; }
+.m-r-auto { margin-right: auto; }
+
+@each $bp, $value in $breakpoints {
+  @media (min-width: #{$value}) {
+    @include spacing-rules("-#{$bp}");
+  }
+}

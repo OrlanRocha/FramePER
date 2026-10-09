@@ -1,25 +1,28 @@
 @use '../variables' as *;
 
 .breadcrumb {
-    display: flex;
-    list-style: none;
-    background-color: rgba(0,0,0,0.03);
-    padding: 0.75rem 1.2rem;
-    border-radius: 0.4rem;
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: 0.5rem;
+  font-size: 0.875rem;
+  color: var(--text-muted);
 }
 
 .breadcrumb-item {
-    & + .breadcrumb-item::before {
-        content: "/";
-        padding: 0 0.5rem;
-        color: var(--grey);
-    }
-    
-    a {
-        color: var(--blue);
-        text-decoration: none;
-        &:hover { text-decoration: underline; }
-    }
-    
-    &.active { color: var(--text-muted); }
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+
+  & + .breadcrumb-item::before {
+    content: "/";
+    color: var(--text-subtle);
+  }
+
+  a {
+    transition: color 0.15s var(--ease);
+    &:hover { color: var(--text-main); }
+  }
+
+  &.active { color: var(--text-main); font-weight: 500; }
 }

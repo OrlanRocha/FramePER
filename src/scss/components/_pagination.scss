@@ -1,33 +1,35 @@
 @use '../variables' as *;
 
 .pagination {
-    display: flex;
-    list-style: none;
-    gap: 0.25rem;
+  display: flex;
+  flex-wrap: wrap;
+  gap: 0.25rem;
+}
+
+.page-link {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  min-width: 2.25rem;
+  height: 2.25rem;
+  padding: 0 0.625rem;
+  font-size: 0.875rem;
+  font-weight: 500;
+  color: var(--text-muted);
+  border: 1px solid transparent;
+  border-radius: var(--radius-md);
+  transition: color 0.15s var(--ease), background-color 0.15s var(--ease), border-color 0.15s var(--ease);
+
+  &:hover { color: var(--text-main); background-color: var(--bg-hover); }
 }
 
 .page-item {
-    .page-link {
-        display: block;
-        padding: 0.5rem 1rem;
-        color: var(--blue);
-        background-color: var(--bg-surface);
-        border: 1px solid var(--border-color);
-        border-radius: 0.25rem;
-        transition: background-color 0.3s, color 0.3s;
-        
-        &:hover { background-color: rgba(0,0,0,0.05); }
-    }
-    
-    &.active .page-link {
-        background-color: var(--blue);
-        color: var(--white);
-        border-color: var(--blue);
-    }
-    
-    &.disabled .page-link {
-        color: var(--grey);
-        pointer-events: none;
-        background-color: rgba(0,0,0,0.02);
-    }
+  &.active .page-link {
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-xs);
+  }
+
+  &.disabled .page-link { opacity: 0.45; pointer-events: none; }
 }

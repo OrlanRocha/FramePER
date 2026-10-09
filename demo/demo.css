@@ -1,0 +1,100 @@
+/* ==========================================================================
+   Demo-only styles. Components and utilities come from FramePER itself;
+   this file only holds page-specific layout used by the demo pages.
+   ========================================================================== */
+
+/* Landing ---------------------------------------------------------------- */
+.hero { padding-block: 4.5rem 4rem; }
+.hero-title { max-width: 16ch; margin-inline: auto; }
+.hero-lead { max-width: 38rem; margin-inline: auto; }
+
+@media (min-width: 768px) {
+  .hero { padding-block: 7rem 6rem; }
+}
+
+.section { padding-block: 4rem; }
+@media (min-width: 768px) { .section { padding-block: 6rem; } }
+
+.section-head { max-width: 38rem; margin: 0 auto 3rem; text-align: center; }
+
+.check-list { display: grid; gap: 0.75rem; }
+.check-list li { display: flex; align-items: flex-start; gap: 0.75rem; color: var(--text-muted); }
+.check-list .icon { margin-top: 0.2rem; color: var(--green); }
+
+/* Docs layout (manual + components) -------------------------------------- */
+.docs { display: grid; gap: 2rem; padding-block: 2rem 5rem; }
+
+@media (min-width: 992px) {
+  .docs { grid-template-columns: 13rem minmax(0, 1fr); gap: 3.5rem; padding-top: 3rem; }
+}
+
+.docs-nav { display: none; position: sticky; top: 5rem; align-self: start; }
+@media (min-width: 992px) { .docs-nav { display: block; } }
+
+.docs-nav a {
+  display: block;
+  padding: 0.375rem 0.875rem;
+  font-size: 0.8125rem;
+  color: var(--text-muted);
+  border-left: 1px solid var(--border-color);
+  transition: color 0.15s, border-color 0.15s;
+}
+.docs-nav a:hover { color: var(--text-main); }
+.docs-nav a.active { color: var(--text-main); border-left-color: var(--text-main); font-weight: 500; }
+
+.docs-section { scroll-margin-top: 5rem; padding-bottom: 3.5rem; }
+.docs-section > h2 { margin-bottom: 0.5rem; }
+.docs-section > .lead { margin-bottom: 1.5rem; font-size: 1rem; }
+
+/* Live preview area, followed by a code block */
+.preview {
+  padding: 1.5rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+}
+.preview + pre { border-top-left-radius: 0; border-top-right-radius: 0; margin-top: -1px; }
+.preview.preview-solo { border-radius: var(--radius-lg); }
+
+.icon-tile {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: 0.5rem;
+  padding: 1rem 0.5rem;
+  font-size: 1.375rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  transition: border-color 0.15s, transform 0.15s;
+}
+.icon-tile:hover { border-color: var(--border-strong); transform: translateY(-2px); }
+.icon-tile small { font-size: 0.6875rem; color: var(--text-muted); font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace; }
+
+.swatch { width: 100%; height: 2.5rem; border-radius: var(--radius-sm); border: 1px solid var(--border-color); }
+
+/* Dashboard -------------------------------------------------------------- */
+.bars { display: flex; align-items: flex-end; gap: 0.5rem; height: 13rem; padding-top: 0.5rem; }
+.bar {
+  flex: 1;
+  min-width: 0;
+  background-color: var(--primary);
+  border-radius: 0.25rem 0.25rem 0 0;
+  opacity: 0.8;
+  transition: opacity 0.15s, transform 0.15s;
+}
+.bar:hover { opacity: 1; transform: scaleY(1.02); transform-origin: bottom; }
+.bar.muted { background-color: var(--border-strong); opacity: 1; }
+.bar-labels { display: flex; gap: 0.5rem; margin-top: 0.5rem; font-size: 0.6875rem; color: var(--text-subtle); }
+.bar-labels span { flex: 1; text-align: center; }
+
+.activity { display: grid; gap: 1rem; }
+.activity li { display: flex; gap: 0.75rem; align-items: flex-start; font-size: 0.875rem; }
+.activity small { display: block; color: var(--text-subtle); }
+
+.search-field { width: 16rem; }
+
+/* Index ------------------------------------------------------------------ */
+.demo-link { display: block; height: 100%; }
+.demo-link .go { margin-top: auto; font-size: 0.8125rem; font-weight: 500; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.375rem; transition: color 0.15s, gap 0.15s; }
+.demo-link:hover .go { color: var(--text-main); gap: 0.625rem; }

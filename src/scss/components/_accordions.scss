@@ -1,49 +1,61 @@
 @use '../variables' as *;
 
 .accordion {
-    border: 1px solid var(--border-color);
-    border-radius: 0.4rem;
-    overflow: hidden;
-    margin-bottom: 1rem;
+  overflow: hidden;
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
 }
 
-.accordion-item {
-    border-bottom: 1px solid var(--border-color);
-    &:last-child { border-bottom: none; }
-}
+.accordion-item + .accordion-item { border-top: 1px solid var(--border-color); }
 
 .accordion-header {
-    background-color: transparent;
-    padding: 1rem 1.5rem;
-    cursor: pointer;
-    font-weight: bold;
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
-    transition: background-color 0.3s;
-    
-    &:hover { background-color: rgba(128,128,128,0.05); }
-    
-    &::after {
-        content: '+';
-        font-size: 1.2rem;
-        transition: transform 0.3s;
-    }
-    
-    &.active {
-        background-color: rgba(128,128,128,0.1);
-        &::after { content: '-'; transform: rotate(180deg); }
-    }
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem 1.25rem;
+  font-size: 0.9375rem;
+  font-weight: 500;
+  cursor: pointer;
+  user-select: none;
+  transition: background-color 0.15s var(--ease);
+
+  &:hover { background-color: var(--bg-hover); }
+
+  // Chevron
+  &::after {
+    content: "";
+    flex: none;
+    width: 0.5rem;
+    height: 0.5rem;
+    margin-right: 0.25rem;
+    color: var(--text-muted);
+    border-right: 1.5px solid currentColor;
+    border-bottom: 1.5px solid currentColor;
+    transform: translateY(-2px) rotate(45deg);
+    transition: transform 0.25s var(--ease);
+  }
+
+  &.active::after { transform: translateY(2px) rotate(-135deg); }
 }
 
+// Collapsed content is fully removed from view (padding included), so text can
+// never peek out even if a padding utility is added to the element.
 .accordion-body {
-    max-height: 0;
-    overflow: hidden;
-    transition: max-height 0.3s ease-out, padding 0.3s ease;
-    background-color: transparent;
-    
-    &.active {
-        padding: 1rem 1.5rem;
-        max-height: 1000px; /* arbitrary max height for transition */
-    }
+  max-height: 0;
+  padding: 0 1.25rem !important;
+  overflow: hidden;
+  visibility: hidden;
+  font-size: 0.875rem;
+  line-height: 1.65;
+  color: var(--text-muted);
+  transition: max-height 0.3s var(--ease), padding 0.3s var(--ease), visibility 0.3s;
+
+  &.active {
+    max-height: 40rem;
+    padding: 0 1.25rem 1.125rem !important;
+    visibility: visible;
+  }
 }

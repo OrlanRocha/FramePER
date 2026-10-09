@@ -1,14 +1,36 @@
 @use '../variables' as *;
 
+// Palette colors: .bg-blue  .text-blue  .b-blue
 @each $name, $color in $colors {
-  .bg-#{$name} { 
-    background-color: var(--#{$name}) !important; 
-    @if $name == 'white' or $name == 'yellow' {
+  .bg-#{$name} {
+    background-color: var(--#{$name}) !important;
+    @if $name == "white" or $name == "yellow" {
       color: var(--black);
     } @else {
       color: var(--white);
     }
   }
   .text-#{$name} { color: var(--#{$name}) !important; }
-  .b-#{$name} { border-color: var(--#{$name}) !important; }
+  .b-#{$name}    { border-color: var(--#{$name}) !important; }
 }
+
+// Soft tints: .bg-green-soft
+@each $name in $semantic {
+  .bg-#{$name}-soft {
+    background-color: tint($name, 12%) !important;
+    color: readable($name, 80%);
+  }
+}
+
+// Theme-aware surfaces and text
+.bg-body    { background-color: var(--bg-body) !important; }
+.bg-surface { background-color: var(--bg-surface) !important; }
+.bg-subtle  { background-color: var(--bg-subtle) !important; }
+.bg-primary { background-color: var(--primary) !important; color: #fff; }
+
+.text-main   { color: var(--text-main) !important; }
+.text-muted  { color: var(--text-muted) !important; }
+.text-subtle { color: var(--text-subtle) !important; }
+.text-primary { color: var(--primary) !important; }
+
+.border-primary { border-color: var(--primary) !important; }
