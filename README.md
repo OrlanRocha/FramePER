@@ -1,14 +1,26 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.7.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.8.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
 
+- **📅 Datepicker & Calendário Nativo (`FramePER.Datepicker`)**:
+  - **Zero Dependências**: Calendário popover em puro JavaScript Vanilla e SCSS modular.
+  - **Data Única & Intervalo (Range)**: Seleção de data única (`data-datepicker`) ou range contínuo (`data-datepicker="range"`) com realce no grid.
+  - **Formatação Brasileira**: Padrão `DD/MM/AAAA`, atalhos de "Hoje", "Limpar", navegação de mês/ano e fechamento com `Escape` ou clique fora.
+- **🔍 Dropdown Select Pesquisável (`FramePER.Select`)**:
+  - **Filtro em Tempo Real**: Campo de pesquisa rápida com filtragem instantânea de opções.
+  - **Multi-Select & Chips**: Suporte ao atributo `multiple` nativo com renderização de tags/chips interativas e remoção individual.
+  - **Optgroups & Badges**: Suporte a grupos de opções, ícones e badges decorativas (`data-badge`).
+- **💬 Tooltips Flutuantes Direcionais**:
+  - **4 Posições**: Top (padrão), Bottom (`data-tooltip-pos="bottom"`), Left (`data-tooltip-pos="left"`), Right (`data-tooltip-pos="right"`).
+  - **Variantes Semânticas**: Primary, Success, Danger, Warning e Light.
+  - **Suporte Multilinha**: Quebra automática para mensagens explicativas longas (`data-tooltip-multiline="true"`).
 - **📊 Framework de Gráficos SVG Nativo (`FramePER.Chart`)**:
   - **Zero Dependências**: Gráficos 100% vetoriais em puro SVG e Vanilla JS, infinitamente nítidos em telas Retina/HiDPI e com carga instantânea.
   - **✨ Animações Nativas de Entrada**: Traçado progressivo de curvas (`stroke-dashoffset`), crescimento fluido de barras a partir do eixo base (`scaleY`) e desvanecimento suave de áreas degradê.
@@ -56,6 +68,8 @@
 
 ## ⚙️ Módulos & Recursos JavaScript (`window.FramePER`)
 
+- **📅 FramePER.Datepicker**: Calendário flutuante em popover com seleção de data única e intervalo (range) `DD/MM/AAAA`.
+- **🔍 FramePER.Select**: Select customizado pesquisável em tempo real com suporte a multi-select e tags/chips.
 - **📈 FramePER.Chart**: Motor completo de gráficos vetoriais SVG com 10 tipos, animações nativas de entrada e exportação PNG/SVG.
 - **🔍 FramePER.CommandPalette**: Spotlight flutuante com atalho `Ctrl+K` / `Cmd+K`, catálogo de páginas e ações rápidas extensíveis.
 - **📋 FramePER.Clipboard**: Cópia para a área de transferência com um clique (`data-copy="texto"` ou `data-copy-target="#seletor"`).

@@ -29,6 +29,11 @@
       </nav>
 
       <div class="navbar-actions">
+        <button class="btn btn-outline btn-sm d-none d-sm-inline-flex align-items-center gap-2" data-command-palette aria-label="Busca rápida">
+          <i class="icon icon-search"></i>
+          <span>Buscar</span>
+          <kbd style="font-size: 0.7rem; padding: 2px 5px; border-radius: 4px; background: var(--bg-surface); border: 1px solid var(--border);">Ctrl K</kbd>
+        </button>
         <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
           <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
         </button>
@@ -56,6 +61,8 @@
       <span class="sidebar-label">Componentes</span>
       <a href="#sec-buttons" class="active">Botões & Grupos</a>
       <a href="#sec-forms">Formulários & Máscaras</a>
+      <a href="#sec-datepicker">Datepicker & Select</a>
+      <a href="#sec-tooltips">Tooltips Flutuantes</a>
       <a href="#sec-badges">Badges & Avatares</a>
       <a href="#sec-chips">Chips & Tags</a>
       <a href="#sec-icons">Biblioteca de Ícones</a>
@@ -178,6 +185,145 @@
 
 <span class="tok-c">&lt;!-- Mostrar / Ocultar Senha --&gt;</span>
 <span class="tok-k">&lt;button</span> <span class="tok-f">type</span>=<span class="tok-s">"button"</span> <span class="tok-f">data-toggle</span>=<span class="tok-s">"password"</span> <span class="tok-f">data-target</span>=<span class="tok-s">"#demoPass"</span><span class="tok-k">&gt;&lt;i</span> <span class="tok-f">class</span>=<span class="tok-s">"icon icon-eye"</span><span class="tok-k">&gt;&lt;/i&gt;&lt;/button&gt;</span></code></pre>
+      </section>
+
+      <!-- Datepicker & Searchable Select -->
+      <section id="sec-datepicker" class="docs-section">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <h2>Datepicker & Dropdown Pesquisável</h2>
+            <p class="lead">Calendário popover nativo em puro JavaScript (Data única e Range) e Select pesquisável com suporte a Multi-Select e chips.</p>
+          </div>
+          <span class="badge badge-primary badge-pill">Novo v2.8.0</span>
+        </div>
+
+        <div class="preview stack gap-5">
+          <!-- Datepicker Grid -->
+          <div>
+            <h4 class="f-s-3 m-b-3 text-main"><i class="icon icon-calendar text-primary m-r-1"></i> Datepicker (Calendário Flutuante)</h4>
+            <div class="grid grid-md-2 gap-4">
+              <div class="form-group">
+                <label for="demoDateSingle">Data Única</label>
+                <div class="input-icon">
+                  <i class="icon icon-calendar"></i>
+                  <input type="text" id="demoDateSingle" class="input" data-datepicker placeholder="DD/MM/AAAA" value="15/10/2026">
+                </div>
+                <span class="text-muted f-s-1">Clique para abrir o calendário mensal e navegar</span>
+              </div>
+
+              <div class="form-group">
+                <label for="demoDateRange">Intervalo de Datas (Range)</label>
+                <div class="input-icon">
+                  <i class="icon icon-calendar"></i>
+                  <input type="text" id="demoDateRange" class="input" data-datepicker="range" placeholder="Data Início - Data Fim" value="10/10/2026 - 24/10/2026">
+                </div>
+                <span class="text-muted f-s-1">Selecione início e fim com destaque contínuo no grid</span>
+              </div>
+            </div>
+          </div>
+
+          <hr class="m-0 border-subtle">
+
+          <!-- Searchable Select Grid -->
+          <div>
+            <h4 class="f-s-3 m-b-3 text-main"><i class="icon icon-search text-primary m-r-1"></i> Dropdown Select Pesquisável</h4>
+            <div class="grid grid-md-2 gap-4">
+              <div class="form-group">
+                <label for="demoSelectSearch">Single Select com Busca Instantânea</label>
+                <select id="demoSelectSearch" data-select-search data-placeholder="Escolha uma tecnologia...">
+                  <option value="">Selecione uma tecnologia...</option>
+                  <optgroup label="Frontend & Estilo">
+                    <option value="frameper" selected data-badge="Nativo">Frame PER (SCSS + JS)</option>
+                    <option value="react">React / Next.js</option>
+                    <option value="vue">Vue.js / Nuxt</option>
+                    <option value="svelte">SvelteKit</option>
+                  </optgroup>
+                  <optgroup label="Backend & Cloud">
+                    <option value="node">Node.js / Express</option>
+                    <option value="python">Python / FastAPI</option>
+                    <option value="go">Golang</option>
+                    <option value="rust">Rust</option>
+                  </optgroup>
+                </select>
+                <span class="text-muted f-s-1">Digite no campo de busca para filtrar instantaneamente</span>
+              </div>
+
+              <div class="form-group">
+                <label for="demoSelectMulti">Multi-Select com Chips/Tags</label>
+                <select id="demoSelectMulti" multiple data-select-search data-placeholder="Selecione competências...">
+                  <option value="css" selected>CSS Moderno</option>
+                  <option value="svg" selected>SVG Vetorial</option>
+                  <option value="js" selected>JavaScript Vanilla</option>
+                  <option value="a11y">Acessibilidade (ARIA)</option>
+                  <option value="ux">Design & UX</option>
+                  <option value="pwa">Progressive Web App</option>
+                </select>
+                <span class="text-muted f-s-1">Adicione ou remova múltiplos itens com tags interativas</span>
+              </div>
+            </div>
+          </div>
+        </div>
+
+        <pre><code><span class="tok-c">&lt;!-- 1. Datepicker Simples e Range --&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">class</span>=<span class="tok-s">"input"</span> <span class="tok-f">data-datepicker</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"DD/MM/AAAA"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">class</span>=<span class="tok-s">"input"</span> <span class="tok-f">data-datepicker</span>=<span class="tok-s">"range"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"Início - Fim"</span><span class="tok-k">&gt;</span>
+
+<span class="tok-c">&lt;!-- 2. Select com busca e Multi-Select nativo --&gt;</span>
+<span class="tok-k">&lt;select</span> <span class="tok-f">data-select-search</span> <span class="tok-f">data-placeholder</span>=<span class="tok-s">"Escolha..."</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;option</span> <span class="tok-f">value</span>=<span class="tok-s">"1"</span><span class="tok-k">&gt;</span>Opção 1<span class="tok-k">&lt;/option&gt;</span>
+<span class="tok-k">&lt;/select&gt;</span>
+
+<span class="tok-k">&lt;select</span> <span class="tok-f">multiple</span> <span class="tok-f">data-select-search</span><span class="tok-k">&gt;</span>...<span class="tok-k">&lt;/select&gt;</span></code></pre>
+      </section>
+
+      <!-- Advanced Tooltips Section -->
+      <section id="sec-tooltips" class="docs-section">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+          <div>
+            <h2>Tooltips Flutuantes Avançados</h2>
+            <p class="lead">Dicas de contexto flutuantes com 4 posições (Top, Bottom, Left, Right), variantes coloridas e suporte multilinha.</p>
+          </div>
+          <span class="badge badge-primary badge-pill">Aprimorado</span>
+        </div>
+
+        <div class="preview stack gap-4">
+          <!-- 4 Positions -->
+          <div>
+            <span class="eyebrow m-b-2 d-block">Posicionamento Direcional (Top, Bottom, Left, Right)</span>
+            <div class="cluster gap-3">
+              <button class="btn btn-outline" data-tooltip="Tooltip no Topo (Padrão)" data-tooltip-pos="top">Posição Top</button>
+              <button class="btn btn-outline" data-tooltip="Tooltip na Base" data-tooltip-pos="bottom">Posição Bottom</button>
+              <button class="btn btn-outline" data-tooltip="Tooltip na Esquerda" data-tooltip-pos="left">Posição Left</button>
+              <button class="btn btn-outline" data-tooltip="Tooltip na Direita" data-tooltip-pos="right">Posição Right</button>
+            </div>
+          </div>
+
+          <!-- Color Variants -->
+          <div>
+            <span class="eyebrow m-b-2 d-block">Variantes de Cor Semânticas</span>
+            <div class="cluster gap-3">
+              <button class="btn btn-primary" data-tooltip="Ação primária destacada" data-tooltip-variant="primary">Primário</button>
+              <button class="btn btn-green" data-tooltip="Operação concluída com sucesso" data-tooltip-variant="success">Sucesso</button>
+              <button class="btn btn-red" data-tooltip="Atenção: ação irreversível" data-tooltip-variant="danger">Perigo</button>
+              <button class="btn btn-yellow" data-tooltip="Aviso sobre alteração pendente" data-tooltip-variant="warning">Aviso</button>
+            </div>
+          </div>
+
+          <!-- Multiline -->
+          <div>
+            <span class="eyebrow m-b-2 d-block">Texto Longo Multilinha</span>
+            <button class="btn btn-ghost" data-tooltip="Este tooltip possui suporte a quebra automática de texto para mensagens explicativas mais ricas e longas." data-tooltip-multiline="true">
+              Passe o mouse para ler texto longo
+            </button>
+          </div>
+        </div>
+
+        <pre><code><span class="tok-c">&lt;!-- 4 Direções --&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">data-tooltip</span>=<span class="tok-s">"Mensagem"</span> <span class="tok-f">data-tooltip-pos</span>=<span class="tok-s">"bottom"</span><span class="tok-k">&gt;</span>Inferior<span class="tok-k">&lt;/button&gt;</span>
+
+<span class="tok-c">&lt;!-- Variantes de Cor e Multilinha --&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">data-tooltip</span>=<span class="tok-s">"Ação segura"</span> <span class="tok-f">data-tooltip-variant</span>=<span class="tok-s">"success"</span><span class="tok-k">&gt;</span>Sucesso<span class="tok-k">&lt;/button&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">data-tooltip</span>=<span class="tok-s">"Texto longo..."</span> <span class="tok-f">data-tooltip-multiline</span>=<span class="tok-s">"true"</span><span class="tok-k">&gt;</span>Multilinha<span class="tok-k">&lt;/button&gt;</span></code></pre>
       </section>
 
       <!-- Badges, Alertas & Avatares -->

@@ -2258,6 +2258,674 @@
                 toggle,
                 register
             };
+        })(),
+
+        // ======================================================================
+        // FramePER.Datepicker: Native Pure JS/CSS Date & Range Picker
+        // ======================================================================
+        Datepicker: (() => {
+            const MONTH_NAMES = [
+                'Janeiro', 'Fevereiro', 'Março', 'Abril', 'Maio', 'Junho',
+                'Julho', 'Agosto', 'Setembro', 'Outubro', 'Novembro', 'Dezembro'
+            ];
+            const WEEKDAY_NAMES = ['Dom', 'Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb'];
+
+            function pad(n) { return String(n).padStart(2, '0'); }
+
+            function formatDate(d) {
+                if (!d || isNaN(d.getTime())) return '';
+                return `${pad(d.getDate())}/${pad(d.getMonth() + 1)}/${d.getFullYear()}`;
+            }
+
+            function parseDate(str) {
+                if (!str || typeof str !== 'string') return null;
+                const parts = str.trim().split('/');
+                if (parts.length === 3) {
+                    const day = parseInt(parts[0], 10);
+                    const month = parseInt(parts[1], 10) - 1;
+                    const year = parseInt(parts[2], 10);
+                    if (!isNaN(day) && !isNaN(month) && !isNaN(year)) {
+                        const d = new Date(year, month, day);
+                        if (d.getFullYear() === year && d.getMonth() === month && d.getDate() === day) {
+                            return d;
+                        }
+                    }
+                }
+                return null;
+            }
+
+            class Instance {
+                constructor(input, options = {}) {
+                    this.input = typeof input === 'string' ? document.querySelector(input) : input;
+                    if (!this.input || this.input._frameDatepicker) return;
+                    this.input._frameDatepicker = this;
+
+                    this.isRange = options.range || this.input.getAttribute('data-datepicker') === 'range';
+                    
+                    const today = new Date();
+                    this.viewYear = today.getFullYear();
+                    this.viewMonth = today.getMonth();
+
+                    this.selectedDate = null;
+                    this.rangeStart = null;
+                    this.rangeEnd = null;
+
+                    if (this.input.value) {
+                        if (this.isRange && this.input.value.includes(' - ')) {
+                            const [s, e] = this.input.value.split(' - ');
+                            this.rangeStart = parseDate(s);
+                            this.rangeEnd = parseDate(e);
+                            if (this.rangeStart) {
+                                this.viewYear = this.rangeStart.getFullYear();
+                                this.viewMonth = this.rangeStart.getMonth();
+                            }
+                        } else {
+                            const parsed = parseDate(this.input.value);
+                            if (parsed) {
+                                this.selectedDate = parsed;
+                                this.viewYear = parsed.getFullYear();
+                                this.viewMonth = parsed.getMonth();
+                            }
+                        }
+                    }
+
+                    this._createDOM();
+                    this._bindEvents();
+                }
+
+                _createDOM() {
+                    this.popover = document.createElement('div');
+                    this.popover.className = 'frame-datepicker-popover';
+                    document.body.appendChild(this.popover);
+                }
+
+                _bindEvents() {
+                    this.input.addEventListener('focus', () => this.open());
+                    this.input.addEventListener('click', () => this.open());
+
+                    document.addEventListener('click', (e) => {
+                        if (!this.isOpen) return;
+                        if (!this.popover.contains(e.target) && e.target !== this.input) {
+                            this.close();
+                        }
+                    });
+
+                    window.addEventListener('resize', () => {
+                        if (this.isOpen) this._position();
+                    });
+
+                    window.addEventListener('scroll', () => {
+                        if (this.isOpen) this._position();
+                    }, true);
+
+                    this.input.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape' && this.isOpen) {
+                            this.close();
+                        }
+                    });
+                }
+
+                _position() {
+                    const rect = this.input.getBoundingClientRect();
+                    const popoverH = this.popover.offsetHeight || 310;
+                    const popoverW = this.popover.offsetWidth || 296;
+                    
+                    let top = rect.bottom + window.scrollY + 6;
+                    let left = rect.left + window.scrollX;
+
+                    if (rect.bottom + popoverH + 10 > window.innerHeight && rect.top - popoverH > 0) {
+                        top = rect.top + window.scrollY - popoverH - 6;
+                        this.popover.classList.add('popover-top');
+                    } else {
+                        this.popover.classList.remove('popover-top');
+                    }
+
+                    if (left + popoverW > window.innerWidth - 10) {
+                        left = window.innerWidth - popoverW - 10;
+                    }
+                    if (left < 10) left = 10;
+
+                    this.popover.style.top = `${top}px`;
+                    this.popover.style.left = `${left}px`;
+                }
+
+                render() {
+                    const year = this.viewYear;
+                    const month = this.viewMonth;
+
+                    const firstDay = new Date(year, month, 1);
+                    const lastDay = new Date(year, month + 1, 0);
+                    const prevLastDay = new Date(year, month, 0);
+
+                    const startingDay = firstDay.getDay();
+                    const totalDays = lastDay.getDate();
+
+                    const today = new Date();
+                    const isTodayYearMonth = today.getFullYear() === year && today.getMonth() === month;
+
+                    let html = `
+                        <div class="frame-datepicker-header">
+                            <button type="button" class="frame-datepicker-nav-btn prev-btn" aria-label="Mês anterior">&lsaquo;</button>
+                            <span class="frame-datepicker-title">${MONTH_NAMES[month]} ${year}</span>
+                            <button type="button" class="frame-datepicker-nav-btn next-btn" aria-label="Próximo mês">&rsaquo;</button>
+                        </div>
+                        <div class="frame-datepicker-weekdays">
+                            ${WEEKDAY_NAMES.map(w => `<span>${w}</span>`).join('')}
+                        </div>
+                        <div class="frame-datepicker-days">
+                    `;
+
+                    // Previous month trailing days
+                    const prevMonthDays = prevLastDay.getDate();
+                    for (let i = startingDay - 1; i >= 0; i--) {
+                        const dayNum = prevMonthDays - i;
+                        html += `<button type="button" class="frame-datepicker-day is-other-month" data-action="prev-month-day" data-day="${dayNum}">${dayNum}</button>`;
+                    }
+
+                    // Current month days
+                    for (let day = 1; day <= totalDays; day++) {
+                        const currentD = new Date(year, month, day);
+                        const isToday = isTodayYearMonth && today.getDate() === day;
+                        
+                        let classes = ['frame-datepicker-day'];
+                        if (isToday) classes.push('is-today');
+
+                        if (this.isRange) {
+                            const time = currentD.getTime();
+                            const sTime = this.rangeStart ? new Date(this.rangeStart.getFullYear(), this.rangeStart.getMonth(), this.rangeStart.getDate()).getTime() : null;
+                            const eTime = this.rangeEnd ? new Date(this.rangeEnd.getFullYear(), this.rangeEnd.getMonth(), this.rangeEnd.getDate()).getTime() : null;
+
+                            if (sTime && time === sTime) {
+                                classes.push('is-range-start', 'is-selected');
+                            } else if (eTime && time === eTime) {
+                                classes.push('is-range-end', 'is-selected');
+                            } else if (sTime && eTime && time > sTime && time < eTime) {
+                                classes.push('is-in-range');
+                            }
+                        } else if (this.selectedDate) {
+                            if (this.selectedDate.getFullYear() === year &&
+                                this.selectedDate.getMonth() === month &&
+                                this.selectedDate.getDate() === day) {
+                                classes.push('is-selected');
+                            }
+                        }
+
+                        html += `<button type="button" class="${classes.join(' ')}" data-action="select-day" data-day="${day}">${day}</button>`;
+                    }
+
+                    // Next month leading days
+                    const remainingCells = 42 - (startingDay + totalDays);
+                    const nextDaysToShow = remainingCells < 7 ? remainingCells : remainingCells - 7;
+                    for (let day = 1; day <= nextDaysToShow; day++) {
+                        html += `<button type="button" class="frame-datepicker-day is-other-month" data-action="next-month-day" data-day="${day}">${day}</button>`;
+                    }
+
+                    html += `
+                        </div>
+                        <div class="frame-datepicker-footer">
+                            <button type="button" class="btn-link" data-action="today">Hoje</button>
+                            <button type="button" class="btn-link text-muted" data-action="clear">Limpar</button>
+                        </div>
+                    `;
+
+                    this.popover.innerHTML = html;
+
+                    this.popover.querySelector('.prev-btn').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.prevMonth();
+                    });
+                    this.popover.querySelector('.next-btn').addEventListener('click', (e) => {
+                        e.stopPropagation();
+                        this.nextMonth();
+                    });
+
+                    this.popover.querySelectorAll('[data-action="select-day"]').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const day = parseInt(btn.getAttribute('data-day'), 10);
+                            this.selectDay(day);
+                        });
+                    });
+
+                    this.popover.querySelectorAll('[data-action="prev-month-day"]').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            this.prevMonth();
+                            const day = parseInt(btn.getAttribute('data-day'), 10);
+                            this.selectDay(day);
+                        });
+                    });
+
+                    this.popover.querySelectorAll('[data-action="next-month-day"]').forEach(btn => {
+                        btn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            this.nextMonth();
+                            const day = parseInt(btn.getAttribute('data-day'), 10);
+                            this.selectDay(day);
+                        });
+                    });
+
+                    const todayBtn = this.popover.querySelector('[data-action="today"]');
+                    if (todayBtn) {
+                        todayBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            const now = new Date();
+                            this.viewYear = now.getFullYear();
+                            this.viewMonth = now.getMonth();
+                            if (this.isRange) {
+                                this.rangeStart = now;
+                                this.rangeEnd = null;
+                                this.input.value = formatDate(now);
+                            } else {
+                                this.selectedDate = now;
+                                this.input.value = formatDate(now);
+                                this.close();
+                            }
+                            this.input.dispatchEvent(new Event('input', { bubbles: true }));
+                            this.input.dispatchEvent(new Event('change', { bubbles: true }));
+                            this.render();
+                        });
+                    }
+
+                    const clearBtn = this.popover.querySelector('[data-action="clear"]');
+                    if (clearBtn) {
+                        clearBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            this.selectedDate = null;
+                            this.rangeStart = null;
+                            this.rangeEnd = null;
+                            this.input.value = '';
+                            this.input.dispatchEvent(new Event('input', { bubbles: true }));
+                            this.input.dispatchEvent(new Event('change', { bubbles: true }));
+                            this.close();
+                        });
+                    }
+                }
+
+                selectDay(day) {
+                    const picked = new Date(this.viewYear, this.viewMonth, day);
+
+                    if (this.isRange) {
+                        if (!this.rangeStart || (this.rangeStart && this.rangeEnd)) {
+                            this.rangeStart = picked;
+                            this.rangeEnd = null;
+                            this.input.value = formatDate(picked);
+                        } else {
+                            if (picked < this.rangeStart) {
+                                this.rangeEnd = this.rangeStart;
+                                this.rangeStart = picked;
+                            } else {
+                                this.rangeEnd = picked;
+                            }
+                            this.input.value = `${formatDate(this.rangeStart)} - ${formatDate(this.rangeEnd)}`;
+                            this.close();
+                        }
+                    } else {
+                        this.selectedDate = picked;
+                        this.input.value = formatDate(picked);
+                        this.close();
+                    }
+
+                    this.input.dispatchEvent(new Event('input', { bubbles: true }));
+                    this.input.dispatchEvent(new Event('change', { bubbles: true }));
+                    this.render();
+                }
+
+                prevMonth() {
+                    this.viewMonth--;
+                    if (this.viewMonth < 0) {
+                        this.viewMonth = 11;
+                        this.viewYear--;
+                    }
+                    this.render();
+                }
+
+                nextMonth() {
+                    this.viewMonth++;
+                    if (this.viewMonth > 11) {
+                        this.viewMonth = 0;
+                        this.viewYear++;
+                    }
+                    this.render();
+                }
+
+                open() {
+                    this.isOpen = true;
+                    this.render();
+                    this.popover.classList.add('show');
+                    this._position();
+                }
+
+                close() {
+                    this.isOpen = false;
+                    this.popover.classList.remove('show');
+                }
+
+                destroy() {
+                    if (this.popover && this.popover.parentNode) {
+                        this.popover.parentNode.removeChild(this.popover);
+                    }
+                    delete this.input._frameDatepicker;
+                }
+            }
+
+            return {
+                create: (input, options) => new Instance(input, options),
+                init: () => {
+                    document.querySelectorAll('input[data-datepicker]').forEach(input => {
+                        new Instance(input);
+                    });
+                }
+            };
+        })(),
+
+        // ======================================================================
+        // FramePER.Select: Rich Searchable Single & Multi-Select with Chips
+        // ======================================================================
+        Select: (() => {
+            class Instance {
+                constructor(select, options = {}) {
+                    this.select = typeof select === 'string' ? document.querySelector(select) : select;
+                    if (!this.select || this.select._frameSelect) return;
+                    this.select._frameSelect = this;
+
+                    this.isMultiple = this.select.multiple || options.multiple || false;
+                    this.placeholder = options.placeholder || this.select.getAttribute('data-placeholder') || 'Selecione...';
+                    this.searchPlaceholder = options.searchPlaceholder || 'Pesquisar...';
+
+                    this._buildCustomDOM();
+                    this._bindEvents();
+                    this.syncFromNative();
+                }
+
+                _buildCustomDOM() {
+                    this.select.style.display = 'none';
+
+                    this.wrapper = document.createElement('div');
+                    this.wrapper.className = 'frame-select';
+                    if (this.select.disabled) this.wrapper.classList.add('is-disabled');
+
+                    this.trigger = document.createElement('div');
+                    this.trigger.className = 'frame-select-trigger';
+                    this.trigger.setAttribute('tabindex', '0');
+
+                    this.valueContainer = document.createElement('div');
+                    this.valueContainer.className = 'frame-select-value';
+
+                    this.arrow = document.createElement('span');
+                    this.arrow.className = 'frame-select-arrow';
+                    this.arrow.innerHTML = '&#9662;';
+
+                    this.trigger.appendChild(this.valueContainer);
+                    this.trigger.appendChild(this.arrow);
+
+                    this.dropdown = document.createElement('div');
+                    this.dropdown.className = 'frame-select-dropdown';
+
+                    this.searchWrap = document.createElement('div');
+                    this.searchWrap.className = 'frame-select-search-wrap';
+                    this.searchInput = document.createElement('input');
+                    this.searchInput.type = 'text';
+                    this.searchInput.className = 'frame-select-search-input';
+                    this.searchInput.placeholder = this.searchPlaceholder;
+                    this.searchWrap.innerHTML = '<i class="icon icon-search"></i>';
+                    this.searchWrap.appendChild(this.searchInput);
+
+                    this.optionsContainer = document.createElement('div');
+                    this.optionsContainer.className = 'frame-select-options';
+
+                    this.dropdown.appendChild(this.searchWrap);
+                    this.dropdown.appendChild(this.optionsContainer);
+
+                    this.wrapper.appendChild(this.trigger);
+                    this.wrapper.appendChild(this.dropdown);
+
+                    this.select.parentNode.insertBefore(this.wrapper, this.select.nextSibling);
+                }
+
+                _bindEvents() {
+                    this.trigger.addEventListener('click', (e) => {
+                        if (e.target.closest('.tag-close')) return;
+                        this.toggle();
+                    });
+
+                    this.trigger.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ' || e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            this.open();
+                        }
+                    });
+
+                    this.searchInput.addEventListener('input', () => {
+                        this._filterOptions(this.searchInput.value.trim().toLowerCase());
+                    });
+
+                    this.searchInput.addEventListener('keydown', (e) => {
+                        if (e.key === 'Escape') {
+                            this.close();
+                            this.trigger.focus();
+                        } else if (e.key === 'ArrowDown') {
+                            e.preventDefault();
+                            this._navigateOptions(1);
+                        } else if (e.key === 'ArrowUp') {
+                            e.preventDefault();
+                            this._navigateOptions(-1);
+                        } else if (e.key === 'Enter') {
+                            e.preventDefault();
+                            const highlighted = this.optionsContainer.querySelector('.frame-select-option.is-highlighted');
+                            if (highlighted) {
+                                highlighted.click();
+                            }
+                        }
+                    });
+
+                    document.addEventListener('click', (e) => {
+                        if (!this.isOpen) return;
+                        if (!this.wrapper.contains(e.target)) {
+                            this.close();
+                        }
+                    });
+
+                    this.select.addEventListener('change', () => {
+                        this.syncFromNative();
+                    });
+                }
+
+                _renderOptions() {
+                    this.optionsContainer.innerHTML = '';
+                    const children = Array.from(this.select.children);
+                    let hasItems = false;
+
+                    const renderOption = (opt) => {
+                        hasItems = true;
+                        const optDiv = document.createElement('div');
+                        optDiv.className = 'frame-select-option';
+                        optDiv.setAttribute('data-value', opt.value);
+                        if (opt.selected) optDiv.classList.add('is-selected');
+                        if (opt.disabled) optDiv.classList.add('is-disabled');
+
+                        const iconHtml = opt.getAttribute('data-icon') ? `<i class="icon ${opt.getAttribute('data-icon')}"></i> ` : '';
+                        const badgeHtml = opt.getAttribute('data-badge') ? ` <span class="badge badge-sm badge-subtle m-l-1">${opt.getAttribute('data-badge')}</span>` : '';
+
+                        optDiv.innerHTML = `
+                            <span class="option-label">${iconHtml}${opt.textContent}${badgeHtml}</span>
+                            <span class="option-check">&#10003;</span>
+                        `;
+
+                        optDiv.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            if (opt.disabled) return;
+                            this._selectOption(opt.value);
+                        });
+
+                        this.optionsContainer.appendChild(optDiv);
+                    };
+
+                    children.forEach(child => {
+                        if (child.tagName === 'OPTGROUP') {
+                            const groupLabel = document.createElement('div');
+                            groupLabel.className = 'frame-select-group-label';
+                            groupLabel.textContent = child.label;
+                            this.optionsContainer.appendChild(groupLabel);
+
+                            Array.from(child.children).forEach(opt => renderOption(opt));
+                        } else if (child.tagName === 'OPTION') {
+                            renderOption(child);
+                        }
+                    });
+
+                    if (!hasItems) {
+                        this.optionsContainer.innerHTML = '<div class="frame-select-empty">Nenhuma opção disponível</div>';
+                    }
+                }
+
+                _filterOptions(query) {
+                    const options = this.optionsContainer.querySelectorAll('.frame-select-option');
+                    let visibleCount = 0;
+
+                    options.forEach(opt => {
+                        const text = opt.textContent.toLowerCase();
+                        if (!query || text.includes(query)) {
+                            opt.style.display = 'flex';
+                            visibleCount++;
+                        } else {
+                            opt.style.display = 'none';
+                        }
+                        opt.classList.remove('is-highlighted');
+                    });
+
+                    this.optionsContainer.querySelectorAll('.frame-select-group-label').forEach(lbl => {
+                        let next = lbl.nextElementSibling;
+                        let anyVisible = false;
+                        while (next && !next.classList.contains('frame-select-group-label')) {
+                            if (next.style.display !== 'none') anyVisible = true;
+                            next = next.nextElementSibling;
+                        }
+                        lbl.style.display = anyVisible ? 'block' : 'none';
+                    });
+
+                    let emptyMsg = this.optionsContainer.querySelector('.frame-select-empty');
+                    if (visibleCount === 0) {
+                        if (!emptyMsg) {
+                            emptyMsg = document.createElement('div');
+                            emptyMsg.className = 'frame-select-empty';
+                            emptyMsg.textContent = 'Nenhum resultado encontrado';
+                            this.optionsContainer.appendChild(emptyMsg);
+                        }
+                    } else if (emptyMsg) {
+                        emptyMsg.remove();
+                    }
+                }
+
+                _navigateOptions(direction) {
+                    const visible = Array.from(this.optionsContainer.querySelectorAll('.frame-select-option')).filter(el => el.style.display !== 'none');
+                    if (visible.length === 0) return;
+
+                    let currentIdx = visible.findIndex(el => el.classList.contains('is-highlighted'));
+                    if (currentIdx !== -1) visible[currentIdx].classList.remove('is-highlighted');
+
+                    currentIdx += direction;
+                    if (currentIdx < 0) currentIdx = visible.length - 1;
+                    if (currentIdx >= visible.length) currentIdx = 0;
+
+                    visible[currentIdx].classList.add('is-highlighted');
+                    visible[currentIdx].scrollIntoView({ block: 'nearest' });
+                }
+
+                _selectOption(val) {
+                    if (this.isMultiple) {
+                        const opt = Array.from(this.select.options).find(o => o.value === val);
+                        if (opt) {
+                            opt.selected = !opt.selected;
+                        }
+                    } else {
+                        this.select.value = val;
+                        this.close();
+                    }
+
+                    this.select.dispatchEvent(new Event('change', { bubbles: true }));
+                    this.syncFromNative();
+                    if (this.isOpen) {
+                        this._renderOptions();
+                    }
+                }
+
+                syncFromNative() {
+                    const selectedOpts = Array.from(this.select.selectedOptions);
+
+                    if (this.isMultiple) {
+                        if (selectedOpts.length === 0) {
+                            this.valueContainer.innerHTML = `<span class="frame-select-placeholder">${this.placeholder}</span>`;
+                        } else {
+                            this.valueContainer.innerHTML = '';
+                            const tagsWrap = document.createElement('div');
+                            tagsWrap.className = 'frame-select-tags';
+
+                            selectedOpts.forEach(opt => {
+                                const tag = document.createElement('span');
+                                tag.className = 'frame-select-tag';
+                                tag.innerHTML = `
+                                    <span>${opt.textContent}</span>
+                                    <span class="tag-close" data-val="${opt.value}">&times;</span>
+                                `;
+                                tag.querySelector('.tag-close').addEventListener('click', (e) => {
+                                    e.stopPropagation();
+                                    opt.selected = false;
+                                    this.select.dispatchEvent(new Event('change', { bubbles: true }));
+                                    this.syncFromNative();
+                                    if (this.isOpen) this._renderOptions();
+                                });
+                                tagsWrap.appendChild(tag);
+                            });
+
+                            this.valueContainer.appendChild(tagsWrap);
+                        }
+                    } else {
+                        const selected = selectedOpts[0];
+                        if (selected && selected.value !== '') {
+                            const iconHtml = selected.getAttribute('data-icon') ? `<i class="icon ${selected.getAttribute('data-icon')}"></i> ` : '';
+                            this.valueContainer.innerHTML = `<span>${iconHtml}${selected.textContent}</span>`;
+                        } else {
+                            this.valueContainer.innerHTML = `<span class="frame-select-placeholder">${this.placeholder}</span>`;
+                        }
+                    }
+                }
+
+                open() {
+                    this.isOpen = true;
+                    this.trigger.classList.add('is-open');
+                    this.dropdown.classList.add('is-open');
+                    this.searchInput.value = '';
+                    this._renderOptions();
+                    setTimeout(() => this.searchInput.focus(), 40);
+                }
+
+                close() {
+                    this.isOpen = false;
+                    this.trigger.classList.remove('is-open');
+                    this.dropdown.classList.remove('is-open');
+                }
+
+                toggle() {
+                    if (this.isOpen) this.close();
+                    else this.open();
+                }
+
+                destroy() {
+                    this.wrapper.remove();
+                    this.select.style.display = '';
+                    delete this.select._frameSelect;
+                }
+            }
+
+            return {
+                create: (select, options) => new Instance(select, options),
+                init: () => {
+                    document.querySelectorAll('select[data-select-search]').forEach(sel => {
+                        new Instance(sel);
+                    });
+                }
+            };
         })()
     };
 
@@ -2284,6 +2952,12 @@
         }
         if (FramePER.CommandPalette && FramePER.CommandPalette.init) {
             FramePER.CommandPalette.init();
+        }
+        if (FramePER.Datepicker && FramePER.Datepicker.init) {
+            FramePER.Datepicker.init();
+        }
+        if (FramePER.Select && FramePER.Select.init) {
+            FramePER.Select.init();
         }
         
         // Hide global page loader if exists

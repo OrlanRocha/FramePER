@@ -63,6 +63,8 @@
       <a href="#m-tables">Tabelas & Ordenação</a>
       <a href="#m-modals">Modais & Side Modals</a>
       <a href="#m-forms">Formulários & Máscaras</a>
+      <a href="#m-datepicker">Datepicker (Calendário)</a>
+      <a href="#m-select">Select Pesquisável</a>
       <a href="#m-clipboard">Clipboard & Cópia</a>
       <a href="#m-counter">Contadores Animados</a>
       <a href="#m-chart">Gráficos SVG (Chart)</a>
@@ -147,6 +149,49 @@
 <span class="tok-k">&lt;button</span> <span class="tok-f">type</span>=<span class="tok-s">"button"</span> <span class="tok-f">data-toggle</span>=<span class="tok-s">"password"</span> <span class="tok-f">data-target</span>=<span class="tok-s">"#campoSenha"</span><span class="tok-k">&gt;</span>
   <span class="tok-k">&lt;i</span> <span class="tok-f">class</span>=<span class="tok-s">"icon icon-eye"</span><span class="tok-k">&gt;&lt;/i&gt;</span>
 <span class="tok-k">&lt;/button&gt;</span></code></pre>
+      </section>
+
+      <!-- Datepicker Module -->
+      <section id="m-datepicker" class="docs-section">
+        <h2>Datepicker & Calendário Nativo (FramePER.Datepicker)</h2>
+        <p class="lead">Calendário popover em puro JavaScript Vanilla com suporte a data única e seleção de intervalo contínuo (range).</p>
+
+        <pre><code><span class="tok-c">&lt;!-- 1. Uso declarativo: Data única (DD/MM/AAAA) --&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">class</span>=<span class="tok-s">"input"</span> <span class="tok-f">data-datepicker</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"DD/MM/AAAA"</span><span class="tok-k">&gt;</span>
+
+<span class="tok-c">&lt;!-- 2. Intervalo de Datas (Range) --&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">class</span>=<span class="tok-s">"input"</span> <span class="tok-f">data-datepicker</span>=<span class="tok-s">"range"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"Início - Fim"</span><span class="tok-k">&gt;</span>
+
+<span class="tok-c">// 3. Invocação programática via JavaScript:</span>
+<span class="tok-k">const</span> <span class="tok-n">dp</span> = <span class="tok-k">FramePER</span>.<span class="tok-k">Datepicker</span>.<span class="tok-f">create</span>(<span class="tok-s">'#meuInput'</span>, {
+  range: <span class="tok-s">false</span>
+});
+<span class="tok-n">dp</span>.<span class="tok-f">open</span>();
+<span class="tok-n">dp</span>.<span class="tok-f">close</span>();</code></pre>
+      </section>
+
+      <!-- Select Module -->
+      <section id="m-select" class="docs-section">
+        <h2>Dropdown Select Pesquisável (FramePER.Select)</h2>
+        <p class="lead">Converte tags &lt;select&gt; nativas em seletores ricos com busca em tempo real, suporte a optgroups, badges e modo multi-seleção com chips.</p>
+
+        <pre><code><span class="tok-c">&lt;!-- 1. Select simples com busca instantânea --&gt;</span>
+<span class="tok-k">&lt;select</span> <span class="tok-f">data-select-search</span> <span class="tok-f">data-placeholder</span>=<span class="tok-s">"Selecione uma opção..."</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;option</span> <span class="tok-f">value</span>=<span class="tok-s">"br"</span> <span class="tok-f">data-badge</span>=<span class="tok-s">"BRL"</span><span class="tok-k">&gt;</span>Brasil<span class="tok-k">&lt;/option&gt;</span>
+  <span class="tok-k">&lt;option</span> <span class="tok-f">value</span>=<span class="tok-s">"us"</span> <span class="tok-f">data-badge</span>=<span class="tok-s">"USD"</span><span class="tok-k">&gt;</span>Estados Unidos<span class="tok-k">&lt;/option&gt;</span>
+<span class="tok-k">&lt;/select&gt;</span>
+
+<span class="tok-c">&lt;!-- 2. Multi-Select com tags interativas --&gt;</span>
+<span class="tok-k">&lt;select</span> <span class="tok-f">multiple</span> <span class="tok-f">data-select-search</span> <span class="tok-f">data-placeholder</span>=<span class="tok-s">"Selecione tags..."</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;option</span> <span class="tok-f">value</span>=<span class="tok-s">"css"</span> <span class="tok-f">selected</span><span class="tok-k">&gt;</span>CSS<span class="tok-k">&lt;/option&gt;</span>
+  <span class="tok-k">&lt;option</span> <span class="tok-f">value</span>=<span class="tok-s">"js"</span> <span class="tok-f">selected</span><span class="tok-k">&gt;</span>JavaScript<span class="tok-k">&lt;/option&gt;</span>
+<span class="tok-k">&lt;/select&gt;</span>
+
+<span class="tok-c">// 3. Inicialização programática via JavaScript:</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">Select</span>.<span class="tok-f">create</span>(<span class="tok-s">'#meuSelect'</span>, {
+  placeholder: <span class="tok-s">'Selecione...'</span>,
+  searchPlaceholder: <span class="tok-s">'Buscar...'</span>
+});</code></pre>
       </section>
 
       <!-- Clipboard Module -->

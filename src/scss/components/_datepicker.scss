@@ -1,0 +1,188 @@
+@use '../variables' as *;
+
+.frame-datepicker-popover {
+  position: absolute;
+  z-index: 1250;
+  width: 18.5rem;
+  padding: 1rem;
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-lg);
+  user-select: none;
+  font-family: inherit;
+  opacity: 0;
+  visibility: hidden;
+  transform: translateY(6px) scale(0.98);
+  transform-origin: top left;
+  transition: opacity 0.15s var(--ease), transform 0.15s var(--ease), visibility 0.15s var(--ease);
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: translateY(0) scale(1);
+  }
+
+  &.popover-top {
+    transform-origin: bottom left;
+    transform: translateY(-6px) scale(0.98);
+
+    &.show {
+      transform: translateY(0) scale(1);
+    }
+  }
+}
+
+.frame-datepicker-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-bottom: 0.75rem;
+}
+
+.frame-datepicker-title {
+  font-size: 0.875rem;
+  font-weight: 600;
+  color: var(--text-main);
+}
+
+.frame-datepicker-nav-btn {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.875rem;
+  height: 1.875rem;
+  padding: 0;
+  font-size: 0.75rem;
+  color: var(--text-main);
+  background: var(--bg-body);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.12s var(--ease), border-color 0.12s var(--ease);
+
+  &:hover {
+    background-color: var(--bg-hover);
+    border-color: var(--border-strong);
+  }
+}
+
+.frame-datepicker-weekdays {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  margin-bottom: 0.375rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-align: center;
+  color: var(--text-subtle);
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.frame-datepicker-days {
+  display: grid;
+  grid-template-columns: repeat(7, 1fr);
+  gap: 2px;
+}
+
+.frame-datepicker-day {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 2rem;
+  padding: 0;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  color: var(--text-main);
+  background: none;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  transition: background-color 0.12s var(--ease), color 0.12s var(--ease);
+
+  &:hover:not(:disabled):not(.is-selected) {
+    background-color: var(--bg-hover);
+    color: var(--primary);
+  }
+
+  &.is-today::after {
+    content: "";
+    position: absolute;
+    bottom: 3px;
+    left: 50%;
+    transform: translateX(-50%);
+    width: 4px;
+    height: 4px;
+    border-radius: 50%;
+    background-color: var(--primary);
+  }
+
+  &.is-other-month {
+    color: var(--text-subtle);
+    opacity: 0.4;
+  }
+
+  &.is-selected {
+    color: #fff !important;
+    background-color: var(--primary) !important;
+    font-weight: 600;
+
+    &::after {
+      background-color: #fff;
+    }
+  }
+
+  &.is-in-range {
+    color: var(--primary);
+    background-color: rgba(59, 130, 246, 0.14);
+    border-radius: 0;
+  }
+
+  &.is-range-start {
+    color: #fff !important;
+    background-color: var(--primary) !important;
+    border-top-right-radius: 0;
+    border-bottom-right-radius: 0;
+  }
+
+  &.is-range-end {
+    color: #fff !important;
+    background-color: var(--primary) !important;
+    border-top-left-radius: 0;
+    border-bottom-left-radius: 0;
+  }
+
+  &:disabled {
+    opacity: 0.3;
+    cursor: not-allowed;
+  }
+}
+
+.frame-datepicker-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: 0.75rem;
+  padding-top: 0.625rem;
+  border-top: 1px solid var(--border-color);
+
+  .btn-link {
+    padding: 0;
+    font-size: 0.75rem;
+    font-weight: 500;
+    color: var(--primary);
+    background: none;
+    border: none;
+    cursor: pointer;
+
+    &:hover {
+      text-decoration: underline;
+    }
+
+    &.text-muted {
+      color: var(--text-muted);
+    }
+  }
+}
