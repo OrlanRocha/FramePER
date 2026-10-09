@@ -1,0 +1,449 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Aura Beauty & Nails | Studio de Beleza e Esmalteria</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+  <style>
+    .beauty-hero {
+      padding-block: 4rem 3rem;
+      text-align: center;
+      position: relative;
+    }
+    .service-card {
+      transition: transform 0.2s var(--ease), border-color 0.2s var(--ease), box-shadow 0.2s var(--ease);
+    }
+    .service-card:hover {
+      transform: translateY(-4px);
+      border-color: var(--primary);
+      box-shadow: var(--shadow-md);
+    }
+    .nail-art-badge {
+      display: inline-flex;
+      align-items: center;
+      gap: 0.35rem;
+      padding: 0.25rem 0.65rem;
+      border-radius: var(--radius-full);
+      font-size: 0.75rem;
+      font-weight: 600;
+      background-color: var(--bg-subtle);
+      border: 1px solid var(--border-color);
+    }
+    .color-swatch-btn {
+      width: 2rem;
+      height: 2rem;
+      border-radius: var(--radius-full);
+      border: 2px solid var(--border-color);
+      cursor: pointer;
+      transition: transform 0.15s, border-color 0.15s;
+    }
+    .color-swatch-btn:hover {
+      transform: scale(1.15);
+      border-color: var(--text-main);
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Navigation -->
+  <header class="navbar navbar-sticky navbar-glass">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <span class="icon-box icon-box-primary"><i class="icon icon-sparkles"></i></span>
+        <span style="letter-spacing: -0.02em;"><strong>AURA</strong> BEAUTY & NAILS</span>
+      </a>
+
+      <nav class="navbar-nav d-none d-md-flex align-items-center gap-4">
+        <a class="nav-link" href="#servicos" data-scroll-to="#servicos">Procedimentos</a>
+        <a class="nav-link" href="#nail-bar" data-scroll-to="#nail-bar">Nail Bar & Cores</a>
+        <a class="nav-link" href="#equipe" data-scroll-to="#equipe">Especialistas</a>
+        <a class="nav-link" href="#depoimentos" data-scroll-to="#depoimentos">Avaliações</a>
+      </nav>
+
+      <div class="navbar-actions d-flex align-items-center gap-2">
+        <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#agendamentoModal">
+          <i class="icon icon-nail-polish"></i> Agendar Horário
+        </button>
+        <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+          <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Section -->
+  <main>
+    <section class="beauty-hero">
+      <div class="container container-narrow stack gap-3 align-items-center">
+        <div class="nail-art-badge">
+          <i class="icon icon-sparkles text-primary"></i> Estética de Alto Padrão & Esmaltação em Gel
+        </div>
+        <h1 class="display-2 text-balance m-0" style="letter-spacing: -0.03em;">
+          Sua beleza cuidada nos mínimos detalhes.
+        </h1>
+        <p class="lead text-muted max-w-md m-0">
+          Especialistas em Nail Design, Alongamento de Unhas, Cabelo, Make Up e Spa de Relaxamento com produtos premium e biossegurança rigorosa.
+        </p>
+
+        <div class="cluster gap-3 m-t-2">
+          <button class="btn btn-primary btn-lg" data-toggle="modal" data-target="#agendamentoModal">
+            <i class="icon icon-sparkles"></i> Reservar Atendimento
+          </button>
+          <a class="btn btn-outline btn-lg" href="#servicos" data-scroll-to="#servicos">
+            <i class="icon icon-palette"></i> Ver Cardápio de Serviços
+          </a>
+        </div>
+
+        <!-- Metrics Strip -->
+        <div class="grid grid-sm-3 gap-3 w-100 m-t-6">
+          <div class="card p-3 stack gap-1 txt-center">
+            <span class="stat-value text-primary" data-counter="4850" data-counter-prefix="+">+0</span>
+            <span class="text-muted f-s-2">Unhas & Makes Realizadas</span>
+          </div>
+          <div class="card p-3 stack gap-1 txt-center">
+            <span class="stat-value text-primary" data-counter="99.7" data-counter-suffix="%" data-counter-decimals="1">0%</span>
+            <span class="text-muted f-s-2">Satisfação das Clientes</span>
+          </div>
+          <div class="card p-3 stack gap-1 txt-center">
+            <span class="stat-value text-primary" data-counter="12" data-counter-suffix=" Prêmios">0</span>
+            <span class="text-muted f-s-2">Excelência em Estética</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Services Grid -->
+    <section id="servicos" class="section bg-subtle">
+      <div class="container">
+        <div class="section-head txt-center m-b-6">
+          <span class="eyebrow text-primary"><i class="icon icon-lotus"></i> Nossos Tratamentos</span>
+          <h2>Serviços & Procedimentos</h2>
+          <p class="text-muted">Técnicas modernas com durabilidade comprovada e acabamento impecável.</p>
+        </div>
+
+        <div class="grid grid-sm-2 grid-lg-3 gap-4">
+          
+          <!-- Card 1: Nail Art -->
+          <div class="card service-card p-4 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="icon-box icon-box-lg icon-box-primary"><i class="icon icon-nail-polish"></i></span>
+              <span class="badge badge-green">Mais Pedido</span>
+            </div>
+            <div>
+              <h3 class="card-title f-s-4">Alongamento & Nail Art</h3>
+              <p class="card-text text-muted f-s-2">Fibra de vidro, gel moldado, blindagem de diamante e decorações autorais com brilho duradouro.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-auto pt-2 border-top">
+              <span class="f-s-3 font-semibold tabular">R$ 160,00</span>
+              <button class="btn btn-outline btn-sm" data-toggle="modal" data-target="#agendamentoModal" data-servico="Nail Art & Alongamento">Agendar</button>
+            </div>
+          </div>
+
+          <!-- Card 2: Cabelo -->
+          <div class="card service-card p-4 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="icon-box icon-box-lg icon-box-primary"><i class="icon icon-scissors"></i></span>
+              <span class="badge">Visagismo</span>
+            </div>
+            <div>
+              <h3 class="card-title f-s-4">Corte, Escova & Penteados</h3>
+              <p class="card-text text-muted f-s-2">Cortes personalizados, escova modelada, cronograma capilar e penteados para ocasiões especiais.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-auto pt-2 border-top">
+              <span class="f-s-3 font-semibold tabular">R$ 130,00</span>
+              <button class="btn btn-outline btn-sm" data-toggle="modal" data-target="#agendamentoModal" data-servico="Corte & Penteado">Agendar</button>
+            </div>
+          </div>
+
+          <!-- Card 3: Maquiagem -->
+          <div class="card service-card p-4 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="icon-box icon-box-lg icon-box-primary"><i class="icon icon-lipstick"></i></span>
+              <span class="badge badge-blue">HD Glow</span>
+            </div>
+            <div>
+              <h3 class="card-title f-s-4">Maquiagem Social & Noivas</h3>
+              <p class="card-text text-muted f-s-2">Pele blindada resistente à água, contorno refinado e cílios de efeito natural com alta durabilidade.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-auto pt-2 border-top">
+              <span class="f-s-3 font-semibold tabular">R$ 220,00</span>
+              <button class="btn btn-outline btn-sm" data-toggle="modal" data-target="#agendamentoModal" data-servico="Maquiagem Social">Agendar</button>
+            </div>
+          </div>
+
+          <!-- Card 4: Spa & Massagem -->
+          <div class="card service-card p-4 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="icon-box icon-box-lg icon-box-primary"><i class="icon icon-lotus"></i></span>
+              <span class="badge">Relax</span>
+            </div>
+            <div>
+              <h3 class="card-title f-s-4">Spa das Mãos & Pés</h3>
+              <p class="card-text text-muted f-s-2">Esfoliação aromática, hidratação com parafina morna, massagem relaxante e cutilagem russa.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-auto pt-2 border-top">
+              <span class="f-s-3 font-semibold tabular">R$ 95,00</span>
+              <button class="btn btn-outline btn-sm" data-toggle="modal" data-target="#agendamentoModal" data-servico="Spa dos Pés e Mãos">Agendar</button>
+            </div>
+          </div>
+
+          <!-- Card 5: Skincare Facial -->
+          <div class="card service-card p-4 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="icon-box icon-box-lg icon-box-primary"><i class="icon icon-cream"></i></span>
+              <span class="badge badge-yellow">Renovação</span>
+            </div>
+            <div>
+              <h3 class="card-title f-s-4">Limpeza de Pele & Sérum</h3>
+              <p class="card-text text-muted f-s-2">Remoção profunda de impurezas, peeling de diamante, fototerapia LED e infusão de ácido hialurônico.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-auto pt-2 border-top">
+              <span class="f-s-3 font-semibold tabular">R$ 180,00</span>
+              <button class="btn btn-outline btn-sm" data-toggle="modal" data-target="#agendamentoModal" data-servico="Limpeza de Pele">Agendar</button>
+            </div>
+          </div>
+
+          <!-- Card 6: Design de Olhar -->
+          <div class="card service-card p-4 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <span class="icon-box icon-box-lg icon-box-primary"><i class="icon icon-wand"></i></span>
+              <span class="badge">Expressão</span>
+            </div>
+            <div>
+              <h3 class="card-title f-s-4">Sobrancelhas & Lash Lifting</h3>
+              <p class="card-text text-muted f-s-2">Mapeamento facial personalizado, brow lamination, hena orgânica e curvatura permanente de cílios.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-auto pt-2 border-top">
+              <span class="f-s-3 font-semibold tabular">R$ 110,00</span>
+              <button class="btn btn-outline btn-sm" data-toggle="modal" data-target="#agendamentoModal" data-servico="Sobrancelhas e Cílios">Agendar</button>
+            </div>
+          </div>
+
+        </div>
+      </div>
+    </section>
+
+    <!-- Nail Bar & Color Palette -->
+    <section id="nail-bar" class="section">
+      <div class="container">
+        <div class="grid grid-md-2 gap-6 align-items-center">
+          <div class="stack gap-4">
+            <span class="eyebrow text-primary"><i class="icon icon-palette"></i> Esmalteria Exclusiva</span>
+            <h2>Mais de 200 Cores e Efeitos para suas Unhas</h2>
+            <p class="text-muted m-0">Nossos esmaltes são importados, hipoalergênicos e 9-Free. Escolha o tom que melhor traduz o seu momento:</p>
+
+            <div class="stack gap-3">
+              <div>
+                <span class="f-s-2 text-muted d-block m-b-2">Paleta em Destaque:</span>
+                <div class="cluster gap-2">
+                  <button type="button" class="color-swatch-btn" style="background-color: #f43f5e;" data-tooltip="Vermelho Cereja" data-copy="Esmalte Vermelho Cereja"></button>
+                  <button type="button" class="color-swatch-btn" style="background-color: #fda4af;" data-tooltip="Nude Rosé Suave" data-copy="Esmalte Nude Rosé"></button>
+                  <button type="button" class="color-swatch-btn" style="background-color: #e2e8f0;" data-tooltip="Branco Leitoso Glazed" data-copy="Esmalte Branco Glazed"></button>
+                  <button type="button" class="color-swatch-btn" style="background-color: #a855f7;" data-tooltip="Lavanda Pastel" data-copy="Esmalte Lavanda Pastel"></button>
+                  <button type="button" class="color-swatch-btn" style="background-color: #0f172a;" data-tooltip="Preto Noir Intenso" data-copy="Esmalte Preto Noir"></button>
+                  <button type="button" class="color-swatch-btn" style="background-color: #eab308;" data-tooltip="Dourado Shimmer" data-copy="Esmalte Dourado Shimmer"></button>
+                </div>
+              </div>
+
+              <div>
+                <span class="f-s-2 text-muted d-block m-b-2">Formatos Disponíveis:</span>
+                <div class="cluster gap-2">
+                  <button class="chip chip-clickable chip-active">Almond (Amendoada)</button>
+                  <button class="chip chip-clickable">Stiletto</button>
+                  <button class="chip chip-clickable">Bailarina</button>
+                  <button class="chip chip-clickable">Quadrada Clássica</button>
+                </div>
+              </div>
+            </div>
+
+            <button class="btn btn-primary m-t-2" data-toggle="modal" data-target="#agendamentoModal">
+              <i class="icon icon-hand"></i> Escolher Meu Modelo de Unha
+            </button>
+          </div>
+
+          <!-- Showcase Visual Card -->
+          <div class="card p-5 stack gap-4 bg-surface" style="border: 2px dashed var(--border-color); text-align: center;">
+            <div class="cluster justify-content-center gap-3">
+              <span class="icon-box icon-box-lg icon-box-primary"><i class="icon icon-nail-polish"></i></span>
+              <span class="icon-box icon-box-lg"><i class="icon icon-sparkles"></i></span>
+              <span class="icon-box icon-box-lg"><i class="icon icon-gem"></i></span>
+            </div>
+            <div>
+              <h3 class="m-b-1">Efeito Glazed Donut & Cromado</h3>
+              <p class="text-muted f-s-2 m-0">A tendência internacional mais pedida com acabamento perolado iridescente e selagem de ultrabrilho.</p>
+            </div>
+            <div class="card p-3 bg-subtle cluster justify-content-between align-items-center">
+              <span class="f-s-2 font-medium"><i class="icon icon-feather text-primary"></i> Durabilidade até 28 dias</span>
+              <span class="badge badge-green badge-dot">Sem Descascar</span>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Team Specialists -->
+    <section id="equipe" class="section bg-subtle">
+      <div class="container">
+        <div class="section-head txt-center m-b-5">
+          <span class="eyebrow text-primary"><i class="icon icon-crown"></i> Time Certificado</span>
+          <h2>Profissionais Especialistas</h2>
+          <p class="text-muted">Equipe premiada em constante capacitação internacional.</p>
+        </div>
+
+        <div class="grid grid-sm-2 grid-lg-4 gap-3">
+          <div class="card p-3 stack gap-2 txt-center align-items-center">
+            <div class="avatar-wrapper">
+              <div class="avatar avatar-lg">BC</div>
+              <span class="avatar-status status-online"></span>
+            </div>
+            <div>
+              <strong class="d-block f-s-3">Beatriz Costa</strong>
+              <small class="text-muted">Master Nail Designer</small>
+            </div>
+            <span class="badge badge-pill">7 anos exp.</span>
+          </div>
+
+          <div class="card p-3 stack gap-2 txt-center align-items-center">
+            <div class="avatar-wrapper">
+              <div class="avatar avatar-lg">LM</div>
+              <span class="avatar-status status-online"></span>
+            </div>
+            <div>
+              <strong class="d-block f-s-3">Larissa Mendes</strong>
+              <small class="text-muted">Hairstylist & Colorista</small>
+            </div>
+            <span class="badge badge-pill">L'Oréal Pro</span>
+          </div>
+
+          <div class="card p-3 stack gap-2 txt-center align-items-center">
+            <div class="avatar-wrapper">
+              <div class="avatar avatar-lg">CS</div>
+              <span class="avatar-status status-busy"></span>
+            </div>
+            <div>
+              <strong class="d-block f-s-3">Camila Silveira</strong>
+              <small class="text-muted">Make Up Artist & Noivas</small>
+            </div>
+            <span class="badge badge-pill">MAC Certified</span>
+          </div>
+
+          <div class="card p-3 stack gap-2 txt-center align-items-center">
+            <div class="avatar-wrapper">
+              <div class="avatar avatar-lg">JD</div>
+              <span class="avatar-status status-online"></span>
+            </div>
+            <div>
+              <strong class="d-block f-s-3">Juliana Duarte</strong>
+              <small class="text-muted">Terapeuta de Spa & Facial</small>
+            </div>
+            <span class="badge badge-pill">Holística</span>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- Testimonials -->
+    <section id="depoimentos" class="section">
+      <div class="container container-narrow txt-center">
+        <span class="icon-box icon-box-lg icon-box-primary m-b-3"><i class="icon icon-heart"></i></span>
+        <blockquote class="lead font-medium text-main m-b-3" style="font-size: 1.25rem; line-height: 1.6;">
+          "O alongamento de unhas em fibra durou quase um mês intacto! O ambiente é extremamente limpo, com atendimento impecável e um cafezinho maravilhoso. Não troco mais de salão!"
+        </blockquote>
+        <div class="cluster justify-content-center align-items-center gap-2">
+          <span class="font-semibold">Mariana F. Alencar</span>
+          <span class="text-muted">•</span>
+          <span class="text-muted f-s-2">Cliente VIP há 2 anos</span>
+        </div>
+      </div>
+    </section>
+  </main>
+
+  <!-- Footer -->
+  <footer class="border-top p-y-5 bg-subtle">
+    <div class="container d-flex flex-column flex-md-row justify-content-between align-items-center gap-3">
+      <div class="d-flex align-items-center gap-2">
+        <span class="icon-box icon-box-primary"><i class="icon icon-sparkles"></i></span>
+        <span class="font-medium">Aura Beauty & Nails</span>
+        <span class="text-muted f-s-2">— Construído com Frame PER CSS</span>
+      </div>
+      <div class="cluster gap-3 f-s-2 text-muted">
+        <a href="index.html" class="nav-link">Todas as Demos</a>
+        <a href="components.html" class="nav-link">Componentes & Ícones</a>
+        <a href="manual.html" class="nav-link">Manual API</a>
+      </div>
+    </div>
+  </footer>
+
+  <!-- Modal Agendamento Online -->
+  <div id="agendamentoModal" class="modal">
+    <div class="modal-content stack gap-4" style="max-width: 32rem;">
+      <div class="modal-header">
+        <div class="d-flex align-items-center gap-2">
+          <span class="icon-box icon-box-primary"><i class="icon icon-nail-polish"></i></span>
+          <h3 class="modal-title">Agendar Atendimento</h3>
+        </div>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <form id="formAgendamento" class="modal-body stack gap-3" onsubmit="event.preventDefault(); FramePER.Notify.success('Agendamento Confirmado', 'Entraremos em contato via WhatsApp para confirmar o horário.'); document.getElementById('agendamentoModal').classList.remove('show'); document.body.style.overflow='';">
+        
+        <div class="form-group">
+          <label for="agNome">Seu Nome Completo</label>
+          <input type="text" id="agNome" class="input" placeholder="Ex: Fernanda Lima" required>
+        </div>
+
+        <div class="grid grid-sm-2 gap-3">
+          <div class="form-group">
+            <label for="agTel">WhatsApp / Celular</label>
+            <input type="text" id="agTel" class="input" data-mask="phone" placeholder="(11) 98765-4321" required>
+          </div>
+          <div class="form-group">
+            <label for="agData">Data Desejada</label>
+            <input type="text" id="agData" class="input" data-mask="date" placeholder="DD/MM/AAAA" required>
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="agServico">Procedimento</label>
+          <select id="agServico" class="select" required>
+            <option value="">Selecione o serviço...</option>
+            <option>Nail Art & Alongamento em Fibra (R$ 160)</option>
+            <option>Manicure & Esmaltação em Gel (R$ 80)</option>
+            <option>Spa dos Pés & Parafina (R$ 95)</option>
+            <option>Corte & Escova Modelada (R$ 130)</option>
+            <option>Maquiagem HD Social (R$ 220)</option>
+            <option>Design de Sobrancelhas & Lash (R$ 110)</option>
+            <option>Limpeza de Pele Profunda (R$ 180)</option>
+          </select>
+        </div>
+
+        <div class="card p-3 bg-subtle stack gap-1">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="f-s-2 text-muted">Biossegurança:</span>
+            <span class="badge badge-green badge-dot">Materiais 100% Autoclavados</span>
+          </div>
+          <span class="f-s-1 text-muted">Kit descartável individual aberto na frente da cliente.</span>
+        </div>
+
+        <div class="modal-footer p-t-2">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+          <button type="submit" class="btn btn-primary"><i class="icon icon-check"></i> Confirmar Horário</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- Floating Back to Top Button -->
+  <button class="btn btn-primary btn-icon back-to-top-btn" data-scroll-top aria-label="Voltar ao topo" title="Voltar ao topo">
+    <i class="icon icon-arrow-up"></i>
+  </button>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

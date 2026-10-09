@@ -1,9 +1,9 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.3.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.4.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, componentes avançados de interface, biblioteca de 47 ícones vetoriais e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, componentes avançados de interface, biblioteca de 69 ícones vetoriais (incluindo um pacote especializado para Beleza, Nails & Estética) e utilitários interativos de ponta.
 
 ---
 
@@ -11,8 +11,11 @@
 
 - **📱 Mobile First**: Layouts responsivos baseados em CSS Grid que se adaptam automaticamente a telas menores e expandem via breakpoints (`.grid-sm-*`, `.grid-md-*`, `.grid-lg-*`, `.grid-xl-*`).
 - **🌙 Dark Mode & Light Mode Nativo**: Alternância automática de temas detectando a preferência do sistema operacional, com transições suaves e contraste otimizado.
-- **🎨 Biblioteca de 47 Ícones Pure CSS**: Ícones SVG incorporados via máscara CSS com `currentColor` (e-commerce, comunicação, arquivos, segurança, mídia, código e navegação), sem fontes externas pesadas.
-- **✨ Novos Componentes de Interface**:
+- **🎨 Biblioteca de 69 Ícones Pure CSS**: Ícones SVG incorporados via máscara CSS com `currentColor`:
+  - **Beleza & Nail Design**: Esmalte (`icon-nail-polish`), batom (`icon-lipstick`), tesoura de cabeleireiro (`icon-scissors`), brilho (`icon-sparkles`), pincel de make (`icon-makeup-brush`), pente (`icon-comb`), secador (`icon-hairdryer`), espelho (`icon-mirror`), perfume (`icon-perfume`), flor de lótus spa (`icon-lotus`), diamante (`icon-gem`), coroa (`icon-crown`), sérum hidratante (`icon-droplet`), pena (`icon-feather`), paleta (`icon-palette`), creme (`icon-cream`), varinha (`icon-wand`), mão/manicure (`icon-hand`), flor (`icon-flower`), spray fixador (`icon-spray`), vela aromática (`icon-candle`), laço (`icon-ribbon`).
+  - **E-Commerce & Vendas**: Carrinho, tag, cartão de crédito, pacote, caminhão de entrega.
+  - **Comunicação, Mídia & Sistema**: Mensagens, avião/envio, telefone, compartilhar, cadeado, olho, terminal, código, etc.
+- **✨ Componentes Avançados de Interface**:
   - **Skeleton Loaders Shimmer**: Efeito ondulante suave (`.skeleton-avatar`, `.skeleton-title`, `.skeleton-text`, `.skeleton-rect`) para melhorar o carregamento percebido.
   - **Chips & Tags**: Pílulas compactas interativas, filtros clicáveis e tags removíveis (`.chip`, `.chip-clickable`, `.chip-remove`).
   - **Steppers de Progresso**: Guias em etapas responsivos para checkout e wizards (`.stepper`, `.step-done`, `.step-active`).
@@ -20,6 +23,7 @@
 - **🗂️ Side Modals & Drawers Laterais**: Modais flutuantes deslizantes (`.modal-side`, `.modal-side-right`, `.modal-side-left`, `.modal-bottom`) ideais para sacolas de compras e filtros laterais.
 - **📊 Tabelas Interativas Inteligentes**: Ordenação automática por colunas (`th.sortable`) de números, datas, moedas e strings, além de busca rápida em tempo real (`data-table-filter`).
 - **🖥️ Demonstrativos Completos**:
+  - **Aura Beauty & Nails Demo**: Studio de beleza, nail design, cardápio de serviços com os novos ícones, paleta de esmaltes e agendamento online.
   - **SaaS Admin Dashboard Suite**: Visão Geral, Usuários, Mensagens/Chat, Agendamentos e Configurações.
   - **Rede Social Demo**: Feed com Stories, posts com imagem, hashtags, reações e chat.
   - **Loja de Roupas & Moda (E-Commerce)**: Vitrine de produtos offline, galeria e sacola lateral deslizante interativa.
