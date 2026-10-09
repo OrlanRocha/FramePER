@@ -1,0 +1,383 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Configurações | Admin Dashboard | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        <span>Frame Admin</span>
+      </a>
+
+      <span class="sidebar-label">Menu Principal</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <i class="icon icon-home"></i> Visão Geral
+      </a>
+      <a href="users.html" class="sidebar-link">
+        <i class="icon icon-user"></i> Usuários
+      </a>
+      <a href="messages.html" class="sidebar-link">
+        <i class="icon icon-envelope"></i> Mensagens
+        <span class="badge badge-pill badge-blue">4</span>
+      </a>
+
+      <span class="sidebar-label">Relatórios</span>
+      <a href="reports.html" class="sidebar-link">
+        <i class="icon icon-calendar"></i> Agendamentos
+      </a>
+
+      <span class="sidebar-label">Ajustes</span>
+      <a href="settings.html" class="sidebar-link active">
+        <i class="icon icon-settings"></i> Configurações
+      </a>
+
+      <!-- Bottom Card in Sidebar -->
+      <div class="sidebar-footer">
+        <div class="card card-flat p-3 stack gap-2 bg-subtle">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="f-w-semibold f-s-3">Plano Pro</span>
+            <span class="badge badge-green">Ativo</span>
+          </div>
+          <p class="f-s-2 text-muted m-0">Armazenamento em 84% de capacidade.</p>
+          <a href="settings.html" class="btn btn-secondary btn-sm w-100 m-t-1">Gerenciar Conta</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Shell -->
+    <div class="app-main">
+
+      <!-- Header Bar -->
+      <header class="app-header">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-ghost btn-icon d-lg-none" data-toggle="sidebar" aria-label="Abrir Menu">
+            <i class="icon icon-menu"></i>
+          </button>
+          <h1 class="h4 m-0">Configurações do Sistema</h1>
+        </div>
+
+        <div class="cluster gap-3">
+          <!-- Search Bar -->
+          <div class="input-icon d-none d-md-block search-field">
+            <i class="icon icon-search"></i>
+            <input type="text" class="input input-sm" placeholder="Buscar registros...">
+          </div>
+
+          <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+            <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+          </button>
+
+          <button class="btn btn-ghost btn-icon p-relative" data-demo="toast-warning" aria-label="Notificações">
+            <i class="icon icon-bell"></i>
+          </button>
+
+          <div class="divider d-none d-sm-block" style="height: 1.5rem;"></div>
+
+          <!-- Profile Menu -->
+          <div class="dropdown">
+            <button class="btn btn-ghost p-1 dropdown-toggle">
+              <span class="avatar avatar-sm">AD</span>
+              <span class="f-w-medium f-s-3 d-none d-sm-inline">Admin Silva</span>
+              <i class="icon icon-arrow-down f-s-1 text-muted"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <span class="dropdown-header">Conectado como Admin</span>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-user"></i> Meu Perfil</a>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-settings"></i> Preferências</a>
+              <div class="dropdown-divider"></div>
+              <a href="index.html" class="dropdown-item danger"><i class="icon icon-close"></i> Sair do Painel</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- App Content Area -->
+      <main class="app-content stack gap-5 fade-in">
+
+        <div>
+          <h2 class="h3 m-0">Configurações & Preferências</h2>
+          <p class="text-muted m-0 f-s-3">Gerencie dados do perfil, credenciais de segurança, alertas e tema da plataforma.</p>
+        </div>
+
+        <!-- Navigation Tabs -->
+        <ul class="tabs">
+          <li class="tab-item"><a class="tab-link active" data-target="#tab-profile"><i class="icon icon-user"></i> Perfil</a></li>
+          <li class="tab-item"><a class="tab-link" data-target="#tab-security"><i class="icon icon-settings"></i> Segurança & Acesso</a></li>
+          <li class="tab-item"><a class="tab-link" data-target="#tab-notifications"><i class="icon icon-bell"></i> Notificações</a></li>
+          <li class="tab-item"><a class="tab-link" data-target="#tab-preferences"><i class="icon icon-star"></i> Aparência & Idioma</a></li>
+        </ul>
+
+        <!-- TAB 1: PERFIL -->
+        <div id="tab-profile" class="tab-content active stack gap-4">
+          
+          <!-- Avatar Card -->
+          <div class="card p-4 d-flex align-items-center justify-content-between flex-wrap gap-3">
+            <div class="d-flex align-items-center gap-4">
+              <span class="avatar" style="width: 4rem; height: 4rem; font-size: 1.5rem;">AD</span>
+              <div>
+                <h3 class="h4 m-0">Admin Silva</h3>
+                <p class="text-muted m-0 f-s-2">PNG ou JPG até 2MB. Recomendado 400x400px.</p>
+              </div>
+            </div>
+
+            <div class="cluster gap-2">
+              <button class="btn btn-secondary btn-sm" data-demo="toast-info">Alterar Foto</button>
+              <button class="btn btn-ghost btn-sm danger" data-demo="toast-error">Remover</button>
+            </div>
+          </div>
+
+          <!-- Profile Form Card -->
+          <div class="card p-4 stack gap-4">
+            <h3 class="card-title">Informações Pessoais</h3>
+
+            <div class="grid grid-md-2 gap-4">
+              <div class="form-group">
+                <label for="set-name">Nome Completo</label>
+                <input type="text" id="set-name" class="input" value="Admin Silva">
+              </div>
+
+              <div class="form-group">
+                <label for="set-email">E-mail de Login</label>
+                <input type="email" id="set-email" class="input" value="admin.silva@empresa.com">
+              </div>
+            </div>
+
+            <div class="grid grid-md-2 gap-4">
+              <div class="form-group">
+                <label for="set-role">Cargo / Função</label>
+                <input type="text" id="set-role" class="input" value="Gerente de Operações">
+              </div>
+
+              <div class="form-group">
+                <label for="set-company">Organização</label>
+                <input type="text" id="set-company" class="input" value="Frame PER Technologies">
+              </div>
+            </div>
+
+            <div class="form-group">
+              <label for="set-bio">Biografia / Descrição</label>
+              <textarea id="set-bio" class="input" rows="3">Administrador principal responsável pelo gerenciamento de usuários, agendamentos e integrações de webhook do painel Frame PER.</textarea>
+            </div>
+
+            <div class="d-flex justify-content-end gap-2 m-t-2">
+              <button class="btn btn-secondary">Cancelar</button>
+              <button class="btn btn-primary" data-demo="toast-success">Salvar Alterações</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 2: SEGURANÇA -->
+        <div id="tab-security" class="tab-content stack gap-4">
+          
+          <!-- Password Change Card -->
+          <div class="card p-4 stack gap-4">
+            <h3 class="card-title">Alterar Senha</h3>
+
+            <div class="stack gap-3 max-w-lg">
+              <div class="form-group">
+                <label for="sec-current">Senha Atual</label>
+                <input type="password" id="sec-current" class="input" placeholder="&bull;&bull;&bull;&bull;&bull;&bull;&bull;&bull;">
+              </div>
+
+              <div class="form-group">
+                <label for="sec-new">Nova Senha</label>
+                <input type="password" id="sec-new" class="input" placeholder="Mínimo 8 caracteres com símbolos">
+              </div>
+
+              <div class="form-group">
+                <label for="sec-confirm">Confirmar Nova Senha</label>
+                <input type="password" id="sec-confirm" class="input" placeholder="Repita a nova senha">
+              </div>
+
+              <button class="btn btn-primary w-fit m-t-2" data-demo="toast-success">Atualizar Senha</button>
+            </div>
+          </div>
+
+          <!-- 2FA & Active Sessions -->
+          <div class="grid grid-md-2 gap-4">
+            
+            <div class="card p-4 stack gap-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <h3 class="card-title m-0">Autenticação em 2 Etapas (2FA)</h3>
+                  <p class="text-muted f-s-2 m-0">Adicione uma camada extra de proteção via App Autenticador (TOTP).</p>
+                </div>
+                <label class="switch m-0">
+                  <input type="checkbox" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="alert alert-green p-3 m-t-2">
+                <span class="f-s-2"><strong>2FA Ativo:</strong> Seu aplicativo autenticador está vinculado com sucesso.</span>
+              </div>
+            </div>
+
+            <div class="card p-4 stack gap-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <h3 class="card-title m-0">Sessões Ativas</h3>
+                <button class="btn btn-ghost btn-sm danger" data-demo="toast-error">Desconectar Outros</button>
+              </div>
+
+              <ul class="list-unstyled stack gap-2 f-s-2">
+                <li class="d-flex justify-content-between align-items-center border-bottom p-b-2">
+                  <div>
+                    <strong class="d-block text-main">Chrome &bull; Windows 11</strong>
+                    <span class="text-muted">São Paulo, BR &bull; IP 189.12.4.12</span>
+                  </div>
+                  <span class="badge badge-green">Atual</span>
+                </li>
+
+                <li class="d-flex justify-content-between align-items-center">
+                  <div>
+                    <strong class="d-block text-main">Safari &bull; iPhone 15 Pro</strong>
+                    <span class="text-muted">São Paulo, BR &bull; Há 3 horas</span>
+                  </div>
+                  <button class="btn btn-ghost btn-icon btn-sm danger" data-demo="toast-info"><i class="icon icon-close"></i></button>
+                </li>
+              </ul>
+            </div>
+
+          </div>
+
+        </div>
+
+        <!-- TAB 3: NOTIFICAÇÕES -->
+        <div id="tab-notifications" class="tab-content stack gap-4">
+          
+          <div class="card p-4 stack gap-4">
+            <h3 class="card-title">Preferências de Notificação por E-mail & SMS</h3>
+
+            <div class="stack gap-3">
+              <div class="d-flex align-items-center justify-content-between border-bottom p-b-3">
+                <div>
+                  <strong class="d-block text-main">Alertas de Segurança & Login</strong>
+                  <p class="text-muted f-s-2 m-0">Receber e-mail imediato quando houver um novo acesso em dispositivo desconhecido.</p>
+                </div>
+                <label class="switch m-0">
+                  <input type="checkbox" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between border-bottom p-b-3">
+                <div>
+                  <strong class="d-block text-main">Relatório Semanal de Vendas</strong>
+                  <p class="text-muted f-s-2 m-0">Resumo consolidado todo domingo com métricas de faturamento e clientes.</p>
+                </div>
+                <label class="switch m-0">
+                  <input type="checkbox" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between border-bottom p-b-3">
+                <div>
+                  <strong class="d-block text-main">Novos Chamados de Suporte</strong>
+                  <p class="text-muted f-s-2 m-0">Notificar quando um cliente abrir uma dúvida ou mensagem de alta prioridade.</p>
+                </div>
+                <label class="switch m-0">
+                  <input type="checkbox" checked>
+                  <span class="slider"></span>
+                </label>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div>
+                  <strong class="d-block text-main">Newsletter & Novidades da Plataforma</strong>
+                  <p class="text-muted f-s-2 m-0">Atualizações de recursos, dicas de uso e novidades do Frame PER.</p>
+                </div>
+                <label class="switch m-0">
+                  <input type="checkbox">
+                  <span class="slider"></span>
+                </label>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end m-t-2">
+              <button class="btn btn-primary" data-demo="toast-success">Salvar Preferências de Alerta</button>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- TAB 4: APARÊNCIA & IDIOMA -->
+        <div id="tab-preferences" class="tab-content stack gap-4">
+          
+          <div class="card p-4 stack gap-4">
+            <h3 class="card-title">Tema Visual & Interface</h3>
+
+            <div class="grid grid-sm-2 gap-4">
+              <div class="card p-4 bg-subtle stack gap-2 border">
+                <div class="d-flex align-items-center justify-content-between">
+                  <strong class="text-main">Tema do Sistema</strong>
+                  <button class="btn btn-secondary btn-sm theme-toggle" data-theme-toggle>
+                    <i class="icon icon-moon"></i> Alternar Tema
+                  </button>
+                </div>
+                <p class="text-muted f-s-2 m-0">O tema escuro reduz a fadiga visual em ambientes de pouca luz. O Frame PER se adapta dinamicamente.</p>
+              </div>
+
+              <div class="card p-4 bg-subtle stack gap-2 border">
+                <strong class="text-main">Efeitos de Transição</strong>
+                <p class="text-muted f-s-2 m-0">Animações de entrada e desfoque de fundo (backdrop-filter) estão ativas no motor CSS.</p>
+              </div>
+            </div>
+
+            <div class="grid grid-md-3 gap-4 m-t-2">
+              <div class="form-group">
+                <label for="pref-lang">Idioma da Interface</label>
+                <select id="pref-lang" class="select">
+                  <option selected>Português (Brasil)</option>
+                  <option>English (United States)</option>
+                  <option>Español (Latinoamérica)</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="pref-tz">Fuso Horário</label>
+                <select id="pref-tz" class="select">
+                  <option selected>(UTC-03:00) Brasília / São Paulo</option>
+                  <option>(UTC-05:00) Eastern Time (US & Canada)</option>
+                  <option>(UTC+00:00) London / Lisbon</option>
+                </select>
+              </div>
+
+              <div class="form-group">
+                <label for="pref-fmt">Formato de Data</label>
+                <select id="pref-fmt" class="select">
+                  <option selected>DD/MM/AAAA (ex: 09/10/2026)</option>
+                  <option>MM/DD/AAAA (ex: 10/09/2026)</option>
+                  <option>AAAA-MM-DD (ex: 2026-10-09)</option>
+                </select>
+              </div>
+            </div>
+
+            <div class="d-flex justify-content-end m-t-2">
+              <button class="btn btn-primary" data-demo="toast-success">Aplicar Configurações</button>
+            </div>
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

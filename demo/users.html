@@ -1,0 +1,408 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Usuários | Admin Dashboard | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        <span>Frame Admin</span>
+      </a>
+
+      <span class="sidebar-label">Menu Principal</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <i class="icon icon-home"></i> Visão Geral
+      </a>
+      <a href="users.html" class="sidebar-link active">
+        <i class="icon icon-user"></i> Usuários
+      </a>
+      <a href="messages.html" class="sidebar-link">
+        <i class="icon icon-envelope"></i> Mensagens
+        <span class="badge badge-pill badge-blue">4</span>
+      </a>
+
+      <span class="sidebar-label">Relatórios</span>
+      <a href="reports.html" class="sidebar-link">
+        <i class="icon icon-calendar"></i> Agendamentos
+      </a>
+
+      <span class="sidebar-label">Ajustes</span>
+      <a href="settings.html" class="sidebar-link">
+        <i class="icon icon-settings"></i> Configurações
+      </a>
+
+      <!-- Bottom Card in Sidebar -->
+      <div class="sidebar-footer">
+        <div class="card card-flat p-3 stack gap-2 bg-subtle">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="f-w-semibold f-s-3">Plano Pro</span>
+            <span class="badge badge-green">Ativo</span>
+          </div>
+          <p class="f-s-2 text-muted m-0">Armazenamento em 84% de capacidade.</p>
+          <a href="settings.html" class="btn btn-secondary btn-sm w-100 m-t-1">Gerenciar Conta</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Shell -->
+    <div class="app-main">
+
+      <!-- Header Bar -->
+      <header class="app-header">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-ghost btn-icon d-lg-none" data-toggle="sidebar" aria-label="Abrir Menu">
+            <i class="icon icon-menu"></i>
+          </button>
+          <h1 class="h4 m-0">Usuários</h1>
+        </div>
+
+        <div class="cluster gap-3">
+          <!-- Search Bar -->
+          <div class="input-icon d-none d-md-block search-field">
+            <i class="icon icon-search"></i>
+            <input type="text" class="input input-sm" placeholder="Buscar registros...">
+          </div>
+
+          <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+            <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+          </button>
+
+          <button class="btn btn-ghost btn-icon p-relative" data-demo="toast-warning" aria-label="Notificações">
+            <i class="icon icon-bell"></i>
+          </button>
+
+          <div class="divider d-none d-sm-block" style="height: 1.5rem;"></div>
+
+          <!-- Profile Menu -->
+          <div class="dropdown">
+            <button class="btn btn-ghost p-1 dropdown-toggle">
+              <span class="avatar avatar-sm">AD</span>
+              <span class="f-w-medium f-s-3 d-none d-sm-inline">Admin Silva</span>
+              <i class="icon icon-arrow-down f-s-1 text-muted"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <span class="dropdown-header">Conectado como Admin</span>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-user"></i> Meu Perfil</a>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-settings"></i> Preferências</a>
+              <div class="dropdown-divider"></div>
+              <a href="index.html" class="dropdown-item danger"><i class="icon icon-close"></i> Sair do Painel</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- App Content Area -->
+      <main class="app-content stack gap-5 fade-in">
+
+        <!-- Top Action Bar & Stat Grid -->
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div>
+            <h2 class="h3 m-0">Gestão de Usuários</h2>
+            <p class="text-muted m-0 f-s-3">Administre permissões, status e privilégios da plataforma.</p>
+          </div>
+          <button class="btn btn-primary d-flex align-items-center gap-2" data-toggle="modal" data-target="#modalNewUser">
+            <i class="icon icon-plus"></i> Novo Usuário
+          </button>
+        </div>
+
+        <!-- Metric Badges Grid -->
+        <div class="grid grid-sm-2 grid-xl-4 gap-4">
+          <div class="card p-4">
+            <span class="stat-label">Total de Contas</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">24.592</span>
+              <span class="stat-delta up"><i class="icon icon-arrow-up"></i> +12.5% este mês</span>
+            </div>
+          </div>
+          <div class="card p-4">
+            <span class="stat-label">Usuários Ativos</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">21.840</span>
+              <span class="stat-delta up"><i class="icon icon-check"></i> 88.8% do total</span>
+            </div>
+          </div>
+          <div class="card p-4">
+            <span class="stat-label">Administradores</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">142</span>
+              <span class="stat-delta text-muted">Equipe interna</span>
+            </div>
+          </div>
+          <div class="card p-4">
+            <span class="stat-label">Novas Contas Hoje</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">86</span>
+              <span class="stat-delta up"><i class="icon icon-arrow-up"></i> +18% vs ontem</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- User Table Card -->
+        <div class="card">
+          <!-- Table Toolbar Filter Header -->
+          <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div class="cluster gap-2 flex-grow-1 flex-md-grow-0">
+              <div class="input-icon" style="width: 15rem;">
+                <i class="icon icon-search"></i>
+                <input type="text" class="input input-sm" placeholder="Buscar por nome ou e-mail...">
+              </div>
+              <select class="select select-sm" style="width: 9rem;">
+                <option value="">Todos os Cargos</option>
+                <option value="admin">Admin</option>
+                <option value="editor">Editor</option>
+                <option value="cliente">Cliente</option>
+              </select>
+              <select class="select select-sm" style="width: 9rem;">
+                <option value="">Todos os Status</option>
+                <option value="ativo">Ativo</option>
+                <option value="inativo">Inativo</option>
+                <option value="suspenso">Suspenso</option>
+              </select>
+            </div>
+
+            <div class="cluster gap-2">
+              <button class="btn btn-secondary btn-sm" data-demo="btn-loading">Exportar CSV</button>
+            </div>
+          </div>
+
+          <!-- Table Content -->
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th style="width: 2.5rem;"><input type="checkbox" class="check"></th>
+                  <th>Usuário</th>
+                  <th>Cargo</th>
+                  <th>Status</th>
+                  <th>Data de Cadastro</th>
+                  <th>Último Acesso</th>
+                  <th class="txt-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td><input type="checkbox" class="check"></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="avatar avatar-sm">AC</span>
+                      <div>
+                        <div class="f-w-medium">Ana Clara Silva</div>
+                        <small class="text-muted">ana.clara@empresa.com</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-blue">Administrador</span></td>
+                  <td><span class="badge badge-green badge-dot">Ativo</span></td>
+                  <td class="text-muted f-s-2">12 Jan 2026</td>
+                  <td class="text-muted f-s-2">Há 5 minutos</td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar" data-toggle="modal" data-target="#modalNewUser"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Excluir" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class="check"></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="avatar avatar-sm">CE</span>
+                      <div>
+                        <div class="f-w-medium">Carlos Eduardo</div>
+                        <small class="text-muted">carlos.eduardo@gmail.com</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-yellow">Editor</span></td>
+                  <td><span class="badge badge-green badge-dot">Ativo</span></td>
+                  <td class="text-muted f-s-2">04 Mar 2026</td>
+                  <td class="text-muted f-s-2">Há 2 horas</td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar" data-toggle="modal" data-target="#modalNewUser"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Excluir" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class="check"></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="avatar avatar-sm">RS</span>
+                      <div>
+                        <div class="f-w-medium">Roberto Santos</div>
+                        <small class="text-muted">roberto.santos@tech.br</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge">Cliente</span></td>
+                  <td><span class="badge badge-green badge-dot">Ativo</span></td>
+                  <td class="text-muted f-s-2">18 Abr 2026</td>
+                  <td class="text-muted f-s-2">Ontem às 18:40</td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar" data-toggle="modal" data-target="#modalNewUser"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Excluir" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class="check"></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="avatar avatar-sm">FL</span>
+                      <div>
+                        <div class="f-w-medium">Fernanda Lima</div>
+                        <small class="text-muted">fernanda.lima@design.co</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-yellow">Editor</span></td>
+                  <td><span class="badge badge-yellow badge-dot">Inativo</span></td>
+                  <td class="text-muted f-s-2">22 Jun 2026</td>
+                  <td class="text-muted f-s-2">Há 14 dias</td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar" data-toggle="modal" data-target="#modalNewUser"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Excluir" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class="check"></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="avatar avatar-sm">LM</span>
+                      <div>
+                        <div class="f-w-medium">Lucas Mendes</div>
+                        <small class="text-muted">lucas.mendes@outlook.com</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge">Cliente</span></td>
+                  <td><span class="badge badge-red badge-dot">Suspenso</span></td>
+                  <td class="text-muted f-s-2">09 Ago 2026</td>
+                  <td class="text-muted f-s-2">Há 1 mês</td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar" data-toggle="modal" data-target="#modalNewUser"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Excluir" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+                <tr>
+                  <td><input type="checkbox" class="check"></td>
+                  <td>
+                    <div class="d-flex align-items-center gap-3">
+                      <span class="avatar avatar-sm">JC</span>
+                      <div>
+                        <div class="f-w-medium">Juliana Costa</div>
+                        <small class="text-muted">juliana.costa@empresa.com</small>
+                      </div>
+                    </div>
+                  </td>
+                  <td><span class="badge badge-blue">Administrador</span></td>
+                  <td><span class="badge badge-green badge-dot">Ativo</span></td>
+                  <td class="text-muted f-s-2">15 Set 2026</td>
+                  <td class="text-muted f-s-2">Há 3 horas</td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Editar" data-toggle="modal" data-target="#modalNewUser"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Excluir" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <span class="f-s-2 text-muted">Exibindo <strong>1 a 6</strong> de <strong>24.592</strong> registros</span>
+            <div class="cluster gap-1">
+              <button class="btn btn-secondary btn-sm" disabled><i class="icon icon-arrow-left"></i> Anterior</button>
+              <button class="btn btn-primary btn-sm">1</button>
+              <button class="btn btn-ghost btn-sm">2</button>
+              <button class="btn btn-ghost btn-sm">3</button>
+              <span class="text-muted f-s-2 px-1">...</span>
+              <button class="btn btn-ghost btn-sm">410</button>
+              <button class="btn btn-secondary btn-sm">Próximo <i class="icon icon-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Modal Cadastro de Usuário -->
+  <div id="modalNewUser" class="modal">
+    <div class="modal-content stack gap-4" style="max-width: 32rem;">
+      <div class="modal-header">
+        <h3 class="modal-title">Cadastrar Novo Usuário</h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body stack gap-3">
+        <div class="form-group">
+          <label for="usr-name">Nome Completo</label>
+          <input type="text" id="usr-name" class="input" placeholder="Ex: Maria das Dores">
+        </div>
+
+        <div class="form-group">
+          <label for="usr-email">E-mail Corporativo</label>
+          <input type="email" id="usr-email" class="input" placeholder="exemplo@empresa.com">
+        </div>
+
+        <div class="grid grid-sm-2 gap-3">
+          <div class="form-group">
+            <label for="usr-role">Cargo / Permissão</label>
+            <select id="usr-role" class="select">
+              <option value="cliente">Cliente</option>
+              <option value="editor">Editor</option>
+              <option value="admin">Administrador</option>
+            </select>
+          </div>
+          <div class="form-group">
+            <label for="usr-status">Status da Conta</label>
+            <select id="usr-status" class="select">
+              <option value="ativo">Ativo</option>
+              <option value="inativo">Inativo</option>
+              <option value="pendente">Pendente</option>
+            </select>
+          </div>
+        </div>
+
+        <div class="card p-3 bg-subtle stack gap-2">
+          <label class="check-label">
+            <input type="checkbox" class="check" checked>
+            <span>Enviar e-mail com instruções de primeiro acesso</span>
+          </label>
+          <label class="check-label">
+            <input type="checkbox" class="check">
+            <span>Exigir alteração de senha no primeiro login</span>
+          </label>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" data-dismiss="modal" data-demo="toast-success">Salvar Usuário</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

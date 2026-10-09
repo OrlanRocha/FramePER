@@ -1,0 +1,290 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Mensagens & Suporte | Admin Dashboard | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        <span>Frame Admin</span>
+      </a>
+
+      <span class="sidebar-label">Menu Principal</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <i class="icon icon-home"></i> Visão Geral
+      </a>
+      <a href="users.html" class="sidebar-link">
+        <i class="icon icon-user"></i> Usuários
+      </a>
+      <a href="messages.html" class="sidebar-link active">
+        <i class="icon icon-envelope"></i> Mensagens
+        <span class="badge badge-pill badge-blue">4</span>
+      </a>
+
+      <span class="sidebar-label">Relatórios</span>
+      <a href="reports.html" class="sidebar-link">
+        <i class="icon icon-calendar"></i> Agendamentos
+      </a>
+
+      <span class="sidebar-label">Ajustes</span>
+      <a href="settings.html" class="sidebar-link">
+        <i class="icon icon-settings"></i> Configurações
+      </a>
+
+      <!-- Bottom Card in Sidebar -->
+      <div class="sidebar-footer">
+        <div class="card card-flat p-3 stack gap-2 bg-subtle">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="f-w-semibold f-s-3">Plano Pro</span>
+            <span class="badge badge-green">Ativo</span>
+          </div>
+          <p class="f-s-2 text-muted m-0">Armazenamento em 84% de capacidade.</p>
+          <a href="settings.html" class="btn btn-secondary btn-sm w-100 m-t-1">Gerenciar Conta</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Shell -->
+    <div class="app-main">
+
+      <!-- Header Bar -->
+      <header class="app-header">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-ghost btn-icon d-lg-none" data-toggle="sidebar" aria-label="Abrir Menu">
+            <i class="icon icon-menu"></i>
+          </button>
+          <h1 class="h4 m-0">Mensagens & Suporte</h1>
+        </div>
+
+        <div class="cluster gap-3">
+          <!-- Search Bar -->
+          <div class="input-icon d-none d-md-block search-field">
+            <i class="icon icon-search"></i>
+            <input type="text" class="input input-sm" placeholder="Buscar registros...">
+          </div>
+
+          <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+            <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+          </button>
+
+          <button class="btn btn-ghost btn-icon p-relative" data-demo="toast-warning" aria-label="Notificações">
+            <i class="icon icon-bell"></i>
+          </button>
+
+          <div class="divider d-none d-sm-block" style="height: 1.5rem;"></div>
+
+          <!-- Profile Menu -->
+          <div class="dropdown">
+            <button class="btn btn-ghost p-1 dropdown-toggle">
+              <span class="avatar avatar-sm">AD</span>
+              <span class="f-w-medium f-s-3 d-none d-sm-inline">Admin Silva</span>
+              <i class="icon icon-arrow-down f-s-1 text-muted"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <span class="dropdown-header">Conectado como Admin</span>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-user"></i> Meu Perfil</a>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-settings"></i> Preferências</a>
+              <div class="dropdown-divider"></div>
+              <a href="index.html" class="dropdown-item danger"><i class="icon icon-close"></i> Sair do Painel</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- App Content Area -->
+      <main class="app-content stack gap-4 fade-in">
+
+        <!-- Header Controls -->
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div>
+            <h2 class="h3 m-0">Central de Atendimento</h2>
+            <p class="text-muted m-0 f-s-3">Gerencie dúvidas, chamados técnicos e mensagens diretas de clientes.</p>
+          </div>
+          <div class="cluster gap-2">
+            <button class="btn btn-secondary btn-sm" data-demo="toast-info"><i class="icon icon-check"></i> Marcar todas como lidas</button>
+            <button class="btn btn-primary btn-sm"><i class="icon icon-plus"></i> Novo Chamado</button>
+          </div>
+        </div>
+
+        <!-- Chat Split View -->
+        <div class="chat-layout">
+
+          <!-- Left Panel: Thread List -->
+          <div class="card p-3 stack gap-3" style="height: fit-content;">
+            <div class="input-icon">
+              <i class="icon icon-search"></i>
+              <input type="text" class="input input-sm" placeholder="Buscar mensagem...">
+            </div>
+
+            <!-- Thread Filter Pills -->
+            <ul class="tabs tabs-pills w-100" style="grid-template-columns: repeat(3, 1fr);">
+              <li class="tab-item"><a class="tab-link active">Todas</a></li>
+              <li class="tab-item"><a class="tab-link">Lidas</a></li>
+              <li class="tab-item"><a class="tab-link">Arquivadas</a></li>
+            </ul>
+
+            <!-- List of Chat Items -->
+            <div class="chat-thread-list">
+
+              <div class="chat-thread-item active">
+                <span class="avatar avatar-sm">PG</span>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="f-w-semibold f-s-3 text-truncate">Pedro Gomes</span>
+                    <small class="text-muted f-s-1">09:41</small>
+                  </div>
+                  <p class="f-s-2 text-muted m-0 text-truncate">Preciso de ajuda com a integração do webhook no plano enterprise.</p>
+                </div>
+                <span class="badge badge-pill badge-blue badge-dot" title="Não lida"></span>
+              </div>
+
+              <div class="chat-thread-item">
+                <span class="avatar avatar-sm">MS</span>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="f-w-semibold f-s-3 text-truncate">Maria Souza</span>
+                    <small class="text-muted f-s-1">Ontem</small>
+                  </div>
+                  <p class="f-s-2 text-muted m-0 text-truncate">Obrigada! As notas fiscais foram geradas com sucesso.</p>
+                </div>
+              </div>
+
+              <div class="chat-thread-item">
+                <span class="avatar avatar-sm">JS</span>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="f-w-semibold f-s-3 text-truncate">João Silva</span>
+                    <small class="text-muted f-s-1">06 Out</small>
+                  </div>
+                  <p class="f-s-2 text-muted m-0 text-truncate">Gostaria de agendar uma reunião de demonstração.</p>
+                </div>
+              </div>
+
+              <div class="chat-thread-item">
+                <span class="avatar avatar-sm">FL</span>
+                <div class="flex-grow-1 min-w-0">
+                  <div class="d-flex align-items-center justify-content-between">
+                    <span class="f-w-semibold f-s-3 text-truncate">Fernanda Lima</span>
+                    <small class="text-muted f-s-1">02 Out</small>
+                  </div>
+                  <p class="f-s-2 text-muted m-0 text-truncate">Conseguimos exportar os dados em formato JSON?</p>
+                </div>
+              </div>
+
+            </div>
+          </div>
+
+          <!-- Right Panel: Conversation Thread Detail -->
+          <div class="card p-0 d-flex flex-column" style="min-height: 30rem;">
+            
+            <!-- Thread Header -->
+            <div class="card-header border-bottom p-3 d-flex align-items-center justify-content-between">
+              <div class="d-flex align-items-center gap-3">
+                <span class="avatar">PG</span>
+                <div>
+                  <div class="d-flex align-items-center gap-2">
+                    <h3 class="card-title m-0">Pedro Gomes</h3>
+                    <span class="badge badge-green badge-dot">Online</span>
+                  </div>
+                  <small class="text-muted">pedro.gomes@empresa.com.br &bull; Ticket #3892</small>
+                </div>
+              </div>
+
+              <div class="cluster gap-2">
+                <button class="btn btn-ghost btn-icon btn-sm" aria-label="Arquivar" data-demo="toast-info" data-tooltip="Arquivar Chamado"><i class="icon icon-check"></i></button>
+                <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Excluir" data-demo="toast-error" data-tooltip="Excluir Ticket"><i class="icon icon-trash"></i></button>
+              </div>
+            </div>
+
+            <!-- Thread Messages Area -->
+            <div class="card-body p-4 stack gap-4 flex-grow-1 overflow-auto bg-subtle">
+              
+              <div class="text-center">
+                <span class="badge text-muted bg-surface border px-3">Hoje, 09:41 AM</span>
+              </div>
+
+              <!-- Customer Message -->
+              <div class="d-flex align-items-start gap-3">
+                <span class="avatar avatar-sm m-t-1">PG</span>
+                <div class="stack gap-1 max-w-lg">
+                  <div class="chat-bubble chat-bubble-incoming shadow-sm">
+                    Olá equipe de suporte! Estamos configurando a integração via Webhook no ambiente de homologação, porém estamos recebendo resposta HTTP 403 Forbidden ao enviar os eventos de checkout. Podem verificar a chave API?
+                  </div>
+                  <small class="text-muted f-s-1 px-1">Pedro Gomes &bull; 09:41 AM</small>
+                </div>
+              </div>
+
+              <!-- System Callout -->
+              <div class="alert alert-blue p-2 px-3 m-y-1 align-self-center f-s-2 text-center" style="max-width: 24rem;">
+                <i class="icon icon-star"></i> Atendimento assumido por <strong>Admin Silva</strong>.
+              </div>
+
+              <!-- Agent Outgoing Reply -->
+              <div class="d-flex align-items-start gap-3 justify-content-end">
+                <div class="stack gap-1 max-w-lg align-items-end">
+                  <div class="chat-bubble chat-bubble-outgoing shadow-sm">
+                    Olá Pedro! Bom dia. Verifiquei os logs e notei que os cabeçalhos de autenticação precisam enviar a hash <code>X-Frame-Signature</code>. Atualizei as permissões da sua chave de API e enviei um teste com sucesso.
+                  </div>
+                  <small class="text-muted f-s-1 px-1">Você (Admin Silva) &bull; 09:48 AM &bull; Lida</small>
+                </div>
+                <span class="avatar avatar-sm m-t-1">AD</span>
+              </div>
+
+              <!-- Customer Reply -->
+              <div class="d-flex align-items-start gap-3">
+                <span class="avatar avatar-sm m-t-1">PG</span>
+                <div class="stack gap-1 max-w-lg">
+                  <div class="chat-bubble chat-bubble-incoming shadow-sm">
+                    Perfeito! Testei aqui e agora funcionou 100%. Muito obrigado pelo atendimento rápido!
+                  </div>
+                  <small class="text-muted f-s-1 px-1">Pedro Gomes &bull; 09:52 AM</small>
+                </div>
+              </div>
+
+            </div>
+
+            <!-- Thread Composer Footer -->
+            <div class="card-footer border-top p-3 bg-surface stack gap-2">
+              <div class="d-flex align-items-center gap-2">
+                <textarea class="input" rows="2" placeholder="Escreva uma resposta para Pedro Gomes..." style="resize: none;"></textarea>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="cluster gap-2">
+                  <button class="btn btn-ghost btn-icon btn-sm" aria-label="Anexar arquivo" data-tooltip="Anexar Arquivo"><i class="icon icon-plus"></i></button>
+                  <button class="btn btn-ghost btn-icon btn-sm" aria-label="Modelos de Resposta" data-tooltip="Resposta Rápida"><i class="icon icon-star"></i></button>
+                </div>
+
+                <div class="cluster gap-2">
+                  <button class="btn btn-secondary btn-sm" data-demo="toast-info">Resolver & Fechar</button>
+                  <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-demo="toast-success">
+                    <span>Enviar Resposta</span> <i class="icon icon-arrow-right"></i>
+                  </button>
+                </div>
+              </div>
+            </div>
+
+          </div>
+
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

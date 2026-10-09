@@ -98,3 +98,68 @@
 .demo-link { display: block; height: 100%; }
 .demo-link .go { margin-top: auto; font-size: 0.8125rem; font-weight: 500; color: var(--text-muted); display: inline-flex; align-items: center; gap: 0.375rem; transition: color 0.15s, gap 0.15s; }
 .demo-link:hover .go { color: var(--text-main); gap: 0.625rem; }
+
+/* Chat / Messages Layout ------------------------------------------------- */
+.chat-layout {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: 1.5rem;
+  min-height: calc(100vh - 12rem);
+}
+
+@media (min-width: 992px) {
+  .chat-layout {
+    grid-template-columns: 20rem 1fr;
+  }
+}
+
+.chat-thread-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+.chat-thread-item {
+  display: flex;
+  align-items: flex-start;
+  gap: 0.75rem;
+  padding: 0.875rem;
+  border-radius: var(--radius-md);
+  border: 1px solid transparent;
+  cursor: pointer;
+  transition: background-color 0.15s, border-color 0.15s;
+  text-decoration: none;
+  color: inherit;
+}
+
+.chat-thread-item:hover {
+  background-color: var(--bg-subtle);
+}
+
+.chat-thread-item.active {
+  background-color: var(--bg-surface);
+  border-color: var(--border-color);
+  box-shadow: var(--shadow-sm);
+}
+
+.chat-bubble {
+  max-width: 80%;
+  padding: 0.875rem 1.125rem;
+  border-radius: var(--radius-lg);
+  font-size: 0.875rem;
+  line-height: 1.5;
+}
+
+.chat-bubble-incoming {
+  background-color: var(--bg-subtle);
+  color: var(--text-main);
+  border-bottom-left-radius: 0.25rem;
+}
+
+.chat-bubble-outgoing {
+  background-color: var(--primary);
+  color: #ffffff;
+  border-bottom-right-radius: 0.25rem;
+  margin-left: auto;
+}
+

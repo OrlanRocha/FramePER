@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Frame PER | Demos</title>
+  <title>Frame PER | Demos & Suite Admin</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -27,47 +27,99 @@
       </div>
     </header>
 
-    <section class="container container-narrow txt-center p-y-7 p-relative z-10">
-      <span class="badge badge-pill badge-dot badge-green m-b-4 slide-up">v2.0 · Novo design system</span>
+    <section class="container container-narrow txt-center p-y-6 p-relative z-10">
+      <span class="badge badge-pill badge-dot badge-green m-b-3 slide-up">v2.1 · Admin Dashboard Suite Completo</span>
       <h1 class="display-2 m-b-3 text-balance slide-up delay-1">Conheça o Frame PER</h1>
-      <p class="lead max-w-md m-x-auto slide-up delay-2">Quatro páginas de demonstração construídas apenas com as classes e a API JavaScript do próprio framework.</p>
+      <p class="lead max-w-md m-x-auto slide-up delay-2">Demonstrações elegantes e o painel Admin Dashboard completo com todas as sub-páginas integradas.</p>
     </section>
 
-    <section class="container p-b-8 p-relative z-10 flex-1">
-      <div class="grid grid-md-2 grid-lg-4 gap-4">
+    <!-- Admin Suite Cards Grid -->
+    <section class="container p-b-6 p-relative z-10 flex-1">
+      <h2 class="h4 m-b-4 text-center">Suite Admin Dashboard</h2>
+      
+      <div class="grid grid-sm-2 grid-lg-5 gap-3 m-b-6">
+        
+        <a class="demo-link slide-up delay-2" href="dashboard.html">
+          <div class="card card-hover h-100 p-3 stack gap-2">
+            <span class="icon-box icon-box-primary"><i class="icon icon-home"></i></span>
+            <div>
+              <h3 class="card-title f-s-4">Visão Geral</h3>
+              <p class="card-text f-s-2">Estatísticas, vendas, gráficos e atividades.</p>
+            </div>
+            <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <a class="demo-link slide-up delay-3" href="users.html">
+          <div class="card card-hover h-100 p-3 stack gap-2">
+            <span class="icon-box icon-box-primary"><i class="icon icon-user"></i></span>
+            <div>
+              <h3 class="card-title f-s-4">Usuários</h3>
+              <p class="card-text f-s-2">Tabela de contas, permissões e modal de cadastro.</p>
+            </div>
+            <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <a class="demo-link slide-up delay-4" href="messages.html">
+          <div class="card card-hover h-100 p-3 stack gap-2">
+            <span class="icon-box icon-box-primary"><i class="icon icon-envelope"></i></span>
+            <div>
+              <h3 class="card-title f-s-4">Mensagens</h3>
+              <p class="card-text f-s-2">Inbox com lista de conversas e chat ao vivo.</p>
+            </div>
+            <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <a class="demo-link slide-up delay-5" href="reports.html">
+          <div class="card card-hover h-100 p-3 stack gap-2">
+            <span class="icon-box icon-box-primary"><i class="icon icon-calendar"></i></span>
+            <div>
+              <h3 class="card-title f-s-4">Agendamentos</h3>
+              <p class="card-text f-s-2">Métricas operacionais e lista de relatórios.</p>
+            </div>
+            <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+          </div>
+        </a>
+
+        <a class="demo-link slide-up delay-5" href="settings.html">
+          <div class="card card-hover h-100 p-3 stack gap-2">
+            <span class="icon-box icon-box-primary"><i class="icon icon-settings"></i></span>
+            <div>
+              <h3 class="card-title f-s-4">Configurações</h3>
+              <p class="card-text f-s-2">Perfil, 2FA, alertas e preferências visuais.</p>
+            </div>
+            <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
+          </div>
+        </a>
+
+      </div>
+
+      <!-- Other Pages Section -->
+      <h2 class="h4 m-b-4 text-center">Páginas Institucionais & Manual</h2>
+      
+      <div class="grid grid-md-3 gap-4">
 
         <a class="demo-link slide-up delay-2" href="landing.html">
-          <div class="card card-hover h-100">
-            <div class="card-body stack gap-3 h-100">
-              <span class="icon-box icon-box-lg"><i class="icon icon-home"></i></span>
+          <div class="card card-hover h-100 p-4">
+            <div class="card-body stack gap-3 p-0 h-100">
+              <span class="icon-box icon-box-lg"><i class="icon icon-star"></i></span>
               <div>
-                <h3 class="card-title f-s-5">Landing page</h3>
-                <p class="card-text">Hero animado, recursos, trecho de código e chamada para ação.</p>
+                <h3 class="card-title f-s-5">Landing Page</h3>
+                <p class="card-text">Hero animado, lista de recursos e chamada para ação.</p>
               </div>
               <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
             </div>
           </div>
         </a>
 
-        <a class="demo-link slide-up delay-3" href="dashboard.html">
-          <div class="card card-hover h-100">
-            <div class="card-body stack gap-3 h-100">
-              <span class="icon-box icon-box-lg"><i class="icon icon-user"></i></span>
-              <div>
-                <h3 class="card-title f-s-5">Dashboard</h3>
-                <p class="card-text">Sidebar responsiva, métricas, gráfico, tabela e atividade recente.</p>
-              </div>
-              <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
-            </div>
-          </div>
-        </a>
-
-        <a class="demo-link slide-up delay-4" href="components.html">
-          <div class="card card-hover h-100">
-            <div class="card-body stack gap-3 h-100">
+        <a class="demo-link slide-up delay-3" href="components.html">
+          <div class="card card-hover h-100 p-4">
+            <div class="card-body stack gap-3 p-0 h-100">
               <span class="icon-box icon-box-lg"><i class="icon icon-settings"></i></span>
               <div>
-                <h3 class="card-title f-s-5">Componentes</h3>
+                <h3 class="card-title f-s-5">Componentes UI</h3>
                 <p class="card-text">Todos os componentes com pré-visualização ao vivo e código.</p>
               </div>
               <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
@@ -75,13 +127,13 @@
           </div>
         </a>
 
-        <a class="demo-link slide-up delay-5" href="manual.html">
-          <div class="card card-hover h-100">
-            <div class="card-body stack gap-3 h-100">
+        <a class="demo-link slide-up delay-4" href="manual.html">
+          <div class="card card-hover h-100 p-4">
+            <div class="card-body stack gap-3 p-0 h-100">
               <span class="icon-box icon-box-lg"><i class="icon icon-info"></i></span>
               <div>
-                <h3 class="card-title f-s-5">Manual</h3>
-                <p class="card-text">Tema, layout, espaçamento e a API JavaScript passo a passo.</p>
+                <h3 class="card-title f-s-5">Manual API</h3>
+                <p class="card-text">Documentação técnica, utilitários CSS e API JavaScript.</p>
               </div>
               <span class="go">Abrir <i class="icon icon-arrow-right"></i></span>
             </div>
@@ -92,7 +144,7 @@
     </section>
 
     <footer class="container p-y-5 txt-center f-s-2 text-muted p-relative z-10">
-      Frame PER v2.0 · CSS + JS sem dependências
+      Frame PER v2.1 · CSS + JS sem dependências
     </footer>
   </main>
 

@@ -1,0 +1,428 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Agendamentos & Relatórios | Admin Dashboard | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+  <div class="app-shell">
+
+    <!-- Sidebar Navigation -->
+    <aside class="sidebar">
+      <a class="sidebar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        <span>Frame Admin</span>
+      </a>
+
+      <span class="sidebar-label">Menu Principal</span>
+      <a href="dashboard.html" class="sidebar-link">
+        <i class="icon icon-home"></i> Visão Geral
+      </a>
+      <a href="users.html" class="sidebar-link">
+        <i class="icon icon-user"></i> Usuários
+      </a>
+      <a href="messages.html" class="sidebar-link">
+        <i class="icon icon-envelope"></i> Mensagens
+        <span class="badge badge-pill badge-blue">4</span>
+      </a>
+
+      <span class="sidebar-label">Relatórios</span>
+      <a href="reports.html" class="sidebar-link active">
+        <i class="icon icon-calendar"></i> Agendamentos
+      </a>
+
+      <span class="sidebar-label">Ajustes</span>
+      <a href="settings.html" class="sidebar-link">
+        <i class="icon icon-settings"></i> Configurações
+      </a>
+
+      <!-- Bottom Card in Sidebar -->
+      <div class="sidebar-footer">
+        <div class="card card-flat p-3 stack gap-2 bg-subtle">
+          <div class="d-flex align-items-center justify-content-between">
+            <span class="f-w-semibold f-s-3">Plano Pro</span>
+            <span class="badge badge-green">Ativo</span>
+          </div>
+          <p class="f-s-2 text-muted m-0">Armazenamento em 84% de capacidade.</p>
+          <a href="settings.html" class="btn btn-secondary btn-sm w-100 m-t-1">Gerenciar Conta</a>
+        </div>
+      </div>
+    </aside>
+
+    <!-- Main Content Shell -->
+    <div class="app-main">
+
+      <!-- Header Bar -->
+      <header class="app-header">
+        <div class="d-flex align-items-center gap-3">
+          <button class="btn btn-ghost btn-icon d-lg-none" data-toggle="sidebar" aria-label="Abrir Menu">
+            <i class="icon icon-menu"></i>
+          </button>
+          <h1 class="h4 m-0">Agendamentos & Relatórios</h1>
+        </div>
+
+        <div class="cluster gap-3">
+          <!-- Search Bar -->
+          <div class="input-icon d-none d-md-block search-field">
+            <i class="icon icon-search"></i>
+            <input type="text" class="input input-sm" placeholder="Buscar registros...">
+          </div>
+
+          <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+            <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+          </button>
+
+          <button class="btn btn-ghost btn-icon p-relative" data-demo="toast-warning" aria-label="Notificações">
+            <i class="icon icon-bell"></i>
+          </button>
+
+          <div class="divider d-none d-sm-block" style="height: 1.5rem;"></div>
+
+          <!-- Profile Menu -->
+          <div class="dropdown">
+            <button class="btn btn-ghost p-1 dropdown-toggle">
+              <span class="avatar avatar-sm">AD</span>
+              <span class="f-w-medium f-s-3 d-none d-sm-inline">Admin Silva</span>
+              <i class="icon icon-arrow-down f-s-1 text-muted"></i>
+            </button>
+            <div class="dropdown-menu dropdown-menu-end">
+              <span class="dropdown-header">Conectado como Admin</span>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-user"></i> Meu Perfil</a>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-settings"></i> Preferências</a>
+              <div class="dropdown-divider"></div>
+              <a href="index.html" class="dropdown-item danger"><i class="icon icon-close"></i> Sair do Painel</a>
+            </div>
+          </div>
+        </div>
+      </header>
+
+      <!-- App Content Area -->
+      <main class="app-content stack gap-5 fade-in">
+
+        <!-- Page Action Header -->
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+          <div>
+            <h2 class="h3 m-0">Relatórios & Agendamentos</h2>
+            <p class="text-muted m-0 f-s-3">Acompanhe métricas operacionais, reuniões agendadas e histórico de relatórios.</p>
+          </div>
+          <div class="cluster gap-2">
+            <select class="select select-sm" style="width: 10rem;">
+              <option>Este Mês (Outubro)</option>
+              <option>Últimos 7 dias</option>
+              <option>Este Trimestre</option>
+              <option>Ano de 2026</option>
+            </select>
+            <button class="btn btn-secondary btn-sm" data-demo="btn-loading"><i class="icon icon-check"></i> Gerar CSV</button>
+            <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-toggle="modal" data-target="#modalNewReport">
+              <i class="icon icon-plus"></i> Novo Agendamento
+            </button>
+          </div>
+        </div>
+
+        <!-- Metric Badges Grid -->
+        <div class="grid grid-sm-2 grid-xl-4 gap-4">
+          <div class="card p-4">
+            <span class="stat-label">Total Agendados</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">1.480</span>
+              <span class="stat-delta up"><i class="icon icon-arrow-up"></i> +24.2% este mês</span>
+            </div>
+          </div>
+          <div class="card p-4">
+            <span class="stat-label">Taxa de Conclusão</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">96.4%</span>
+              <span class="stat-delta up"><i class="icon icon-check"></i> Meta atingida</span>
+            </div>
+          </div>
+          <div class="card p-4">
+            <span class="stat-label">Horas Alocadas</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">320h</span>
+              <span class="stat-delta text-muted">Média 8h/dia</span>
+            </div>
+          </div>
+          <div class="card p-4">
+            <span class="stat-label">Taxa de Cancelamento</span>
+            <div class="stat m-t-2">
+              <span class="stat-value">3.6%</span>
+              <span class="stat-delta down"><i class="icon icon-arrow-down"></i> -1.2% redução</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Charts Grid -->
+        <div class="grid grid-lg-3 gap-5">
+          
+          <!-- Bar Chart Card (2 Columns) -->
+          <div class="card span-lg-2 p-4 stack gap-4">
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <div>
+                <h3 class="card-title">Agendamentos por Período</h3>
+                <p class="card-subtitle">Volume diário de horários ocupados</p>
+              </div>
+              <div class="cluster gap-2">
+                <button class="btn btn-secondary btn-sm">Semanal</button>
+                <button class="btn btn-outline btn-sm">Mensal</button>
+              </div>
+            </div>
+
+            <div>
+              <div class="bars">
+                <div class="bar muted" style="height: 35%;" data-tooltip="Seg: 12 agendamentos"></div>
+                <div class="bar" style="height: 75%;" data-tooltip="Ter: 28 agendamentos"></div>
+                <div class="bar" style="height: 90%;" data-tooltip="Qua: 34 agendamentos"></div>
+                <div class="bar muted" style="height: 60%;" data-tooltip="Qui: 22 agendamentos"></div>
+                <div class="bar" style="height: 98%;" data-tooltip="Sex: 38 agendamentos"></div>
+                <div class="bar muted" style="height: 40%;" data-tooltip="Sáb: 15 agendamentos"></div>
+                <div class="bar muted" style="height: 20%;" data-tooltip="Dom: 6 agendamentos"></div>
+              </div>
+              <div class="bar-labels">
+                <span>Seg</span><span>Ter</span><span>Qua</span><span>Qui</span><span>Sex</span><span>Sáb</span><span>Dom</span>
+              </div>
+            </div>
+          </div>
+
+          <!-- Category Breakdown Progress Card -->
+          <div class="card p-4 stack gap-4">
+            <div>
+              <h3 class="card-title">Categorias de Serviço</h3>
+              <p class="card-subtitle">Distribuição das solicitações de clientes</p>
+            </div>
+
+            <div class="stack gap-3">
+              <div>
+                <div class="d-flex justify-content-between f-s-2 m-b-1">
+                  <span class="f-w-medium">Consultoria Técnica</span>
+                  <span class="text-muted">45% (666)</span>
+                </div>
+                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
+                  <div class="bg-primary h-100" style="width: 45%;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="d-flex justify-content-between f-s-2 m-b-1">
+                  <span class="f-w-medium">Suporte & Integração</span>
+                  <span class="text-muted">30% (444)</span>
+                </div>
+                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
+                  <div class="bg-blue h-100" style="width: 30%;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="d-flex justify-content-between f-s-2 m-b-1">
+                  <span class="f-w-medium">Reunião Comercial</span>
+                  <span class="text-muted">18% (266)</span>
+                </div>
+                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
+                  <div class="bg-yellow h-100" style="width: 18%;"></div>
+                </div>
+              </div>
+
+              <div>
+                <div class="d-flex justify-content-between f-s-2 m-b-1">
+                  <span class="f-w-medium">Treinamento de Equipe</span>
+                  <span class="text-muted">7% (104)</span>
+                </div>
+                <div class="card bg-subtle p-0 overflow-hidden" style="height: 0.5rem;">
+                  <div class="bg-green h-100" style="width: 7%;"></div>
+                </div>
+              </div>
+            </div>
+
+            <div class="alert alert-blue p-3 m-t-auto">
+              <span class="f-s-2"><strong>Dica:</strong> A taxa de ocupação das sextas-feiras atingiu 98%. Considere abrir novos horários.</span>
+            </div>
+          </div>
+
+        </div>
+
+        <!-- Bookings Data Table Card -->
+        <div class="card">
+          <div class="card-header d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <div>
+              <h3 class="card-title">Próximos Agendamentos</h3>
+              <p class="card-subtitle">Sessões confirmadas para os próximos dias</p>
+            </div>
+            
+            <div class="cluster gap-2">
+              <select class="select select-sm" style="width: 9rem;">
+                <option value="">Todos os Status</option>
+                <option value="confirmado">Confirmado</option>
+                <option value="concluido">Concluído</option>
+                <option value="cancelado">Cancelado</option>
+              </select>
+            </div>
+          </div>
+
+          <div class="table-responsive">
+            <table class="table">
+              <thead>
+                <tr>
+                  <th>Código</th>
+                  <th>Cliente</th>
+                  <th>Serviço</th>
+                  <th>Data & Horário</th>
+                  <th>Valor Est.</th>
+                  <th>Status</th>
+                  <th class="txt-right">Ações</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td class="tabular f-w-semibold text-muted">#AG-9041</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="avatar avatar-sm">AC</span>
+                      <span class="f-w-medium">Ana Clara Silva</span>
+                    </div>
+                  </td>
+                  <td>Consultoria Técnica Architecture</td>
+                  <td class="tabular">10 Out 2026 às 14:00</td>
+                  <td class="tabular f-w-medium">R$ 450,00</td>
+                  <td><span class="badge badge-green badge-dot">Confirmado</span></td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Detalhes" data-demo="toast-info"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Cancelar" data-demo="toast-error"><i class="icon icon-close"></i></button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="tabular f-w-semibold text-muted">#AG-9042</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="avatar avatar-sm">CE</span>
+                      <span class="f-w-medium">Carlos Eduardo</span>
+                    </div>
+                  </td>
+                  <td>Suporte & Integração API</td>
+                  <td class="tabular">10 Out 2026 às 16:30</td>
+                  <td class="tabular f-w-medium">R$ 280,00</td>
+                  <td><span class="badge badge-yellow badge-dot">Pendente</span></td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Detalhes" data-demo="toast-info"><i class="icon icon-edit"></i></button>
+                      <button class="btn btn-ghost btn-icon btn-sm danger" aria-label="Cancelar" data-demo="toast-error"><i class="icon icon-close"></i></button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="tabular f-w-semibold text-muted">#AG-9039</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="avatar avatar-sm">RS</span>
+                      <span class="f-w-medium">Roberto Santos</span>
+                    </div>
+                  </td>
+                  <td>Reunião Comercial Enterprise</td>
+                  <td class="tabular">09 Out 2026 às 11:00</td>
+                  <td class="tabular f-w-medium">Grátis</td>
+                  <td><span class="badge badge-blue badge-dot">Concluído</span></td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Detalhes" data-demo="toast-info"><i class="icon icon-edit"></i></button>
+                    </div>
+                  </td>
+                </tr>
+
+                <tr>
+                  <td class="tabular f-w-semibold text-muted">#AG-9038</td>
+                  <td>
+                    <div class="d-flex align-items-center gap-2">
+                      <span class="avatar avatar-sm">FL</span>
+                      <span class="f-w-medium">Fernanda Lima</span>
+                    </div>
+                  </td>
+                  <td>Treinamento de Equipe UI/UX</td>
+                  <td class="tabular">08 Out 2026 às 09:00</td>
+                  <td class="tabular f-w-medium">R$ 1.200,00</td>
+                  <td><span class="badge badge-red badge-dot">Cancelado</span></td>
+                  <td class="txt-right">
+                    <div class="cluster gap-1 justify-content-end">
+                      <button class="btn btn-ghost btn-icon btn-sm" aria-label="Detalhes" data-demo="toast-info"><i class="icon icon-edit"></i></button>
+                    </div>
+                  </td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+
+          <!-- Pagination Footer -->
+          <div class="card-footer d-flex flex-wrap align-items-center justify-content-between gap-3">
+            <span class="f-s-2 text-muted">Exibindo <strong>1 a 4</strong> de <strong>1.480</strong> agendamentos</span>
+            <div class="cluster gap-1">
+              <button class="btn btn-secondary btn-sm" disabled><i class="icon icon-arrow-left"></i> Anterior</button>
+              <button class="btn btn-primary btn-sm">1</button>
+              <button class="btn btn-ghost btn-sm">2</button>
+              <button class="btn btn-ghost btn-sm">3</button>
+              <button class="btn btn-secondary btn-sm">Próximo <i class="icon icon-arrow-right"></i></button>
+            </div>
+          </div>
+        </div>
+
+      </main>
+    </div>
+
+  </div>
+
+  <!-- Modal Novo Agendamento -->
+  <div id="modalNewReport" class="modal">
+    <div class="modal-content stack gap-4" style="max-width: 32rem;">
+      <div class="modal-header">
+        <h3 class="modal-title">Novo Agendamento</h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body stack gap-3">
+        <div class="form-group">
+          <label for="rep-client">Nome do Cliente</label>
+          <input type="text" id="rep-client" class="input" placeholder="Selecione ou digite o nome...">
+        </div>
+
+        <div class="form-group">
+          <label for="rep-service">Tipo de Serviço</label>
+          <select id="rep-service" class="select">
+            <option>Consultoria Técnica</option>
+            <option>Suporte & Integração</option>
+            <option>Reunião Comercial</option>
+            <option>Treinamento de Equipe</option>
+          </select>
+        </div>
+
+        <div class="grid grid-sm-2 gap-3">
+          <div class="form-group">
+            <label for="rep-date">Data da Sessão</label>
+            <input type="date" id="rep-date" class="input" value="2026-10-15">
+          </div>
+          <div class="form-group">
+            <label for="rep-time">Horário</label>
+            <input type="time" id="rep-time" class="input" value="14:00">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="rep-notes">Observações da Reunião</label>
+          <textarea id="rep-notes" class="input" rows="3" placeholder="Informações adicionais para a equipe..."></textarea>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" data-dismiss="modal" data-demo="toast-success">Agendar Sessão</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

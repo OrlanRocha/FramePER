@@ -3,7 +3,7 @@
 <head>
   <meta charset="UTF-8">
   <meta name="viewport" content="width=device-width, initial-scale=1.0">
-  <title>Admin Dashboard | Frame PER</title>
+  <title>Visão Geral | Admin Dashboard | Frame PER</title>
   <link rel="preconnect" href="https://fonts.googleapis.com">
   <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
   <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
@@ -24,21 +24,21 @@
       <a href="dashboard.html" class="sidebar-link active">
         <i class="icon icon-home"></i> Visão Geral
       </a>
-      <a href="#" class="sidebar-link">
+      <a href="users.html" class="sidebar-link">
         <i class="icon icon-user"></i> Usuários
       </a>
-      <a href="#" class="sidebar-link">
+      <a href="messages.html" class="sidebar-link">
         <i class="icon icon-envelope"></i> Mensagens
         <span class="badge badge-pill badge-blue">4</span>
       </a>
 
       <span class="sidebar-label">Relatórios</span>
-      <a href="#" class="sidebar-link">
+      <a href="reports.html" class="sidebar-link">
         <i class="icon icon-calendar"></i> Agendamentos
       </a>
 
       <span class="sidebar-label">Ajustes</span>
-      <a href="#" class="sidebar-link">
+      <a href="settings.html" class="sidebar-link">
         <i class="icon icon-settings"></i> Configurações
       </a>
 
@@ -50,7 +50,7 @@
             <span class="badge badge-green">Ativo</span>
           </div>
           <p class="f-s-2 text-muted m-0">Armazenamento em 84% de capacidade.</p>
-          <button class="btn btn-secondary btn-sm w-100 m-t-1" data-demo="toast-info">Gerenciar Conta</button>
+          <a href="settings.html" class="btn btn-secondary btn-sm w-100 m-t-1">Gerenciar Conta</a>
         </div>
       </div>
     </aside>
@@ -64,7 +64,7 @@
           <button class="btn btn-ghost btn-icon d-lg-none" data-toggle="sidebar" aria-label="Abrir Menu">
             <i class="icon icon-menu"></i>
           </button>
-          <h1 class="h4 m-0">Dashboard</h1>
+          <h1 class="h4 m-0">Visão Geral</h1>
         </div>
 
         <div class="cluster gap-3">
@@ -93,8 +93,8 @@
             </button>
             <div class="dropdown-menu dropdown-menu-end">
               <span class="dropdown-header">Conectado como Admin</span>
-              <a href="#" class="dropdown-item"><i class="icon icon-user"></i> Meu Perfil</a>
-              <a href="#" class="dropdown-item"><i class="icon icon-settings"></i> Preferências</a>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-user"></i> Meu Perfil</a>
+              <a href="settings.html" class="dropdown-item"><i class="icon icon-settings"></i> Preferências</a>
               <div class="dropdown-divider"></div>
               <a href="index.html" class="dropdown-item danger"><i class="icon icon-close"></i> Sair do Painel</a>
             </div>
@@ -217,7 +217,7 @@
               </li>
             </ul>
 
-            <button class="btn btn-outline btn-sm m-t-auto w-100">Ver Histórico Completo</button>
+            <a href="messages.html" class="btn btn-outline btn-sm m-t-auto w-100">Ver Mensagens & Suporte</a>
           </div>
 
         </div>
@@ -273,7 +273,7 @@
                     <span class="avatar avatar-sm">PG</span>
                     <span class="f-w-medium">Pedro Gomes</span>
                   </td>
-                  <td class="text-muted">06 Out 2026</td>
+                  <td class="text-muted">05 Out 2026</td>
                   <td class="f-w-medium tabular">R$ 90,00</td>
                   <td><span class="badge badge-red badge-dot">Falhou</span></td>
                   <td class="txt-right">
