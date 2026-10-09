@@ -53,11 +53,14 @@
     <aside class="docs-nav stack gap-1">
       <span class="sidebar-label">Manual Técnico</span>
       <a href="#m-theme" class="active">Tema & Dark Mode</a>
+      <a href="#m-tables">Tabelas & Ordenação</a>
+      <a href="#m-modals">Modais & Side Modals</a>
       <a href="#m-http">HTTP & AJAX Fetch</a>
       <a href="#m-notify">Notificações (Notify)</a>
       <a href="#m-loader">Loaders & Spinner</a>
       <a href="#m-security">Segurança & XSS</a>
     </aside>
+
 
     <!-- Main Docs Content -->
     <main class="stack gap-6">
@@ -76,6 +79,43 @@
 <span class="tok-c">// Obter tema atual em execução</span>
 <span class="tok-f">const</span> <span class="tok-n">atual</span> = <span class="tok-k">FramePER</span>.<span class="tok-k">Theme</span>.<span class="tok-f">get</span>(); <span class="tok-c">// 'light' | 'dark'</span></code></pre>
       </section>
+
+      <!-- Tables Module -->
+      <section id="m-tables" class="docs-section">
+        <h2>Tabelas Interativas & Filtros (FramePER.UI.initTables)</h2>
+        <p class="lead">Automaticamente adiciona ordenação em colunas com a classe <code>th.sortable</code> e pesquisa em tempo real com <code>data-table-filter="#idTabela"</code>.</p>
+
+        <pre><code><span class="tok-c">&lt;!-- Campo de busca para filtrar as linhas da tabela em tempo real --&gt;</span>
+<span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">class</span>=<span class="tok-s">"input"</span> <span class="tok-f">data-table-filter</span>=<span class="tok-s">"#minhaTabela"</span> <span class="tok-f">placeholder</span>=<span class="tok-s">"Pesquisar..."</span><span class="tok-k">&gt;</span>
+
+<span class="tok-c">&lt;!-- Cabeçalhos ordenáveis com indicadores direcionais automático (↑ / ↓) --&gt;</span>
+<span class="tok-k">&lt;table</span> <span class="tok-f">id</span>=<span class="tok-s">"minhaTabela"</span> <span class="tok-f">class</span>=<span class="tok-s">"table"</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;thead&gt;</span>
+    <span class="tok-k">&lt;tr&gt;</span>
+      <span class="tok-k">&lt;th</span> <span class="tok-f">class</span>=<span class="tok-s">"sortable"</span><span class="tok-k">&gt;</span>Nome<span class="tok-k">&lt;/th&gt;</span>
+      <span class="tok-k">&lt;th</span> <span class="tok-f">class</span>=<span class="tok-s">"sortable"</span><span class="tok-k">&gt;</span>Valor<span class="tok-k">&lt;/th&gt;</span>
+    <span class="tok-k">&lt;/tr&gt;</span>
+  <span class="tok-k">&lt;/thead&gt;</span>
+<span class="tok-k">&lt;/table&gt;</span></code></pre>
+      </section>
+
+      <!-- Modals Module -->
+      <section id="m-modals" class="docs-section">
+        <h2>Modais & Side Modals / Drawers (FramePER.UI.initModals)</h2>
+        <p class="lead">Modais centrais e modais laterais deslizantes (Side Modal) disparados via atributos <code>data-toggle="modal"</code> e <code>data-target="#idModal"</code>.</p>
+
+        <pre><code><span class="tok-c">&lt;!-- Side Modal / Drawer Lateral Direita --&gt;</span>
+<span class="tok-k">&lt;div</span> <span class="tok-f">id</span>=<span class="tok-s">"modalSacola"</span> <span class="tok-f">class</span>=<span class="tok-s">"modal modal-side modal-side-right"</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"modal-content"</span><span class="tok-k">&gt;</span>
+    <span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"modal-header"</span><span class="tok-k">&gt;</span>
+      <span class="tok-k">&lt;h3</span> <span class="tok-f">class</span>=<span class="tok-s">"modal-title"</span><span class="tok-k">&gt;</span>Título do Painel<span class="tok-k">&lt;/h3&gt;</span>
+      <span class="tok-k">&lt;button</span> <span class="tok-f">class</span>=<span class="tok-s">"modal-close"</span> <span class="tok-f">data-dismiss</span>=<span class="tok-s">"modal"</span><span class="tok-k">&gt;</span>&amp;times;<span class="tok-k">&lt;/button&gt;</span>
+    <span class="tok-k">&lt;/div&gt;</span>
+    <span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"modal-body"</span><span class="tok-k">&gt;</span>Conteúdo do painel lateral...<span class="tok-k">&lt;/div&gt;</span>
+  <span class="tok-k">&lt;/div&gt;</span>
+<span class="tok-k">&lt;/div&gt;</span></code></pre>
+      </section>
+
 
       <!-- HTTP Module -->
       <section id="m-http" class="docs-section">

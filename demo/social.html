@@ -1,0 +1,441 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Rede Social | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+  <!-- Top Fixed Navigation -->
+  <header class="navbar navbar-sticky navbar-glass">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand" href="index.html">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        <span>Frame Social</span>
+      </a>
+
+      <!-- Search in Navbar -->
+      <div class="input-icon d-none d-md-block search-field" style="width: 22rem;">
+        <i class="icon icon-search"></i>
+        <input type="text" class="input input-sm" placeholder="Pesquisar pessoas, hashtags ou posts...">
+      </div>
+
+      <!-- Action Icons -->
+      <div class="cluster gap-2 align-items-center">
+        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-toggle="modal" data-target="#modalNewPost">
+          <i class="icon icon-plus"></i> <span class="d-none d-sm-inline">Criar Post</span>
+        </button>
+
+        <button class="btn btn-ghost btn-icon p-relative" data-toggle="modal" data-target="#modalNotifications" aria-label="Notificações">
+          <i class="icon icon-bell"></i>
+          <span class="badge badge-pill badge-red badge-dot" style="position: absolute; top: 6px; right: 6px;"></span>
+        </button>
+
+        <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+          <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+        </button>
+
+        <div class="dropdown">
+          <button class="btn btn-ghost p-1 dropdown-toggle">
+            <span class="avatar avatar-sm">AD</span>
+          </button>
+          <div class="dropdown-menu dropdown-menu-end">
+            <span class="dropdown-header">Admin Silva</span>
+            <a href="settings.html" class="dropdown-item"><i class="icon icon-user"></i> Ver Perfil</a>
+            <a href="settings.html" class="dropdown-item"><i class="icon icon-settings"></i> Configurações</a>
+            <div class="dropdown-divider"></div>
+            <a href="index.html" class="dropdown-item danger"><i class="icon icon-close"></i> Sair</a>
+          </div>
+        </div>
+      </div>
+    </div>
+  </header>
+
+  <!-- Main Grid Layout -->
+  <div class="container p-y-5">
+    <div class="grid grid-lg-12 gap-5">
+
+      <!-- LEFT SIDEBAR: Navigation Menu (3 Cols) -->
+      <aside class="span-lg-3 d-none d-lg-block">
+        <div class="card p-3 stack gap-2 sticky-top" style="top: 5rem;">
+          <a href="social.html" class="btn btn-ghost justify-content-start gap-3 active w-100">
+            <i class="icon icon-home text-blue"></i> Feed Principal
+          </a>
+          <a href="#explore" class="btn btn-ghost justify-content-start gap-3 w-100">
+            <i class="icon icon-search"></i> Explorar
+          </a>
+          <a href="messages.html" class="btn btn-ghost justify-content-start gap-3 w-100 d-flex justify-content-between">
+            <span class="d-flex align-items-center gap-3"><i class="icon icon-envelope"></i> Mensagens</span>
+            <span class="badge badge-blue">4</span>
+          </a>
+          <a href="#notifications" class="btn btn-ghost justify-content-start gap-3 w-100" data-toggle="modal" data-target="#modalNotifications">
+            <i class="icon icon-bell"></i> Notificações
+          </a>
+          <a href="settings.html" class="btn btn-ghost justify-content-start gap-3 w-100">
+            <i class="icon icon-user"></i> Meu Perfil
+          </a>
+
+          <div class="divider m-y-2"></div>
+
+          <span class="sidebar-label px-2">Suas Comunidades</span>
+          <a href="#design" class="btn btn-ghost justify-content-start gap-2 f-s-2 text-muted">
+            <span class="avatar avatar-sm bg-subtle">UI</span> Design System BR
+          </a>
+          <a href="#dev" class="btn btn-ghost justify-content-start gap-2 f-s-2 text-muted">
+            <span class="avatar avatar-sm bg-subtle">JS</span> Frontend Developers
+          </a>
+        </div>
+      </aside>
+
+      <!-- CENTER CONTENT: Stories & Feed (6 Cols) -->
+      <main class="span-lg-6 stack gap-4">
+
+        <!-- Stories Bar (Horizontal Scroll / Carousel) -->
+        <div class="card p-3 overflow-auto">
+          <div class="d-flex gap-3 align-items-center">
+            
+            <!-- Create Story -->
+            <div class="txt-center cursor-pointer stack gap-1 flex-shrink-0" style="width: 4.5rem;" data-demo="toast-info">
+              <div class="avatar avatar-lg p-relative bg-subtle border">
+                <i class="icon icon-plus text-primary f-s-4"></i>
+              </div>
+              <span class="f-s-1 text-truncate w-100">Seu Story</span>
+            </div>
+
+            <!-- Story Items -->
+            <div class="txt-center cursor-pointer stack gap-1 flex-shrink-0" style="width: 4.5rem;" data-demo="toast-info">
+              <div class="avatar avatar-lg p-1 bg-primary border" style="padding: 2px;">
+                <span class="avatar avatar-lg">AC</span>
+              </div>
+              <span class="f-s-1 text-truncate w-100">Ana Clara</span>
+            </div>
+
+            <div class="txt-center cursor-pointer stack gap-1 flex-shrink-0" style="width: 4.5rem;" data-demo="toast-info">
+              <div class="avatar avatar-lg p-1 bg-blue border" style="padding: 2px;">
+                <span class="avatar avatar-lg">CE</span>
+              </div>
+              <span class="f-s-1 text-truncate w-100">Carlos E.</span>
+            </div>
+
+            <div class="txt-center cursor-pointer stack gap-1 flex-shrink-0" style="width: 4.5rem;" data-demo="toast-info">
+              <div class="avatar avatar-lg p-1 bg-yellow border" style="padding: 2px;">
+                <span class="avatar avatar-lg">FL</span>
+              </div>
+              <span class="f-s-1 text-truncate w-100">Fernanda</span>
+            </div>
+
+            <div class="txt-center cursor-pointer stack gap-1 flex-shrink-0" style="width: 4.5rem;" data-demo="toast-info">
+              <div class="avatar avatar-lg p-1 bg-green border" style="padding: 2px;">
+                <span class="avatar avatar-lg">RS</span>
+              </div>
+              <span class="f-s-1 text-truncate w-100">Roberto</span>
+            </div>
+
+          </div>
+        </div>
+
+        <!-- Post Creator Box -->
+        <div class="card p-4 stack gap-3">
+          <div class="d-flex align-items-center gap-3">
+            <span class="avatar">AD</span>
+            <input type="text" class="input input-lg flex-1" placeholder="No que você está pensando, Admin Silva?" data-toggle="modal" data-target="#modalNewPost" readonly>
+          </div>
+          
+          <div class="divider"></div>
+
+          <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+            <div class="cluster gap-2">
+              <button class="btn btn-ghost btn-sm text-muted d-flex align-items-center gap-1" data-toggle="modal" data-target="#modalNewPost">
+                <i class="icon icon-plus text-blue"></i> Foto / Mídia
+              </button>
+              <button class="btn btn-ghost btn-sm text-muted d-flex align-items-center gap-1" data-toggle="modal" data-target="#modalNewPost">
+                <i class="icon icon-star text-yellow"></i> Enquete
+              </button>
+              <button class="btn btn-ghost btn-sm text-muted d-flex align-items-center gap-1" data-toggle="modal" data-target="#modalNewPost">
+                <i class="icon icon-check text-green"></i> Evento
+              </button>
+            </div>
+            <button class="btn btn-primary btn-sm" data-toggle="modal" data-target="#modalNewPost">Publicar</button>
+          </div>
+        </div>
+
+        <!-- POST 1: Tech & Code Showcase -->
+        <article class="card p-4 stack gap-3">
+          <!-- Post Author Header -->
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <span class="avatar">AC</span>
+              <div>
+                <div class="d-flex align-items-center gap-1">
+                  <span class="f-w-semibold">Ana Clara Silva</span>
+                  <i class="icon icon-check text-blue f-s-1" title="Perfil Verificado"></i>
+                </div>
+                <small class="text-muted">Desenvolvedora Frontend &bull; há 15 min</small>
+              </div>
+            </div>
+
+            <button class="btn btn-ghost btn-icon btn-sm" aria-label="Opções"><i class="icon icon-settings"></i></button>
+          </div>
+
+          <!-- Post Content Text -->
+          <p class="m-0">
+            Acabamos de lançar a versão 2.1 do <strong>Frame PER</strong>! O suporte a tabelas inteligentes com ordenação nativa e modais laterais ficou incrível. O que acharam do tema escuro? 🚀✨
+          </p>
+
+          <!-- Hashtags -->
+          <div class="cluster gap-2">
+            <span class="badge badge-blue">#FramePER</span>
+            <span class="badge badge-blue">#WebDev</span>
+            <span class="badge badge-blue">#DesignSystem</span>
+          </div>
+
+          <!-- Offline Vector SVG Image Showcase -->
+          <div class="card bg-subtle p-0 overflow-hidden border d-flex align-items-center justify-content-center p-y-6">
+            <svg width="100%" height="220" viewBox="0 0 600 220" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="600" height="220" rx="8" fill="var(--bg-surface)"/>
+              <circle cx="300" cy="110" r="70" fill="var(--primary)" opacity="0.15"/>
+              <path d="M260 85L220 110L260 135" stroke="var(--primary)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M340 85L380 110L340 135" stroke="var(--primary)" stroke-width="6" stroke-linecap="round" stroke-linejoin="round"/>
+              <path d="M310 75L290 145" stroke="var(--primary)" stroke-width="6" stroke-linecap="round"/>
+              <text x="300" y="190" text-anchor="middle" fill="var(--text-main)" font-size="16" font-family="Inter, sans-serif" font-weight="600">Frame PER UI Component System</text>
+            </svg>
+          </div>
+
+          <!-- Interaction Stats & Buttons Bar -->
+          <div class="d-flex align-items-center justify-content-between text-muted f-s-2 p-y-1 border-top border-bottom">
+            <span>❤️ <strong>142</strong> curtidas</span>
+            <div class="cluster gap-3">
+              <span>💬 28 comentários</span>
+              <span>🔄 12 compart.</span>
+            </div>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-around">
+            <button class="btn btn-ghost btn-sm text-muted gap-2" data-demo="toast-success"><i class="icon icon-star text-red"></i> Curtir</button>
+            <button class="btn btn-ghost btn-sm text-muted gap-2"><i class="icon icon-envelope"></i> Comentar</button>
+            <button class="btn btn-ghost btn-sm text-muted gap-2" data-demo="toast-info"><i class="icon icon-arrow-right"></i> Compartilhar</button>
+          </div>
+
+          <!-- Comments Section Preview -->
+          <div class="stack gap-2 bg-subtle p-3 rounded m-t-2">
+            <div class="d-flex align-items-start gap-2">
+              <span class="avatar avatar-sm">CE</span>
+              <div class="bg-surface p-2 rounded border flex-1 f-s-2">
+                <strong class="d-block">Carlos Eduardo</strong>
+                Ficou espetacular! As animações dos modais laterais são super suaves.
+              </div>
+            </div>
+
+            <!-- Comment Input -->
+            <div class="d-flex align-items-center gap-2 m-t-1">
+              <span class="avatar avatar-sm">AD</span>
+              <input type="text" class="input input-sm flex-1" placeholder="Escreva um comentário...">
+              <button class="btn btn-primary btn-sm" data-demo="toast-success"><i class="icon icon-arrow-right"></i></button>
+            </div>
+          </div>
+        </article>
+
+        <!-- POST 2: Community Announcement -->
+        <article class="card p-4 stack gap-3">
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-3">
+              <span class="avatar bg-blue">JS</span>
+              <div>
+                <span class="f-w-semibold">Frontend Developers BR</span>
+                <small class="text-muted d-block">Publicado por Roberto Santos &bull; há 2 horas</small>
+              </div>
+            </div>
+            <button class="btn btn-outline btn-sm">Participar</button>
+          </div>
+
+          <p class="m-0">
+            Atenção comunidade! O workshop online sobre CSS moderno sem dependências acontece nesta quinta-feira às 19:00. Vagas limitadas!
+          </p>
+
+          <div class="d-flex align-items-center justify-content-between text-muted f-s-2 p-y-1 border-top border-bottom">
+            <span>❤️ <strong>89</strong> curtidas</span>
+            <span>💬 14 comentários</span>
+          </div>
+
+          <div class="d-flex align-items-center justify-content-around">
+            <button class="btn btn-ghost btn-sm text-muted gap-2" data-demo="toast-success"><i class="icon icon-star text-red"></i> Curtir</button>
+            <button class="btn btn-ghost btn-sm text-muted gap-2"><i class="icon icon-envelope"></i> Comentar</button>
+          </div>
+        </article>
+
+      </main>
+
+      <!-- RIGHT SIDEBAR: Trends & Suggestions (3 Cols) -->
+      <aside class="span-lg-3 d-none d-lg-block">
+        <div class="stack gap-4 sticky-top" style="top: 5rem;">
+
+          <!-- Trending Topics Card -->
+          <div class="card p-4 stack gap-3">
+            <h3 class="card-title f-s-4">Assuntos do Momento</h3>
+            
+            <div class="stack gap-2 f-s-2">
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong class="d-block text-main">#FramePER2.1</strong>
+                  <span class="text-muted f-s-1">14.2k publicações</span>
+                </div>
+                <i class="icon icon-arrow-right text-muted f-s-1"></i>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong class="d-block text-main">#SideModals</strong>
+                  <span class="text-muted f-s-1">8.9k publicações</span>
+                </div>
+                <i class="icon icon-arrow-right text-muted f-s-1"></i>
+              </div>
+
+              <div class="divider"></div>
+
+              <div class="d-flex justify-content-between align-items-center">
+                <div>
+                  <strong class="d-block text-main">#WebDesign2026</strong>
+                  <span class="text-muted f-s-1">22.4k publicações</span>
+                </div>
+                <i class="icon icon-arrow-right text-muted f-s-1"></i>
+              </div>
+            </div>
+          </div>
+
+          <!-- Suggested Follows -->
+          <div class="card p-4 stack gap-3">
+            <h3 class="card-title f-s-4">Quem Seguir</h3>
+
+            <div class="stack gap-3">
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="avatar avatar-sm">FL</span>
+                  <div>
+                    <span class="f-w-medium f-s-2 d-block">Fernanda Lima</span>
+                    <small class="text-muted f-s-1">Em comum: 12 amigos</small>
+                  </div>
+                </div>
+                <button class="btn btn-outline btn-sm" data-demo="toast-success">Seguir</button>
+              </div>
+
+              <div class="d-flex align-items-center justify-content-between">
+                <div class="d-flex align-items-center gap-2">
+                  <span class="avatar avatar-sm">LM</span>
+                  <div>
+                    <span class="f-w-medium f-s-2 d-block">Lucas Mendes</span>
+                    <small class="text-muted f-s-1">Em comum: 8 amigos</small>
+                  </div>
+                </div>
+                <button class="btn btn-outline btn-sm" data-demo="toast-success">Seguir</button>
+              </div>
+            </div>
+          </div>
+
+          <!-- Online Friends List -->
+          <div class="card p-4 stack gap-2">
+            <h3 class="card-title f-s-4 m-b-1">Amigos Online (6)</h3>
+
+            <div class="cluster gap-2">
+              <span class="avatar avatar-sm p-relative" title="Ana Clara (Online)">AC <span class="badge badge-green badge-dot" style="position:absolute; bottom:0; right:0;"></span></span>
+              <span class="avatar avatar-sm p-relative" title="Carlos Eduardo (Online)">CE <span class="badge badge-green badge-dot" style="position:absolute; bottom:0; right:0;"></span></span>
+              <span class="avatar avatar-sm p-relative" title="Roberto Santos (Online)">RS <span class="badge badge-green badge-dot" style="position:absolute; bottom:0; right:0;"></span></span>
+              <span class="avatar avatar-sm p-relative" title="Juliana Costa (Online)">JC <span class="badge badge-green badge-dot" style="position:absolute; bottom:0; right:0;"></span></span>
+            </div>
+          </div>
+
+        </div>
+      </aside>
+
+    </div>
+  </div>
+
+  <!-- SIDE MODAL: Notifications Drawer (Right Side Modal) -->
+  <div id="modalNotifications" class="modal modal-side modal-side-right">
+    <div class="modal-content stack gap-4">
+      <div class="modal-header">
+        <h3 class="modal-title">Notificações Recentes</h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body stack gap-3">
+        <div class="alert alert-blue p-3 d-flex align-items-start gap-2">
+          <i class="icon icon-star text-blue f-s-3"></i>
+          <div>
+            <strong class="d-block text-main">Ana Clara curtiu seu post</strong>
+            <small class="text-muted">há 5 minutos</small>
+          </div>
+        </div>
+
+        <div class="alert alert-green p-3 d-flex align-items-start gap-2">
+          <i class="icon icon-check text-green f-s-3"></i>
+          <div>
+            <strong class="d-block text-main">Carlos comentou no seu arquivo</strong>
+            <small class="text-muted">há 40 minutos</small>
+          </div>
+        </div>
+
+        <div class="card p-3 bg-subtle stack gap-2">
+          <span class="f-w-semibold f-s-2 text-main">Solicitação de Amizade</span>
+          <div class="d-flex align-items-center justify-content-between">
+            <div class="d-flex align-items-center gap-2">
+              <span class="avatar avatar-sm">LM</span>
+              <span class="f-s-2">Lucas Mendes</span>
+            </div>
+            <div class="cluster gap-1">
+              <button class="btn btn-primary btn-sm" data-dismiss="modal" data-demo="toast-success">Aceitar</button>
+              <button class="btn btn-ghost btn-sm danger" data-dismiss="modal">Recusar</button>
+            </div>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary w-100" data-dismiss="modal">Fechar Painel</button>
+      </div>
+    </div>
+  </div>
+
+  <!-- MODAL: Create New Post -->
+  <div id="modalNewPost" class="modal">
+    <div class="modal-content stack gap-4" style="max-width: 32rem;">
+      <div class="modal-header">
+        <h3 class="modal-title">Criar Publicação</h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body stack gap-3">
+        <div class="d-flex align-items-center gap-3">
+          <span class="avatar">AD</span>
+          <div>
+            <span class="f-w-semibold d-block">Admin Silva</span>
+            <span class="badge badge-blue">Público</span>
+          </div>
+        </div>
+
+        <textarea class="input" rows="4" placeholder="O que você quer compartilhar hoje com a comunidade?" style="resize: none;"></textarea>
+
+        <div class="card p-3 bg-subtle d-flex align-items-center justify-content-between flex-wrap gap-2 border">
+          <span class="f-s-2 text-muted">Adicionar à sua publicação:</span>
+          <div class="cluster gap-2">
+            <button class="btn btn-ghost btn-icon btn-sm text-blue" title="Foto"><i class="icon icon-plus"></i></button>
+            <button class="btn btn-ghost btn-icon btn-sm text-yellow" title="Enquete"><i class="icon icon-star"></i></button>
+            <button class="btn btn-ghost btn-icon btn-sm text-green" title="Localização"><i class="icon icon-check"></i></button>
+          </div>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Cancelar</button>
+        <button class="btn btn-primary" data-dismiss="modal" data-demo="toast-success">Publicar Agora</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

@@ -86,7 +86,61 @@
                 this.initSidebar();
                 this.initThemeToggle();
                 this.initKeyboard();
+                this.initTables();
             },
+            initTables: function() {
+                document.querySelectorAll('th.sortable').forEach(th => {
+                    th.addEventListener('click', () => {
+                        const table = th.closest('table');
+                        if (!table) return;
+                        const tbody = table.querySelector('tbody');
+                        if (!tbody) return;
+
+                        const colIndex = Array.prototype.indexOf.call(th.parentNode.children, th);
+                        const isAsc = !th.classList.contains('sorted-asc');
+
+                        th.parentNode.querySelectorAll('th.sortable').forEach(sibling => {
+                            sibling.classList.remove('sorted-asc', 'sorted-desc');
+                        });
+
+                        th.classList.add(isAsc ? 'sorted-asc' : 'sorted-desc');
+
+                        const rows = Array.from(tbody.querySelectorAll('tr'));
+                        rows.sort((rowA, rowB) => {
+                            const cellA = rowA.children[colIndex] ? rowA.children[colIndex].textContent.trim() : '';
+                            const cellB = rowB.children[colIndex] ? rowB.children[colIndex].textContent.trim() : '';
+
+                            const numA = parseFloat(cellA.replace(/[^\d.-]/g, ''));
+                            const numB = parseFloat(cellB.replace(/[^\d.-]/g, ''));
+
+                            if (!isNaN(numA) && !isNaN(numB) && cellA.match(/[\d]/) && cellB.match(/[\d]/) && !cellA.match(/[a-zA-Z]{3,}/)) {
+                                return isAsc ? numA - numB : numB - numA;
+                            }
+
+                            return isAsc ? cellA.localeCompare(cellB) : cellB.localeCompare(cellA);
+                        });
+
+                        rows.forEach(row => tbody.appendChild(row));
+                    });
+                });
+
+                document.querySelectorAll('[data-table-filter]').forEach(input => {
+                    input.addEventListener('input', () => {
+                        const targetSelector = input.getAttribute('data-table-filter');
+                        const table = document.querySelector(targetSelector);
+                        if (!table) return;
+
+                        const query = input.value.toLowerCase().trim();
+                        const rows = table.querySelectorAll('tbody tr');
+
+                        rows.forEach(row => {
+                            const text = row.textContent.toLowerCase();
+                            row.style.display = text.indexOf(query) !== -1 ? '' : 'none';
+                        });
+                    });
+                });
+            },
+
             // [data-toggle="collapse"][data-target="#menu"] → toggles .active on the target
             // (used by .navbar-toggler to open the mobile menu)
             initCollapse: function() {

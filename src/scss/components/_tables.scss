@@ -32,7 +32,64 @@ tbody tr {
 .table-striped tbody tr:nth-child(even) { background-color: var(--bg-subtle); }
 .table-compact { th, td { padding: 0.5rem 0.75rem; } }
 
+/* Advanced Table Features: Sorting & Toolbars ----------------------------- */
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 1.75rem;
+  transition: color 0.15s var(--ease), background-color 0.15s var(--ease);
+
+  &:hover {
+    color: var(--text-main);
+    background-color: var(--bg-hover);
+  }
+
+  &::after {
+    content: '↕';
+    position: absolute;
+    right: 0.625rem;
+    top: 50%;
+    transform: translateY(-50%);
+    font-size: 0.75rem;
+    opacity: 0.35;
+    transition: transform 0.15s var(--ease), opacity 0.15s var(--ease);
+  }
+
+  &.sorted-asc {
+    color: var(--text-main);
+    font-weight: 600;
+    &::after {
+      content: '↑';
+      opacity: 1;
+      color: var(--primary);
+    }
+  }
+
+  &.sorted-desc {
+    color: var(--text-main);
+    font-weight: 600;
+    &::after {
+      content: '↓';
+      opacity: 1;
+      color: var(--primary);
+    }
+  }
+}
+
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+}
+
 .table-responsive {
   width: 100%;
   overflow-x: auto;
 }
+

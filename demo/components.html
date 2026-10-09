@@ -254,16 +254,70 @@
 <span class="tok-k">&lt;/div&gt;</span></code></pre>
       </section>
 
-      <!-- Modals & Offcanvas -->
+      <!-- Modals & Side Modals -->
       <section id="sec-overlays" class="docs-section">
-        <h2>Modais & Offcanvas</h2>
-        <p class="lead">Camadas sobrepostas com suporte a fechamento por tecla ESC ou clique externo.</p>
+        <h2>Modais & Side Modals (Drawers)</h2>
+        <p class="lead">Camadas sobrepostas centrais e modais laterais (Side Modal / Drawer) deslizantes.</p>
 
         <div class="preview cluster gap-3">
-          <button class="btn btn-primary" data-toggle="modal" data-target="#demoModal">Testar Modal</button>
-          <button class="btn btn-secondary" data-toggle="offcanvas" data-target="#demoOffcanvas">Testar Menu Lateral</button>
+          <button class="btn btn-primary" data-toggle="modal" data-target="#demoModal">Modal Central</button>
+          <button class="btn btn-secondary" data-toggle="modal" data-target="#demoSideModal">Side Modal Direita</button>
+          <button class="btn btn-outline" data-toggle="offcanvas" data-target="#demoOffcanvas">Menu Offcanvas</button>
         </div>
-        <pre><code><span class="tok-k">&lt;button</span> <span class="tok-f">data-toggle</span>=<span class="tok-s">"modal"</span> <span class="tok-f">data-target</span>=<span class="tok-s">"#meuModal"</span><span class="tok-k">&gt;</span>Abrir<span class="tok-k">&lt;/button&gt;</span></code></pre>
+        <pre><code><span class="tok-k">&lt;!-- Side Modal / Drawer Lateral --&gt;</span>
+<span class="tok-k">&lt;div</span> <span class="tok-f">id</span>=<span class="tok-s">"meuSideModal"</span> <span class="tok-f">class</span>=<span class="tok-s">"modal modal-side modal-side-right"</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"modal-content"</span><span class="tok-k">&gt;</span>
+    <span class="tok-k">&lt;div</span> <span class="tok-f">class</span>=<span class="tok-s">"modal-header"</span><span class="tok-k">&gt;</span>...<span class="tok-k">&lt;/div&gt;</span>
+  <span class="tok-k">&lt;/div&gt;</span>
+<span class="tok-k">&lt;/div&gt;</span></code></pre>
+      </section>
+
+      <!-- Advanced Tables -->
+      <section id="sec-tables" class="docs-section">
+        <h2>Tabelas Interativas (Pesquisa & Ordenação)</h2>
+        <p class="lead">Tabelas com suporte nativo a pesquisa em tempo real, ordenação ao clicar nos cabeçalhos (<code>th.sortable</code>) e paginação.</p>
+
+        <div class="preview stack gap-3">
+          <div class="input-icon" style="max-width: 18rem;">
+            <i class="icon icon-search"></i>
+            <input type="text" class="input input-sm" placeholder="Filtro rápido na tabela..." data-table-filter="#demoTable">
+          </div>
+
+          <div class="table-responsive card border m-0">
+            <table id="demoTable" class="table">
+              <thead>
+                <tr>
+                  <th class="sortable">Nome</th>
+                  <th class="sortable">Cargo</th>
+                  <th class="sortable">Status</th>
+                  <th class="sortable txt-right">Vendas</th>
+                </tr>
+              </thead>
+              <tbody>
+                <tr>
+                  <td>Ana Clara Silva</td>
+                  <td>Administrador</td>
+                  <td><span class="badge badge-green badge-dot">Ativo</span></td>
+                  <td class="txt-right tabular">R$ 14.500</td>
+                </tr>
+                <tr>
+                  <td>Carlos Eduardo</td>
+                  <td>Editor</td>
+                  <td><span class="badge badge-yellow badge-dot">Pendente</span></td>
+                  <td class="txt-right tabular">R$ 8.200</td>
+                </tr>
+                <tr>
+                  <td>Roberto Santos</td>
+                  <td>Cliente</td>
+                  <td><span class="badge badge-green badge-dot">Ativo</span></td>
+                  <td class="txt-right tabular">R$ 22.100</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
+        <pre><code><span class="tok-k">&lt;input</span> <span class="tok-f">type</span>=<span class="tok-s">"text"</span> <span class="tok-f">class</span>=<span class="tok-s">"input"</span> <span class="tok-f">data-table-filter</span>=<span class="tok-s">"#tabela"</span><span class="tok-k">&gt;</span>
+<span class="tok-k">&lt;th</span> <span class="tok-f">class</span>=<span class="tok-s">"sortable"</span><span class="tok-k">&gt;</span>Coluna Ordenável<span class="tok-k">&lt;/th&gt;</span></code></pre>
       </section>
 
       <!-- Toasts & Loaders -->
@@ -289,7 +343,7 @@
   <div id="demoModal" class="modal">
     <div class="modal-content stack gap-4">
       <div class="modal-header">
-        <h3 class="modal-title">Exemplo de Modal</h3>
+        <h3 class="modal-title">Exemplo de Modal Central</h3>
         <button class="modal-close" data-dismiss="modal">&times;</button>
       </div>
       <div class="modal-body">
@@ -302,10 +356,30 @@
     </div>
   </div>
 
+  <!-- Demo Side Modal Target -->
+  <div id="demoSideModal" class="modal modal-side modal-side-right">
+    <div class="modal-content stack gap-4">
+      <div class="modal-header">
+        <h3 class="modal-title">Side Modal (Painel Deslizante)</h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+      <div class="modal-body stack gap-3">
+        <p class="text-muted m-0">Os Modais Laterais (Side Modals) deslizam suavemente a partir do canto direito ou esquerdo da tela. Excelentes para carrinhos de compra, notificações e formulários secundários.</p>
+        <div class="card p-3 bg-subtle">
+          <strong class="d-block f-s-2">Classe CSS:</strong>
+          <code>.modal.modal-side.modal-side-right</code>
+        </div>
+      </div>
+      <div class="modal-footer">
+        <button class="btn btn-primary w-100" data-dismiss="modal">Entendido</button>
+      </div>
+    </div>
+  </div>
+
   <!-- Demo Offcanvas Target -->
   <div id="demoOffcanvas" class="offcanvas offcanvas-right">
     <div class="offcanvas-header">
-      <h3 class="offcanvas-title">Painel Lateral</h3>
+      <h3 class="offcanvas-title">Painel Offcanvas</h3>
       <button class="btn btn-ghost btn-icon" data-dismiss="offcanvas"><i class="icon icon-close"></i></button>
     </div>
     <div class="offcanvas-body stack gap-3">
@@ -318,3 +392,4 @@
   <script src="demo.js"></script>
 </body>
 </html>
+

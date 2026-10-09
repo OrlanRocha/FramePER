@@ -1,0 +1,338 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>AURA | Loja de Roupas & Moda | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+</head>
+<body>
+
+  <!-- Top Announcement Bar -->
+  <div class="bg-primary text-white p-y-2 txt-center f-s-2 f-w-medium">
+    ✨ Frete Grátis para todo o Brasil acima de R$ 299 | Use o cupom <strong>FRAME10</strong>
+  </div>
+
+  <!-- Store Header Navbar -->
+  <header class="navbar navbar-sticky navbar-glass">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand f-w-bold" href="index.html" style="letter-spacing: 0.05em; font-size: 1.25rem;">
+        <span class="icon-box"><i class="icon icon-star"></i></span>
+        AURA <span class="f-w-regular text-muted f-s-3">STUDIO</span>
+      </a>
+
+      <!-- Navigation Links -->
+      <nav class="navbar-nav d-none d-md-flex gap-4">
+        <a class="nav-link active" href="#colecao">Feminino</a>
+        <a class="nav-link" href="#colecao">Masculino</a>
+        <a class="nav-link" href="#colecao">Novidades</a>
+        <a class="nav-link text-red" href="#colecao">Promoções</a>
+      </nav>
+
+      <!-- Cart & Customer Actions -->
+      <div class="cluster gap-2 align-items-center">
+        <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+          <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+        </button>
+
+        <button class="btn btn-ghost btn-icon p-relative" data-demo="toast-info" aria-label="Favoritos">
+          <i class="icon icon-star"></i>
+          <span class="badge badge-pill badge-blue" style="position: absolute; top: 4px; right: 4px; font-size: 0.65rem;">2</span>
+        </button>
+
+        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-toggle="modal" data-target="#cartDrawer">
+          <i class="icon icon-check"></i>
+          <span>Sacola</span>
+          <span class="badge bg-white text-main badge-pill">3</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <!-- Hero Banner Showcase -->
+  <section class="container p-y-6">
+    <div class="card p-0 overflow-hidden bg-subtle border p-relative">
+      <div class="grid grid-md-2 align-items-center">
+        
+        <!-- Text Column -->
+        <div class="p-5 p-md-7 stack gap-3">
+          <span class="badge badge-pill badge-blue w-fit">Coleção Outono / Inverno 2026</span>
+          <h1 class="display-3 m-0 text-balance">Estilo Minimalista & Alfaiataria Premium</h1>
+          <p class="lead text-muted m-0">Peças exclusivas desenhadas para o máximo conforto com tecidos sustentáveis e corte impecável.</p>
+          <div class="cluster gap-3 m-t-2">
+            <a href="#catalogo" class="btn btn-primary btn-lg">Ver Catálogo</a>
+            <button class="btn btn-outline btn-lg" data-toggle="modal" data-target="#modalProductDetail">Lookbook 2026</button>
+          </div>
+        </div>
+
+        <!-- Offline Fashion SVG Graphic Banner -->
+        <div class="p-4 d-flex justify-content-center align-items-center">
+          <svg width="100%" height="320" viewBox="0 0 500 320" fill="none" xmlns="http://www.w3.org/2000/svg">
+            <rect width="500" height="320" rx="16" fill="var(--bg-surface)"/>
+            
+            <!-- Hanger Illustration -->
+            <path d="M250 80C260 80 265 70 260 60C255 50 240 50 245 65" stroke="var(--primary)" stroke-width="4" stroke-linecap="round"/>
+            <path d="M150 130L250 80L350 130C360 135 360 145 350 145H150C140 145 140 135 150 130Z" fill="var(--primary)" opacity="0.2" stroke="var(--primary)" stroke-width="3"/>
+            
+            <!-- Coat Silhouette -->
+            <path d="M180 145L160 270H340L320 145H180Z" fill="var(--primary)" opacity="0.1" stroke="var(--primary)" stroke-width="3"/>
+            <path d="M250 145V270" stroke="var(--primary)" stroke-dasharray="6 6" stroke-width="2"/>
+            
+            <!-- Badges floating -->
+            <rect x="70" y="70" width="110" height="36" rx="18" fill="var(--bg-surface)" stroke="var(--border-color)"/>
+            <text x="125" y="93" text-anchor="middle" fill="var(--text-main)" font-size="12" font-family="Inter, sans-serif" font-weight="600">100% Algodão</text>
+            
+            <rect x="320" y="220" width="120" height="36" rx="18" fill="var(--bg-surface)" stroke="var(--border-color)"/>
+            <text x="380" y="243" text-anchor="middle" fill="var(--text-main)" font-size="12" font-family="Inter, sans-serif" font-weight="600">Pronta Entrega</text>
+          </svg>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- Filter Pills Bar & Products -->
+  <section id="catalogo" class="container p-b-8 stack gap-5">
+    
+    <!-- Filter Toolbar -->
+    <div class="d-flex align-items-center justify-content-between flex-wrap gap-3">
+      <ul class="tabs tabs-pills">
+        <li class="tab-item"><a class="tab-link active">Todos os Produtos (8)</a></li>
+        <li class="tab-item"><a class="tab-link">Jaquetas & Casacos</a></li>
+        <li class="tab-item"><a class="tab-link">Camisetas Basic</a></li>
+        <li class="tab-item"><a class="tab-link">Calças & Jeans</a></li>
+      </ul>
+
+      <div class="cluster gap-2">
+        <select class="select select-sm" style="width: 11rem;">
+          <option>Ordenar por: Mais Vendidos</option>
+          <option>Menor Preço</option>
+          <option>Maior Preço</option>
+          <option>Lançamentos</option>
+        </select>
+      </div>
+    </div>
+
+    <!-- Products Grid (8 Items) -->
+    <div class="grid grid-sm-2 grid-lg-4 gap-4">
+
+      <!-- Product 1 -->
+      <div class="card card-hover p-0 overflow-hidden stack">
+        <div class="p-relative bg-subtle d-flex align-items-center justify-content-center p-y-5">
+          <span class="badge badge-green" style="position: absolute; top: 12px; left: 12px;">Novo</span>
+          <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+            <path d="M20 30L30 15H70L80 30L90 45L75 50L70 110H30L25 50L10 45L20 30Z" fill="var(--primary)" opacity="0.2" stroke="var(--primary)" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-body p-4 stack gap-2 flex-1">
+          <span class="f-s-1 text-muted uppercase tracking-wider">Casacos</span>
+          <h3 class="card-title f-s-3 m-0">Jaqueta Puffer Minimalist</h3>
+          <div class="d-flex align-items-center justify-content-between m-t-1">
+            <span class="f-w-bold f-s-4">R$ 289,90</span>
+            <div class="cluster gap-1">
+              <span class="swatch" style="width:12px; height:12px; background:#111; border-radius:50%;"></span>
+              <span class="swatch" style="width:12px; height:12px; background:#4a5d4e; border-radius:50%;"></span>
+            </div>
+          </div>
+          <div class="cluster gap-2 m-t-2">
+            <button class="btn btn-outline btn-sm flex-1" data-toggle="modal" data-target="#modalProductDetail">Detalhes</button>
+            <button class="btn btn-primary btn-sm flex-1" data-toggle="modal" data-target="#cartDrawer">Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 2 -->
+      <div class="card card-hover p-0 overflow-hidden stack">
+        <div class="p-relative bg-subtle d-flex align-items-center justify-content-center p-y-5">
+          <span class="badge badge-blue" style="position: absolute; top: 12px; left: 12px;">Mais Vendido</span>
+          <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+            <path d="M25 35L35 20H65L75 35L85 45L75 50L70 100H30L25 50L15 45L25 35Z" fill="var(--blue)" opacity="0.2" stroke="var(--blue)" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-body p-4 stack gap-2 flex-1">
+          <span class="f-s-1 text-muted uppercase tracking-wider">Camisetas</span>
+          <h3 class="card-title f-s-3 m-0">Camiseta Oversized Heavy Cotton</h3>
+          <div class="d-flex align-items-center justify-content-between m-t-1">
+            <span class="f-w-bold f-s-4">R$ 119,90</span>
+            <div class="cluster gap-1">
+              <span class="swatch" style="width:12px; height:12px; background:#f0f0f0; border:1px solid #ccc; border-radius:50%;"></span>
+              <span class="swatch" style="width:12px; height:12px; background:#222; border-radius:50%;"></span>
+            </div>
+          </div>
+          <div class="cluster gap-2 m-t-2">
+            <button class="btn btn-outline btn-sm flex-1" data-toggle="modal" data-target="#modalProductDetail">Detalhes</button>
+            <button class="btn btn-primary btn-sm flex-1" data-toggle="modal" data-target="#cartDrawer">Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 3 -->
+      <div class="card card-hover p-0 overflow-hidden stack">
+        <div class="p-relative bg-subtle d-flex align-items-center justify-content-center p-y-5">
+          <span class="badge badge-red" style="position: absolute; top: 12px; left: 12px;">20% OFF</span>
+          <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+            <path d="M30 20H70L75 110H52L50 60L48 110H25L30 20Z" fill="var(--yellow)" opacity="0.2" stroke="var(--yellow)" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-body p-4 stack gap-2 flex-1">
+          <span class="f-s-1 text-muted uppercase tracking-wider">Calças</span>
+          <h3 class="card-title f-s-3 m-0">Calça Chino Slim Fit Beige</h3>
+          <div class="d-flex align-items-center justify-content-between m-t-1">
+            <div>
+              <span class="f-w-bold f-s-4 text-red">R$ 199,00</span>
+              <small class="text-muted text-line-through f-s-1 m-l-1">R$ 249,00</small>
+            </div>
+          </div>
+          <div class="cluster gap-2 m-t-2">
+            <button class="btn btn-outline btn-sm flex-1" data-toggle="modal" data-target="#modalProductDetail">Detalhes</button>
+            <button class="btn btn-primary btn-sm flex-1" data-toggle="modal" data-target="#cartDrawer">Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+      <!-- Product 4 -->
+      <div class="card card-hover p-0 overflow-hidden stack">
+        <div class="p-relative bg-subtle d-flex align-items-center justify-content-center p-y-5">
+          <span class="badge badge-yellow" style="position: absolute; top: 12px; left: 12px;">Premium</span>
+          <svg width="100" height="120" viewBox="0 0 100 120" fill="none">
+            <path d="M15 25L35 15H65L85 25L80 115H20L15 25Z" fill="var(--primary)" opacity="0.2" stroke="var(--primary)" stroke-width="2"/>
+          </svg>
+        </div>
+        <div class="card-body p-4 stack gap-2 flex-1">
+          <span class="f-s-1 text-muted uppercase tracking-wider">Sobretudos</span>
+          <h3 class="card-title f-s-3 m-0">Sobretudo Wool Blend Noir</h3>
+          <div class="d-flex align-items-center justify-content-between m-t-1">
+            <span class="f-w-bold f-s-4">R$ 449,00</span>
+          </div>
+          <div class="cluster gap-2 m-t-2">
+            <button class="btn btn-outline btn-sm flex-1" data-toggle="modal" data-target="#modalProductDetail">Detalhes</button>
+            <button class="btn btn-primary btn-sm flex-1" data-toggle="modal" data-target="#cartDrawer">Adicionar</button>
+          </div>
+        </div>
+      </div>
+
+    </div>
+  </section>
+
+  <!-- SIDE MODAL: Cart Drawer (Sacola de Compras) -->
+  <div id="cartDrawer" class="modal modal-side modal-side-right">
+    <div class="modal-content stack gap-4">
+      
+      <div class="modal-header">
+        <h3 class="modal-title d-flex align-items-center gap-2">
+          <i class="icon icon-check text-green"></i> Sua Sacola (3 itens)
+        </h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Cart Items List -->
+      <div class="modal-body stack gap-3 flex-1 overflow-auto">
+
+        <!-- Item 1 -->
+        <div class="d-flex align-items-center gap-3 p-2 border-bottom">
+          <div class="avatar avatar-lg bg-subtle border flex-shrink-0">🧥</div>
+          <div class="flex-1 min-w-0">
+            <h4 class="f-s-3 f-w-medium m-0 text-truncate">Jaqueta Puffer Minimalist</h4>
+            <small class="text-muted f-s-1">Tamanho: M &bull; Cor: Preto</small>
+            <div class="d-flex align-items-center justify-content-between m-t-1">
+              <span class="f-w-semibold f-s-2">R$ 289,90</span>
+              <small class="text-muted">Qtd: 1</small>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-icon btn-sm danger" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+        </div>
+
+        <!-- Item 2 -->
+        <div class="d-flex align-items-center gap-3 p-2 border-bottom">
+          <div class="avatar avatar-lg bg-subtle border flex-shrink-0">👕</div>
+          <div class="flex-1 min-w-0">
+            <h4 class="f-s-3 f-w-medium m-0 text-truncate">Camiseta Oversized Heavy</h4>
+            <small class="text-muted f-s-1">Tamanho: L &bull; Cor: Branco</small>
+            <div class="d-flex align-items-center justify-content-between m-t-1">
+              <span class="f-w-semibold f-s-2">R$ 119,90</span>
+              <small class="text-muted">Qtd: 1</small>
+            </div>
+          </div>
+          <button class="btn btn-ghost btn-icon btn-sm danger" data-demo="toast-error"><i class="icon icon-trash"></i></button>
+        </div>
+
+        <!-- Order Summary -->
+        <div class="card p-3 bg-subtle stack gap-2 m-t-3">
+          <div class="d-flex justify-content-between f-s-2">
+            <span class="text-muted">Subtotal:</span>
+            <span>R$ 409,80</span>
+          </div>
+          <div class="d-flex justify-content-between f-s-2">
+            <span class="text-muted">Frete:</span>
+            <span class="text-green f-w-medium">GRÁTIS</span>
+          </div>
+          <div class="divider"></div>
+          <div class="d-flex justify-content-between f-w-bold f-s-4">
+            <span>Total:</span>
+            <span>R$ 409,80</span>
+          </div>
+        </div>
+
+      </div>
+
+      <div class="modal-footer stack gap-2 p-0">
+        <button class="btn btn-primary btn-lg w-100" data-dismiss="modal" data-demo="toast-success">Finalizar Compra</button>
+        <button class="btn btn-secondary btn-sm w-100" data-dismiss="modal">Continuar Comprando</button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- MODAL: Quick Product View -->
+  <div id="modalProductDetail" class="modal">
+    <div class="modal-content stack gap-4" style="max-width: 36rem;">
+      <div class="modal-header">
+        <h3 class="modal-title">Jaqueta Puffer Minimalist</h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <div class="modal-body grid grid-md-2 gap-4">
+        <div class="bg-subtle border rounded p-4 d-flex align-items-center justify-content-center">
+          <svg width="120" height="140" viewBox="0 0 100 120" fill="none">
+            <path d="M20 30L30 15H70L80 30L90 45L75 50L70 110H30L25 50L10 45L20 30Z" fill="var(--primary)" opacity="0.25" stroke="var(--primary)" stroke-width="2"/>
+          </svg>
+        </div>
+
+        <div class="stack gap-3">
+          <div>
+            <span class="badge badge-green m-b-1">Em Estoque</span>
+            <h4 class="h3 m-0">R$ 289,90</h4>
+            <small class="text-muted">em até 6x de R$ 48,31 sem juros</small>
+          </div>
+
+          <p class="f-s-2 text-muted m-0">
+            Confeccionada com isolamento térmico de alta densidade e tecido exterior com tratamento impermeável. Design limpo sem costuras aparentes.
+          </p>
+
+          <div class="form-group">
+            <label class="f-s-2 f-w-medium">Selecione o Tamanho:</label>
+            <div class="cluster gap-2 m-t-1">
+              <button class="btn btn-outline btn-sm">P</button>
+              <button class="btn btn-primary btn-sm">M</button>
+              <button class="btn btn-outline btn-sm">G</button>
+              <button class="btn btn-outline btn-sm">GG</button>
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <div class="modal-footer">
+        <button class="btn btn-secondary" data-dismiss="modal">Fechar</button>
+        <button class="btn btn-primary" data-dismiss="modal" data-toggle="modal" data-target="#cartDrawer">Adicionar à Sacola</button>
+      </div>
+    </div>
+  </div>
+
+  <script src="../dist/framePER.min.js"></script>
+  <script src="demo.js"></script>
+</body>
+</html>

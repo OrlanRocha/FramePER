@@ -1,3 +1,4 @@
+@charset "UTF-8";
 :root {
   --primary: var(--blue);
   --primary-hover: color-mix(in srgb, var(--primary) 86%, #000);
@@ -1769,6 +1770,58 @@ tbody tr:last-child td {
   padding: 0.5rem 0.75rem;
 }
 
+/* Advanced Table Features: Sorting & Toolbars ----------------------------- */
+th.sortable {
+  cursor: pointer;
+  user-select: none;
+  position: relative;
+  padding-right: 1.75rem;
+  transition: color 0.15s var(--ease), background-color 0.15s var(--ease);
+}
+th.sortable:hover {
+  color: var(--text-main);
+  background-color: var(--bg-hover);
+}
+th.sortable::after {
+  content: "↕";
+  position: absolute;
+  right: 0.625rem;
+  top: 50%;
+  transform: translateY(-50%);
+  font-size: 0.75rem;
+  opacity: 0.35;
+  transition: transform 0.15s var(--ease), opacity 0.15s var(--ease);
+}
+th.sortable.sorted-asc {
+  color: var(--text-main);
+  font-weight: 600;
+}
+th.sortable.sorted-asc::after {
+  content: "↑";
+  opacity: 1;
+  color: var(--primary);
+}
+th.sortable.sorted-desc {
+  color: var(--text-main);
+  font-weight: 600;
+}
+th.sortable.sorted-desc::after {
+  content: "↓";
+  opacity: 1;
+  color: var(--primary);
+}
+
+.table-toolbar {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: 1rem;
+  padding: 1rem;
+  background-color: var(--bg-surface);
+  border-bottom: 1px solid var(--border-color);
+}
+
 .table-responsive {
   width: 100%;
   overflow-x: auto;
@@ -2663,6 +2716,64 @@ tbody tr:last-child td {
 .modal-close:hover {
   color: var(--text-main);
   background-color: var(--bg-hover);
+}
+
+/* Side Modal & Bottom Drawer Variants ------------------------------------ */
+.modal-side,
+.modal-drawer {
+  padding: 0;
+}
+.modal-side.modal-side-right, .modal-side:not(.modal-side-left):not(.modal-bottom),
+.modal-drawer.modal-side-right,
+.modal-drawer:not(.modal-side-left):not(.modal-bottom) {
+  justify-content: flex-end;
+}
+.modal-side.modal-side-right .modal-content, .modal-side:not(.modal-side-left):not(.modal-bottom) .modal-content,
+.modal-drawer.modal-side-right .modal-content,
+.modal-drawer:not(.modal-side-left):not(.modal-bottom) .modal-content {
+  height: 100vh;
+  max-height: 100vh;
+  max-width: 28rem;
+  margin: 0;
+  border-radius: 0;
+  border-top: 0;
+  border-bottom: 0;
+  border-right: 0;
+  transform: translateX(100%);
+}
+.modal-side.modal-side-left,
+.modal-drawer.modal-side-left {
+  justify-content: flex-start;
+}
+.modal-side.modal-side-left .modal-content,
+.modal-drawer.modal-side-left .modal-content {
+  height: 100vh;
+  max-height: 100vh;
+  max-width: 28rem;
+  margin: 0;
+  border-radius: 0;
+  border-top: 0;
+  border-bottom: 0;
+  border-left: 0;
+  transform: translateX(-100%);
+}
+.modal-side.modal-bottom,
+.modal-drawer.modal-bottom {
+  align-items: flex-end;
+}
+.modal-side.modal-bottom .modal-content,
+.modal-drawer.modal-bottom .modal-content {
+  width: 100%;
+  max-width: 100%;
+  max-height: 85vh;
+  margin: 0;
+  border-radius: var(--radius-lg) var(--radius-lg) 0 0;
+  border-bottom: 0;
+  transform: translateY(100%);
+}
+.modal-side.show .modal-content,
+.modal-drawer.show .modal-content {
+  transform: translate(0, 0);
 }
 
 .offcanvas {

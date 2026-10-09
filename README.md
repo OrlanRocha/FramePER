@@ -1,112 +1,111 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-1.8.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.2.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** is a modern, responsive, and lightweight **UI Framework** (CSS & JS) designed to simplify and accelerate web development. Built with SCSS and Vanilla JS, it provides a highly customizable utility-first approach combined with powerful layout components, interactive elements, animations, and icons.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem dependências externas. Combina design minimalista inspirado em referências de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, componentes avançados de interface e requisições HTTP seguras.
 
-## 🚀 Features
+---
 
-- **📱 Mobile First**: A base do Frame PER é totalmente Mobile First. Componentes colapsam nativamente no celular e expandem via utilitários (ex: `.grid-md-3`, `.d-lg-flex`).
-- **Advanced JS Interactivity**: Built-in HTTP Fetch wrappers, Page Loaders, and dynamic Toasts.
-- **Comprehensive UI Kit**: Navbars, Cards, Accordions, Carousels, Toasts, Tooltips, Modals, Badges, Tabs, Offcanvas, Avatars, Pagination, Breadcrumbs and Switch toggles.
-- **Pure CSS Icons**: 20 Built-in SVG icons rendered natively via CSS `mask-image`.
-- **Smooth Animations & Transitions**: Built-in CSS utilities for `fade-in`, `slide-up`, `hover-scale`, and Loaders.
-- **Responsive Grid System**: Modern CSS Grid based layout with breakpoints (`sm`, `md`, `lg`, `xl`).
-- **Production Ready**: Automated build process via PostCSS & Terser.
+## 🚀 Principais Recursos & Componentes
 
-## 📦 Getting Started
+- **📱 Mobile First**: Layouts responsivos baseados em CSS Grid que se adaptam automaticamente a telas menores e expandem via breakpoints (`.grid-sm-*`, `.grid-md-*`, `.grid-lg-*`, `.grid-xl-*`).
+- **🌙 Dark Mode & Light Mode Nativo**: Alternância automática de temas detectando a preferência do sistema operacional, com transições suaves.
+- **🗂️ Side Modals & Drawers Laterais**: Modais flutuantes deslizantes (`.modal-side`, `.modal-side-right`, `.modal-side-left`, `.modal-bottom`) ideais para carrinhos de compras, filtros laterais e painéis de notificação.
+- **📊 Tabelas Interativas Inteligentes**: Suporte nativo para ordenação por colunas (`th.sortable`) com ordenação automática (texto, números e moedas) e busca rápida em tempo real (`data-table-filter`).
+- **🖥️ Demonstrativos Completos**:
+  - **SaaS Admin Dashboard Suite**: Páginas de Visão Geral, Usuários, Mensagens/Chat, Agendamentos e Configurações.
+  - **Rede Social Demo**: Feed com Stories, publicações ricas, hashtags, recomendações e notificações.
+  - **Loja de Roupas & Moda (E-Commerce)**: Vitrine de produtos com arte vetorial SVG offline, seletor de cores e sacola de compras deslizante.
+- **⚡ Icons Vetoriais sem Dependências**: 20 ícones SVG incorporados via máscara CSS.
+- **🛡️ Módulo HTTP & Segurança (Vanilla JS API)**: Fetch wrapper com detector de internet offline, CSRF token automático, prevenção de XSS e notificações não-bloqueantes (*Toasts*).
 
-Include the compiled CSS and JS files in your HTML:
+---
+
+## 📦 Como Utilizar
+
+Inclua os arquivos compilados `dist/framePER.min.css` e `dist/framePER.min.js` no seu HTML:
 
 ```html
-<!-- In your <head> -->
+<!-- No <head> do projeto -->
 <link rel="stylesheet" href="dist/framePER.min.css">
 
-<!-- Right before closing </body> -->
+<!-- Antes de fechar a tag </body> -->
 <script src="dist/framePER.min.js"></script>
 ```
 
-## 📱 Mobile First & Utilitários Responsivos
+---
 
-O Grid System do Frame PER prioriza telas pequenas.
+## 🗂️ Exemplo: Side Modal / Drawer Lateral
 
-**Comportamento Padrão Mobile:**
-Ao usar a classe `.grid`, seu conteúdo ocupará apenas **1 coluna** (100% de largura) para se adaptar às telas dos celulares, sem quebrar layout.
-
-**Evoluindo para Desktop:**
-Para aplicar múltiplas colunas em telas maiores, utilize as classes `.grid-{breakpoint}-{colunas}`.
 ```html
-<!-- Fica 1 coluna no celular, e expande para 3 colunas em telas Médias (md) e maiores -->
-<div class="grid grid-md-3">
-  <div>Coluna A</div>
-  <div>Coluna B</div>
-  <div>Coluna C</div>
+<!-- Botão disparador -->
+<button class="btn btn-primary" data-toggle="modal" data-target="#cartDrawer">Abrir Sacola</button>
+
+<!-- Side Modal deslizante -->
+<div id="cartDrawer" class="modal modal-side modal-side-right">
+  <div class="modal-content stack gap-4">
+    <div class="modal-header">
+      <h3 class="modal-title">Sua Sacola</h3>
+      <button class="modal-close" data-dismiss="modal">&times;</button>
+    </div>
+    <div class="modal-body">
+      Conteúdo do painel lateral...
+    </div>
+  </div>
 </div>
 ```
 
-**Utilitários de Display e Flexbox Mobile First:**
-Você pode controlar quando exibir elementos utilizando as classes `.d-{bp}-none` e `.d-{bp}-block`.
+---
+
+## 📊 Exemplo: Tabelas com Busca Rápida e Ordenação
+
 ```html
-<!-- Este elemento é escondido no celular, e só aparece em telas Grandes (lg) -->
-<div class="d-none d-lg-block">
-  Exibido apenas no Desktop
-</div>
+<!-- Campo de filtro em tempo real -->
+<input type="text" class="input" data-table-filter="#tabelaClientes" placeholder="Buscar cliente...">
 
-<!-- Flexbox responsivo: Fica em coluna no celular, e fica em linha no Desktop (lg) -->
-<div class="d-flex flex-column flex-lg-row">...</div>
+<!-- Tabela com colunas ordenáveis -->
+<table id="tabelaClientes" class="table">
+  <thead>
+    <tr>
+      <th class="sortable">Nome</th>
+      <th class="sortable">Cargo</th>
+      <th class="sortable">Faturamento</th>
+    </tr>
+  </thead>
+  <tbody>
+    <tr>
+      <td>Ana Clara Silva</td>
+      <td>Administrador</td>
+      <td class="tabular">R$ 14.500</td>
+    </tr>
+  </tbody>
+</table>
 ```
 
-## 🧠 Advanced JavaScript API
+---
 
-O **Frame PER** agora expõe um objeto global `FramePER` contendo métodos utilitários poderosos.
-
-### 1. Loader da Página
-```javascript
-FramePER.Loader.showPageLoad();
-FramePER.Loader.hidePageLoad();
-
-const myButton = document.querySelector('#submitBtn');
-FramePER.Loader.buttonLoading(myButton, true);
-```
-
-### 2. Notificações Dinâmicas (Toasts)
-```javascript
-FramePER.Notify.success('Sucesso', 'Operação realizada com êxito!', 3000);
-FramePER.Notify.error('Falha', 'Não foi possível salvar os dados.', 5000);
-FramePER.Notify.info('Aviso', 'Seu perfil foi atualizado.');
-```
-
-### 3. Requisições HTTP Avançadas e Seguras (AJAX/Fetch Wrapper)
-O `FramePER.Http` lida com toda a comunicação de backend automaticamente, injetando segurança nativa.
-
-**Funcionalidades de Segurança e UX Automáticas:**
-- **Detector de Internet**: Se o usuário ficar offline, o JS detecta antes mesmo da requisição e exibe um Toast de erro de rede.
-- **CSRF Token Injetado**: Lê automaticamente a meta tag `<meta name="csrf-token" content="...">` e injeta no header `X-CSRF-TOKEN` de todas as mutações (POST/PUT/DELETE) para evitar ataques CSRF.
-- **Tratamento de Mensagens Global**: Se a API retornar erros 401 (Negado), 403 (Proibido), 404 (Não Encontrado) ou 500 (Erro Servidor), um Toast padrão e bonitinho já é invocado avisando o usuário sobre o que houve sem quebrar o site!
+## 🧠 API JavaScript (`window.FramePER`)
 
 ```javascript
-async function salvarDados() {
-    FramePER.Loader.showPageLoad();
-    
-    // O Frame PER fará a checagem de internet, injetará o token CSRF e lerá a resposta.
-    const response = await FramePER.Http.post('/api/salvar', { name: "Teste" });
-    
-    FramePER.Loader.hidePageLoad();
-    
-    // Se response.ok for false, a notificação de erro pertinente JÁ FOI MOSTRADA automaticamente na tela!
-    if (response.ok) {
-        FramePER.Notify.success('Feito!', 'Seus dados foram seguros.');
+// Alternar Tema Claro / Escuro
+FramePER.Theme.toggle();
+
+// Disparar Notificações Toast
+FramePER.Notify.success('Concluído', 'Suas alterações foram salvas!');
+FramePER.Notify.error('Erro', 'Não foi possível conectar ao servidor.');
+
+// Executar Requisições HTTP com CSRF & Notificações Automáticas
+async function carregarDados() {
+    const res = await FramePER.Http.get('/api/dados');
+    if (res.ok) {
+        console.log(res.data);
     }
 }
 ```
 
-### 4. Sanitização de Texto (XSS Prevention)
-```javascript
-// Previne execução de scripts injetados pelo usuário (Cross-Site Scripting)
-const htmlSeguro = FramePER.Security.escapeHTML("<script>alert('hack')</script>");
-// Retorna: &lt;script&gt;alert(&#39;hack&#39;)&lt;/script&gt;
-```
-## 📜 License
+---
 
-This project is licensed under the MIT License.
+## 📜 Licença
+
+Distribuído sob a licença **MIT**. Veja `LICENSE` para mais detalhes.
