@@ -98,12 +98,20 @@
     stroke-linejoin: round;
     vector-effect: non-scaling-stroke;
     transition: stroke-width 0.2s var(--ease), opacity 0.2s var(--ease);
+
+    &.frame-chart-animated {
+      animation: frameChartDrawLine 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
   }
 
   // Area paths
   .frame-chart-area {
     pointer-events: none;
     transition: opacity 0.2s var(--ease);
+
+    &.frame-chart-animated {
+      animation: frameChartFadeArea 0.75s ease-out forwards;
+    }
   }
 
   // Points / Dots on line
@@ -126,13 +134,56 @@
     cursor: pointer;
     rx: 4px;
     ry: 4px;
+    transform-box: fill-box;
     transform-origin: bottom;
     transition: transform 0.2s var(--ease), opacity 0.2s var(--ease), filter 0.2s var(--ease);
+
+    &.frame-chart-animated {
+      animation: frameChartGrowBar 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
+
+    &.frame-chart-horiz-animated {
+      transform-origin: left;
+      animation: frameChartGrowHorizBar 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+    }
 
     &:hover,
     &.active {
       filter: brightness(1.12);
       transform: scaleY(1.02);
+    }
+  }
+
+  @keyframes frameChartDrawLine {
+    to {
+      stroke-dashoffset: 0;
+    }
+  }
+
+  @keyframes frameChartFadeArea {
+    from {
+      opacity: 0;
+    }
+    to {
+      opacity: 1;
+    }
+  }
+
+  @keyframes frameChartGrowBar {
+    from {
+      transform: scaleY(0);
+    }
+    to {
+      transform: scaleY(1);
+    }
+  }
+
+  @keyframes frameChartGrowHorizBar {
+    from {
+      transform: scaleX(0);
+    }
+    to {
+      transform: scaleX(1);
     }
   }
 

@@ -29,6 +29,11 @@
       </nav>
 
       <div class="navbar-actions">
+        <button class="btn btn-outline btn-sm d-none d-sm-inline-flex align-items-center gap-2" data-command-palette aria-label="Busca rápida">
+          <i class="icon icon-search"></i>
+          <span>Buscar</span>
+          <kbd style="font-size: 0.7rem; padding: 2px 5px; border-radius: 4px; background: var(--bg-surface); border: 1px solid var(--border);">Ctrl K</kbd>
+        </button>
         <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
           <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
         </button>
@@ -61,6 +66,7 @@
       <a href="#m-clipboard">Clipboard & Cópia</a>
       <a href="#m-counter">Contadores Animados</a>
       <a href="#m-chart">Gráficos SVG (Chart)</a>
+      <a href="#m-command-palette">Command Palette (Ctrl+K)</a>
       <a href="#m-scroll">Rolagem & Scroll</a>
       <a href="#m-http">HTTP & AJAX Fetch</a>
       <a href="#m-notify">Notificações (Notify)</a>
@@ -176,10 +182,10 @@
       <!-- Charts Framework Module -->
       <section id="m-chart" class="docs-section">
         <h2>Framework de Gráficos SVG (FramePER.Chart)</h2>
-        <p class="lead">Biblioteca nativa de gráficos vetoriais construída em puro SVG, CSS e JavaScript Vanilla, com 9 modelos, animação suave, tooltips flutuantes reativos e exportação para imagem.</p>
+        <p class="lead">Biblioteca nativa de gráficos vetoriais construída em puro SVG, CSS e JavaScript Vanilla, com 10 modelos, animações nativas de entrada, gráficos mistos (combo barras + linhas), tooltips flutuantes reativos e exportação para imagem.</p>
 
-        <pre><code><span class="tok-c">// Instanciação com qualquer um dos 9 modelos:</span>
-<span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar' | 'donut' | 'pie' | 'gauge' | 'radar' | 'sparkline'</span>
+        <pre><code><span class="tok-c">// Instanciação com qualquer um dos 10 modelos:</span>
+<span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar' | 'mixed' | 'donut' | 'pie' | 'gauge' | 'radar' | 'sparkline'</span>
 <span class="tok-k">const</span> <span class="tok-n">chart</span> = <span class="tok-k">new</span> <span class="tok-k">FramePER</span>.<span class="tok-k">Chart</span>(<span class="tok-s">'#chartContainer'</span>, {
   type: <span class="tok-s">'area'</span>,
   data: {
@@ -213,6 +219,38 @@
      <span class="tok-f">data-chart-options</span>=<span class="tok-s">'{"height":200,"donutCutout":0.65,"centerText":"100%"}'</span>
      <span class="tok-f">data-chart-data</span>=<span class="tok-s">'{"series":[{"name":"Online","value":70},{"name":"Físico","value":30}]}'</span><span class="tok-k">&gt;</span>
 <span class="tok-k">&lt;/div&gt;</span></code></pre>
+      </section>
+
+      <!-- Command Palette Module -->
+      <section id="m-command-palette" class="docs-section">
+        <h2>Command Palette & Spotlight (FramePER.CommandPalette)</h2>
+        <p class="lead">Menu flutuante global de busca rápida e comandos (Spotlight) acionado via atalho de teclado <code>Ctrl + K</code> / <code>Cmd + K</code> ou pelo atributo HTML <code>data-command-palette</code>.</p>
+
+        <div class="preview cluster gap-3 m-b-0">
+          <button class="btn btn-primary" data-command-palette>
+            <i class="icon icon-search"></i> Abrir Command Palette <kbd class="m-l-2" style="font-size: 0.75rem; padding: 2px 6px; background: rgba(255,255,255,0.2); border-radius: 4px;">Ctrl K</kbd>
+          </button>
+        </div>
+
+        <pre><code><span class="tok-c">&lt;!-- 1. Disparo declarativo via HTML --&gt;</span>
+<span class="tok-k">&lt;button</span> <span class="tok-f">class</span>=<span class="tok-s">"btn btn-outline"</span> <span class="tok-f">data-command-palette</span><span class="tok-k">&gt;</span>
+  <span class="tok-k">&lt;i</span> <span class="tok-f">class</span>=<span class="tok-s">"icon icon-search"</span><span class="tok-k">&gt;&lt;/i&gt;</span> Buscar... <span class="tok-k">&lt;kbd&gt;</span>Ctrl K<span class="tok-k">&lt;/kbd&gt;</span>
+<span class="tok-k">&lt;/button&gt;</span>
+
+<span class="tok-c">// 2. Controle programático via JavaScript</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">CommandPalette</span>.<span class="tok-f">open</span>();
+<span class="tok-k">FramePER</span>.<span class="tok-k">CommandPalette</span>.<span class="tok-f">close</span>();
+
+<span class="tok-c">// 3. Adicionar novos itens ou ações customizadas</span>
+<span class="tok-k">FramePER</span>.<span class="tok-k">CommandPalette</span>.<span class="tok-f">register</span>([
+  {
+    title: <span class="tok-s">'Novo Pedido'</span>,
+    subtitle: <span class="tok-s">'Cadastrar nova ordem de serviço ou pedido'</span>,
+    category: <span class="tok-s">'Ações Rápidas'</span>,
+    icon: <span class="tok-s">'icon-cart'</span>,
+    action: () =&gt; { <span class="tok-n">console</span>.<span class="tok-f">log</span>(<span class="tok-s">'Abrindo cadastro...'</span>); }
+  }
+]);</code></pre>
       </section>
 
       <!-- Scroll Module -->

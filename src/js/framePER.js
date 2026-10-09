@@ -915,6 +915,8 @@
                             const rawData = Array.isArray(s.data) ? s.data : [];
                             return {
                                 name: s.name || `Série ${idx + 1}`,
+                                type: s.type || (this.type === 'mixed' ? (idx === 0 ? 'bar' : 'line') : this.type),
+                                fill: !!s.fill,
                                 data: rawData,
                                 color,
                                 hidden: !!s.hidden
@@ -995,6 +997,8 @@
                         this._renderLineArea(width, height);
                     } else if (this.type === 'bar') {
                         this._renderBar(width, height);
+                    } else if (this.type === 'mixed') {
+                        this._renderMixed(width, height);
                     } else if (this.type === 'horizontal-bar') {
                         this._renderHorizontalBar(width, height);
                     } else if (this.type === 'donut' || this.type === 'pie') {
@@ -1099,7 +1103,7 @@
                             const baselineY = padding.top + plotH;
                             const areaD = `${linePath} L ${pts[pts.length - 1].x.toFixed(2)} ${baselineY} L ${pts[0].x.toFixed(2)} ${baselineY} Z`;
                             this.svg.appendChild(createSVG('path', {
-                                class: 'frame-chart-area',
+                                class: 'frame-chart-area' + (this.options.animated !== false ? ' frame-chart-animated' : ''),
                                 d: areaD,
                                 fill: `url(#${gradId})`
                             }));
@@ -1108,11 +1112,21 @@
                         // Line stroke
                         const lineD = this.options.curved ? getSplinePath(pts) : getLinearPath(pts);
                         const line = createSVG('path', {
-                            class: 'frame-chart-line',
+                            class: 'frame-chart-line' + (this.options.animated !== false ? ' frame-chart-animated' : ''),
                             d: lineD,
                             stroke: s.color,
                             'stroke-width': this.options.strokeWidth || 2.5
                         });
+                        if (this.options.animated !== false) {
+                            try {
+                                const len = line.getTotalLength ? line.getTotalLength() : 1200;
+                                line.style.strokeDasharray = len;
+                                line.style.strokeDashoffset = len;
+                            } catch (_) {
+                                line.style.strokeDasharray = 1200;
+                                line.style.strokeDashoffset = 1200;
+                            }
+                        }
                         this.svg.appendChild(line);
 
                         // Dots
@@ -1200,7 +1214,7 @@
                             const barY = padding.top + plotH - barH;
 
                             const rect = createSVG('rect', {
-                                class: 'frame-chart-bar',
+                                class: 'frame-chart-bar' + (this.options.animated !== false ? ' frame-chart-animated' : ''),
                                 x: barX.toFixed(2),
                                 y: barY.toFixed(2),
                                 width: singleBarWidth.toFixed(2),
@@ -1217,6 +1231,176 @@
                         });
                     });
                     this.svg.appendChild(barsG);
+                }
+
+                _renderMixed(width, height) {
+                    const visibleSeries = this.series.filter(s => !s.hidden && s.data && s.data.length);
+                    let allVals = [];
+                    visibleSeries.forEach(s => allVals.push(...s.data));
+                    if (!allVals.length) allVals = [0, 10];
+
+                    const { min, max, ticks } = calculateNiceTicks(Math.min(0, Math.min(...allVals)), Math.max(...allVals));
+                    const valRange = max - min || 1;
+
+                    // Dynamic left padding based on longest formatted tick string
+                    const sampleTicks = ticks.map(t => formatVal(t, this.options.format));
+                    const maxTickLen = Math.max(...sampleTicks.map(s => (s || '').length), 1);
+                    const dynamicLeft = Math.min(Math.max(Math.ceil(maxTickLen * 7.5) + 18, 50), 96);
+                    const padding = { top: 32, right: 24, bottom: 35, left: dynamicLeft };
+                    const plotW = width - padding.left - padding.right;
+                    const plotH = height - padding.top - padding.bottom;
+                    if (plotW <= 0 || plotH <= 0) return;
+
+                    // Grid & Y labels
+                    if (this.options.showGrid) {
+                        const gridG = createSVG('g', { class: 'frame-chart-grid' });
+                        const labelsG = createSVG('g', { class: 'frame-chart-labels' });
+                        ticks.forEach(t => {
+                            const y = padding.top + plotH - ((t - min) / valRange) * plotH;
+                            gridG.appendChild(createSVG('line', { x1: padding.left, y1: y, x2: width - padding.right, y2: y }));
+                            const text = createSVG('text', {
+                                x: padding.left - 8,
+                                y: y + 4,
+                                'text-anchor': 'end'
+                            });
+                            text.textContent = formatVal(t, this.options.format);
+                            labelsG.appendChild(text);
+                        });
+                        this.svg.appendChild(gridG);
+                        this.svg.appendChild(labelsG);
+                    }
+
+                    const numCategories = Math.max(this.labels.length, ...visibleSeries.map(s => s.data.length), 1);
+                    const catWidth = plotW / numCategories;
+
+                    const xLabelsG = createSVG('g', { class: 'frame-chart-labels' });
+                    const isCompact = width < 460 && this.labels.length > 5;
+                    this.labels.forEach((lbl, i) => {
+                        if (isCompact && i % 2 !== 0 && i !== this.labels.length - 1) {
+                            return;
+                        }
+                        const x = padding.left + i * catWidth + catWidth / 2;
+                        const text = createSVG('text', { x, y: height - 10, 'text-anchor': 'middle' });
+                        text.textContent = lbl;
+                        xLabelsG.appendChild(text);
+                    });
+                    this.svg.appendChild(xLabelsG);
+
+                    // Separate bar and line series
+                    const barSeries = visibleSeries.filter(s => s.type === 'bar');
+                    const lineSeries = visibleSeries.filter(s => s.type !== 'bar');
+
+                    // 1. Render Bar series
+                    if (barSeries.length > 0) {
+                        const numBarSeries = barSeries.length;
+                        const barGroupWidth = catWidth * 0.65;
+                        const singleBarWidth = Math.max(barGroupWidth / numBarSeries - 3, 4);
+                        const barsG = createSVG('g', { class: 'frame-chart-bars' });
+
+                        barSeries.forEach((s, sIdx) => {
+                            s.data.forEach((val, cIdx) => {
+                                const catStartX = padding.left + cIdx * catWidth + (catWidth - barGroupWidth) / 2;
+                                const barX = catStartX + sIdx * (singleBarWidth + 3);
+                                const barH = Math.max(((val - min) / valRange) * plotH, 2);
+                                const barY = padding.top + plotH - barH;
+
+                                const rect = createSVG('rect', {
+                                    class: 'frame-chart-bar' + (this.options.animated !== false ? ' frame-chart-animated' : ''),
+                                    x: barX.toFixed(2),
+                                    y: barY.toFixed(2),
+                                    width: singleBarWidth.toFixed(2),
+                                    height: barH.toFixed(2),
+                                    fill: s.color,
+                                    'data-series': s.name,
+                                    'data-val': val,
+                                    'data-label': this.labels[cIdx] || '',
+                                    'data-color': s.color
+                                });
+                                rect.addEventListener('mouseenter', (e) => this._showElementTooltip(e, rect, this.labels[cIdx] || '', s.name, val, s.color));
+                                rect.addEventListener('mouseleave', () => this.tooltip.classList.remove('active'));
+                                barsG.appendChild(rect);
+                            });
+                        });
+                        this.svg.appendChild(barsG);
+                    }
+
+                    // 2. Render Line & Area series
+                    this.computedPoints = [];
+                    lineSeries.forEach((s, sIdx) => {
+                        const pts = s.data.map((val, i) => {
+                            const x = padding.left + i * catWidth + catWidth / 2;
+                            const y = padding.top + plotH - ((val - min) / valRange) * plotH;
+                            return { x, y, val, label: this.labels[i] || '', seriesName: s.name, color: s.color };
+                        });
+                        this.computedPoints.push({ series: s, points: pts });
+
+                        // Area fill if series has fill or s.type === 'area'
+                        if (s.fill || s.type === 'area') {
+                            const gradId = `${this.id}-mixed-grad-${sIdx}`;
+                            const grad = createSVG('linearGradient', { id: gradId, x1: '0', y1: '0', x2: '0', y2: '1' });
+                            grad.appendChild(createSVG('stop', { offset: '0%', 'stop-color': s.color, 'stop-opacity': '0.3' }));
+                            grad.appendChild(createSVG('stop', { offset: '100%', 'stop-color': s.color, 'stop-opacity': '0.01' }));
+                            this.defs.appendChild(grad);
+
+                            const linePath = this.options.curved ? getSplinePath(pts) : getLinearPath(pts);
+                            const baselineY = padding.top + plotH;
+                            const areaD = `${linePath} L ${pts[pts.length - 1].x.toFixed(2)} ${baselineY} L ${pts[0].x.toFixed(2)} ${baselineY} Z`;
+                            this.svg.appendChild(createSVG('path', {
+                                class: 'frame-chart-area' + (this.options.animated !== false ? ' frame-chart-animated' : ''),
+                                d: areaD,
+                                fill: `url(#${gradId})`
+                            }));
+                        }
+
+                        // Line stroke
+                        const lineD = this.options.curved ? getSplinePath(pts) : getLinearPath(pts);
+                        const line = createSVG('path', {
+                            class: 'frame-chart-line' + (this.options.animated !== false ? ' frame-chart-animated' : ''),
+                            d: lineD,
+                            stroke: s.color,
+                            'stroke-width': this.options.strokeWidth || 3
+                        });
+                        if (this.options.animated !== false) {
+                            try {
+                                const len = line.getTotalLength ? line.getTotalLength() : 1200;
+                                line.style.strokeDasharray = len;
+                                line.style.strokeDashoffset = len;
+                            } catch (_) {
+                                line.style.strokeDasharray = 1200;
+                                line.style.strokeDashoffset = 1200;
+                            }
+                        }
+                        this.svg.appendChild(line);
+
+                        // Dots
+                        if (this.options.showDots !== false) {
+                            const dotsG = createSVG('g', { class: 'frame-chart-dots' });
+                            pts.forEach(p => {
+                                const dot = createSVG('circle', {
+                                    class: 'frame-chart-dot',
+                                    cx: p.x.toFixed(2),
+                                    cy: p.y.toFixed(2),
+                                    r: 4.5,
+                                    fill: s.color
+                                });
+                                dotsG.appendChild(dot);
+                            });
+                            this.svg.appendChild(dotsG);
+                        }
+                    });
+
+                    // Crosshair guideline for hover
+                    if (lineSeries.length > 0 || barSeries.length > 0) {
+                        this.crosshair = createSVG('line', {
+                            class: 'frame-chart-crosshair',
+                            y1: padding.top,
+                            y2: padding.top + plotH,
+                            style: 'opacity: 0'
+                        });
+                        this.svg.appendChild(this.crosshair);
+                    }
+
+                    this.plotArea = { padding, plotW, plotH, stepX: catWidth, numPoints: numCategories, min, max, isMixed: true };
                 }
 
                 _renderHorizontalBar(width, height) {
@@ -1278,7 +1462,7 @@
 
                         // Value bar
                         const rect = createSVG('rect', {
-                            class: 'frame-chart-bar',
+                            class: 'frame-chart-bar' + (this.options.animated !== false ? ' frame-chart-horiz-animated' : ''),
                             x: padding.left,
                             y: y.toFixed(2),
                             width: barW.toFixed(2),
@@ -1573,15 +1757,22 @@
                 }
 
                 _handleMouseMove(e) {
-                    if (!this.computedPoints || !this.computedPoints.length || !this.options.tooltip) return;
+                    if (!this.plotArea || !this.options.tooltip) return;
                     const rect = this.svgWrap.getBoundingClientRect();
                     const mouseX = e.clientX - rect.left;
-                    const { padding, plotW, numPoints } = this.plotArea;
-                    const stepX = numPoints > 1 ? plotW / (numPoints - 1) : plotW / 2;
-                    let idx = Math.round((mouseX - padding.left) / stepX);
-                    idx = Math.max(0, Math.min(idx, numPoints - 1));
-
-                    const curX = padding.left + (numPoints > 1 ? idx * stepX : plotW / 2);
+                    const { padding, plotW, numPoints, isMixed, stepX: mixedStepX } = this.plotArea;
+                    const stepX = isMixed ? mixedStepX : (numPoints > 1 ? plotW / (numPoints - 1) : plotW / 2);
+                    let idx;
+                    let curX;
+                    if (isMixed) {
+                        idx = Math.floor((mouseX - padding.left) / stepX);
+                        idx = Math.max(0, Math.min(idx, numPoints - 1));
+                        curX = padding.left + idx * stepX + stepX / 2;
+                    } else {
+                        idx = Math.round((mouseX - padding.left) / stepX);
+                        idx = Math.max(0, Math.min(idx, numPoints - 1));
+                        curX = padding.left + (numPoints > 1 ? idx * stepX : plotW / 2);
+                    }
 
                     // Move crosshair
                     if (this.crosshair) {
@@ -1595,21 +1786,28 @@
                     let itemsHtml = '';
                     let topY = Infinity;
 
-                    this.computedPoints.forEach(cp => {
-                        const p = cp.points[idx];
-                        if (p && !cp.series.hidden) {
-                            topY = Math.min(topY, p.y);
+                    this.series.forEach(s => {
+                        if (!s.hidden && s.data && s.data[idx] !== undefined) {
                             itemsHtml += `
                                 <div class="frame-chart-tooltip-item">
                                     <div class="frame-chart-tooltip-left">
-                                        <span class="frame-chart-tooltip-dot" style="background-color: ${p.color}"></span>
-                                        <span class="frame-chart-tooltip-label">${p.seriesName}</span>
+                                        <span class="frame-chart-tooltip-dot" style="background-color: ${s.color}"></span>
+                                        <span class="frame-chart-tooltip-label">${s.name}</span>
                                     </div>
-                                    <span class="frame-chart-tooltip-value">${formatVal(p.val, this.options.format)}</span>
+                                    <span class="frame-chart-tooltip-value">${formatVal(s.data[idx], this.options.format)}</span>
                                 </div>
                             `;
                         }
                     });
+
+                    if (this.computedPoints) {
+                        this.computedPoints.forEach(cp => {
+                            const p = cp.points[idx];
+                            if (p && !cp.series.hidden) {
+                                topY = Math.min(topY, p.y);
+                            }
+                        });
+                    }
 
                     this.tooltip.innerHTML = `
                         <div class="frame-chart-tooltip-header">${headerText}</div>
@@ -1617,7 +1815,7 @@
                     `;
 
                     this.tooltip.style.left = curX + 'px';
-                    this.tooltip.style.top = Math.max(topY, 30) + 'px';
+                    this.tooltip.style.top = (isFinite(topY) ? Math.max(topY, 30) : 60) + 'px';
                     this.tooltip.classList.add('active');
                 }
 
@@ -1728,11 +1926,341 @@
             }
 
             return FramePERChart;
+        })(),
+
+        // --- 11. Command Palette (Spotlight / Cmd+K / Ctrl+K) ---
+        CommandPalette: (function() {
+            let dialog = null;
+            let input = null;
+            let body = null;
+            let items = [];
+            let selectedIndex = 0;
+            let isOpen = false;
+
+            const DEFAULT_COMMANDS = [
+                {
+                    group: 'Navegação Rápida',
+                    id: 'nav-home',
+                    title: 'Início & Destaques',
+                    desc: 'Página inicial do Frame PER',
+                    icon: 'icon-star',
+                    action: () => { window.location.href = 'index.html'; }
+                },
+                {
+                    group: 'Navegação Rápida',
+                    id: 'nav-charts',
+                    title: 'Gráficos SVG',
+                    desc: 'Playground interativo com 9+ modelos vetoriais',
+                    icon: 'icon-activity',
+                    badge: 'Novo',
+                    action: () => { window.location.href = 'charts.html'; }
+                },
+                {
+                    group: 'Navegação Rápida',
+                    id: 'nav-dashboard',
+                    title: 'Admin Dashboard (Visão Geral)',
+                    desc: 'Métricas, vendas e atividades do sistema',
+                    icon: 'icon-home',
+                    action: () => { window.location.href = 'dashboard.html'; }
+                },
+                {
+                    group: 'Navegação Rápida',
+                    id: 'nav-users',
+                    title: 'Usuários & Permissões',
+                    desc: 'Tabela com ordenação, busca e cadastro',
+                    icon: 'icon-user',
+                    action: () => { window.location.href = 'users.html'; }
+                },
+                {
+                    group: 'Navegação Rápida',
+                    id: 'nav-messages',
+                    title: 'Mensagens & Inbox',
+                    desc: 'Chat ao vivo e conversas de suporte',
+                    icon: 'icon-envelope',
+                    action: () => { window.location.href = 'messages.html'; }
+                },
+                {
+                    group: 'Navegação Rápida',
+                    id: 'nav-reports',
+                    title: 'Agendamentos & Relatórios',
+                    desc: 'Histórico de operações e métricas',
+                    icon: 'icon-calendar',
+                    action: () => { window.location.href = 'reports.html'; }
+                },
+                {
+                    group: 'Navegação Rápida',
+                    id: 'nav-settings',
+                    title: 'Configurações do Sistema',
+                    desc: 'Perfil, segurança, notificações e 2FA',
+                    icon: 'icon-settings',
+                    action: () => { window.location.href = 'settings.html'; }
+                },
+                {
+                    group: 'Aplicações Temáticas',
+                    id: 'nav-beauty',
+                    title: 'Aura Beauty & Nails',
+                    desc: 'Studio de beleza, catálogo e agendamento online',
+                    icon: 'icon-sparkles',
+                    action: () => { window.location.href = 'beauty.html'; }
+                },
+                {
+                    group: 'Aplicações Temáticas',
+                    id: 'nav-social',
+                    title: 'Rede Social Demo',
+                    desc: 'Feed, stories, trending hashtags e comentários',
+                    icon: 'icon-heart',
+                    action: () => { window.location.href = 'social.html'; }
+                },
+                {
+                    group: 'Aplicações Temáticas',
+                    id: 'nav-store',
+                    title: 'Loja de Roupas & Moda',
+                    desc: 'E-commerce com sacola lateral deslizante',
+                    icon: 'icon-tag',
+                    action: () => { window.location.href = 'store.html'; }
+                },
+                {
+                    group: 'Componentes & Docs',
+                    id: 'nav-components',
+                    title: 'Galeria de Componentes UI',
+                    desc: 'Botões, modais, tabelas, forms, chips e skeletons',
+                    icon: 'icon-settings',
+                    action: () => { window.location.href = 'components.html'; }
+                },
+                {
+                    group: 'Componentes & Docs',
+                    id: 'nav-manual',
+                    title: 'Manual de API Completo',
+                    desc: 'Documentação dos utilitários CSS e JS',
+                    icon: 'icon-info',
+                    action: () => { window.location.href = 'manual.html'; }
+                },
+                {
+                    group: 'Ações do Sistema',
+                    id: 'action-theme',
+                    title: 'Alternar Tema Claro / Escuro',
+                    desc: 'Alterna entre Dark Mode e Light Mode',
+                    icon: 'icon-moon',
+                    badge: 'Tema',
+                    action: () => {
+                        const toggle = document.querySelector('[data-theme-toggle]');
+                        if (toggle) toggle.click();
+                        else if (window.FramePER && window.FramePER.Theme) window.FramePER.Theme.toggle();
+                    }
+                }
+            ];
+
+            function createDOM() {
+                if (dialog) return;
+                const backdrop = document.createElement('div');
+                backdrop.className = 'command-backdrop';
+                backdrop.innerHTML = `
+                    <div class="command-dialog" role="dialog" aria-modal="true" aria-label="Comandos Rápidos">
+                        <div class="command-header">
+                            <i class="icon icon-search command-search-icon"></i>
+                            <input type="text" class="command-input" placeholder="Digite para buscar páginas, ações ou componentes..." autocomplete="off">
+                            <button type="button" class="command-close-btn" aria-label="Fechar"><i class="icon icon-close"></i></button>
+                        </div>
+                        <div class="command-body"></div>
+                        <div class="command-footer">
+                            <div class="command-shortcuts">
+                                <span class="command-shortcut"><kbd>↑</kbd><kbd>↓</kbd> navegar</span>
+                                <span class="command-shortcut"><kbd>↵</kbd> selecionar</span>
+                                <span class="command-shortcut"><kbd>ESC</kbd> fechar</span>
+                            </div>
+                            <span>Frame PER Spotlight</span>
+                        </div>
+                    </div>
+                `;
+                document.body.appendChild(backdrop);
+                dialog = backdrop;
+                input = backdrop.querySelector('.command-input');
+                body = backdrop.querySelector('.command-body');
+
+                backdrop.addEventListener('click', (e) => {
+                    if (e.target === backdrop) close();
+                });
+                backdrop.querySelector('.command-close-btn').addEventListener('click', close);
+
+                input.addEventListener('input', (e) => {
+                    renderList(e.target.value.trim());
+                });
+
+                input.addEventListener('keydown', (e) => {
+                    const visibleItems = body.querySelectorAll('.command-item');
+                    if (e.key === 'ArrowDown') {
+                        e.preventDefault();
+                        if (visibleItems.length) {
+                            selectedIndex = (selectedIndex + 1) % visibleItems.length;
+                            updateSelection(visibleItems);
+                        }
+                    } else if (e.key === 'ArrowUp') {
+                        e.preventDefault();
+                        if (visibleItems.length) {
+                            selectedIndex = (selectedIndex - 1 + visibleItems.length) % visibleItems.length;
+                            updateSelection(visibleItems);
+                        }
+                    } else if (e.key === 'Enter') {
+                        e.preventDefault();
+                        if (visibleItems[selectedIndex]) {
+                            visibleItems[selectedIndex].click();
+                        }
+                    } else if (e.key === 'Escape') {
+                        e.preventDefault();
+                        close();
+                    }
+                });
+            }
+
+            function updateSelection(visibleEls) {
+                visibleEls.forEach((el, i) => {
+                    if (i === selectedIndex) {
+                        el.classList.add('is-selected');
+                        el.scrollIntoView({ block: 'nearest' });
+                    } else {
+                        el.classList.remove('is-selected');
+                    }
+                });
+            }
+
+            function renderList(query = '') {
+                if (!body) return;
+                body.innerHTML = '';
+                const q = query.toLowerCase();
+                const filtered = items.filter(it => {
+                    if (!q) return true;
+                    return (it.title && it.title.toLowerCase().includes(q)) ||
+                           (it.desc && it.desc.toLowerCase().includes(q)) ||
+                           (it.group && it.group.toLowerCase().includes(q));
+                });
+
+                if (filtered.length === 0) {
+                    body.innerHTML = `
+                        <div class="command-empty">
+                            <div class="command-empty-icon"><i class="icon icon-search"></i></div>
+                            <p>Nenhum resultado encontrado para "<strong>${escapeStr(query)}</strong>"</p>
+                        </div>
+                    `;
+                    return;
+                }
+
+                const groups = {};
+                filtered.forEach(it => {
+                    const g = it.group || 'Geral';
+                    if (!groups[g]) groups[g] = [];
+                    groups[g].push(it);
+                });
+
+                let overallIdx = 0;
+                Object.keys(groups).forEach(grpTitle => {
+                    const groupWrap = document.createElement('div');
+                    groupWrap.className = 'command-group';
+                    const titleEl = document.createElement('div');
+                    titleEl.className = 'command-group-title';
+                    titleEl.textContent = grpTitle;
+                    groupWrap.appendChild(titleEl);
+
+                    groups[grpTitle].forEach(cmd => {
+                        const itemIdx = overallIdx++;
+                        const itemEl = document.createElement('div');
+                        itemEl.className = 'command-item' + (itemIdx === selectedIndex ? ' is-selected' : '');
+                        itemEl.setAttribute('tabindex', '0');
+                        itemEl.innerHTML = `
+                            <div class="command-item-left">
+                                <span class="command-item-icon"><i class="icon ${cmd.icon || 'icon-activity'}"></i></span>
+                                <div class="command-item-text">
+                                    <div class="command-item-title">${cmd.title}</div>
+                                    ${cmd.desc ? `<div class="command-item-desc">${cmd.desc}</div>` : ''}
+                                </div>
+                            </div>
+                            ${cmd.badge ? `<span class="badge badge-primary badge-pill command-item-badge">${cmd.badge}</span>` : `<kbd class="command-item-badge">↵</kbd>`}
+                        `;
+
+                        itemEl.addEventListener('mouseenter', () => {
+                            selectedIndex = itemIdx;
+                            updateSelection(body.querySelectorAll('.command-item'));
+                        });
+
+                        itemEl.addEventListener('click', () => {
+                            close();
+                            if (typeof cmd.action === 'function') {
+                                cmd.action();
+                            }
+                        });
+
+                        groupWrap.appendChild(itemEl);
+                    });
+                    body.appendChild(groupWrap);
+                });
+
+                selectedIndex = 0;
+                const visibleEls = body.querySelectorAll('.command-item');
+                updateSelection(visibleEls);
+            }
+
+            function escapeStr(str) {
+                return String(str).replace(/[&<>"']/g, m => ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[m]);
+            }
+
+            function open() {
+                createDOM();
+                isOpen = true;
+                dialog.classList.add('open');
+                selectedIndex = 0;
+                input.value = '';
+                renderList('');
+                setTimeout(() => input.focus(), 50);
+            }
+
+            function close() {
+                if (!dialog) return;
+                isOpen = false;
+                dialog.classList.remove('open');
+            }
+
+            function toggle() {
+                if (isOpen) close();
+                else open();
+            }
+
+            function register(newItems) {
+                if (Array.isArray(newItems)) {
+                    items.push(...newItems);
+                } else if (newItems) {
+                    items.push(newItems);
+                }
+            }
+
+            function init(customCommands = []) {
+                items = [...DEFAULT_COMMANDS, ...customCommands];
+                createDOM();
+
+                window.addEventListener('keydown', (e) => {
+                    if ((e.ctrlKey || e.metaKey) && e.key.toLowerCase() === 'k') {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+
+                document.addEventListener('click', (e) => {
+                    const trigger = e.target.closest('[data-command-palette], [data-toggle="command-palette"]');
+                    if (trigger) {
+                        e.preventDefault();
+                        open();
+                    }
+                });
+            }
+
+            return {
+                init,
+                open,
+                close,
+                toggle,
+                register
+            };
         })()
     };
 
-
-    
     window.addEventListener('offline', () => {
         FramePER.Notify.error('Sem conexão', 'Você perdeu a conexão com a internet.', 0);
     });
@@ -1753,6 +2281,9 @@
         FramePER.Scroll.init();
         if (FramePER.Chart && FramePER.Chart.autoInit) {
             FramePER.Chart.autoInit();
+        }
+        if (FramePER.CommandPalette && FramePER.CommandPalette.init) {
+            FramePER.CommandPalette.init();
         }
         
         // Hide global page loader if exists

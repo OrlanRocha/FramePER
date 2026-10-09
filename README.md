@@ -1,9 +1,9 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.6.1-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.7.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, componentes avançados de interface, **Framework de Gráficos Vetoriais SVG**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
@@ -11,7 +11,9 @@
 
 - **📊 Framework de Gráficos SVG Nativo (`FramePER.Chart`)**:
   - **Zero Dependências**: Gráficos 100% vetoriais em puro SVG e Vanilla JS, infinitamente nítidos em telas Retina/HiDPI e com carga instantânea.
-  - **9 Modelos Suportados**:
+  - **✨ Animações Nativas de Entrada**: Traçado progressivo de curvas (`stroke-dashoffset`), crescimento fluido de barras a partir do eixo base (`scaleY`) e desvanecimento suave de áreas degradê.
+  - **10 Modelos Suportados**:
+    - **Gráfico Misto / Combo (`mixed`)**: Combinação flexível de barras agrupadas verticais com linhas/splines e pontos no mesmo gráfico.
     - **Área (`area`)**: Curvas bezier suaves com degradê vertical translúcido.
     - **Linha (`line`)**: Splines com pontos interativos, crosshair vertical e valores em tempo real.
     - **Colunas Verticais (`bar`)**: Barras agrupadas com cantos superiores arredondados e hover spotlight.
@@ -23,6 +25,7 @@
     - **Mini-gráficos (`sparkline`)**: Gráficos compactos sem eixos para cartões de KPI e tabelas.
   - **Interatividade Total**: Tooltips flutuantes inteligentes, legendas clicáveis para alternar séries, adaptação automática ao Dark Mode e exportação direta para imagem **PNG (2x Retina)** e **SVG**.
   - **Inicialização Dupla**: Tanto programática via JS (`new FramePER.Chart('#id', config)`) quanto declarativa via HTML5 (`data-chart="area"` com `data-chart-data`).
+- **🔍 Command Palette / Spotlight (`FramePER.CommandPalette`)**: Menu flutuante de busca global e execução de comandos acionado por atalho de teclado (`Ctrl+K` ou `Cmd+K`) ou botão declarativo `[data-command-palette]`, com navegação por teclado (`↑`, `↓`, `Enter`, `Esc`), categorias, badges e extensibilidade.
 - **📱 Mobile First**: Layouts responsivos baseados em CSS Grid que se adaptam automaticamente a telas menores e expandem via breakpoints (`.grid-sm-*`, `.grid-md-*`, `.grid-lg-*`, `.grid-xl-*`).
 - **🌙 Dark Mode & Light Mode Nativo**: Alternância automática de temas detectando a preferência do sistema operacional, com transições suaves e contraste otimizado.
 - **🎨 Biblioteca de 104 Ícones Pure CSS**: Ícones SVG incorporados via máscara CSS (`-webkit-mask-image` / `mask-image`) com `currentColor`:
@@ -35,6 +38,7 @@
   - **E-Commerce & Vendas (5)**: Carrinho (`icon-cart`), etiqueta de preço (`icon-tag`), cartão de crédito (`icon-credit-card`), caixa/pacote (`icon-package`), caminhão de entrega (`icon-truck`).
   - **Comunicação, Mídia & Sistema (46)**: Mensagem, telefone, compartilhar, play, cadeado, olho, terminal, código, upload, download, etc.
 - **✨ Componentes Avançados de Interface**:
+  - **Command Palette Dialog**: Modal Spotlight com backdrop blur, atalhos de teclado e grupos filtráveis.
   - **Skeleton Loaders Shimmer**: Efeito ondulante suave (`.skeleton-avatar`, `.skeleton-title`, `.skeleton-text`, `.skeleton-rect`).
   - **Chips & Tags**: Pílulas compactas interativas, filtros clicáveis e tags removíveis (`.chip`, `.chip-clickable`, `.chip-remove`).
   - **Steppers de Progresso**: Guias em etapas responsivos para checkout e wizards (`.stepper`, `.step-done`, `.step-active`).
@@ -42,8 +46,8 @@
 - **🗂️ Side Modals & Drawers Laterais**: Modais flutuantes deslizantes (`.modal-side`, `.modal-side-right`, `.modal-side-left`, `.modal-bottom`).
 - **📊 Tabelas Interativas Inteligentes**: Ordenação automática por colunas (`th.sortable`) e busca rápida em tempo real (`data-table-filter`).
 - **🖥️ Demonstrativos Completos**:
-  - **Gráficos Interativos (Charts Showcase)**: 9 modelos com sandbox dinâmico e exportação PNG/SVG.
-  - **SaaS Admin Dashboard Suite**: Visão Geral, Usuários, Mensagens/Chat, Agendamentos e Configurações integrados aos novos gráficos.
+  - **Gráficos Interativos (Charts Showcase)**: 10 modelos incluindo Gráfico Misto (Combo) com sandbox dinâmico e exportação PNG/SVG.
+  - **SaaS Admin Dashboard Suite**: Visão Geral com mini sparklines nos KPIs, gráfico misto com seletor de períodos reativos (7D, 30D, 90D, 1A), Donut de pagamentos e Command Palette.
   - **Aura Beauty & Nails Studio**: Salão de estética, nail design e agendamento online com ícones temáticos.
   - **Rede Social Demo**: Feed com Stories, hashtags, reações e chat.
   - **Loja de Roupas & Moda (E-Commerce)**: Vitrine de produtos com sacola lateral deslizante interativa.
@@ -52,7 +56,8 @@
 
 ## ⚙️ Módulos & Recursos JavaScript (`window.FramePER`)
 
-- **📈 FramePER.Chart**: Motor completo de gráficos vetoriais SVG com 9 tipos, animação e exportação.
+- **📈 FramePER.Chart**: Motor completo de gráficos vetoriais SVG com 10 tipos, animações nativas de entrada e exportação PNG/SVG.
+- **🔍 FramePER.CommandPalette**: Spotlight flutuante com atalho `Ctrl+K` / `Cmd+K`, catálogo de páginas e ações rápidas extensíveis.
 - **📋 FramePER.Clipboard**: Cópia para a área de transferência com um clique (`data-copy="texto"` ou `data-copy-target="#seletor"`).
 - **📝 FramePER.Form**: Máscaras automáticas em tempo real para CPF, CNPJ, Telefone/Celular, CEP, Data e Moeda brasileira (`data-mask="cpf|cnpj|phone|cep|date|money"`).
 - **🔢 FramePER.Counter**: Números animados com aceleração ease-out acionados via IntersectionObserver (`data-counter="14500"`).

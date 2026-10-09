@@ -72,11 +72,12 @@
         </div>
 
         <div class="cluster gap-3">
-          <!-- Search Bar -->
-          <div class="input-icon d-none d-md-block search-field">
-            <i class="icon icon-search"></i>
-            <input type="text" class="input input-sm" placeholder="Buscar registros...">
-          </div>
+          <!-- Command Palette Trigger Button -->
+          <button class="btn btn-ghost btn-sm d-none d-md-flex align-items-center gap-2 text-muted border" data-command-palette style="background: var(--bg-surface); padding-inline: 0.75rem;" aria-label="Abrir Command Palette">
+            <i class="icon icon-search f-s-2"></i>
+            <span>Buscar ou executar...</span>
+            <kbd class="f-s-1 m-l-2">Ctrl+K</kbd>
+          </button>
 
           <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
             <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
@@ -110,32 +111,35 @@
       <main class="app-content stack gap-5 fade-in">
 
         <!-- Stat Cards Grid -->
+        <!-- Stat Cards Grid with Mini Sparklines -->
         <div class="grid grid-sm-2 grid-xl-4 gap-4">
 
-          <div class="card p-4">
-            <div class="d-flex align-items-center justify-content-between m-b-2">
+          <div class="card p-4 stack gap-2">
+            <div class="d-flex align-items-center justify-content-between">
               <span class="stat-label">Usuários Ativos</span>
-              <span class="icon-box"><i class="icon icon-user"></i></span>
+              <span class="icon-box icon-box-primary"><i class="icon icon-user"></i></span>
             </div>
             <div class="stat">
               <span class="stat-value">24.592</span>
               <span class="stat-delta up"><i class="icon icon-arrow-up"></i> +12.5% este mês</span>
             </div>
+            <div id="sparkUser" class="m-t-1"></div>
           </div>
 
-          <div class="card p-4">
-            <div class="d-flex align-items-center justify-content-between m-b-2">
+          <div class="card p-4 stack gap-2">
+            <div class="d-flex align-items-center justify-content-between">
               <span class="stat-label">Vendas Totais</span>
-              <span class="icon-box"><i class="icon icon-check"></i></span>
+              <span class="icon-box icon-box-primary"><i class="icon icon-check"></i></span>
             </div>
             <div class="stat">
               <span class="stat-value">R$ 84.200</span>
               <span class="stat-delta up"><i class="icon icon-arrow-up"></i> +8.2% vs semana passada</span>
             </div>
+            <div id="sparkSales" class="m-t-1"></div>
           </div>
 
-          <div class="card p-4">
-            <div class="d-flex align-items-center justify-content-between m-b-2">
+          <div class="card p-4 stack gap-2">
+            <div class="d-flex align-items-center justify-content-between">
               <span class="stat-label">Taxa de Cancelamento</span>
               <span class="icon-box"><i class="icon icon-trash"></i></span>
             </div>
@@ -143,10 +147,11 @@
               <span class="stat-value">1.4%</span>
               <span class="stat-delta down"><i class="icon icon-arrow-down"></i> -0.3% estabilizado</span>
             </div>
+            <div id="sparkChurn" class="m-t-1"></div>
           </div>
 
-          <div class="card p-4">
-            <div class="d-flex align-items-center justify-content-between m-b-2">
+          <div class="card p-4 stack gap-2">
+            <div class="d-flex align-items-center justify-content-between">
               <span class="stat-label">Avaliação Média</span>
               <span class="icon-box"><i class="icon icon-star"></i></span>
             </div>
@@ -154,61 +159,84 @@
               <span class="stat-value">4.9 / 5.0</span>
               <span class="stat-delta up"><i class="icon icon-arrow-up"></i> 1.420 avaliações</span>
             </div>
+            <div id="sparkRating" class="m-t-1"></div>
           </div>
 
         </div>
 
-        <!-- Main Chart & Activity Grid -->
+        <!-- Main Chart & Secondary Column Grid -->
         <div class="grid grid-lg-3 gap-5">
 
-          <!-- Chart Card (2 Columns) -->
+          <!-- Mixed Chart Card (2 Columns) -->
           <div class="card span-lg-2 p-4 stack gap-4">
             <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
               <div>
-                <h3 class="card-title">Desempenho de Vendas</h3>
-                <p class="card-subtitle">Volume diário de transações processadas</p>
+                <div class="d-flex align-items-center gap-2 m-b-1">
+                  <h3 class="card-title m-0">Desempenho de Vendas & Metas</h3>
+                  <span class="badge badge-primary badge-pill">Gráfico Misto</span>
+                </div>
+                <p class="card-subtitle">Volume realizado (barras) versus metas planejadas (linha com marcadores)</p>
               </div>
-              <div class="cluster gap-2">
-                <button class="btn btn-secondary btn-sm" id="btnSalesWeekly">Semanal</button>
-                <button class="btn btn-outline btn-sm" id="btnSalesMonthly">Mensal</button>
+              <div class="cluster gap-2" id="periodFilterGroup">
+                <button class="btn btn-secondary btn-sm" data-period="7d">7 Dias</button>
+                <button class="btn btn-outline btn-sm" data-period="30d">30 Dias</button>
+                <button class="btn btn-outline btn-sm" data-period="90d">90 Dias</button>
+                <button class="btn btn-outline btn-sm" data-period="1y">1 Ano</button>
               </div>
             </div>
 
-            <!-- Interactive Vector Chart -->
+            <!-- Interactive Vector Mixed Chart -->
             <div id="salesChart"></div>
           </div>
 
-          <!-- Activity List (1 Column) -->
-          <div class="card p-4 stack gap-3">
-            <h3 class="card-title">Atividade Recente</h3>
+          <!-- Secondary Column: Payment Donut & Recent Activity -->
+          <div class="stack gap-4">
 
-            <ul class="activity list-unstyled">
-              <li>
-                <span class="avatar avatar-sm">JS</span>
+            <!-- Donut Chart: Métodos de Pagamento -->
+            <div class="card p-4 stack gap-3">
+              <div class="d-flex align-items-center justify-content-between">
                 <div>
-                  <span class="f-w-medium">João Silva</span> contratou o Plano Pro.
-                  <small>há 10 minutos</small>
+                  <h3 class="card-title m-0">Mix de Pagamentos</h3>
+                  <p class="card-subtitle">Volume por forma de pagamento</p>
                 </div>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <span class="avatar avatar-sm">MS</span>
-                <div>
-                  <span class="f-w-medium">Maria Souza</span> atualizou os dados de pagamento.
-                  <small>há 42 minutos</small>
-                </div>
-              </li>
-              <li class="divider"></li>
-              <li>
-                <span class="avatar avatar-sm">PG</span>
-                <div>
-                  <span class="f-w-medium">Pedro Gomes</span> abriu um chamado de suporte.
-                  <small>há 2 horas</small>
-                </div>
-              </li>
-            </ul>
+                <span class="badge badge-green badge-pill">Gateway Ativo</span>
+              </div>
+              <div id="paymentDonut"></div>
+            </div>
 
-            <a href="messages.html" class="btn btn-outline btn-sm m-t-auto w-100">Ver Mensagens & Suporte</a>
+            <!-- Activity List (1 Column) -->
+            <div class="card p-4 stack gap-3">
+              <h3 class="card-title">Atividade Recente</h3>
+
+              <ul class="activity list-unstyled">
+                <li>
+                  <span class="avatar avatar-sm">JS</span>
+                  <div>
+                    <span class="f-w-medium">João Silva</span> contratou o Plano Pro.
+                    <small>há 10 minutos</small>
+                  </div>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <span class="avatar avatar-sm">MS</span>
+                  <div>
+                    <span class="f-w-medium">Maria Souza</span> atualizou os dados de pagamento.
+                    <small>há 42 minutos</small>
+                  </div>
+                </li>
+                <li class="divider"></li>
+                <li>
+                  <span class="avatar avatar-sm">PG</span>
+                  <div>
+                    <span class="f-w-medium">Pedro Gomes</span> abriu um chamado de suporte.
+                    <small>há 2 horas</small>
+                  </div>
+                </li>
+              </ul>
+
+              <a href="messages.html" class="btn btn-outline btn-sm m-t-auto w-100">Ver Mensagens & Suporte</a>
+            </div>
+
           </div>
 
         </div>
@@ -285,45 +313,113 @@
   <script src="demo.js"></script>
   <script>
     document.addEventListener('DOMContentLoaded', () => {
-      const salesChart = new FramePER.Chart('#salesChart', {
-        type: 'area',
-        data: {
+      // 1. KPI Sparklines
+      new FramePER.Chart('#sparkUser', {
+        type: 'sparkline',
+        data: { series: [{ data: [180, 210, 205, 230, 225, 245], color: '#3b82f6' }] },
+        options: { height: 35 }
+      });
+
+      new FramePER.Chart('#sparkSales', {
+        type: 'sparkline',
+        data: { series: [{ data: [65000, 72000, 69000, 78000, 81000, 84200], color: '#10b981' }] },
+        options: { height: 35 }
+      });
+
+      new FramePER.Chart('#sparkChurn', {
+        type: 'sparkline',
+        data: { series: [{ data: [2.1, 1.9, 1.8, 1.6, 1.5, 1.4], color: '#f59e0b' }] },
+        options: { height: 35 }
+      });
+
+      new FramePER.Chart('#sparkRating', {
+        type: 'sparkline',
+        data: { series: [{ data: [4.6, 4.7, 4.7, 4.8, 4.8, 4.9], color: '#8b5cf6' }] },
+        options: { height: 35 }
+      });
+
+      // 2. Gráfico Misto (Vendas Realizadas vs Meta)
+      const periodDatasets = {
+        '7d': {
           labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
           series: [
-            { name: 'Receita', data: [4200, 6800, 9400, 5100, 11200, 7900, 3800], color: 'var(--primary)' }
+            { name: 'Receita Realizada', type: 'bar', data: [7400, 9200, 11800, 8900, 14200, 12600, 6800], color: '#3b82f6' },
+            { name: 'Meta do Dia', type: 'line', data: [8000, 8000, 9500, 9500, 12000, 12000, 8000], color: '#10b981' }
           ]
         },
+        '30d': {
+          labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
+          series: [
+            { name: 'Receita Realizada', type: 'bar', data: [18500, 22400, 26800, 31200], color: '#3b82f6' },
+            { name: 'Meta do Dia', type: 'line', data: [19000, 21000, 25000, 28000], color: '#10b981' }
+          ]
+        },
+        '90d': {
+          labels: ['Mês 1', 'Mês 2', 'Mês 3'],
+          series: [
+            { name: 'Receita Realizada', type: 'bar', data: [68000, 79000, 84200], color: '#3b82f6' },
+            { name: 'Meta do Dia', type: 'line', data: [65000, 72000, 80000], color: '#10b981' }
+          ]
+        },
+        '1y': {
+          labels: ['1º Tri', '2º Tri', '3º Tri', '4º Tri'],
+          series: [
+            { name: 'Receita Realizada', type: 'bar', data: [185000, 214000, 248000, 286000], color: '#3b82f6' },
+            { name: 'Meta do Dia', type: 'line', data: [175000, 200000, 230000, 260000], color: '#10b981' }
+          ]
+        }
+      };
+
+      const salesChart = new FramePER.Chart('#salesChart', {
+        type: 'mixed',
+        data: periodDatasets['7d'],
         options: {
-          height: 250,
+          height: 280,
           curved: true,
-          fill: true,
+          showDots: true,
           format: 'currency',
           tooltip: true,
-          legend: false
+          legend: true
         }
       });
 
-      const btnWeekly = document.getElementById('btnSalesWeekly');
-      const btnMonthly = document.getElementById('btnSalesMonthly');
-      if (btnWeekly && btnMonthly) {
-        btnWeekly.addEventListener('click', () => {
-          btnWeekly.className = 'btn btn-secondary btn-sm';
-          btnMonthly.className = 'btn btn-outline btn-sm';
-          salesChart.update({
-            labels: ['Seg', 'Ter', 'Qua', 'Qui', 'Sex', 'Sáb', 'Dom'],
-            series: [{ name: 'Receita', data: [4200, 6800, 9400, 5100, 11200, 7900, 3800], color: 'var(--primary)' }]
-          });
-        });
-
-        btnMonthly.addEventListener('click', () => {
-          btnMonthly.className = 'btn btn-secondary btn-sm';
-          btnWeekly.className = 'btn btn-outline btn-sm';
-          salesChart.update({
-            labels: ['Sem 1', 'Sem 2', 'Sem 3', 'Sem 4'],
-            series: [{ name: 'Receita', data: [28400, 36200, 41800, 52300], color: 'var(--primary)' }]
-          });
+      // Period buttons switcher
+      const periodGroup = document.getElementById('periodFilterGroup');
+      if (periodGroup) {
+        periodGroup.addEventListener('click', (e) => {
+          const btn = e.target.closest('button[data-period]');
+          if (!btn) return;
+          const period = btn.dataset.period;
+          if (periodDatasets[period]) {
+            periodGroup.querySelectorAll('button').forEach(b => {
+              b.className = 'btn btn-outline btn-sm';
+            });
+            btn.className = 'btn btn-secondary btn-sm';
+            salesChart.update(periodDatasets[period]);
+          }
         });
       }
+
+      // 3. Donut Chart (Origem de Pagamentos)
+      new FramePER.Chart('#paymentDonut', {
+        type: 'donut',
+        data: {
+          labels: ['PIX Instantâneo', 'Cartão de Crédito', 'Boleto Bancário'],
+          series: [
+            { name: 'PIX', value: 54, color: '#10b981' },
+            { name: 'Cartão de Crédito', value: 34, color: '#3b82f6' },
+            { name: 'Boleto', value: 12, color: '#f59e0b' }
+          ]
+        },
+        options: {
+          height: 180,
+          donutCutout: 0.65,
+          centerText: 'R$ 84k',
+          centerSubtext: 'Total Mês',
+          tooltip: true,
+          legend: true
+        }
+      });
     });
   </script>
 </body>

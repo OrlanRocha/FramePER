@@ -64,6 +64,11 @@
       </nav>
 
       <div class="navbar-actions">
+        <button class="btn btn-outline btn-sm d-none d-sm-inline-flex align-items-center gap-2" data-command-palette aria-label="Busca rápida">
+          <i class="icon icon-search"></i>
+          <span>Buscar</span>
+          <kbd style="font-size: 0.7rem; padding: 2px 5px; border-radius: 4px; background: var(--bg-surface); border: 1px solid var(--border);">Ctrl K</kbd>
+        </button>
         <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
           <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
         </button>
@@ -80,6 +85,10 @@
       <a class="nav-link active" href="charts.html">Gráficos SVG</a>
       <a class="nav-link" href="components.html">Componentes</a>
       <a class="nav-link" href="manual.html">Manual API</a>
+      <button class="btn btn-outline btn-sm d-flex align-items-center justify-content-between m-2" data-command-palette>
+        <span><i class="icon icon-search m-r-1"></i> Busca rápida</span>
+        <kbd>Ctrl K</kbd>
+      </button>
     </div>
   </header>
 
@@ -89,12 +98,13 @@
     <div class="d-flex align-items-center justify-content-between flex-wrap gap-4 border-b p-b-5">
       <div>
         <div class="d-flex align-items-center gap-2 m-b-2">
-          <span class="badge badge-primary badge-pill">Novo recurso v2.6.0</span>
+          <span class="badge badge-primary badge-pill">Novo recurso v2.7.0</span>
           <span class="badge badge-green badge-dot">Zero Dependências</span>
+          <span class="badge badge-purple">Animações SVG Nativas</span>
         </div>
         <h1 class="f-s-7 m-0">Framework de Gráficos Vetoriais</h1>
         <p class="text-muted m-t-1 m-b-0" style="max-width: 48rem;">
-          Gráficos 100% puros em SVG, CSS e Vanilla JS integrados nativamente ao <strong>Frame PER</strong>. Curvas bezier perfeitas, tooltips flutuantes reativos, legendas com alternância de séries, suporte nativo a dark mode e download em PNG/SVG.
+          Gráficos 100% puros em SVG, CSS e Vanilla JS integrados nativamente ao <strong>Frame PER</strong>. Curvas bezier perfeitas, animações de entrada fluidas, gráficos mistos (combo barras + linhas), tooltips flutuantes reativos, legendas com alternância de séries, suporte nativo a dark mode e download em PNG/SVG.
         </p>
       </div>
 
@@ -223,6 +233,26 @@
 
     </div>
 
+    <!-- Mixed Chart: Barras + Linha (Combo) -->
+    <div class="card chart-card p-4 stack gap-3">
+      <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+        <div>
+          <div class="cluster gap-2 align-items-center">
+            <h3 class="card-title m-0">Gráfico Misto: Barras + Linha (Combo)</h3>
+            <span class="badge badge-primary badge-pill">Novo v2.7.0</span>
+          </div>
+          <p class="card-subtitle">Combinação precisa de séries volumétricas (barras verticais agrupadas) com métricas de tendência (linhas bezier/splines e pontos interativos)</p>
+        </div>
+        <div class="chart-controls">
+          <button class="btn btn-ghost btn-sm" id="btnExportMixed">
+            <i class="icon icon-download"></i> Exportar PNG
+          </button>
+        </div>
+      </div>
+
+      <div id="mixedChart"></div>
+    </div>
+
     <!-- Circular & Specialty Charts: Donut, Pie, Gauge, Radar -->
     <div class="grid grid-md-2 grid-lg-4 gap-4">
 
@@ -302,12 +332,13 @@
 
       <pre><code><span class="tok-k">// 1. Instanciação rápida</span>
 <span class="tok-k">const</span> chart = <span class="tok-k">new</span> <span class="tok-k">FramePER</span>.<span class="tok-k">Chart</span>(<span class="tok-s">'#meu-grafico'</span>, {
-  type: <span class="tok-s">'line'</span>, <span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar'</span>
+  type: <span class="tok-s">'line'</span>, <span class="tok-c">// 'line' | 'area' | 'bar' | 'horizontal-bar' | 'mixed'</span>
                 <span class="tok-c">// 'donut' | 'pie' | 'gauge' | 'radar' | 'sparkline'</span>
   data: {
     labels: [<span class="tok-s">'Jan'</span>, <span class="tok-s">'Fev'</span>, <span class="tok-s">'Mar'</span>, <span class="tok-s">'Abr'</span>, <span class="tok-s">'Mai'</span>, <span class="tok-s">'Jun'</span>],
     series: [
       { name: <span class="tok-s">'Vendas'</span>, data: [120, 190, 160, 240, 210, 310], color: <span class="tok-s">'var(--primary)'</span> }
+      <span class="tok-c">// No tipo 'mixed', defina type: 'bar' ou type: 'line' por série!</span>
     ]
   },
   options: {
@@ -433,7 +464,28 @@ chart.<span class="tok-f">exportPNG</span>(<span class="tok-s">'relatorio-vendas
         }
       });
 
-      // 6. Donut Chart
+      // 6. Gráfico Misto (Combo Barras + Linha)
+      const mixedChart = new FramePER.Chart('#mixedChart', {
+        type: 'mixed',
+        data: {
+          labels: ['Jan', 'Fev', 'Mar', 'Abr', 'Mai', 'Jun', 'Jul', 'Ago', 'Set', 'Out', 'Nov', 'Dez'],
+          series: [
+            { name: 'Previsto', type: 'bar', data: [38000, 42000, 45000, 52000, 58000, 65000, 62000, 71000, 75000, 82000, 88000, 95000], color: '#3b82f6' },
+            { name: 'Realizado', type: 'bar', data: [41000, 44000, 43000, 56000, 61000, 69000, 64000, 74000, 79000, 85000, 92000, 102000], color: '#06b6d4' },
+            { name: 'Meta Anual', type: 'line', data: [40000, 43000, 46000, 54000, 60000, 67000, 65000, 73000, 78000, 84000, 90000, 98000], color: '#ec4899' }
+          ]
+        },
+        options: {
+          height: 320,
+          curved: true,
+          showDots: true,
+          format: 'currency',
+          tooltip: true,
+          legend: true
+        }
+      });
+
+      // 7. Donut Chart
       const donutChart = new FramePER.Chart('#donutChart', {
         type: 'donut',
         data: {
@@ -532,6 +584,14 @@ chart.<span class="tok-f">exportPNG</span>(<span class="tok-s">'relatorio-vendas
           ]
         });
 
+        mixedChart.update({
+          series: [
+            { name: 'Previsto', type: 'bar', data: randList(12, 35000, 90000), color: '#3b82f6' },
+            { name: 'Realizado', type: 'bar', data: randList(12, 38000, 105000), color: '#06b6d4' },
+            { name: 'Meta Anual', type: 'line', data: randList(12, 40000, 95000), color: '#ec4899' }
+          ]
+        });
+
         donutChart.update({
           series: [
             { name: 'Smartphones', value: Math.floor(Math.random() * 40) + 20, color: '#3b82f6' },
@@ -555,11 +615,17 @@ chart.<span class="tok-f">exportPNG</span>(<span class="tok-s">'relatorio-vendas
         isCurved = !isCurved;
         areaChart.update(null, { curved: isCurved });
         lineChart.update(null, { curved: isCurved });
+        mixedChart.update(null, { curved: isCurved });
       });
 
       document.getElementById('btnExportLine').addEventListener('click', () => {
         lineChart.exportPNG('vendas-comparativo.png');
         FramePER.Notify.success('Download Concluído', 'O gráfico foi exportado como imagem PNG em alta resolução.');
+      });
+
+      document.getElementById('btnExportMixed').addEventListener('click', () => {
+        mixedChart.exportPNG('grafico-misto-combo.png');
+        FramePER.Notify.success('Exportação PNG', 'Gráfico misto baixado com sucesso!');
       });
 
       document.getElementById('btnExportAll').addEventListener('click', () => {

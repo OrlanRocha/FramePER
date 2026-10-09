@@ -3573,9 +3573,15 @@ kbd {
   vector-effect: non-scaling-stroke;
   transition: stroke-width 0.2s var(--ease), opacity 0.2s var(--ease);
 }
+.frame-chart-svg .frame-chart-line.frame-chart-animated {
+  animation: frameChartDrawLine 0.85s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
 .frame-chart-svg .frame-chart-area {
   pointer-events: none;
   transition: opacity 0.2s var(--ease);
+}
+.frame-chart-svg .frame-chart-area.frame-chart-animated {
+  animation: frameChartFadeArea 0.75s ease-out forwards;
 }
 .frame-chart-svg .frame-chart-dot {
   cursor: pointer;
@@ -3592,12 +3598,49 @@ kbd {
   cursor: pointer;
   rx: 4px;
   ry: 4px;
+  transform-box: fill-box;
   transform-origin: bottom;
   transition: transform 0.2s var(--ease), opacity 0.2s var(--ease), filter 0.2s var(--ease);
+}
+.frame-chart-svg .frame-chart-bar.frame-chart-animated {
+  animation: frameChartGrowBar 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
+}
+.frame-chart-svg .frame-chart-bar.frame-chart-horiz-animated {
+  transform-origin: left;
+  animation: frameChartGrowHorizBar 0.55s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 .frame-chart-svg .frame-chart-bar:hover, .frame-chart-svg .frame-chart-bar.active {
   filter: brightness(1.12);
   transform: scaleY(1.02);
+}
+@keyframes frameChartDrawLine {
+  to {
+    stroke-dashoffset: 0;
+  }
+}
+@keyframes frameChartFadeArea {
+  from {
+    opacity: 0;
+  }
+  to {
+    opacity: 1;
+  }
+}
+@keyframes frameChartGrowBar {
+  from {
+    transform: scaleY(0);
+  }
+  to {
+    transform: scaleY(1);
+  }
+}
+@keyframes frameChartGrowHorizBar {
+  from {
+    transform: scaleX(0);
+  }
+  to {
+    transform: scaleX(1);
+  }
 }
 .frame-chart-svg .frame-chart-slice {
   cursor: pointer;
@@ -3782,6 +3825,202 @@ kbd {
   font-variant-numeric: tabular-nums;
   word-break: break-word;
   line-height: 1.2;
+}
+
+.command-backdrop {
+  position: fixed;
+  inset: 0;
+  z-index: 1050;
+  display: flex;
+  justify-content: center;
+  align-items: flex-start;
+  padding-top: 10vh;
+  padding-inline: 1rem;
+  background-color: rgba(0, 0, 0, 0.45);
+  backdrop-filter: blur(8px);
+  -webkit-backdrop-filter: blur(8px);
+  opacity: 0;
+  visibility: hidden;
+  pointer-events: none;
+  transition: opacity 0.2s var(--ease), visibility 0.2s var(--ease);
+}
+.command-backdrop.open {
+  opacity: 1;
+  visibility: visible;
+  pointer-events: auto;
+}
+.command-backdrop.open .command-dialog {
+  transform: translateY(0) scale(1);
+}
+
+.command-dialog {
+  position: relative;
+  width: 100%;
+  max-width: 40rem;
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-xl);
+  box-shadow: var(--shadow-xl), 0 25px 50px -12px rgba(0, 0, 0, 0.4);
+  overflow: hidden;
+  transform: translateY(-1rem) scale(0.98);
+  transition: transform 0.25s cubic-bezier(0.16, 1, 0.3, 1);
+  display: flex;
+  flex-direction: column;
+}
+
+.command-header {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  padding: 0.875rem 1.25rem;
+  border-bottom: 1px solid var(--border-color);
+}
+.command-header .command-search-icon {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+}
+.command-header .command-input {
+  flex: 1 1 auto;
+  border: none;
+  outline: none;
+  background: transparent;
+  font-family: inherit;
+  font-size: 1rem;
+  color: var(--text-main);
+}
+.command-header .command-input::placeholder {
+  color: var(--text-muted);
+}
+.command-header .command-close-btn {
+  border: none;
+  background: transparent;
+  padding: 0.25rem;
+  color: var(--text-muted);
+  cursor: pointer;
+  border-radius: var(--radius-sm);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+}
+.command-header .command-close-btn:hover {
+  color: var(--text-main);
+  background: var(--bg-hover);
+}
+
+.command-body {
+  max-height: 22.5rem;
+  overflow-y: auto;
+  padding: 0.5rem;
+  scrollbar-width: thin;
+}
+
+.command-group {
+  margin-bottom: 0.5rem;
+}
+.command-group:last-child {
+  margin-bottom: 0;
+}
+
+.command-group-title {
+  padding: 0.375rem 0.75rem;
+  font-size: 0.6875rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-muted);
+}
+
+.command-item {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: 0.75rem;
+  padding: 0.625rem 0.75rem;
+  border-radius: var(--radius-md);
+  cursor: pointer;
+  color: var(--text-main);
+  text-decoration: none;
+  transition: background-color 0.15s var(--ease), color 0.15s var(--ease);
+}
+.command-item:hover, .command-item.is-selected {
+  background-color: var(--bg-subtle);
+  color: var(--primary);
+}
+.command-item:hover .command-item-icon, .command-item.is-selected .command-item-icon {
+  color: var(--primary);
+  transform: scale(1.08);
+}
+.command-item .command-item-left {
+  display: flex;
+  align-items: center;
+  gap: 0.75rem;
+  min-width: 0;
+}
+.command-item .command-item-icon {
+  font-size: 1.125rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: transform 0.15s var(--ease), color 0.15s var(--ease);
+}
+.command-item .command-item-text {
+  min-width: 0;
+}
+.command-item .command-item-title {
+  font-size: 0.875rem;
+  font-weight: 500;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.command-item .command-item-desc {
+  font-size: 0.75rem;
+  color: var(--text-muted);
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+.command-item .command-item-badge {
+  font-size: 0.6875rem;
+  flex-shrink: 0;
+}
+
+.command-empty {
+  padding: 2.5rem 1rem;
+  text-align: center;
+  color: var(--text-muted);
+}
+.command-empty .command-empty-icon {
+  font-size: 2rem;
+  margin-bottom: 0.5rem;
+  opacity: 0.6;
+}
+.command-empty p {
+  margin: 0;
+  font-size: 0.875rem;
+}
+
+.command-footer {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 0.75rem;
+  padding: 0.625rem 1.25rem;
+  border-top: 1px solid var(--border-color);
+  background-color: var(--bg-subtle);
+  font-size: 0.75rem;
+  color: var(--text-muted);
+}
+.command-footer .command-shortcuts {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.75rem;
+}
+.command-footer .command-shortcut {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.25rem;
 }
 
 .icon {
