@@ -266,13 +266,9 @@
             },
 
             initAccordions: function() {
-                document.querySelectorAll('.accordion-header').forEach(header => {
-                    header.addEventListener('click', () => {
-                        header.classList.toggle('active');
-                        const body = header.nextElementSibling;
-                        if(body) body.classList.toggle('active');
-                    });
-                });
+                if (FramePER.Accordion && FramePER.Accordion.init) {
+                    FramePER.Accordion.init();
+                }
             },
             initCarousels: function() {
                 document.querySelectorAll('.carousel').forEach(carousel => {
@@ -294,29 +290,9 @@
                 });
             },
             initTabs: function() {
-                document.addEventListener("click", (e) => {
-                    const tab = e.target.closest(".tab-link");
-                    if (!tab) return;
-                    const targetId = tab.getAttribute("data-target");
-
-                    const parent = tab.closest(".tabs");
-                    if (parent) {
-                        parent.querySelectorAll(".tab-link").forEach(t => t.classList.remove("active"));
-                    }
-                    tab.classList.add("active");
-
-                    if (targetId && targetId.startsWith("#")) {
-                        e.preventDefault();
-                        const targetContent = document.querySelector(targetId);
-                        if (targetContent) {
-                            const parentContainer = targetContent.parentElement;
-                            if (parentContainer) {
-                                parentContainer.querySelectorAll(".tab-content").forEach(c => c.classList.remove("active"));
-                            }
-                            targetContent.classList.add("active");
-                        }
-                    }
-                });
+                if (FramePER.Tabs && FramePER.Tabs.init) {
+                    FramePER.Tabs.init();
+                }
             },
 
             initOffcanvas: function() {
@@ -2045,6 +2021,14 @@
                 },
                 {
                     group: 'Componentes & Docs',
+                    id: 'nav-interactive-ui',
+                    title: 'Abas, Accordions & Popovers',
+                    desc: 'Slider deslizante de abas, sanfona fluida e popover inteligente',
+                    icon: 'icon-settings',
+                    action: () => { window.location.href = 'index.html#interativos-demo'; }
+                },
+                {
+                    group: 'Componentes & Docs',
                     id: 'nav-manual',
                     title: 'Manual de API Completo',
                     desc: 'Documentação dos utilitários CSS e JS',
@@ -3462,6 +3446,533 @@
                     });
                 }
             };
+        })(),
+
+        Tabs: (() => {
+            class Instance {
+                constructor(element) {
+                    this.container = typeof element === 'string' ? document.querySelector(element) : element;
+                    if (!this.container || this.container._frameTabs) return;
+                    this.container._frameTabs = this;
+
+                    this.isPill = this.container.classList.contains('tabs-pills');
+                    this.isVertical = this.container.classList.contains('tabs-vertical');
+                    this.links = Array.from(this.container.querySelectorAll('.tab-link, [data-tab-target]'));
+
+                    this._setupAccessibility();
+                    this._setupIndicator();
+                    this._bindEvents();
+                    this._initActiveTab();
+                }
+
+                _setupAccessibility() {
+                    this.container.setAttribute('role', 'tablist');
+                    if (this.isVertical) {
+                        this.container.setAttribute('aria-orientation', 'vertical');
+                    }
+                    this.links.forEach((link, idx) => {
+                        link.setAttribute('role', 'tab');
+                        link.setAttribute('tabindex', link.classList.contains('active') ? '0' : '-1');
+                        link.setAttribute('aria-selected', link.classList.contains('active') ? 'true' : 'false');
+                        const targetId = link.getAttribute('data-target') || link.getAttribute('data-tab-target') || link.getAttribute('href');
+                        if (targetId && targetId.startsWith('#')) {
+                            link.setAttribute('aria-controls', targetId.substring(1));
+                            const panel = document.querySelector(targetId);
+                            if (panel) {
+                                panel.setAttribute('role', 'tabpanel');
+                                if (!panel.id) panel.id = targetId.substring(1);
+                                panel.setAttribute('aria-labelledby', link.id || `tab-link-${idx}`);
+                            }
+                        }
+                    });
+                }
+
+                _setupIndicator() {
+                    if (this.isVertical) return;
+                    const indicatorClass = this.isPill ? 'tab-indicator-pill' : 'tab-indicator';
+                    this.indicator = this.container.querySelector('.' + indicatorClass);
+                    if (!this.indicator) {
+                        this.indicator = document.createElement('div');
+                        this.indicator.className = indicatorClass;
+                        this.container.appendChild(this.indicator);
+                    }
+                }
+
+                _updateIndicator(activeLink) {
+                    if (!this.indicator || !activeLink) return;
+                    const containerRect = this.container.getBoundingClientRect();
+                    const linkRect = activeLink.getBoundingClientRect();
+                    
+                    const left = linkRect.left - containerRect.left + this.container.scrollLeft;
+                    const width = linkRect.width;
+
+                    this.indicator.style.transform = `translateX(${left}px)`;
+                    this.indicator.style.width = `${width}px`;
+                }
+
+                _bindEvents() {
+                    this.links.forEach((link, idx) => {
+                        link.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            this.show(link);
+                        });
+
+                        link.addEventListener('keydown', (e) => {
+                            let targetIdx = null;
+                            if (e.key === 'ArrowRight' || (!this.isVertical && e.key === 'ArrowDown') || (this.isVertical && e.key === 'ArrowDown')) {
+                                e.preventDefault();
+                                targetIdx = (idx + 1) % this.links.length;
+                            } else if (e.key === 'ArrowLeft' || (!this.isVertical && e.key === 'ArrowUp') || (this.isVertical && e.key === 'ArrowUp')) {
+                                e.preventDefault();
+                                targetIdx = (idx - 1 + this.links.length) % this.links.length;
+                            } else if (e.key === 'Home') {
+                                e.preventDefault();
+                                targetIdx = 0;
+                            } else if (e.key === 'End') {
+                                e.preventDefault();
+                                targetIdx = this.links.length - 1;
+                            }
+
+                            if (targetIdx !== null) {
+                                const targetLink = this.links[targetIdx];
+                                targetLink.focus();
+                                this.show(targetLink);
+                            }
+                        });
+                    });
+
+                    window.addEventListener('resize', () => {
+                        const activeLink = this.container.querySelector('.tab-link.active, [data-tab-target].active');
+                        if (activeLink) this._updateIndicator(activeLink);
+                    });
+                }
+
+                _initActiveTab() {
+                    let activeLink = this.container.querySelector('.tab-link.active, [data-tab-target].active');
+                    if (!activeLink && this.links.length) {
+                        activeLink = this.links[0];
+                    }
+                    if (activeLink) {
+                        this.show(activeLink, false);
+                    }
+                }
+
+                show(linkOrTarget, triggerEvent = true) {
+                    let targetLink = null;
+                    if (typeof linkOrTarget === 'string') {
+                        targetLink = this.links.find(l => {
+                            const t = l.getAttribute('data-target') || l.getAttribute('data-tab-target') || l.getAttribute('href');
+                            return t === linkOrTarget || l.id === linkOrTarget;
+                        });
+                    } else {
+                        targetLink = linkOrTarget;
+                    }
+                    if (!targetLink) return;
+
+                    this.links.forEach(l => {
+                        l.classList.remove('active');
+                        l.setAttribute('tabindex', '-1');
+                        l.setAttribute('aria-selected', 'false');
+                    });
+
+                    targetLink.classList.add('active');
+                    targetLink.setAttribute('tabindex', '0');
+                    targetLink.setAttribute('aria-selected', 'true');
+
+                    this._updateIndicator(targetLink);
+
+                    const targetId = targetLink.getAttribute('data-target') || targetLink.getAttribute('data-tab-target') || targetLink.getAttribute('href');
+                    if (targetId && targetId.startsWith('#')) {
+                        const targetPanel = document.querySelector(targetId);
+                        if (targetPanel) {
+                            const parent = targetPanel.parentElement;
+                            if (parent) {
+                                parent.querySelectorAll('.tab-content').forEach(p => p.classList.remove('active'));
+                            }
+                            targetPanel.classList.add('active');
+                        }
+                    }
+
+                    if (triggerEvent) {
+                        const ev = new CustomEvent('frameper:tabchange', { detail: { target: targetId, link: targetLink } });
+                        this.container.dispatchEvent(ev);
+                    }
+                }
+            }
+
+            return {
+                create: (el) => new Instance(el),
+                show: (targetId) => {
+                    const link = document.querySelector(`[data-target="${targetId}"], [data-tab-target="${targetId}"], [href="${targetId}"]`);
+                    if (link) {
+                        const tabsEl = link.closest('.tabs, .tabs-pills, .tabs-vertical, [data-tabs]');
+                        if (tabsEl && tabsEl._frameTabs) {
+                            tabsEl._frameTabs.show(link);
+                        } else {
+                            link.click();
+                        }
+                    }
+                },
+                init: () => {
+                    document.querySelectorAll('.tabs, .tabs-pills, .tabs-vertical, [data-tabs]').forEach(el => {
+                        new Instance(el);
+                    });
+                }
+            };
+        })(),
+
+        Accordion: (() => {
+            class Instance {
+                constructor(container, options = {}) {
+                    this.container = typeof container === 'string' ? document.querySelector(container) : container;
+                    if (!this.container || this.container._frameAccordion) return;
+                    this.container._frameAccordion = this;
+
+                    this.multiple = this.container.classList.contains('accordion-always-open') ||
+                                    this.container.dataset.accordionMultiple === 'true' ||
+                                    options.multiple === true;
+
+                    this._bindItems();
+                }
+
+                _bindItems() {
+                    const headers = Array.from(this.container.querySelectorAll('.accordion-header'));
+                    headers.forEach((header, idx) => {
+                        const body = header.nextElementSibling;
+                        if (!body || !body.classList.contains('accordion-body')) return;
+
+                        header.setAttribute('role', 'button');
+                        header.setAttribute('tabindex', '0');
+                        header.setAttribute('aria-expanded', header.classList.contains('active') ? 'true' : 'false');
+                        
+                        if (!header.id) header.id = `acc-header-${Math.random().toString(36).substr(2, 6)}`;
+                        if (!body.id) body.id = `acc-body-${Math.random().toString(36).substr(2, 6)}`;
+                        header.setAttribute('aria-controls', body.id);
+                        body.setAttribute('role', 'region');
+                        body.setAttribute('aria-labelledby', header.id);
+
+                        if (header.classList.contains('active')) {
+                            body.style.height = 'auto';
+                        } else {
+                            body.style.height = '0px';
+                        }
+
+                        header.addEventListener('click', () => this.toggle(header));
+
+                        header.addEventListener('keydown', (e) => {
+                            if (e.key === 'Enter' || e.key === ' ') {
+                                e.preventDefault();
+                                this.toggle(header);
+                            } else if (e.key === 'ArrowDown') {
+                                e.preventDefault();
+                                const next = headers[(idx + 1) % headers.length];
+                                if (next) next.focus();
+                            } else if (e.key === 'ArrowUp') {
+                                e.preventDefault();
+                                const prev = headers[(idx - 1 + headers.length) % headers.length];
+                                if (prev) prev.focus();
+                            } else if (e.key === 'Home') {
+                                e.preventDefault();
+                                headers[0].focus();
+                            } else if (e.key === 'End') {
+                                e.preventDefault();
+                                headers[headers.length - 1].focus();
+                            }
+                        });
+                    });
+                }
+
+                open(headerOrIndex) {
+                    const header = this._resolveHeader(headerOrIndex);
+                    if (!header) return;
+                    const body = header.nextElementSibling;
+                    if (!body || header.classList.contains('active')) return;
+
+                    if (!this.multiple) {
+                        const activeHeaders = this.container.querySelectorAll('.accordion-header.active');
+                        activeHeaders.forEach(h => {
+                            if (h !== header) this.close(h);
+                        });
+                    }
+
+                    header.classList.add('active');
+                    header.setAttribute('aria-expanded', 'true');
+                    body.classList.add('active');
+
+                    body.style.height = '0px';
+                    body.offsetHeight;
+                    const scrollHeight = body.scrollHeight;
+                    body.style.height = scrollHeight + 'px';
+
+                    const onEnd = (e) => {
+                        if (e.target === body && header.classList.contains('active')) {
+                            body.style.height = 'auto';
+                            body.removeEventListener('transitionend', onEnd);
+                        }
+                    };
+                    body.addEventListener('transitionend', onEnd);
+                }
+
+                close(headerOrIndex) {
+                    const header = this._resolveHeader(headerOrIndex);
+                    if (!header) return;
+                    const body = header.nextElementSibling;
+                    if (!body || !header.classList.contains('active')) return;
+
+                    header.classList.remove('active');
+                    header.setAttribute('aria-expanded', 'false');
+
+                    const currentHeight = body.scrollHeight;
+                    body.style.height = currentHeight + 'px';
+                    body.offsetHeight;
+                    body.style.height = '0px';
+
+                    const onEnd = (e) => {
+                        if (e.target === body && !header.classList.contains('active')) {
+                            body.classList.remove('active');
+                            body.removeEventListener('transitionend', onEnd);
+                        }
+                    };
+                    body.addEventListener('transitionend', onEnd);
+                }
+
+                toggle(headerOrIndex) {
+                    const header = this._resolveHeader(headerOrIndex);
+                    if (!header) return;
+                    if (header.classList.contains('active')) {
+                        this.close(header);
+                    } else {
+                        this.open(header);
+                    }
+                }
+
+                _resolveHeader(headerOrIndex) {
+                    if (typeof headerOrIndex === 'number') {
+                        const headers = this.container.querySelectorAll('.accordion-header');
+                        return headers[headerOrIndex] || null;
+                    }
+                    return headerOrIndex;
+                }
+            }
+
+            return {
+                create: (container, options) => new Instance(container, options),
+                init: () => {
+                    document.querySelectorAll('.accordion, [data-accordion]').forEach(el => {
+                        new Instance(el);
+                    });
+                }
+            };
+        })(),
+
+        Popover: (() => {
+            class Instance {
+                constructor(trigger, options = {}) {
+                    this.trigger = typeof trigger === 'string' ? document.querySelector(trigger) : trigger;
+                    if (!this.trigger || this.trigger._framePopover) return;
+                    this.trigger._framePopover = this;
+
+                    const ds = this.trigger.dataset;
+                    this.options = {
+                        title: ds.popoverTitle || options.title || '',
+                        content: ds.popoverContent || options.content || '',
+                        target: ds.popoverTarget || options.target || null,
+                        placement: ds.popoverPlacement || options.placement || 'top',
+                        trigger: ds.popoverTrigger || options.trigger || 'click',
+                        dismissible: ds.popoverDismissible !== 'false' && options.dismissible !== false
+                    };
+
+                    this.popoverEl = null;
+                    this.isOpen = false;
+                    this._bindTrigger();
+                }
+
+                _createPopover() {
+                    if (this.popoverEl) return;
+                    this.popoverEl = document.createElement('div');
+                    this.popoverEl.className = `popover popover-${this.options.placement}`;
+                    this.popoverEl.setAttribute('role', 'tooltip');
+
+                    let bodyHtml = this.options.content;
+                    if (this.options.target) {
+                        const targetNode = document.querySelector(this.options.target);
+                        if (targetNode) bodyHtml = targetNode.innerHTML;
+                    }
+
+                    const closeBtnHtml = this.options.dismissible 
+                        ? `<button type="button" class="popover-close-btn" aria-label="Fechar">&times;</button>` 
+                        : '';
+
+                    const headerHtml = this.options.title 
+                        ? `<div class="popover-header"><span>${this.options.title}</span>${closeBtnHtml}</div>` 
+                        : (this.options.dismissible ? `<div class="p-2 d-flex justify-content-end">${closeBtnHtml}</div>` : '');
+
+                    this.popoverEl.innerHTML = `
+                        <div class="popover-arrow"></div>
+                        ${headerHtml}
+                        <div class="popover-body">${bodyHtml}</div>
+                    `;
+
+                    document.body.appendChild(this.popoverEl);
+
+                    const closeBtn = this.popoverEl.querySelector('.popover-close-btn');
+                    if (closeBtn) {
+                        closeBtn.addEventListener('click', (e) => {
+                            e.stopPropagation();
+                            this.hide();
+                        });
+                    }
+                }
+
+                _bindTrigger() {
+                    if (this.options.trigger === 'hover') {
+                        this.trigger.addEventListener('mouseenter', () => this.show());
+                        this.trigger.addEventListener('mouseleave', () => {
+                            setTimeout(() => {
+                                if (!this.popoverEl || !this.popoverEl.matches(':hover')) {
+                                    this.hide();
+                                }
+                            }, 100);
+                        });
+                    } else {
+                        this.trigger.addEventListener('click', (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.toggle();
+                        });
+                    }
+                }
+
+                show() {
+                    if (this.isOpen) return;
+                    this._createPopover();
+
+                    document.querySelectorAll('.popover.show').forEach(p => {
+                        if (p !== this.popoverEl && p._instance) p._instance.hide();
+                    });
+
+                    this.isOpen = true;
+                    this.popoverEl._instance = this;
+                    this.popoverEl.classList.add('show');
+                    this.updatePosition();
+                }
+
+                hide() {
+                    if (!this.isOpen || !this.popoverEl) return;
+                    this.isOpen = false;
+                    this.popoverEl.classList.remove('show');
+                }
+
+                toggle() {
+                    if (this.isOpen) this.hide();
+                    else this.show();
+                }
+
+                updatePosition() {
+                    if (!this.popoverEl || !this.isOpen) return;
+
+                    const triggerRect = this.trigger.getBoundingClientRect();
+                    const popoverRect = this.popoverEl.getBoundingClientRect();
+                    const arrowEl = this.popoverEl.querySelector('.popover-arrow');
+
+                    let placement = this.options.placement;
+                    const spacing = 10;
+                    const scrollY = window.pageYOffset || document.documentElement.scrollTop;
+                    const scrollX = window.pageXOffset || document.documentElement.scrollLeft;
+
+                    const viewportW = window.innerWidth;
+                    const viewportH = window.innerHeight;
+
+                    if (placement === 'top' && triggerRect.top - popoverRect.height - spacing < 0) {
+                        placement = 'bottom';
+                    } else if (placement === 'bottom' && triggerRect.bottom + popoverRect.height + spacing > viewportH) {
+                        placement = 'top';
+                    } else if (placement === 'left' && triggerRect.left - popoverRect.width - spacing < 0) {
+                        placement = 'right';
+                    } else if (placement === 'right' && triggerRect.right + popoverRect.width + spacing > viewportW) {
+                        placement = 'left';
+                    }
+
+                    this.popoverEl.className = `popover popover-${placement} show`;
+
+                    let top = 0;
+                    let left = 0;
+
+                    if (placement === 'top') {
+                        top = triggerRect.top + scrollY - popoverRect.height - spacing;
+                        left = triggerRect.left + scrollX + (triggerRect.width / 2) - (popoverRect.width / 2);
+                    } else if (placement === 'bottom') {
+                        top = triggerRect.bottom + scrollY + spacing;
+                        left = triggerRect.left + scrollX + (triggerRect.width / 2) - (popoverRect.width / 2);
+                    } else if (placement === 'left') {
+                        top = triggerRect.top + scrollY + (triggerRect.height / 2) - (popoverRect.height / 2);
+                        left = triggerRect.left + scrollX - popoverRect.width - spacing;
+                    } else if (placement === 'right') {
+                        top = triggerRect.top + scrollY + (triggerRect.height / 2) - (popoverRect.height / 2);
+                        left = triggerRect.right + scrollX + spacing;
+                    }
+
+                    const minLeft = scrollX + 8;
+                    const maxLeft = scrollX + viewportW - popoverRect.width - 8;
+                    const clampedLeft = Math.max(minLeft, Math.min(left, maxLeft));
+
+                    this.popoverEl.style.top = `${Math.round(top)}px`;
+                    this.popoverEl.style.left = `${Math.round(clampedLeft)}px`;
+
+                    if (arrowEl) {
+                        if (placement === 'top' || placement === 'bottom') {
+                            const arrowOffset = (triggerRect.left + scrollX + (triggerRect.width / 2)) - clampedLeft - 5;
+                            arrowEl.style.left = `${Math.max(12, Math.min(arrowOffset, popoverRect.width - 20))}px`;
+                            arrowEl.style.top = '';
+                        } else {
+                            const arrowOffset = (triggerRect.top + scrollY + (triggerRect.height / 2)) - top - 5;
+                            arrowEl.style.top = `${Math.max(12, Math.min(arrowOffset, popoverRect.height - 20))}px`;
+                            arrowEl.style.left = '';
+                        }
+                    }
+                }
+
+                destroy() {
+                    this.hide();
+                    if (this.popoverEl) {
+                        this.popoverEl.remove();
+                        this.popoverEl = null;
+                    }
+                    delete this.trigger._framePopover;
+                }
+            }
+
+            document.addEventListener('click', (e) => {
+                document.querySelectorAll('.popover.show').forEach(p => {
+                    const inst = p._instance;
+                    if (inst && !p.contains(e.target) && !inst.trigger.contains(e.target)) {
+                        inst.hide();
+                    }
+                });
+            });
+
+            document.addEventListener('keydown', (e) => {
+                if (e.key === 'Escape') {
+                    document.querySelectorAll('.popover.show').forEach(p => {
+                        if (p._instance) p._instance.hide();
+                    });
+                }
+            });
+
+            window.addEventListener('scroll', () => {
+                document.querySelectorAll('.popover.show').forEach(p => {
+                    if (p._instance) p._instance.updatePosition();
+                });
+            }, { passive: true });
+
+            return {
+                create: (trigger, options) => new Instance(trigger, options),
+                init: () => {
+                    document.querySelectorAll('[data-popover]').forEach(el => {
+                        new Instance(el);
+                    });
+                }
+            };
         })()
     };
 
@@ -3498,6 +4009,15 @@
         if (FramePER.Upload && FramePER.Upload.init) {
             FramePER.Upload.init();
         }
+        if (FramePER.Tabs && FramePER.Tabs.init) {
+            FramePER.Tabs.init();
+        }
+        if (FramePER.Accordion && FramePER.Accordion.init) {
+            FramePER.Accordion.init();
+        }
+        if (FramePER.Popover && FramePER.Popover.init) {
+            FramePER.Popover.init();
+        }
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -3511,6 +4031,9 @@
     window.FramePER = FramePER;
     window.FramePERChart = FramePER.Chart;
     window.FramePERUpload = FramePER.Upload;
+    window.FramePERTabs = FramePER.Tabs;
+    window.FramePERAccordion = FramePER.Accordion;
+    window.FramePERPopover = FramePER.Popover;
 
 })(window, document);
 

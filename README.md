@@ -1,14 +1,26 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.10.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.11.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop, miniaturas e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
 
+- **📑 Abas Reativas com Slider Deslizante (`FramePER.Tabs`)**:
+  - **Zero Dependências**: Alternância instantânea de abas com WAI-ARIA nativo e atalhos de teclado (`ArrowLeft`, `ArrowRight`, `Home`, `End`).
+  - **Indicador Flutuante Fluido**: Barra deslizante animada (`.tab-indicator` e `.tab-indicator-pill`) com interpolação suave de posição (`translateX`) e largura (`width`).
+  - **3 Variantes Visuais**: Linha clássica sublinhada (`.tabs`), Pílulas segmentadas (`.tabs-pills`) e Abas Verticais laterais (`.tabs-vertical` / `.tabs-layout-vertical`).
+- **🪗 Accordions com Altura Fluida (`FramePER.Accordion`)**:
+  - **Medição Dinâmica em Tempo Real**: Expansão e recolhimento precisos via `scrollHeight`, eliminando cortes e saltos visuais.
+  - **Modo Exclusivo ou Múltiplo**: Recolhimento automático de itens irmãos (efeito sanfona tradicional) ou múltiplos abertos simultaneamente (`data-accordion-multiple="true"`).
+  - **Navegação Acessível**: Foco automático, atributos `aria-expanded` / `aria-controls` e suporte a setas (&uarr; / &darr;), `Enter` e `Espaço`.
+- **💬 Popovers com Auto-Posicionamento (`FramePER.Popover`)**:
+  - **Componente Rico Flutuante**: Título (`.popover-header`), corpo com suporte a HTML/ações (`.popover-body`), seta indicadora (`.popover-arrow`) e botão de fechar.
+  - **Detecção Inteligente de Bordas da Tela**: Posicionamento nas 4 direções (`top`, `bottom`, `left`, `right`) com inversão automática quando encosta na borda da viewport.
+  - **Triggers Reativos**: Acionamento por clique ou hover, fechamento ao clicar fora ou pressionar `Escape`.
 - **📁 File Uploader com Drag & Drop (`FramePER.Upload`)**:
   - **Zero Dependências**: Upload interativo em Vanilla JS e SCSS com suporte a arrastar e soltar (`dragenter`, `dragover`, `drop`).
   - **Previews & Miniaturas Inteligentes**: Geração instantânea de thumbnail para imagens (`URL.createObjectURL`) e ícones semânticos vetoriais para PDFs e documentos.
@@ -56,6 +68,7 @@
   - **E-Commerce & Vendas (5)**: Carrinho (`icon-cart`), etiqueta de preço (`icon-tag`), cartão de crédito (`icon-credit-card`), caixa/pacote (`icon-package`), caminhão de entrega (`icon-truck`).
   - **Comunicação, Arquivos & Sistema (49)**: Upload (`icon-upload`), Arquivo (`icon-file`), Arquivo PDF (`icon-file-pdf`), Imagem (`icon-image`), Mensagem, telefone, compartilhar, play, cadeado, olho, terminal, código, etc.
 - **✨ Componentes Avançados de Interface**:
+  - **Abas Deslizantes**: Slider fluído com transição suave de coordenadas e dimensões.
   - **File Uploader Shimmer & Progress**: Dragzone pontilhada com feedback visual, previews em miniatura e remoção individual.
   - **Command Palette Dialog**: Modal Spotlight com backdrop blur, atalhos de teclado e grupos filtráveis.
   - **Skeleton Loaders Shimmer**: Efeito ondulante suave (`.skeleton-avatar`, `.skeleton-title`, `.skeleton-text`, `.skeleton-rect`).
@@ -76,6 +89,9 @@
 
 ## ⚙️ Módulos & Recursos JavaScript (`window.FramePER`)
 
+- **📑 FramePER.Tabs**: Sistema de abas com indicador deslizante fluido, acessibilidade WAI-ARIA e suporte vertical.
+- **🪗 FramePER.Accordion**: Sanfona com medição dinâmica de altura (`scrollHeight`), modo exclusivo e controle por teclado.
+- **💬 FramePER.Popover**: Popovers flutuantes ricos com auto-posicionamento 4D, detecção de colisão na viewport e seta indicadora.
 - **📁 FramePER.Upload**: Uploader completo com Drag & Drop, miniaturas, validação de arquivos e barra de progresso.
 - **📅 FramePER.Datepicker**: Calendário flutuante em popover com seleção de data única e intervalo (range) `DD/MM/AAAA`.
 - **🔍 FramePER.Select**: Select customizado pesquisável em tempo real com suporte a multi-select e tags/chips.
@@ -83,6 +99,9 @@
 - **🔍 FramePER.CommandPalette**: Spotlight flutuante com atalho `Ctrl+K` / `Cmd+K`, catálogo de páginas e ações rápidas extensíveis.
 - **📋 FramePER.Clipboard**: Cópia para a área de transferência com um clique (`data-copy="texto"` ou `data-copy-target="#seletor"`).
 - **📝 FramePER.Form**: Máscaras automáticas em tempo real para CPF, CNPJ, Telefone/Celular, CEP, Data e Moeda brasileira (`data-mask="cpf|cnpj|phone|cep|date|money"`).
+- **🔢 FramePER.Counter**: Números animados com aceleração ease-out acionados via IntersectionObserver (`data-counter="14500"`).
+- **🚀 FramePER.Scroll**: Botão flutuante automático de volta ao topo (`data-scroll-top`) e rolagem suave para âncoras (`data-scroll-to="#id"`).
+- **🛡️ FramePER.Http & Security**: Fetch wrapper com detector de internet offline, CSRF token automático, sanitização anti-XSS (`FramePER.Security.escapeHTML`) e notificações toast (`FramePER.Notify`).
 - **🔢 FramePER.Counter**: Números animados com aceleração ease-out acionados via IntersectionObserver (`data-counter="14500"`).
 - **🚀 FramePER.Scroll**: Botão flutuante automático de volta ao topo (`data-scroll-top`) e rolagem suave para âncoras (`data-scroll-to="#id"`).
 - **🛡️ FramePER.Http & Security**: Fetch wrapper com detector de internet offline, CSRF token automático, sanitização anti-XSS (`FramePER.Security.escapeHTML`) e notificações toast (`FramePER.Notify`).

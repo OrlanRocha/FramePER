@@ -1,14 +1,21 @@
 @use '../variables' as *;
 
+// ==========================================================================
+// Frame PER — Accordion Component (_accordions.scss)
+// ==========================================================================
+
 .accordion {
   overflow: hidden;
   color: var(--text-main);
   background-color: var(--bg-surface);
   border: 1px solid var(--border-color);
   border-radius: var(--radius-lg);
+  box-shadow: var(--shadow-xs);
 }
 
-.accordion-item + .accordion-item { border-top: 1px solid var(--border-color); }
+.accordion-item + .accordion-item {
+  border-top: 1px solid var(--border-color);
+}
 
 .accordion-header {
   display: flex;
@@ -20,11 +27,20 @@
   font-weight: 500;
   cursor: pointer;
   user-select: none;
-  transition: background-color 0.15s var(--ease);
+  background-color: transparent;
+  transition: background-color 0.2s var(--ease), color 0.2s var(--ease);
+  outline: none;
 
-  &:hover { background-color: var(--bg-hover); }
+  &:hover {
+    background-color: var(--bg-hover);
+  }
 
-  // Chevron
+  &:focus-visible {
+    background-color: var(--bg-hover);
+    box-shadow: inset 0 0 0 2px var(--primary);
+  }
+
+  // Chevron indicator
   &::after {
     content: "";
     flex: none;
@@ -35,27 +51,59 @@
     border-right: 1.5px solid currentColor;
     border-bottom: 1.5px solid currentColor;
     transform: translateY(-2px) rotate(45deg);
-    transition: transform 0.25s var(--ease);
+    transition: transform 0.25s cubic-bezier(0.4, 0, 0.2, 1);
   }
 
-  &.active::after { transform: translateY(2px) rotate(-135deg); }
+  &.active {
+    color: var(--primary);
+    font-weight: 600;
+
+    &::after {
+      color: var(--primary);
+      transform: translateY(2px) rotate(-135deg);
+    }
+  }
 }
 
-// Collapsed content is fully removed from view (padding included), so text can
-// never peek out even if a padding utility is added to the element.
 .accordion-body {
-  max-height: 0;
-  padding: 0 1.25rem !important;
+  height: 0;
+  padding: 0 1.25rem;
   overflow: hidden;
   visibility: hidden;
   font-size: 0.875rem;
   line-height: 1.65;
   color: var(--text-muted);
-  transition: max-height 0.3s var(--ease), padding 0.3s var(--ease), visibility 0.3s;
+  transition: height 0.3s cubic-bezier(0.4, 0, 0.2, 1), padding 0.3s cubic-bezier(0.4, 0, 0.2, 1), visibility 0.3s;
 
   &.active {
-    max-height: 40rem;
-    padding: 0 1.25rem 1.125rem !important;
+    padding: 0 1.25rem 1.125rem;
     visibility: visible;
+  }
+}
+
+// Flush variant
+.accordion-flush {
+  border: none;
+  border-radius: 0;
+  background-color: transparent;
+  box-shadow: none;
+
+  .accordion-item {
+    border-color: var(--border-color);
+  }
+
+  .accordion-header {
+    padding-left: 0;
+    padding-right: 0;
+  }
+
+  .accordion-body {
+    padding-left: 0;
+    padding-right: 0;
+
+    &.active {
+      padding-left: 0;
+      padding-right: 0;
+    }
   }
 }
