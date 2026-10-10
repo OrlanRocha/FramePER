@@ -1,13 +1,21 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.14.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.15.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Central de Atividades & Notificações em Drawer (`FramePER.ActivityFeed`)**, **Validador Reativo de Formulários (`FramePER.FormValidator`)**, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Split View & Painéis Redimensionáveis (`FramePER.SplitPane`)**, **Central de Atividades & Notificações em Drawer (`FramePER.ActivityFeed`)**, **Validador Reativo de Formulários (`FramePER.FormValidator`)**, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
+
+- **🪟 Split View & Painéis Redimensionáveis (`FramePER.SplitPane`)**:
+  - **Zero Dependências & Resizing Suave**: Divisores ajustáveis via Pointer Events (`pointerdown`, `pointermove`, `pointerup`) com captura contínua (`setPointerCapture`) e aceleração nativa.
+  - **Orientação Horizontal & Vertical**: Suporte a layouts lado a lado ou empilhados verticalmente (`.split-vertical`) com calhas divisórias fluidas (`.split-gutter` e `.gutter-handle`).
+  - **Duplo-clique para Colapso Rápido**: Clique duplo no divisor para colapsar/expandir instantaneamente o painel anterior, mantendo a proporção original salva em memória.
+  - **Limites Mínimos/Máximos & Proporções**: Configuração de `minSize` e `maxSize` (em pixels ou porcentagem) para preservar layouts responsivos.
+  - **Persistência Automática em LocalStorage**: Armazenamento e restauração transparente da posição do split entre recarregamentos de página via `data-persist="key"` ou opção `persist`.
+  - **API Programática Completa**: Métodos `setSplit(pct)`, `collapse(panelIndex)`, `expand()`, `toggleCollapse()` e eventos disparados `frameper:split:resize`.
 
 - **🔔 Central de Atividades & Notificações em Drawer (`FramePER.ActivityFeed`)**:
   - **Zero Dependências & Drawer Lateral**: Painel retrátil desktop-class com backdrop blur acionado por atributo `[data-activity-feed-toggle]` ou via API programática (`FramePER.ActivityFeed.open()`).
@@ -311,6 +319,46 @@ Inclua os arquivos compilados `dist/framePER.min.css` e `dist/framePER.min.js` n
   // Abertura / Fechamento programático
   FramePER.ActivityFeed.open();
   FramePER.ActivityFeed.markAllAsRead();
+</script>
+```
+
+### Split View & Painéis Redimensionáveis (SplitPane)
+```html
+<!-- Exemplo Declarativo (Horizontal com Persistência em LocalStorage) -->
+<div class="split-pane" data-split-pane data-initial-split="30" data-min-size="150" data-persist="sidebar-layout">
+  <div class="split-panel p-3">
+    <!-- Painel Lateral Esquerdo (ex: Árvore de Arquivos ou Filtros) -->
+    <h4>Sidebar</h4>
+  </div>
+  <div class="split-gutter">
+    <div class="gutter-handle"></div>
+  </div>
+  <div class="split-panel p-3">
+    <!-- Conteúdo Principal / Editor -->
+    <h4>Área Principal</h4>
+  </div>
+</div>
+
+<script>
+  // Inicialização ou controle via JavaScript
+  const split = FramePER.SplitPane.create('#meu-split', {
+    direction: 'horizontal', // ou 'vertical'
+    initialSplit: 35,        // porcentagem inicial
+    minSize: 120,            // limite mínimo em px ou %
+    maxSize: 85,             // limite máximo em px ou %
+    persist: 'pref-sidebar'  // chave localStorage para salvar posição
+  });
+
+  // Métodos programáticos
+  split.setSplit(50);         // define divisão em 50%
+  split.toggleCollapse();     // recolhe ou restaura painel
+  split.collapse(0);          // colapsa painel esquerdo
+  split.expand();             // restaura divisão anterior
+
+  // Evento reativo emitido a cada redimensionamento
+  document.getElementById('meu-split').addEventListener('frameper:split:resize', (e) => {
+    console.log('Split atualizado para:', e.detail.split + '%');
+  });
 </script>
 ```
 

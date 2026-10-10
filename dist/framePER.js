@@ -90,6 +90,7 @@
                 this.initContextMenu();
                 this.initFormValidator();
                 this.initActivityFeed();
+                this.initSplitPane();
             },
             initContextMenu: function() {
                 if (FramePER.ContextMenu && FramePER.ContextMenu.init) {
@@ -104,6 +105,11 @@
             initActivityFeed: function() {
                 if (FramePER.ActivityFeed && FramePER.ActivityFeed.init) {
                     FramePER.ActivityFeed.init();
+                }
+            },
+            initSplitPane: function() {
+                if (FramePER.SplitPane && FramePER.SplitPane.init) {
+                    FramePER.SplitPane.init();
                 }
             },
             initTables: function() {
@@ -2105,6 +2111,14 @@
                             window.location.href = 'index.html#activity-feed-demo';
                         }
                     }
+                },
+                {
+                    group: 'Componentes & Docs',
+                    id: 'nav-split-pane',
+                    title: 'Split View & Painéis Redimensionáveis',
+                    desc: 'Divisores arrastáveis suavemente (drag & resize) e persistência de layout',
+                    icon: 'icon-layout',
+                    action: () => { window.location.href = 'index.html#split-pane-demo'; }
                 },
                 {
                     group: 'Componentes & Docs',
@@ -5094,6 +5108,220 @@
                 getUnreadCount,
                 getItems: () => [...activities]
             };
+        })(),
+
+        SplitPane: (() => {
+            class Instance {
+                constructor(container, options = {}) {
+                    this.container = typeof container === 'string' ? document.querySelector(container) : container;
+                    if (!this.container) return;
+
+                    const isVertical = this.container.classList.contains('split-vertical') || this.container.getAttribute('data-split-direction') === 'vertical';
+
+                    this.options = Object.assign({
+                        direction: isVertical ? 'vertical' : 'horizontal',
+                        initialSplit: parseFloat(this.container.getAttribute('data-initial-split')) || 50,
+                        minSize: parseFloat(this.container.getAttribute('data-min-size')) || 10,
+                        maxSize: parseFloat(this.container.getAttribute('data-max-size')) || 90,
+                        persist: this.container.getAttribute('data-persist') || null,
+                        onResize: null,
+                        onCollapse: null
+                    }, options);
+
+                    this.isDragging = false;
+                    this.split = this.options.initialSplit;
+                    this.savedSplit = this.split;
+                    this.collapsedIndex = -1;
+
+                    this._init();
+                    this.container._frameSplitPane = this;
+                }
+
+                _init() {
+                    this.panels = Array.from(this.container.querySelectorAll(':scope > .split-panel'));
+                    if (this.panels.length < 2) return;
+
+                    this.panel1 = this.panels[0];
+                    this.panel2 = this.panels[1];
+
+                    // Find or create gutter
+                    this.gutter = this.container.querySelector(':scope > .split-gutter');
+                    if (!this.gutter) {
+                        this.gutter = document.createElement('div');
+                        this.gutter.className = 'split-gutter';
+                        const handle = document.createElement('div');
+                        handle.className = 'gutter-handle';
+                        this.gutter.appendChild(handle);
+                        this.container.insertBefore(this.gutter, this.panel2);
+                    }
+
+                    // Restore persisted split if available
+                    if (this.options.persist) {
+                        try {
+                            const saved = localStorage.getItem('frameper_split_' + this.options.persist);
+                            if (saved !== null) {
+                                const val = parseFloat(saved);
+                                if (!isNaN(val) && val >= this.options.minSize && val <= this.options.maxSize) {
+                                    this.split = val;
+                                }
+                            }
+                        } catch (e) {}
+                    }
+
+                    this.applySplit(this.split);
+
+                    this.gutter.addEventListener('pointerdown', (e) => this._onPointerDown(e));
+                    this.gutter.addEventListener('dblclick', () => this.toggleCollapse());
+                }
+
+                _onPointerDown(e) {
+                    e.preventDefault();
+                    this.isDragging = true;
+                    this.container.classList.add('is-resizing');
+                    this.gutter.classList.add('is-dragging');
+                    this.gutter.setPointerCapture(e.pointerId);
+
+                    const onPointerMove = (moveEvent) => {
+                        if (!this.isDragging) return;
+                        const rect = this.container.getBoundingClientRect();
+                        let percent = 50;
+
+                        if (this.options.direction === 'vertical') {
+                            const offset = moveEvent.clientY - rect.top;
+                            percent = (offset / rect.height) * 100;
+                        } else {
+                            const offset = moveEvent.clientX - rect.left;
+                            percent = (offset / rect.width) * 100;
+                        }
+
+                        if (percent < this.options.minSize) percent = this.options.minSize;
+                        if (percent > this.options.maxSize) percent = this.options.maxSize;
+
+                        this.applySplit(percent);
+                    };
+
+                    const onPointerUp = (upEvent) => {
+                        this.isDragging = false;
+                        this.container.classList.remove('is-resizing');
+                        this.gutter.classList.remove('is-dragging');
+                        this.gutter.removeEventListener('pointermove', onPointerMove);
+                        this.gutter.removeEventListener('pointerup', onPointerUp);
+                        this.gutter.removeEventListener('pointercancel', onPointerUp);
+                        try {
+                            this.gutter.releasePointerCapture(upEvent.pointerId);
+                        } catch (err) {}
+
+                        if (this.options.persist) {
+                            try {
+                                localStorage.setItem('frameper_split_' + this.options.persist, this.split);
+                            } catch (e) {}
+                        }
+                    };
+
+                    this.gutter.addEventListener('pointermove', onPointerMove);
+                    this.gutter.addEventListener('pointerup', onPointerUp);
+                    this.gutter.addEventListener('pointercancel', onPointerUp);
+                }
+
+                applySplit(percent) {
+                    this.split = Math.round(percent * 100) / 100;
+                    this.collapsedIndex = -1;
+                    this.panel1.classList.remove('is-collapsed');
+                    this.panel2.classList.remove('is-collapsed');
+
+                    this.panel1.style.flex = `0 0 ${this.split}%`;
+                    this.panel2.style.flex = `1 1 0%`;
+
+                    if (typeof this.options.onResize === 'function') {
+                        this.options.onResize(this.split, this.panel1, this.panel2);
+                    }
+
+                    this.container.dispatchEvent(new CustomEvent('frameper:split:resize', {
+                        bubbles: true,
+                        detail: {
+                            split: this.split,
+                            panel1: this.panel1,
+                            panel2: this.panel2
+                        }
+                    }));
+                }
+
+                setSplit(percent) {
+                    const clamped = Math.max(this.options.minSize, Math.min(this.options.maxSize, percent));
+                    this.applySplit(clamped);
+                    if (this.options.persist) {
+                        try {
+                            localStorage.setItem('frameper_split_' + this.options.persist, clamped);
+                        } catch (e) {}
+                    }
+                }
+
+                getSplit() {
+                    return this.split;
+                }
+
+                collapse(index = 0) {
+                    this.savedSplit = this.split;
+                    this.collapsedIndex = index;
+
+                    if (index === 0) {
+                        this.panel1.classList.add('is-collapsed');
+                        this.panel2.classList.remove('is-collapsed');
+                        this.panel2.style.flex = '1 1 100%';
+                    } else {
+                        this.panel2.classList.add('is-collapsed');
+                        this.panel1.classList.remove('is-collapsed');
+                        this.panel1.style.flex = '1 1 100%';
+                    }
+
+                    if (typeof this.options.onCollapse === 'function') {
+                        this.options.onCollapse(index);
+                    }
+
+                    this.container.dispatchEvent(new CustomEvent('frameper:split:collapse', {
+                        bubbles: true,
+                        detail: { collapsedIndex: index }
+                    }));
+                }
+
+                expand() {
+                    if (this.collapsedIndex !== -1) {
+                        this.applySplit(this.savedSplit || 50);
+                    }
+                }
+
+                toggleCollapse() {
+                    if (this.collapsedIndex !== -1) {
+                        this.expand();
+                    } else {
+                        this.collapse(0);
+                    }
+                }
+
+                destroy() {
+                    if (this.gutter) {
+                        this.gutter.remove();
+                    }
+                    this.panel1.style.flex = '';
+                    this.panel2.style.flex = '';
+                    delete this.container._frameSplitPane;
+                }
+            }
+
+            return {
+                create: (container, options) => new Instance(container, options),
+                get: (container) => {
+                    const el = typeof container === 'string' ? document.querySelector(container) : container;
+                    return el ? el._frameSplitPane : null;
+                },
+                init: () => {
+                    document.querySelectorAll('[data-split-pane], .split-pane').forEach(el => {
+                        if (!el._frameSplitPane) {
+                            new Instance(el);
+                        }
+                    });
+                }
+            };
         })()
     };
 
@@ -5148,6 +5376,9 @@
         if (FramePER.ActivityFeed && FramePER.ActivityFeed.init) {
             FramePER.ActivityFeed.init();
         }
+        if (FramePER.SplitPane && FramePER.SplitPane.init) {
+            FramePER.SplitPane.init();
+        }
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -5167,6 +5398,7 @@
     window.FramePERContextMenu = FramePER.ContextMenu;
     window.FramePERFormValidator = FramePER.FormValidator;
     window.FramePERActivityFeed = FramePER.ActivityFeed;
+    window.FramePERSplitPane = FramePER.SplitPane;
 
 })(window, document);
 

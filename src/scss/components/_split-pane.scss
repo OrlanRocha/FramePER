@@ -1,0 +1,117 @@
+@use '../variables' as *;
+
+// ==========================================================================
+// Frame PER — Split View & Resizable Panes
+// ==========================================================================
+
+.split-pane {
+  display: flex;
+  width: 100%;
+  height: 100%;
+  min-height: 22rem;
+  position: relative;
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-lg);
+  overflow: hidden;
+  background-color: var(--bg-surface);
+
+  &.is-resizing {
+    cursor: col-resize;
+    user-select: none;
+
+    .split-panel {
+      user-select: none;
+      pointer-events: none;
+      transition: none !important;
+    }
+  }
+
+  // Variante Vertical (painéis empilhados)
+  &.split-vertical {
+    flex-direction: column;
+
+    &.is-resizing {
+      cursor: row-resize;
+    }
+
+    > .split-gutter {
+      width: 100%;
+      height: 8px;
+      cursor: row-resize;
+
+      .gutter-handle {
+        width: 28px;
+        height: 3px;
+      }
+    }
+  }
+}
+
+.split-panel {
+  overflow: auto;
+  position: relative;
+  flex: 1 1 0%;
+  min-width: 0;
+  min-height: 0;
+
+  &.is-collapsed {
+    flex: 0 0 0% !important;
+    min-width: 0 !important;
+    min-height: 0 !important;
+    overflow: hidden !important;
+    opacity: 0;
+  }
+}
+
+.split-gutter {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  background-color: var(--border-color);
+  flex-shrink: 0;
+  user-select: none;
+  touch-action: none;
+  z-index: 10;
+  position: relative;
+  width: 8px;
+  cursor: col-resize;
+  transition: background-color 0.15s ease, box-shadow 0.15s ease;
+
+  &:hover,
+  &.is-dragging {
+    background-color: var(--primary);
+    box-shadow: 0 0 10px rgba(99, 102, 241, 0.4);
+
+    .gutter-handle {
+      background-color: #ffffff;
+      transform: scale(1.15);
+    }
+  }
+
+  .gutter-handle {
+    width: 3px;
+    height: 28px;
+    border-radius: 999px;
+    background-color: var(--text-subtle);
+    pointer-events: none;
+    transition: transform 0.15s ease, background-color 0.15s ease;
+  }
+}
+
+// Controles de cabeçalho do SplitPane (opcional)
+.split-pane-header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0.625rem 1rem;
+  background-color: var(--bg-surface-secondary, rgba(0, 0, 0, 0.02));
+  border-bottom: 1px solid var(--border-color);
+  font-size: 0.8125rem;
+  font-weight: 600;
+
+  .split-pane-actions {
+    display: flex;
+    align-items: center;
+    gap: 0.375rem;
+  }
+}

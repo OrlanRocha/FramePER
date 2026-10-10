@@ -83,7 +83,7 @@
     <section class="container container-narrow txt-center p-y-6 p-relative z-10">
       <div class="d-flex justify-content-center m-b-3 slide-up">
         <span class="badge badge-pill badge-green">
-          <i class="icon icon-flame text-green m-r-1"></i> v2.14.0 · Central de Atividades em Drawer, Validador Reativo & Componentes UI
+          <i class="icon icon-flame text-green m-r-1"></i> v2.15.0 · Split View & Painéis Redimensionáveis, Central de Notificações & Validador Reativo
         </span>
       </div>
       <h1 class="display-2 m-b-3 text-balance slide-up delay-1">Conheça o Frame PER</h1>
@@ -106,6 +106,7 @@
 
       <!-- Quick Feature Anchors -->
       <div class="cluster justify-content-center gap-2 m-t-4 slide-up delay-4">
+        <a class="badge badge-subtle badge-pill" href="#split-pane-demo"><i class="icon icon-layers m-r-1"></i> Split View (Panels)</a>
         <a class="badge badge-subtle badge-pill" href="#activity-feed-demo"><i class="icon icon-bell m-r-1"></i> Central de Atividades</a>
         <a class="badge badge-subtle badge-pill" href="#form-validator-demo"><i class="icon icon-check m-r-1"></i> Validador de Formulários</a>
         <a class="badge badge-subtle badge-pill" href="#context-menu-demo"><i class="icon icon-menu m-r-1"></i> Menu de Contexto & Dropdowns</a>
@@ -1005,10 +1006,131 @@
         </div>
       </section>
 
+      <!-- Split View & Painéis Redimensionáveis Section (v2.15.0) -->
+      <section id="split-pane-demo" class="docs-section m-b-6 slide-up delay-2">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 m-b-4">
+          <div>
+            <div class="cluster gap-2 align-items-center m-b-1">
+              <span class="badge badge-primary badge-pill"><i class="icon icon-flame"></i> Novidade v2.15.0</span>
+              <span class="badge badge-purple">FramePER.SplitPane</span>
+              <span class="badge badge-subtle">Drag & Resize Suave</span>
+            </div>
+            <h2 class="h3 m-0">Split View & Painéis Redimensionáveis</h2>
+            <p class="text-muted f-s-2 m-0">Divisores ajustáveis com arraste suave de ponteiro, duplo clique para colapsar, orientação horizontal ou vertical e persistência em localStorage</p>
+          </div>
+          <div class="cluster gap-2">
+            <button type="button" class="btn btn-outline btn-sm" id="btn-split-30">30% / 70%</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-split-50">50% / 50%</button>
+            <button type="button" class="btn btn-outline btn-sm" id="btn-split-70">70% / 30%</button>
+            <button type="button" class="btn btn-ghost btn-sm" id="btn-split-toggle-collapse">Alternar Colapso</button>
+          </div>
+        </div>
+
+        <div class="grid grid-lg-2 gap-4">
+          <!-- Exemplo 1: IDE Layout Horizontal -->
+          <div class="card p-3 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <strong class="f-s-3">Layout Horizontal (IDE / Explorer)</strong>
+                <div class="text-muted f-s-1">Arraste a calha divisória ou dê duplo clique no divisor</div>
+              </div>
+              <span class="badge badge-blue">Horizontal</span>
+            </div>
+
+            <div id="demo-split-horizontal" class="split-pane" data-split-pane data-initial-split="32" data-min-size="120" data-persist="demo-split-h" style="height: 280px; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+              <div class="split-panel bg-subtle p-3 stack gap-2" style="overflow-y: auto;">
+                <div class="f-w-semibold f-s-2 text-muted d-flex align-items-center justify-content-between">
+                  <span><i class="icon icon-folder m-r-1"></i> PROJETO</span>
+                  <span class="badge badge-xs badge-subtle">4 itens</span>
+                </div>
+                <div class="stack gap-1 f-s-2">
+                  <div class="p-2 rounded bg-surface border d-flex align-items-center gap-2">
+                    <i class="icon icon-file text-primary"></i> <code>index.html</code>
+                  </div>
+                  <div class="p-2 rounded bg-surface border d-flex align-items-center gap-2">
+                    <i class="icon icon-code text-green"></i> <code>framePER.js</code>
+                  </div>
+                  <div class="p-2 rounded bg-surface border d-flex align-items-center gap-2">
+                    <i class="icon icon-layers text-amber"></i> <code>framePER.scss</code>
+                  </div>
+                  <div class="p-2 rounded bg-surface border d-flex align-items-center gap-2">
+                    <i class="icon icon-settings text-purple"></i> <code>package.json</code>
+                  </div>
+                </div>
+              </div>
+              <div class="split-gutter">
+                <div class="gutter-handle"></div>
+              </div>
+              <div class="split-panel p-3 stack gap-2 bg-surface" style="overflow-y: auto;">
+                <div class="d-flex align-items-center justify-content-between border-b p-b-2">
+                  <span class="f-w-semibold f-s-2"><i class="icon icon-code text-green m-r-1"></i> Editor de Código</span>
+                  <span class="badge badge-green badge-sm">JavaScript</span>
+                </div>
+                <pre class="m-0 p-3 bg-subtle rounded border" style="font-size: 0.82rem; overflow-x: auto; line-height: 1.5;"><code>// Inicialização declarativa ou via JavaScript
+const split = FramePER.SplitPane.create('#editor-split', {
+  direction: 'horizontal',
+  initialSplit: 35,
+  minSize: 150,
+  persist: 'user-layout-pref'
+});
+
+// Ações programáticas fluidas
+split.setSplit(50);
+split.toggleCollapse();</code></pre>
+              </div>
+            </div>
+          </div>
+
+          <!-- Exemplo 2: Layout Vertical (Logs / Preview) -->
+          <div class="card p-3 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <strong class="f-s-3">Layout Vertical (Painel & Terminal)</strong>
+                <div class="text-muted f-s-1">Divisor horizontal para empilhamento vertical com drag suave</div>
+              </div>
+              <span class="badge badge-purple">Vertical</span>
+            </div>
+
+            <div class="split-pane split-vertical" data-split-pane data-initial-split="55" data-min-size="80" style="height: 280px; border: 1px solid var(--border-color); border-radius: var(--radius-md); overflow: hidden;">
+              <div class="split-panel p-3 stack gap-2 bg-surface" style="overflow-y: auto;">
+                <div class="d-flex align-items-center justify-content-between border-b p-b-2">
+                  <span class="f-w-semibold f-s-2"><i class="icon icon-activity text-primary m-r-1"></i> Painel Superior (Monitor de Métricas)</span>
+                  <span class="badge badge-subtle badge-sm">Status: Ativo</span>
+                </div>
+                <div class="grid grid-2 gap-2">
+                  <div class="p-2 rounded bg-subtle border">
+                    <div class="text-muted f-s-1">Uso de CPU</div>
+                    <div class="f-w-bold f-s-3 text-green">14.2%</div>
+                  </div>
+                  <div class="p-2 rounded bg-subtle border">
+                    <div class="text-muted f-s-1">Memória RAM</div>
+                    <div class="f-w-bold f-s-3 text-primary">312 MB</div>
+                  </div>
+                </div>
+              </div>
+              <div class="split-gutter">
+                <div class="gutter-handle"></div>
+              </div>
+              <div class="split-panel p-3 stack gap-2 bg-subtle" style="overflow-y: auto;">
+                <div class="d-flex align-items-center justify-content-between">
+                  <span class="f-w-semibold f-s-1 text-muted"><i class="icon icon-terminal m-r-1"></i> CONSOLE DE LOGS</span>
+                  <span class="badge badge-dot badge-green">Conectado</span>
+                </div>
+                <div class="f-s-1 font-mono text-muted stack gap-1">
+                  <div>[15:27:01] <span class="text-green">INFO</span> Bundle FramePER v2.15.0 inicializado com sucesso.</div>
+                  <div>[15:27:02] <span class="text-primary">DEBUG</span> SplitPane instanciado em modo vertical (55/45).</div>
+                  <div>[15:27:03] <span class="text-amber">WATCH</span> Monitorando redimensionamento com setPointerCapture.</div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </section>
 
     <footer class="container p-y-5 txt-center f-s-2 text-muted p-relative z-10">
-      Frame PER v2.14.0 · Framework CSS + JS + SVG sem dependências
+      Frame PER v2.15.0 · Framework CSS + JS + SVG sem dependências
     </footer>
   </main>
 

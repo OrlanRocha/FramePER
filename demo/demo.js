@@ -113,4 +113,43 @@ document.addEventListener('DOMContentLoaded', function () {
       }
     });
   }
+
+  // Handlers para SplitPane Demo (v2.15.0)
+  var splitDemoEl = document.getElementById('demo-split-horizontal');
+  var btnSplit30 = document.getElementById('btn-split-30');
+  var btnSplit50 = document.getElementById('btn-split-50');
+  var btnSplit70 = document.getElementById('btn-split-70');
+  var btnSplitCollapse = document.getElementById('btn-split-toggle-collapse');
+
+  if (splitDemoEl) {
+    var getSplitInst = function () {
+      return splitDemoEl._frameSplitPane || (F && F.SplitPane && F.SplitPane.get(splitDemoEl));
+    };
+
+    if (btnSplit30) {
+      btnSplit30.addEventListener('click', function () {
+        var inst = getSplitInst();
+        if (inst) inst.setSplit(30);
+      });
+    }
+    if (btnSplit50) {
+      btnSplit50.addEventListener('click', function () {
+        var inst = getSplitInst();
+        if (inst) inst.setSplit(50);
+      });
+    }
+    if (btnSplit70) {
+      btnSplit70.addEventListener('click', function () {
+        var inst = getSplitInst();
+        if (inst) inst.setSplit(70);
+      });
+    }
+    if (btnSplitCollapse) {
+      btnSplitCollapse.addEventListener('click', function () {
+        var inst = getSplitInst();
+        if (inst) inst.toggleCollapse();
+      });
+    }
+  }
 });
+
