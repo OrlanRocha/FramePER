@@ -83,7 +83,7 @@
     <section class="container container-narrow txt-center p-y-6 p-relative z-10">
       <div class="d-flex justify-content-center m-b-3 slide-up">
         <span class="badge badge-pill badge-green">
-          <i class="icon icon-flame text-green m-r-1"></i> v2.15.0 · Split View & Painéis Redimensionáveis, Central de Notificações & Validador Reativo
+          <i class="icon icon-flame text-green m-r-1"></i> v2.16.0 · Tree View Interativo com Checkboxes & Busca, Split View & Central de Atividades
         </span>
       </div>
       <h1 class="display-2 m-b-3 text-balance slide-up delay-1">Conheça o Frame PER</h1>
@@ -106,6 +106,7 @@
 
       <!-- Quick Feature Anchors -->
       <div class="cluster justify-content-center gap-2 m-t-4 slide-up delay-4">
+        <a class="badge badge-subtle badge-pill" href="#tree-view-demo"><i class="icon icon-folder m-r-1"></i> Tree View (Árvore)</a>
         <a class="badge badge-subtle badge-pill" href="#split-pane-demo"><i class="icon icon-layers m-r-1"></i> Split View (Panels)</a>
         <a class="badge badge-subtle badge-pill" href="#activity-feed-demo"><i class="icon icon-bell m-r-1"></i> Central de Atividades</a>
         <a class="badge badge-subtle badge-pill" href="#form-validator-demo"><i class="icon icon-check m-r-1"></i> Validador de Formulários</a>
@@ -1127,10 +1128,265 @@ split.toggleCollapse();</code></pre>
         </div>
       </section>
 
+      <!-- Tree View Interativo Section (v2.16.0) -->
+      <section id="tree-view-demo" class="docs-section m-b-6 slide-up delay-2">
+        <div class="d-flex align-items-center justify-content-between flex-wrap gap-2 m-b-4">
+          <div>
+            <div class="cluster gap-2 align-items-center m-b-1">
+              <span class="badge badge-primary badge-pill"><i class="icon icon-flame"></i> Novidade v2.16.0</span>
+              <span class="badge badge-purple">FramePER.TreeView</span>
+              <span class="badge badge-subtle">Zero Dependências</span>
+            </div>
+            <h2 class="h3 m-0">Tree View Interativo & Hierarquias</h2>
+            <p class="text-muted f-s-2 m-0">Visualização de diretórios e dados em árvore com nós expansíveis, busca em tempo real com destaque e checkboxes tri-state com propagação em cascata</p>
+          </div>
+        </div>
+
+        <div class="grid grid-lg-2 gap-4">
+          <!-- Card 1: Explorer de Projeto com Busca -->
+          <div class="card p-4 stack gap-3 h-100">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Explorer de Arquivos & Busca</h3>
+                <p class="text-muted f-s-1 m-0">Filtro em tempo real, expansão/recolhimento e seleção de nó</p>
+              </div>
+              <span class="badge badge-blue">Navegação</span>
+            </div>
+
+            <!-- Toolbar de Busca & Ações -->
+            <div class="stack gap-2">
+              <div class="d-flex align-items-center gap-2">
+                <div class="p-relative w-100">
+                  <input type="text" id="tree-search-input" class="input input-sm w-100" placeholder="Filtrar arquivos ou pastas (ex: scss, js, icon)...">
+                </div>
+                <button type="button" class="btn btn-outline btn-sm text-nowrap" id="btn-tree-clear-filter">Limpar</button>
+              </div>
+              <div class="d-flex align-items-center justify-content-between f-s-1">
+                <div class="cluster gap-1">
+                  <button type="button" class="btn btn-ghost btn-xs" id="btn-tree-expand-all"><i class="icon icon-plus"></i> Expandir Tudo</button>
+                  <button type="button" class="btn btn-ghost btn-xs" id="btn-tree-collapse-all"><i class="icon icon-minus"></i> Recolher Tudo</button>
+                </div>
+                <span id="tree-search-count" class="badge badge-subtle badge-xs"></span>
+              </div>
+            </div>
+
+            <!-- Árvore de Arquivos -->
+            <div class="p-3 bg-subtle rounded border" style="max-height: 320px; overflow-y: auto;">
+              <ul id="demo-tree-files" class="tree-view" data-tree-view>
+                <li class="tree-node is-expanded" data-node-id="src">
+                  <div class="tree-node-content">
+                    <span class="tree-icon icon-folder"><i class="icon icon-folder"></i></span>
+                    <span class="tree-label">src</span>
+                    <span class="tree-badge">12 arqs</span>
+                  </div>
+                  <ul class="tree-children">
+                    <li class="tree-node is-expanded" data-node-id="src-js">
+                      <div class="tree-node-content">
+                        <span class="tree-icon icon-folder"><i class="icon icon-folder"></i></span>
+                        <span class="tree-label">js</span>
+                      </div>
+                      <ul class="tree-children">
+                        <li class="tree-node" data-node-id="src-js-frame">
+                          <div class="tree-node-content">
+                            <span class="tree-icon icon-code text-green"><i class="icon icon-code"></i></span>
+                            <span class="tree-label">framePER.js</span>
+                            <span class="badge badge-green badge-xs">Principal</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="tree-node is-expanded" data-node-id="src-scss">
+                      <div class="tree-node-content">
+                        <span class="tree-icon icon-folder"><i class="icon icon-folder"></i></span>
+                        <span class="tree-label">scss</span>
+                      </div>
+                      <ul class="tree-children">
+                        <li class="tree-node" data-node-id="src-scss-main">
+                          <div class="tree-node-content">
+                            <span class="tree-icon icon-file text-amber"><i class="icon icon-layers"></i></span>
+                            <span class="tree-label">framePER.scss</span>
+                          </div>
+                        </li>
+                        <li class="tree-node is-expanded" data-node-id="src-scss-comp">
+                          <div class="tree-node-content">
+                            <span class="tree-icon icon-folder"><i class="icon icon-folder"></i></span>
+                            <span class="tree-label">components</span>
+                          </div>
+                          <ul class="tree-children">
+                            <li class="tree-node" data-node-id="comp-tree">
+                              <div class="tree-node-content">
+                                <span class="tree-icon icon-file text-purple"><i class="icon icon-file"></i></span>
+                                <span class="tree-label">_tree-view.scss</span>
+                                <span class="badge badge-purple badge-xs">Novo</span>
+                              </div>
+                            </li>
+                            <li class="tree-node" data-node-id="comp-split">
+                              <div class="tree-node-content">
+                                <span class="tree-icon icon-file text-primary"><i class="icon icon-file"></i></span>
+                                <span class="tree-label">_split-pane.scss</span>
+                              </div>
+                            </li>
+                            <li class="tree-node" data-node-id="comp-tabs">
+                              <div class="tree-node-content">
+                                <span class="tree-icon icon-file"><i class="icon icon-file"></i></span>
+                                <span class="tree-label">_tabs.scss</span>
+                              </div>
+                            </li>
+                          </ul>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node is-expanded" data-node-id="dist">
+                  <div class="tree-node-content">
+                    <span class="tree-icon icon-folder"><i class="icon icon-folder"></i></span>
+                    <span class="tree-label">dist</span>
+                    <span class="tree-badge">Bundle</span>
+                  </div>
+                  <ul class="tree-children">
+                    <li class="tree-node" data-node-id="dist-min-js">
+                      <div class="tree-node-content">
+                        <span class="tree-icon icon-code text-green"><i class="icon icon-code"></i></span>
+                        <span class="tree-label">framePER.min.js</span>
+                      </div>
+                    </li>
+                    <li class="tree-node" data-node-id="dist-min-css">
+                      <div class="tree-node-content">
+                        <span class="tree-icon icon-file text-primary"><i class="icon icon-layers"></i></span>
+                        <span class="tree-label">framePER.min.css</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node" data-node-id="pkg-json">
+                  <div class="tree-node-content">
+                    <span class="tree-icon icon-file text-muted"><i class="icon icon-settings"></i></span>
+                    <span class="tree-label">package.json</span>
+                  </div>
+                </li>
+                <li class="tree-node" data-node-id="readme-md">
+                  <div class="tree-node-content">
+                    <span class="tree-icon icon-file text-blue"><i class="icon icon-info"></i></span>
+                    <span class="tree-label">README.md</span>
+                  </div>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Feedback de Seleção -->
+            <div class="p-2 bg-surface rounded border d-flex align-items-center justify-content-between f-s-1 text-muted">
+              <span>Item selecionado:</span>
+              <strong id="tree-selected-info" class="text-primary font-mono">Nenhum</strong>
+            </div>
+          </div>
+
+          <!-- Card 2: Permissões de Acesso com Checkboxes Tri-State -->
+          <div class="card p-4 stack gap-3 h-100">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Permissões de Acesso (ACL)</h3>
+                <p class="text-muted f-s-1 m-0">Checkboxes tri-state com propagação automática (Pai &harr; Filhos)</p>
+              </div>
+              <span class="badge badge-purple">Checkable Tri-State</span>
+            </div>
+
+            <div class="d-flex align-items-center justify-content-between flex-wrap gap-2">
+              <div class="cluster gap-1">
+                <button type="button" class="btn btn-outline btn-xs" id="btn-tree-check-all">Marcar Tudo</button>
+                <button type="button" class="btn btn-ghost btn-xs" id="btn-tree-uncheck-all">Desmarcar Tudo</button>
+              </div>
+              <button type="button" class="btn btn-primary btn-xs" id="btn-tree-get-checked">
+                <i class="icon icon-check"></i> Obter Permissões Ativas
+              </button>
+            </div>
+
+            <!-- Árvore de Permissões com Checkbox -->
+            <div class="p-3 bg-subtle rounded border" style="max-height: 320px; overflow-y: auto;">
+              <ul id="demo-tree-permissions" class="tree-view" data-tree-view data-checkable="true">
+                <li class="tree-node is-expanded" data-node-id="perm-admin">
+                  <div class="tree-node-content">
+                    <span class="tree-icon"><i class="icon icon-shield text-primary"></i></span>
+                    <span class="tree-label">Administração do Sistema</span>
+                  </div>
+                  <ul class="tree-children">
+                    <li class="tree-node is-expanded" data-node-id="perm-users">
+                      <div class="tree-node-content">
+                        <span class="tree-icon"><i class="icon icon-user"></i></span>
+                        <span class="tree-label">Gestão de Usuários</span>
+                      </div>
+                      <ul class="tree-children">
+                        <li class="tree-node" data-node-id="perm-users-create">
+                          <div class="tree-node-content">
+                            <span class="tree-label">Criar novos usuários</span>
+                          </div>
+                        </li>
+                        <li class="tree-node" data-node-id="perm-users-edit">
+                          <div class="tree-node-content">
+                            <span class="tree-label">Editar perfis e dados</span>
+                          </div>
+                        </li>
+                        <li class="tree-node" data-node-id="perm-users-delete">
+                          <div class="tree-node-content">
+                            <span class="tree-label">Excluir e revogar acessos</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                    <li class="tree-node is-expanded" data-node-id="perm-finance">
+                      <div class="tree-node-content">
+                        <span class="tree-icon"><i class="icon icon-activity text-green"></i></span>
+                        <span class="tree-label">Módulo Financeiro</span>
+                      </div>
+                      <ul class="tree-children">
+                        <li class="tree-node" data-node-id="perm-fin-view">
+                          <div class="tree-node-content">
+                            <span class="tree-label">Visualizar faturamento e relatórios</span>
+                          </div>
+                        </li>
+                        <li class="tree-node" data-node-id="perm-fin-refund">
+                          <div class="tree-node-content">
+                            <span class="tree-label">Autorizar reembolsos e estornos</span>
+                          </div>
+                        </li>
+                      </ul>
+                    </li>
+                  </ul>
+                </li>
+                <li class="tree-node is-expanded" data-node-id="perm-marketing">
+                  <div class="tree-node-content">
+                    <span class="tree-icon"><i class="icon icon-bell text-amber"></i></span>
+                    <span class="tree-label">Comunicação & Marketing</span>
+                  </div>
+                  <ul class="tree-children">
+                    <li class="tree-node" data-node-id="perm-mkt-campaigns">
+                      <div class="tree-node-content">
+                        <span class="tree-label">Disparo de campanhas e e-mails</span>
+                      </div>
+                    </li>
+                    <li class="tree-node" data-node-id="perm-mkt-analytics">
+                      <div class="tree-node-content">
+                        <span class="tree-label">Exportação de dados analíticos</span>
+                      </div>
+                    </li>
+                  </ul>
+                </li>
+              </ul>
+            </div>
+
+            <!-- Resumo das permissões marcadas -->
+            <div class="p-2 bg-surface rounded border d-flex align-items-center justify-content-between f-s-1 text-muted">
+              <span>Status das permissões:</span>
+              <span id="tree-permissions-summary" class="badge badge-subtle badge-sm">Carregando...</span>
+            </div>
+          </div>
+        </div>
+      </section>
+
     </section>
 
     <footer class="container p-y-5 txt-center f-s-2 text-muted p-relative z-10">
-      Frame PER v2.15.0 · Framework CSS + JS + SVG sem dependências
+      Frame PER v2.16.0 · Framework CSS + JS + SVG sem dependências
     </footer>
   </main>
 

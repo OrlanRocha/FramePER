@@ -91,6 +91,7 @@
                 this.initFormValidator();
                 this.initActivityFeed();
                 this.initSplitPane();
+                this.initTreeView();
             },
             initContextMenu: function() {
                 if (FramePER.ContextMenu && FramePER.ContextMenu.init) {
@@ -110,6 +111,11 @@
             initSplitPane: function() {
                 if (FramePER.SplitPane && FramePER.SplitPane.init) {
                     FramePER.SplitPane.init();
+                }
+            },
+            initTreeView: function() {
+                if (FramePER.TreeView && FramePER.TreeView.init) {
+                    FramePER.TreeView.init();
                 }
             },
             initTables: function() {
@@ -2119,6 +2125,14 @@
                     desc: 'Divisores arrastáveis suavemente (drag & resize) e persistência de layout',
                     icon: 'icon-layout',
                     action: () => { window.location.href = 'index.html#split-pane-demo'; }
+                },
+                {
+                    group: 'Componentes & Docs',
+                    id: 'nav-tree-view',
+                    title: 'Tree View Interativo',
+                    desc: 'Árvore hierárquica, checkboxes tri-state e filtro em tempo real',
+                    icon: 'icon-folder',
+                    action: () => { window.location.href = 'index.html#tree-view-demo'; }
                 },
                 {
                     group: 'Componentes & Docs',
@@ -5322,6 +5336,544 @@
                     });
                 }
             };
+        })(),
+
+        TreeView: (() => {
+            const CHEVRON_SVG = '<svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5"><path stroke-linecap="round" stroke-linejoin="round" d="M9 5l7 7-7 7"/></svg>';
+
+            class Instance {
+                constructor(container, options = {}) {
+                    this.container = typeof container === 'string' ? document.querySelector(container) : container;
+                    if (!this.container) return;
+
+                    this.options = Object.assign({
+                        checkable: this.container.hasAttribute('data-checkable') || this.container.getAttribute('data-tree-checkable') === 'true',
+                        cascadeCheck: this.container.getAttribute('data-cascade-check') !== 'false',
+                        multipleSelect: this.container.getAttribute('data-multiple-select') === 'true',
+                        accordion: this.container.getAttribute('data-accordion') === 'true',
+                        data: null,
+                        onSelect: null,
+                        onCheck: null,
+                        onToggle: null
+                    }, options);
+
+                    this._init();
+                    this.container._frameTreeView = this;
+                }
+
+                _init() {
+                    this.container.classList.add('tree-view');
+                    this.container.setAttribute('role', 'tree');
+
+                    if (Array.isArray(this.options.data) && this.options.data.length > 0) {
+                        this.container.innerHTML = '';
+                        this._renderNodes(this.options.data, this.container);
+                    } else {
+                        this._enhanceExistingDOM();
+                    }
+
+                    this._bindEvents();
+                    if (this.options.checkable) {
+                        this._syncAllCheckboxes();
+                    }
+                }
+
+                _renderNodes(items, parentEl) {
+                    const ul = document.createElement('ul');
+                    ul.className = parentEl === this.container ? 'tree-root' : 'tree-children';
+                    ul.setAttribute('role', 'group');
+
+                    items.forEach((item) => {
+                        const li = document.createElement('li');
+                        li.className = 'tree-node';
+                        li.setAttribute('role', 'treeitem');
+                        const id = item.id || `node-${Math.random().toString(36).substring(2, 9)}`;
+                        li.setAttribute('data-node-id', id);
+
+                        const hasChildren = Array.isArray(item.children) && item.children.length > 0;
+                        if (!hasChildren) {
+                            li.classList.add('is-leaf');
+                        }
+                        if (item.expanded) {
+                            li.classList.add('is-expanded');
+                            li.setAttribute('aria-expanded', 'true');
+                        } else if (hasChildren) {
+                            li.setAttribute('aria-expanded', 'false');
+                        }
+
+                        const content = document.createElement('div');
+                        content.className = 'tree-node-content';
+
+                        // Toggle button
+                        const toggleBtn = document.createElement('button');
+                        toggleBtn.type = 'button';
+                        toggleBtn.className = 'tree-toggle';
+                        toggleBtn.setAttribute('aria-label', 'Alternar');
+                        toggleBtn.innerHTML = CHEVRON_SVG;
+                        content.appendChild(toggleBtn);
+
+                        // Checkbox if checkable
+                        if (this.options.checkable) {
+                            const cb = document.createElement('input');
+                            cb.type = 'checkbox';
+                            cb.className = 'tree-checkbox';
+                            if (item.checked) cb.checked = true;
+                            content.appendChild(cb);
+                        }
+
+                        // Icon
+                        if (item.icon) {
+                            const icon = document.createElement('span');
+                            icon.className = `tree-icon ${item.icon}`;
+                            content.appendChild(icon);
+                        }
+
+                        // Label
+                        const label = document.createElement('span');
+                        label.className = 'tree-label';
+                        label.textContent = item.label || item.text || id;
+                        content.appendChild(label);
+
+                        // Badge
+                        if (item.badge) {
+                            const badge = document.createElement('span');
+                            badge.className = 'tree-badge';
+                            badge.textContent = item.badge;
+                            content.appendChild(badge);
+                        }
+
+                        li.appendChild(content);
+
+                        if (hasChildren) {
+                            this._renderNodes(item.children, li);
+                        }
+
+                        ul.appendChild(li);
+                    });
+
+                    parentEl.appendChild(ul);
+                }
+
+                _enhanceExistingDOM() {
+                    const allNodes = this.container.querySelectorAll('.tree-node');
+                    allNodes.forEach((node) => {
+                        node.setAttribute('role', 'treeitem');
+                        if (!node.getAttribute('data-node-id')) {
+                            node.setAttribute('data-node-id', `node-${Math.random().toString(36).substring(2, 9)}`);
+                        }
+
+                        const childrenList = node.querySelector(':scope > .tree-children, :scope > ul');
+                        const hasChildren = !!childrenList;
+
+                        if (hasChildren) {
+                            childrenList.classList.add('tree-children');
+                            childrenList.setAttribute('role', 'group');
+                            if (node.classList.contains('is-expanded')) {
+                                node.setAttribute('aria-expanded', 'true');
+                            } else {
+                                node.setAttribute('aria-expanded', 'false');
+                            }
+                        } else {
+                            node.classList.add('is-leaf');
+                        }
+
+                        let content = node.querySelector(':scope > .tree-node-content');
+                        if (!content) {
+                            content = document.createElement('div');
+                            content.className = 'tree-node-content';
+                            while (node.firstChild && node.firstChild !== childrenList) {
+                                content.appendChild(node.firstChild);
+                            }
+                            node.insertBefore(content, childrenList);
+                        }
+
+                        // Ensure toggle button exists
+                        let toggle = content.querySelector(':scope > .tree-toggle');
+                        if (!toggle) {
+                            toggle = document.createElement('button');
+                            toggle.type = 'button';
+                            toggle.className = 'tree-toggle';
+                            toggle.setAttribute('aria-label', 'Alternar');
+                            toggle.innerHTML = CHEVRON_SVG;
+                            content.insertBefore(toggle, content.firstChild);
+                        }
+
+                        // Ensure checkbox exists if checkable
+                        if (this.options.checkable) {
+                            let cb = content.querySelector(':scope > .tree-checkbox');
+                            if (!cb) {
+                                cb = document.createElement('input');
+                                cb.type = 'checkbox';
+                                cb.className = 'tree-checkbox';
+                                if (toggle.nextSibling) {
+                                    content.insertBefore(cb, toggle.nextSibling);
+                                } else {
+                                    content.appendChild(cb);
+                                }
+                            }
+                        }
+                    });
+                }
+
+                _bindEvents() {
+                    this._clickHandler = (e) => {
+                        const toggleBtn = e.target.closest('.tree-toggle');
+                        if (toggleBtn) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            const node = toggleBtn.closest('.tree-node');
+                            if (node && !node.classList.contains('is-leaf')) {
+                                this.toggle(node);
+                            }
+                            return;
+                        }
+
+                        const checkbox = e.target.closest('.tree-checkbox');
+                        if (checkbox) {
+                            const node = checkbox.closest('.tree-node');
+                            this._handleCheckboxChange(node, checkbox.checked);
+                            return;
+                        }
+
+                        const content = e.target.closest('.tree-node-content');
+                        if (content && this.container.contains(content)) {
+                            const node = content.closest('.tree-node');
+                            if (node) {
+                                this.select(node);
+                            }
+                        }
+                    };
+
+                    this._dblClickHandler = (e) => {
+                        const content = e.target.closest('.tree-node-content');
+                        if (content && this.container.contains(content)) {
+                            const node = content.closest('.tree-node');
+                            if (node && !node.classList.contains('is-leaf')) {
+                                this.toggle(node);
+                            }
+                        }
+                    };
+
+                    this.container.addEventListener('click', this._clickHandler);
+                    this.container.addEventListener('dblclick', this._dblClickHandler);
+                }
+
+                _handleCheckboxChange(node, isChecked) {
+                    if (!node) return;
+                    const checkbox = node.querySelector(':scope > .tree-node-content > .tree-checkbox');
+                    if (checkbox) {
+                        checkbox.checked = isChecked;
+                        checkbox.indeterminate = false;
+                    }
+
+                    if (this.options.cascadeCheck) {
+                        // Cascading down to all descendants
+                        const descendantCheckboxes = node.querySelectorAll('.tree-children .tree-checkbox');
+                        descendantCheckboxes.forEach(cb => {
+                            cb.checked = isChecked;
+                            cb.indeterminate = false;
+                        });
+
+                        // Cascading up to update ancestors
+                        this._updateAncestors(node);
+                    }
+
+                    const nodeId = node.getAttribute('data-node-id');
+                    const labelEl = node.querySelector('.tree-label');
+                    const label = labelEl ? labelEl.textContent.trim() : nodeId;
+
+                    if (typeof this.options.onCheck === 'function') {
+                        this.options.onCheck({ id: nodeId, label, checked: isChecked, indeterminate: false }, node);
+                    }
+
+                    this.container.dispatchEvent(new CustomEvent('frameper:tree:check', {
+                        bubbles: true,
+                        detail: { id: nodeId, label, checked: isChecked, node }
+                    }));
+                }
+
+                _updateAncestors(node) {
+                    let parent = node.parentElement ? node.parentElement.closest('.tree-node') : null;
+                    while (parent && this.container.contains(parent)) {
+                        const parentCb = parent.querySelector(':scope > .tree-node-content > .tree-checkbox');
+                        if (parentCb) {
+                            const childNodes = Array.from(parent.querySelectorAll(':scope > .tree-children > .tree-node, :scope > ul > .tree-node'));
+                            const childCheckboxes = childNodes.map(n => n.querySelector(':scope > .tree-node-content > .tree-checkbox')).filter(Boolean);
+
+                            if (childCheckboxes.length > 0) {
+                                const allChecked = childCheckboxes.every(cb => cb.checked);
+                                const noneChecked = childCheckboxes.every(cb => !cb.checked && !cb.indeterminate);
+
+                                if (allChecked) {
+                                    parentCb.checked = true;
+                                    parentCb.indeterminate = false;
+                                } else if (noneChecked) {
+                                    parentCb.checked = false;
+                                    parentCb.indeterminate = false;
+                                } else {
+                                    parentCb.checked = false;
+                                    parentCb.indeterminate = true;
+                                }
+                            }
+                        }
+                        parent = parent.parentElement ? parent.parentElement.closest('.tree-node') : null;
+                    }
+                }
+
+                _syncAllCheckboxes() {
+                    const leafNodes = this.container.querySelectorAll('.tree-node.is-leaf');
+                    leafNodes.forEach(node => {
+                        this._updateAncestors(node);
+                    });
+                }
+
+                toggle(nodeOrId) {
+                    const node = this._resolveNode(nodeOrId);
+                    if (!node || node.classList.contains('is-leaf')) return;
+
+                    if (node.classList.contains('is-expanded')) {
+                        this.collapse(node);
+                    } else {
+                        this.expand(node);
+                    }
+                }
+
+                expand(nodeOrId) {
+                    const node = this._resolveNode(nodeOrId);
+                    if (!node || node.classList.contains('is-leaf')) return;
+
+                    if (this.options.accordion) {
+                        const siblings = node.parentElement ? Array.from(node.parentElement.children) : [];
+                        siblings.forEach(sib => {
+                            if (sib !== node && sib.classList.contains('tree-node')) {
+                                this.collapse(sib);
+                            }
+                        });
+                    }
+
+                    node.classList.add('is-expanded');
+                    node.setAttribute('aria-expanded', 'true');
+
+                    // Ensure all ancestor folders are also expanded so node is visible
+                    let parent = node.parentElement ? node.parentElement.closest('.tree-node') : null;
+                    while (parent && this.container.contains(parent)) {
+                        parent.classList.add('is-expanded');
+                        parent.setAttribute('aria-expanded', 'true');
+                        parent = parent.parentElement ? parent.parentElement.closest('.tree-node') : null;
+                    }
+
+                    const nodeId = node.getAttribute('data-node-id');
+                    if (typeof this.options.onToggle === 'function') {
+                        this.options.onToggle({ id: nodeId, expanded: true }, node);
+                    }
+                    this.container.dispatchEvent(new CustomEvent('frameper:tree:toggle', {
+                        bubbles: true,
+                        detail: { id: nodeId, expanded: true, node }
+                    }));
+                }
+
+                collapse(nodeOrId) {
+                    const node = this._resolveNode(nodeOrId);
+                    if (!node || node.classList.contains('is-leaf')) return;
+
+                    node.classList.remove('is-expanded');
+                    node.setAttribute('aria-expanded', 'false');
+
+                    const nodeId = node.getAttribute('data-node-id');
+                    if (typeof this.options.onToggle === 'function') {
+                        this.options.onToggle({ id: nodeId, expanded: false }, node);
+                    }
+                    this.container.dispatchEvent(new CustomEvent('frameper:tree:toggle', {
+                        bubbles: true,
+                        detail: { id: nodeId, expanded: false, node }
+                    }));
+                }
+
+                expandAll() {
+                    this.container.querySelectorAll('.tree-node:not(.is-leaf)').forEach(node => {
+                        node.classList.add('is-expanded');
+                        node.setAttribute('aria-expanded', 'true');
+                    });
+                }
+
+                collapseAll() {
+                    this.container.querySelectorAll('.tree-node').forEach(node => {
+                        node.classList.remove('is-expanded');
+                        if (!node.classList.contains('is-leaf')) {
+                            node.setAttribute('aria-expanded', 'false');
+                        }
+                    });
+                }
+
+                select(nodeOrId) {
+                    const node = this._resolveNode(nodeOrId);
+                    if (!node) return;
+
+                    const content = node.querySelector(':scope > .tree-node-content');
+                    if (!content) return;
+
+                    if (!this.options.multipleSelect) {
+                        this.container.querySelectorAll('.tree-node-content.is-selected').forEach(c => {
+                            c.classList.remove('is-selected');
+                        });
+                    }
+
+                    content.classList.add('is-selected');
+
+                    const nodeId = node.getAttribute('data-node-id');
+                    const labelEl = node.querySelector('.tree-label');
+                    const label = labelEl ? labelEl.textContent.trim() : nodeId;
+
+                    if (typeof this.options.onSelect === 'function') {
+                        this.options.onSelect({ id: nodeId, label }, node);
+                    }
+                    this.container.dispatchEvent(new CustomEvent('frameper:tree:select', {
+                        bubbles: true,
+                        detail: { id: nodeId, label, node }
+                    }));
+                }
+
+                deselect(nodeOrId) {
+                    const node = this._resolveNode(nodeOrId);
+                    if (!node) return;
+                    const content = node.querySelector(':scope > .tree-node-content');
+                    if (content) content.classList.remove('is-selected');
+                }
+
+                check(nodeOrId, checked = true) {
+                    const node = this._resolveNode(nodeOrId);
+                    if (!node) return;
+                    this._handleCheckboxChange(node, !!checked);
+                }
+
+                uncheck(nodeOrId) {
+                    this.check(nodeOrId, false);
+                }
+
+                getChecked() {
+                    const result = [];
+                    this.container.querySelectorAll('.tree-node').forEach(node => {
+                        const cb = node.querySelector(':scope > .tree-node-content > .tree-checkbox');
+                        if (cb && (cb.checked || cb.indeterminate)) {
+                            const labelEl = node.querySelector('.tree-label');
+                            result.push({
+                                id: node.getAttribute('data-node-id'),
+                                label: labelEl ? labelEl.textContent.trim() : '',
+                                checked: cb.checked,
+                                indeterminate: cb.indeterminate
+                            });
+                        }
+                    });
+                    return result;
+                }
+
+                getSelected() {
+                    const selected = [];
+                    this.container.querySelectorAll('.tree-node-content.is-selected').forEach(c => {
+                        const node = c.closest('.tree-node');
+                        if (node) {
+                            const labelEl = node.querySelector('.tree-label');
+                            selected.push({
+                                id: node.getAttribute('data-node-id'),
+                                label: labelEl ? labelEl.textContent.trim() : '',
+                                node
+                            });
+                        }
+                    });
+                    return this.options.multipleSelect ? selected : (selected[0] || null);
+                }
+
+                filter(query) {
+                    const q = (query || '').trim().toLowerCase();
+                    const allNodes = Array.from(this.container.querySelectorAll('.tree-node'));
+
+                    // Reset any existing highlight
+                    this.container.querySelectorAll('.tree-label').forEach(label => {
+                        if (label._originalHTML) {
+                            label.innerHTML = label._originalHTML;
+                            delete label._originalHTML;
+                        }
+                    });
+
+                    if (!q) {
+                        allNodes.forEach(node => {
+                            node.classList.remove('is-filtered-out', 'is-matched');
+                        });
+                        return 0;
+                    }
+
+                    allNodes.forEach(node => {
+                        node.classList.add('is-filtered-out');
+                        node.classList.remove('is-matched');
+                    });
+
+                    let matchCount = 0;
+
+                    allNodes.forEach(node => {
+                        const labelEl = node.querySelector(':scope > .tree-node-content > .tree-label');
+                        if (!labelEl) return;
+
+                        const text = labelEl.textContent || '';
+                        const idx = text.toLowerCase().indexOf(q);
+
+                        if (idx !== -1) {
+                            matchCount++;
+                            node.classList.remove('is-filtered-out');
+                            node.classList.add('is-matched');
+
+                            // Highlight match
+                            labelEl._originalHTML = labelEl.innerHTML;
+                            const regex = new RegExp(`(${q.replace(/[.*+?^${}()|[\]\\]/g, '\\$&')})`, 'gi');
+                            labelEl.innerHTML = text.replace(regex, '<mark class="tree-highlight">$1</mark>');
+
+                            // Reveal and expand all ancestors
+                            let parent = node.parentElement ? node.parentElement.closest('.tree-node') : null;
+                            while (parent && this.container.contains(parent)) {
+                                parent.classList.remove('is-filtered-out');
+                                parent.classList.add('is-expanded');
+                                parent.setAttribute('aria-expanded', 'true');
+                                parent = parent.parentElement ? parent.parentElement.closest('.tree-node') : null;
+                            }
+                        }
+                    });
+
+                    return matchCount;
+                }
+
+                clearFilter() {
+                    return this.filter('');
+                }
+
+                _resolveNode(nodeOrId) {
+                    if (!nodeOrId) return null;
+                    if (typeof nodeOrId === 'string') {
+                        return this.container.querySelector(`.tree-node[data-node-id="${nodeOrId}"]`) ||
+                               this.container.querySelector(nodeOrId);
+                    }
+                    return nodeOrId;
+                }
+
+                destroy() {
+                    this.container.removeEventListener('click', this._clickHandler);
+                    this.container.removeEventListener('dblclick', this._dblClickHandler);
+                    delete this.container._frameTreeView;
+                }
+            }
+
+            return {
+                create: (container, options) => new Instance(container, options),
+                get: (container) => {
+                    const el = typeof container === 'string' ? document.querySelector(container) : container;
+                    return el ? el._frameTreeView : null;
+                },
+                init: () => {
+                    document.querySelectorAll('[data-tree-view], .tree-view').forEach(el => {
+                        if (!el._frameTreeView) {
+                            new Instance(el);
+                        }
+                    });
+                }
+            };
         })()
     };
 
@@ -5379,6 +5931,9 @@
         if (FramePER.SplitPane && FramePER.SplitPane.init) {
             FramePER.SplitPane.init();
         }
+        if (FramePER.TreeView && FramePER.TreeView.init) {
+            FramePER.TreeView.init();
+        }
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -5399,6 +5954,7 @@
     window.FramePERFormValidator = FramePER.FormValidator;
     window.FramePERActivityFeed = FramePER.ActivityFeed;
     window.FramePERSplitPane = FramePER.SplitPane;
+    window.FramePERTreeView = FramePER.TreeView;
 
 })(window, document);
 

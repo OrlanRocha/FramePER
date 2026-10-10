@@ -1,13 +1,20 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.15.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.16.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Split View & Painéis Redimensionáveis (`FramePER.SplitPane`)**, **Central de Atividades & Notificações em Drawer (`FramePER.ActivityFeed`)**, **Validador Reativo de Formulários (`FramePER.FormValidator`)**, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Tree View Interativo com Checkboxes & Busca em Tempo Real (`FramePER.TreeView`)**, **Split View & Painéis Redimensionáveis (`FramePER.SplitPane`)**, **Central de Atividades & Notificações em Drawer (`FramePER.ActivityFeed`)**, **Validador Reativo de Formulários (`FramePER.FormValidator`)**, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
+
+- **🌲 Tree View Interativo & Hierarquias (`FramePER.TreeView`)**:
+  - **Zero Dependências & Estrutura Hierárquica Ilimitada**: Renderização desktop-class com WAI-ARIA (`role="tree"`, `role="treeitem"`), linhas guias visuais e animação fluida de expansão nos chevrons.
+  - **Checkboxes Tri-State em Cascata**: Propagação bidirecional de seleção: marcar nó pai atualiza recursivamente todos os filhos; alterar filhos atualiza dinamicamente ancestrais para marcado, desmarcado ou indeterminado (`indeterminate`).
+  - **Busca em Tempo Real com Realce & Auto-Expansão**: Filtragem instantânea de nós via método `filter(termo)` com realce visual dos termos encontrados (`<mark class="tree-highlight">`) e expansão automática de pastas ancestrais.
+  - **Uso Híbrido (HTML Declarativo ou JSON Dinâmico)**: Inicialização instantânea sobre marcação existente (`data-tree-view`, `data-checkable`) ou geração dinâmica a partir de matriz JSON (`options.data`).
+  - **API Programática & Eventos**: Métodos `expandAll()`, `collapseAll()`, `toggle(id)`, `select(id)`, `check(id, state)`, `getChecked()`, `getSelected()` e eventos `frameper:tree:select`, `frameper:tree:check`, `frameper:tree:toggle`.
 
 - **🪟 Split View & Painéis Redimensionáveis (`FramePER.SplitPane`)**:
   - **Zero Dependências & Resizing Suave**: Divisores ajustáveis via Pointer Events (`pointerdown`, `pointermove`, `pointerup`) com captura contínua (`setPointerCapture`) e aceleração nativa.
@@ -358,6 +365,54 @@ Inclua os arquivos compilados `dist/framePER.min.css` e `dist/framePER.min.js` n
   // Evento reativo emitido a cada redimensionamento
   document.getElementById('meu-split').addEventListener('frameper:split:resize', (e) => {
     console.log('Split atualizado para:', e.detail.split + '%');
+  });
+</script>
+```
+
+### Tree View Interativo com Checkboxes & Busca (TreeView)
+```html
+<!-- Exemplo Declarativo com Checkboxes em Cascata -->
+<ul id="minha-arvore" class="tree-view" data-tree-view data-checkable="true">
+  <li class="tree-node is-expanded" data-node-id="admin">
+    <div class="tree-node-content">
+      <span class="tree-icon icon-folder"><i class="icon icon-folder"></i></span>
+      <span class="tree-label">Administração</span>
+    </div>
+    <ul class="tree-children">
+      <li class="tree-node" data-node-id="admin-users">
+        <div class="tree-node-content">
+          <span class="tree-label">Gestão de Usuários</span>
+        </div>
+      </li>
+      <li class="tree-node" data-node-id="admin-billing">
+        <div class="tree-node-content">
+          <span class="tree-label">Faturamento & Pagamentos</span>
+        </div>
+      </li>
+    </ul>
+  </li>
+</ul>
+
+<script>
+  // Inicialização ou busca em tempo real via JavaScript
+  const tree = FramePER.TreeView.create('#minha-arvore', {
+    checkable: true,        // ativa checkboxes tri-state
+    cascadeCheck: true,     // propaga para filhos e atualiza pais
+    multipleSelect: false   // seleção de nós
+  });
+
+  // Ações programáticas
+  tree.expandAll();          // expande todas as pastas
+  tree.collapseAll();        // recolhe todas as pastas
+  tree.filter('faturamento'); // filtra e realça em tempo real
+  tree.clearFilter();        // restaura visualização completa
+
+  // Captura de itens marcados
+  const checked = tree.getChecked(); // retorna array com { id, label, checked, indeterminate }
+
+  // Eventos reativos
+  document.getElementById('minha-arvore').addEventListener('frameper:tree:check', (e) => {
+    console.log('Permissão alterada:', e.detail.label, e.detail.checked);
   });
 </script>
 ```
