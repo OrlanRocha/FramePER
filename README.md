@@ -1,9 +1,9 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.8.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.9.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
@@ -58,6 +58,7 @@
 - **🗂️ Side Modals & Drawers Laterais**: Modais flutuantes deslizantes (`.modal-side`, `.modal-side-right`, `.modal-side-left`, `.modal-bottom`).
 - **📊 Tabelas Interativas Inteligentes**: Ordenação automática por colunas (`th.sortable`) e busca rápida em tempo real (`data-table-filter`).
 - **🖥️ Demonstrativos Completos**:
+  - **Gusto Artisan Kitchen & Delivery**: Cardápio digital gastronômico, vitrine com 12 pratos em arte vetorial SVG offline, categorias em pílulas com scroll horizontal, sacola lateral retrátil (`#cartDrawer`), cupons dinâmicos (`GUSTO10`, `FRAME15`), modal de checkout com máscaras automáticas e modal de rastreamento com Stepper progressivo em 4 etapas.
   - **Gráficos Interativos (Charts Showcase)**: 10 modelos incluindo Gráfico Misto (Combo) com sandbox dinâmico e exportação PNG/SVG.
   - **SaaS Admin Dashboard Suite**: Visão Geral com mini sparklines nos KPIs, gráfico misto com seletor de períodos reativos (7D, 30D, 90D, 1A), Donut de pagamentos e Command Palette.
   - **Aura Beauty & Nails Studio**: Salão de estética, nail design e agendamento online com ícones temáticos.

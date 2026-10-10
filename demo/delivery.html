@@ -1,0 +1,1155 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>GUSTO | Artisan Kitchen & Delivery | Frame PER</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="../dist/framePER.min.css">
+  <link rel="stylesheet" href="demo.css">
+  <style>
+    .restaurant-banner {
+      background: linear-gradient(135deg, rgba(59, 130, 246, 0.08) 0%, rgba(16, 185, 129, 0.05) 100%);
+      border: 1px solid var(--border-color);
+      border-radius: var(--radius-lg);
+    }
+    .food-card {
+      transition: transform 0.2s var(--ease), box-shadow 0.2s var(--ease), border-color 0.2s var(--ease);
+      display: flex;
+      flex-direction: column;
+      height: 100%;
+    }
+    .food-card:hover {
+      transform: translateY(-4px);
+      box-shadow: var(--shadow-lg);
+      border-color: var(--primary);
+    }
+    .food-img-wrap {
+      background-color: var(--bg-subtle);
+      border-top-left-radius: calc(var(--radius-lg) - 1px);
+      border-top-right-radius: calc(var(--radius-lg) - 1px);
+      padding: 1.5rem;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      min-height: 180px;
+    }
+    .food-img-wrap svg {
+      width: 100%;
+      max-height: 150px;
+      transition: transform 0.3s var(--ease);
+    }
+    .food-card:hover .food-img-wrap svg {
+      transform: scale(1.05);
+    }
+    .category-scroll {
+      display: flex;
+      gap: 0.5rem;
+      overflow-x: auto;
+      padding-bottom: 0.5rem;
+      scrollbar-width: none;
+    }
+    .category-scroll::-webkit-scrollbar {
+      display: none;
+    }
+    .cat-pill {
+      white-space: nowrap;
+      cursor: pointer;
+      border-radius: 999px;
+      padding: 0.5rem 1rem;
+      font-size: 0.875rem;
+      font-weight: 500;
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      transition: all 0.15s var(--ease);
+    }
+    .cat-pill:hover {
+      border-color: var(--primary);
+      color: var(--primary);
+    }
+    .cat-pill.active {
+      background: var(--primary);
+      color: #fff;
+      border-color: var(--primary);
+      box-shadow: 0 2px 8px rgba(59, 130, 246, 0.25);
+    }
+    .qty-btn {
+      width: 1.75rem;
+      height: 1.75rem;
+      border-radius: var(--radius-sm);
+      border: 1px solid var(--border-color);
+      background: var(--bg-surface);
+      color: var(--text-main);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      cursor: pointer;
+      font-weight: 600;
+      font-size: 1rem;
+      padding: 0;
+      transition: all 0.12s var(--ease);
+    }
+    .qty-btn:hover {
+      background: var(--bg-hover);
+      border-color: var(--border-strong);
+    }
+    .cart-row {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 0.75rem;
+      padding: 0.75rem 0;
+      border-bottom: 1px solid var(--border-color);
+    }
+    .tracker-rider-avatar {
+      width: 48px;
+      height: 48px;
+      border-radius: 50%;
+      background: var(--primary);
+      color: #fff;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 1.25rem;
+      font-weight: 700;
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Top Announcement Notification Bar -->
+  <div class="bg-primary text-white p-y-2 txt-center f-s-2 f-w-medium">
+    🛵 <strong>Entrega Grátis</strong> para pedidos acima de R$ 80 | Use o cupom <strong>GUSTO10</strong> para 10% OFF
+  </div>
+
+  <!-- Store Header Navbar -->
+  <header class="navbar navbar-sticky navbar-glass">
+    <div class="container d-flex justify-content-between align-items-center">
+      <a class="navbar-brand d-flex align-items-center gap-2" href="index.html">
+        <span class="icon-box icon-box-primary"><i class="icon icon-flame"></i></span>
+        <span class="f-w-bold f-s-5">GUSTO <span class="text-primary f-w-regular">KITCHEN</span></span>
+      </a>
+
+      <!-- Quick Search in Navbar -->
+      <div class="d-none d-md-flex align-items-center" style="width: 20rem;">
+        <div class="input-icon w-100">
+          <i class="icon icon-search"></i>
+          <input type="text" id="foodSearchInput" class="input input-sm" placeholder="Buscar no cardápio...">
+        </div>
+      </div>
+
+      <!-- Action Buttons -->
+      <div class="cluster gap-2 align-items-center">
+        <button class="btn btn-outline btn-sm d-none d-lg-inline-flex align-items-center gap-2" data-command-palette aria-label="Busca rápida">
+          <i class="icon icon-search"></i>
+          <span>Buscar</span>
+          <kbd style="font-size: 0.7rem; padding: 2px 5px; border-radius: 4px; background: var(--bg-surface); border: 1px solid var(--border);">Ctrl K</kbd>
+        </button>
+
+        <button class="btn btn-ghost btn-sm d-none d-sm-inline-flex align-items-center gap-1" data-toggle="modal" data-target="#trackerModal" id="btnOpenTrackerNav">
+          <i class="icon icon-clock text-primary"></i>
+          <span>Rastrear</span>
+        </button>
+
+        <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar Tema">
+          <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
+        </button>
+
+        <!-- Cart Trigger Button -->
+        <button class="btn btn-primary btn-sm d-flex align-items-center gap-2" data-toggle="modal" data-target="#cartDrawer" id="btnOpenCart">
+          <i class="icon icon-cart"></i>
+          <span class="d-none d-sm-inline">Sacola</span>
+          <span class="badge bg-white text-main badge-pill" id="cartBadgeCount">0</span>
+        </button>
+      </div>
+    </div>
+  </header>
+
+  <main class="container p-y-6 stack gap-6">
+
+    <!-- Restaurant Hero Banner -->
+    <section class="restaurant-banner p-4 p-md-5">
+      <div class="d-flex align-items-start justify-content-between flex-wrap gap-4">
+        <div class="d-flex align-items-center gap-4 flex-wrap">
+          <div class="icon-box icon-box-lg" style="width: 4rem; height: 4rem; font-size: 1.75rem; background: var(--primary); color: #fff; border-radius: var(--radius-md);">
+            <i class="icon icon-flame"></i>
+          </div>
+          <div class="stack gap-1">
+            <div class="cluster gap-2 align-items-center">
+              <h1 class="f-s-6 f-w-bold m-0">Gusto Artisan Kitchen & Grill</h1>
+              <span class="badge badge-green badge-dot">Aberto Agora</span>
+            </div>
+            <p class="text-muted m-0 f-s-2">Cozinha artesanal contemporânea · Burgers defumados, pizzas napolitanas e massas frescas</p>
+            <div class="cluster gap-3 f-s-1 text-muted m-t-1">
+              <span><i class="icon icon-star text-yellow m-r-1"></i><strong>4.9</strong> (1.420)</span>
+              <span>•</span>
+              <span><i class="icon icon-clock m-r-1"></i>30 - 45 min</span>
+              <span>•</span>
+              <span><i class="icon icon-truck m-r-1"></i>Taxa: R$ 8,00 (Grátis > R$ 80)</span>
+              <span>•</span>
+              <span>Pedido Mínimo: R$ 30,00</span>
+            </div>
+          </div>
+        </div>
+
+        <!-- Quick Info Badges -->
+        <div class="cluster gap-2">
+          <span class="badge badge-subtle"><i class="icon icon-shield text-green m-r-1"></i> Higiene Verificada</span>
+          <span class="badge badge-subtle"><i class="icon icon-award text-primary m-r-1"></i> Super Restaurante 2026</span>
+        </div>
+      </div>
+    </section>
+
+    <!-- Mobile Search Bar (Visible on mobile only) -->
+    <div class="d-flex d-md-none">
+      <div class="input-icon w-100">
+        <i class="icon icon-search"></i>
+        <input type="text" id="foodSearchInputMobile" class="input" placeholder="Buscar pratos, ingredientes...">
+      </div>
+    </div>
+
+    <!-- Category Filter Pills Bar -->
+    <section>
+      <div class="category-scroll" id="categoryPills">
+        <button class="cat-pill active" data-cat="all">🍽️ Todos os Pratos</button>
+        <button class="cat-pill" data-cat="burgers">🍔 Burgers Artesanais</button>
+        <button class="cat-pill" data-cat="pizzas">🍕 Pizzas Napolitanas</button>
+        <button class="cat-pill" data-cat="pastas">🍝 Massas Frescas</button>
+        <button class="cat-pill" data-cat="healthy">🥗 Saudável & Saladas</button>
+        <button class="cat-pill" data-cat="desserts">🍰 Sobremesas</button>
+        <button class="cat-pill" data-cat="drinks">🥤 Bebidas & Drinks</button>
+      </div>
+    </section>
+
+    <!-- Menu Items Grid -->
+    <section>
+      <div class="d-flex align-items-center justify-content-between m-b-4">
+        <div>
+          <h2 class="h4 m-0" id="sectionTitle">Cardápio Completo</h2>
+          <span class="text-muted f-s-2" id="itemsCountLabel">12 opções artesanais disponíveis</span>
+        </div>
+      </div>
+
+      <div class="grid grid-sm-2 grid-lg-3 grid-xl-4 gap-4" id="menuGrid">
+
+        <!-- 1. Truffle Smash Burger -->
+        <div class="card food-card p-0" data-category="burgers" data-name="truffle smash burger" data-id="1">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect width="200" height="150" rx="8" fill="transparent"/>
+              <!-- Bun Top -->
+              <path d="M40 70C40 40 70 30 100 30C130 30 160 40 160 70H40Z" fill="#E08E45"/>
+              <ellipse cx="75" cy="48" rx="2" ry="3" fill="#FFE5B4" transform="rotate(-15 75 48)"/>
+              <ellipse cx="100" cy="42" rx="2" ry="3" fill="#FFE5B4"/>
+              <ellipse cx="125" cy="50" rx="2" ry="3" fill="#FFE5B4" transform="rotate(20 125 50)"/>
+              <!-- Lettuce -->
+              <path d="M35 72Q60 65 70 73Q90 66 110 74Q130 67 165 72L160 78H40L35 72Z" fill="#10B981"/>
+              <!-- Cheese Melt -->
+              <path d="M38 78H162L150 90H140L135 84H100L95 92H80L75 84H38V78Z" fill="#F59E0B"/>
+              <!-- Patty -->
+              <rect x="36" y="84" width="128" height="18" rx="9" fill="#582900"/>
+              <!-- Bun Bottom -->
+              <path d="M45 102H155C155 116 135 120 100 120C65 120 45 116 45 102Z" fill="#C9752D"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-primary badge-pill">Mais Vendido</span>
+                <span class="f-s-1 text-muted">450 kcal</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Truffle Smash Burger</h3>
+              <p class="text-muted f-s-2 m-0">Pão brioche dourado, blend 160g smash, queijo cheddar inglês, cebola caramelizada e maionese trufada.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 42,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="1" data-title="Truffle Smash Burger" data-price="42.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 2. Bacon Jam Monster -->
+        <div class="card food-card p-0" data-category="burgers" data-name="bacon jam monster burger" data-id="2">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M40 65C40 35 70 25 100 25C130 25 160 35 160 65H40Z" fill="#D97706"/>
+              <ellipse cx="80" cy="42" rx="2" ry="3" fill="#FEF3C7"/>
+              <ellipse cx="115" cy="45" rx="2" ry="3" fill="#FEF3C7"/>
+              <rect x="34" y="68" width="132" height="12" rx="6" fill="#7C2D12"/>
+              <path d="M36 80H164L150 92H130L125 86H90L85 94H65L60 86H36V80Z" fill="#FBBF24"/>
+              <rect x="34" y="88" width="132" height="12" rx="6" fill="#7C2D12"/>
+              <path d="M42 104H158C158 120 135 125 100 125C65 125 42 120 42 104Z" fill="#B45309"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-purple badge-pill">Especial do Chef</span>
+                <span class="f-s-1 text-muted">620 kcal</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Bacon Jam Monster</h3>
+              <p class="text-muted f-s-2 m-0">Blend duplo 2x 120g, geleia artesanal de bacon crocante, queijo gouda maçaricado e picles de pepino.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 46,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="2" data-title="Bacon Jam Monster" data-price="46.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 3. Margherita D.O.P. -->
+        <div class="card food-card p-0" data-category="pizzas" data-name="pizza margherita dop" data-id="3">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="75" r="58" fill="#F59E0B" stroke="#D97706" stroke-width="6"/>
+              <circle cx="100" cy="75" r="50" fill="#EF4444"/>
+              <!-- Mozzarella dollops -->
+              <circle cx="85" cy="65" r="14" fill="#FEF3C7"/>
+              <circle cx="120" cy="75" r="12" fill="#FEF3C7"/>
+              <circle cx="95" cy="95" r="13" fill="#FEF3C7"/>
+              <!-- Basil leaves -->
+              <path d="M80 60C85 55 95 60 90 65C85 70 75 65 80 60Z" fill="#10B981"/>
+              <path d="M115 80C120 75 130 80 125 85C120 90 110 85 115 80Z" fill="#10B981"/>
+              <path d="M100 90C105 85 112 90 108 95C104 100 96 95 100 90Z" fill="#10B981"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-green badge-pill">Vegetariana</span>
+                <span class="f-s-1 text-muted">Fermentação 48h</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Margherita D.O.P.</h3>
+              <p class="text-muted f-s-2 m-0">Massa de fermentação lenta, molho pelati San Marzano, mozzarella di bufala fresca, manjericão e azeite.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 58,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="3" data-title="Margherita D.O.P." data-price="58.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 4. Diavola Spicy Pepperoni -->
+        <div class="card food-card p-0" data-category="pizzas" data-name="pizza diavola spicy pepperoni" data-id="4">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <circle cx="100" cy="75" r="58" fill="#F59E0B" stroke="#B45309" stroke-width="6"/>
+              <circle cx="100" cy="75" r="50" fill="#DC2626"/>
+              <!-- Pepperoni slices -->
+              <circle cx="80" cy="60" r="10" fill="#991B1B" stroke="#7F1D1D" stroke-width="2"/>
+              <circle cx="115" cy="62" r="11" fill="#991B1B" stroke="#7F1D1D" stroke-width="2"/>
+              <circle cx="125" cy="90" r="10" fill="#991B1B" stroke="#7F1D1D" stroke-width="2"/>
+              <circle cx="88" cy="96" r="10" fill="#991B1B" stroke="#7F1D1D" stroke-width="2"/>
+              <circle cx="100" cy="76" r="11" fill="#991B1B" stroke="#7F1D1D" stroke-width="2"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-red badge-pill">Picante 🌶️</span>
+                <span class="f-s-1 text-muted">8 fatias</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Diavola Spicy Pepperoni</h3>
+              <p class="text-muted f-s-2 m-0">Mozzarella fior di latte, pepperoni artesanal picante, fio de mel silvestre picante e orégano fresco.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 64,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="4" data-title="Diavola Spicy Pepperoni" data-price="64.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 5. Fettuccine al Tartufo -->
+        <div class="card food-card p-0" data-category="pastas" data-name="fettuccine al tartufo cogumelos massa" data-id="5">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="85" rx="65" ry="35" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="3"/>
+              <!-- Pasta nests -->
+              <path d="M60 85Q80 65 100 85Q120 105 140 85" stroke="#FDE047" stroke-width="6" stroke-linecap="round"/>
+              <path d="M65 78Q85 98 105 78Q125 58 135 80" stroke="#FACC15" stroke-width="5" stroke-linecap="round"/>
+              <path d="M75 90Q95 70 115 90Q135 110 145 88" stroke="#EAB308" stroke-width="5" stroke-linecap="round"/>
+              <!-- Mushrooms & Parsley -->
+              <circle cx="85" cy="80" r="5" fill="#78350F"/>
+              <circle cx="115" cy="82" r="6" fill="#78350F"/>
+              <circle cx="100" cy="74" r="4" fill="#10B981"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-yellow badge-pill">Massa Fresca</span>
+                <span class="f-s-1 text-muted">Artesanal</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Fettuccine al Tartufo</h3>
+              <p class="text-muted f-s-2 m-0">Massa feita na casa com ovos caipiras, mix de cogumelos salteados no azeite trufado e grana padano.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 52,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="5" data-title="Fettuccine al Tartufo" data-price="52.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 6. Gnocchi 4 Queijos -->
+        <div class="card food-card p-0" data-category="pastas" data-name="gnocchi nhoque 4 queijos gratinado" data-id="6">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="85" rx="65" ry="32" fill="#78350F"/>
+              <ellipse cx="100" cy="80" rx="58" ry="26" fill="#FEF08A"/>
+              <!-- Gnocchi pillows -->
+              <rect x="70" y="70" width="16" height="12" rx="5" fill="#FDE047" stroke="#CA8A04" stroke-width="1.5"/>
+              <rect x="94" y="68" width="16" height="12" rx="5" fill="#FDE047" stroke="#CA8A04" stroke-width="1.5"/>
+              <rect x="118" y="72" width="16" height="12" rx="5" fill="#FDE047" stroke="#CA8A04" stroke-width="1.5"/>
+              <rect x="82" y="82" width="16" height="12" rx="5" fill="#FDE047" stroke="#CA8A04" stroke-width="1.5"/>
+              <rect x="106" y="84" width="16" height="12" rx="5" fill="#FDE047" stroke="#CA8A04" stroke-width="1.5"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-blue badge-pill">Gratinado</span>
+                <span class="f-s-1 text-muted">Crocante de nozes</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Gnocchi aos 4 Queijos</h3>
+              <p class="text-muted f-s-2 m-0">Nhoque artesanal de batata doce com fonduta de gorgonzola, provolone, parmesão e crocante de nozes.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 48,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="6" data-title="Gnocchi aos 4 Queijos" data-price="48.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 7. Bowl Salmão & Avocado -->
+        <div class="card food-card p-0" data-category="healthy" data-name="bowl salmao avocado poke salada" data-id="7">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="85" rx="60" ry="34" fill="#047857"/>
+              <ellipse cx="100" cy="80" rx="54" ry="28" fill="#F8FAFC"/>
+              <!-- Salmon cubes -->
+              <rect x="65" y="70" width="14" height="14" rx="3" fill="#FB923C"/>
+              <rect x="82" y="65" width="14" height="14" rx="3" fill="#FB923C"/>
+              <rect x="74" y="82" width="14" height="14" rx="3" fill="#FB923C"/>
+              <!-- Avocado slices -->
+              <path d="M102 68C108 65 116 68 118 76C120 84 112 88 106 85Z" fill="#84CC16"/>
+              <path d="M115 74C121 71 129 74 131 82C133 90 125 94 119 91Z" fill="#84CC16"/>
+              <!-- Edamame -->
+              <circle cx="100" cy="92" r="5" fill="#22C55E"/>
+              <circle cx="112" cy="95" r="4.5" fill="#22C55E"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-green badge-pill">Fresh & Fit</span>
+                <span class="f-s-1 text-muted">Zero Lactose</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Bowl Salmão & Avocado</h3>
+              <p class="text-muted f-s-2 m-0">Cubos de salmão fresco, abacate hass, edamame no vapor, manga em cubos, quinoa e molho ponzu especial.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 49,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="7" data-title="Bowl Salmão & Avocado" data-price="49.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 8. Caesar Salad Rústica -->
+        <div class="card food-card p-0" data-category="healthy" data-name="caesar salad rustica frango salada" data-id="8">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <ellipse cx="100" cy="85" rx="60" ry="32" fill="var(--bg-surface)" stroke="var(--border-strong)" stroke-width="3"/>
+              <!-- Lettuce leaves -->
+              <path d="M60 80Q80 60 100 80Q120 60 140 80Q120 100 100 80Q80 100 60 80Z" fill="#22C55E"/>
+              <!-- Chicken strips -->
+              <rect x="75" y="75" width="22" height="7" rx="3.5" fill="#D97706" transform="rotate(-15 75 75)"/>
+              <rect x="105" y="72" width="22" height="7" rx="3.5" fill="#D97706" transform="rotate(20 105 72)"/>
+              <!-- Croutons -->
+              <rect x="90" y="86" width="9" height="9" rx="2" fill="#CA8A04"/>
+              <rect x="118" y="84" width="9" height="9" rx="2" fill="#CA8A04"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-subtle">Clássico</span>
+                <span class="f-s-1 text-muted">Proteína Leve</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Caesar Salad Rústica</h3>
+              <p class="text-muted f-s-2 m-0">Alface romana crocante, tiras de peito de frango grelhado, lascas de queijo parmesão e croutons de levain.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 38,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="8" data-title="Caesar Salad Rústica" data-price="38.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 9. Torta Basque Cheesecake -->
+        <div class="card food-card p-0" data-category="desserts" data-name="torta basque cheesecake sobremesa doce" data-id="9">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Cake Slice -->
+              <path d="M50 100L140 100L160 65L70 65L50 100Z" fill="#FEF08A"/>
+              <!-- Burnt top -->
+              <path d="M70 65L160 65L120 45L50 45L70 65Z" fill="#78350F"/>
+              <!-- Berry coulis drizzle -->
+              <path d="M75 55Q90 65 110 50Q130 65 150 55" stroke="#BE123C" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-purple badge-pill">Irresistível</span>
+                <span class="f-s-1 text-muted">Fatia Generosa</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Basque Cheesecake</h3>
+              <p class="text-muted f-s-2 m-0">Cheesecake queimado estilo basco, ultra cremoso no centro e servido com coulis de frutas vermelhas.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 26,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="9" data-title="Basque Cheesecake" data-price="26.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 10. Tiramisù Tradizionale -->
+        <div class="card food-card p-0" data-category="desserts" data-name="tiramisu tradicional cafe sobremesa" data-id="10">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <rect x="60" y="55" width="80" height="50" rx="4" fill="#FEF3C7" stroke="#78350F" stroke-width="2"/>
+              <line x1="60" y1="72" x2="140" y2="72" stroke="#78350F" stroke-width="4"/>
+              <line x1="60" y1="88" x2="140" y2="88" stroke="#78350F" stroke-width="4"/>
+              <!-- Cocoa powder top -->
+              <rect x="60" y="55" width="80" height="8" fill="#451A03"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-subtle">Receita Italiana</span>
+                <span class="f-s-1 text-muted">Café Espresso</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Tiramisù Tradizionale</h3>
+              <p class="text-muted f-s-2 m-0">Camadas de biscoito savoiardi embebidas em café espresso e licor amaretto com mascarpone e cacau.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 24,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="10" data-title="Tiramisù Tradizionale" data-price="24.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 11. Pink Lemonade Artesanal -->
+        <div class="card food-card p-0" data-category="drinks" data-name="pink lemonade suco bebida frutas vermelhas" data-id="11">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <path d="M75 40H125L118 115H82L75 40Z" fill="#FDA4AF" stroke="var(--border-strong)" stroke-width="2"/>
+              <!-- Lemon slice -->
+              <circle cx="100" cy="65" r="14" fill="#FEF08A" stroke="#EAB308" stroke-width="2"/>
+              <!-- Straw -->
+              <line x1="110" y1="20" x2="95" y2="90" stroke="#F43F5E" stroke-width="4" stroke-linecap="round"/>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-primary badge-pill">Refrescante</span>
+                <span class="f-s-1 text-muted">450ml</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Pink Lemonade Artesanal</h3>
+              <p class="text-muted f-s-2 m-0">Suco de limão siciliano fresco com redução natural de framboesa, hortelã e água gaseificada.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 16,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="11" data-title="Pink Lemonade Artesanal" data-price="16.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+        <!-- 12. Cerveja Artesanal IPA -->
+        <div class="card food-card p-0" data-category="drinks" data-name="cerveja artesanal ipa bebida lupulo" data-id="12">
+          <div class="food-img-wrap">
+            <svg viewBox="0 0 200 150" fill="none" xmlns="http://www.w3.org/2000/svg">
+              <!-- Bottle -->
+              <rect x="88" y="25" width="24" height="25" rx="2" fill="#78350F"/>
+              <path d="M88 50L75 75V120H125V75L112 50H88Z" fill="#B45309"/>
+              <!-- Label -->
+              <rect x="76" y="80" width="48" height="28" rx="2" fill="#FEF3C7"/>
+              <text x="100" y="98" text-anchor="middle" font-size="10" font-family="Inter, sans-serif" font-weight="700" fill="#78350F">IPA</text>
+            </svg>
+          </div>
+          <div class="p-4 stack gap-2 flex-1 justify-content-between">
+            <div class="stack gap-1">
+              <div class="cluster justify-content-between align-items-center">
+                <span class="badge badge-yellow badge-pill">Artesanal</span>
+                <span class="f-s-1 text-muted">500ml · 6.2%</span>
+              </div>
+              <h3 class="f-s-4 f-w-semibold m-0">Cerveja Artesanal IPA</h3>
+              <p class="text-muted f-s-2 m-0">India Pale Ale encorpada, aroma cítrico de maracujá e lúpulos nobres americanos.</p>
+            </div>
+            <div class="d-flex align-items-center justify-content-between m-t-3">
+              <div class="f-s-4 f-w-bold text-main tabular">R$ 22,00</div>
+              <button class="btn btn-primary btn-sm btn-add-cart" data-id="12" data-title="Cerveja Artesanal IPA" data-price="22.00">
+                <i class="icon icon-plus"></i> Adicionar
+              </button>
+            </div>
+          </div>
+        </div>
+
+      </div>
+    </section>
+
+  </main>
+
+  <!-- ====================================================================== -->
+  <!-- Side Modal Cart (Sacola Deslizante)                                    -->
+  <!-- ====================================================================== -->
+  <div id="cartDrawer" class="modal modal-side modal-side-right">
+    <div class="modal-content stack justify-content-between h-100 p-0" style="width: 100%; max-width: 24rem;">
+      
+      <!-- Cart Header -->
+      <div class="p-4 border-b d-flex align-items-center justify-content-between">
+        <div class="d-flex align-items-center gap-2">
+          <i class="icon icon-cart text-primary f-s-4"></i>
+          <h3 class="modal-title f-s-4 m-0">Sua Sacola</h3>
+        </div>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Cart Items Scrollable List -->
+      <div class="p-4 stack gap-2 flex-1 overflow-y-auto" id="cartItemsContainer">
+        <!-- Injected via JavaScript -->
+        <div class="txt-center p-y-6 text-muted" id="cartEmptyMsg">
+          <i class="icon icon-cart f-s-6 d-block m-b-2 text-subtle"></i>
+          <p class="m-0">Sua sacola está vazia.</p>
+          <span class="f-s-1">Escolha delícias no cardápio para adicionar!</span>
+        </div>
+      </div>
+
+      <!-- Cart Footer & Calculations -->
+      <div class="p-4 border-t bg-subtle stack gap-3" id="cartFooterSection">
+        
+        <!-- Coupon Form -->
+        <div class="d-flex gap-2">
+          <input type="text" id="couponInput" class="input input-sm" placeholder="Cupom (ex: GUSTO10)" style="text-transform: uppercase;">
+          <button type="button" id="btnApplyCoupon" class="btn btn-outline btn-sm">Aplicar</button>
+        </div>
+        <div id="couponAppliedBadge" class="d-none">
+          <span class="badge badge-green badge-pill d-inline-flex align-items-center gap-1">
+            <i class="icon icon-check"></i> <span id="couponCodeText"></span>
+            <button type="button" class="btn-ghost btn-sm p-0 m-l-1" id="btnRemoveCoupon" style="background: none; border: none; cursor: pointer;">&times;</button>
+          </span>
+        </div>
+
+        <!-- Calculations -->
+        <div class="stack gap-1 f-s-2 text-muted">
+          <div class="d-flex justify-content-between">
+            <span>Subtotal</span>
+            <span class="text-main tabular" id="cartSubtotal">R$ 0,00</span>
+          </div>
+          <div class="d-flex justify-content-between text-green d-none" id="discountRow">
+            <span>Desconto do Cupom</span>
+            <span class="tabular" id="cartDiscount">- R$ 0,00</span>
+          </div>
+          <div class="d-flex justify-content-between">
+            <span>Taxa de Entrega</span>
+            <span class="text-main tabular" id="cartDeliveryFee">R$ 8,00</span>
+          </div>
+          <div class="d-flex justify-content-between f-s-4 f-w-bold text-main border-t p-t-2 m-t-1">
+            <span>Total Geral</span>
+            <span class="text-primary tabular" id="cartTotal">R$ 0,00</span>
+          </div>
+        </div>
+
+        <!-- Checkout Trigger -->
+        <button type="button" id="btnProceedCheckout" class="btn btn-primary w-100 btn-lg" disabled>
+          Fechar Pedido &rarr;
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- Checkout Modal                                                         -->
+  <!-- ====================================================================== -->
+  <div id="checkoutModal" class="modal">
+    <div class="modal-content stack gap-4 p-4 p-md-5" style="max-width: 32rem;">
+      <div class="modal-header d-flex align-items-center justify-content-between">
+        <h3 class="modal-title f-s-5 m-0">Finalizar Pedido</h3>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <form id="checkoutForm" class="stack gap-3">
+        
+        <div class="form-group">
+          <label for="orderName">Seu Nome Completo</label>
+          <input type="text" id="orderName" class="input" placeholder="Ex: Lucas Medeiros" required value="Lucas Medeiros">
+        </div>
+
+        <div class="grid grid-md-2 gap-3">
+          <div class="form-group">
+            <label for="orderPhone">Telefone / WhatsApp</label>
+            <input type="text" id="orderPhone" class="input" data-mask="phone" placeholder="(11) 98765-4321" required value="(11) 98765-4321">
+          </div>
+          <div class="form-group">
+            <label for="orderCep">CEP de Entrega</label>
+            <input type="text" id="orderCep" class="input" data-mask="cep" placeholder="00000-000" required value="01310-100">
+          </div>
+        </div>
+
+        <div class="form-group">
+          <label for="orderAddress">Endereço e Número</label>
+          <input type="text" id="orderAddress" class="input" placeholder="Av. Paulista, 1000 - Apto 42" required value="Av. Paulista, 1000 - Apto 42">
+        </div>
+
+        <div class="form-group">
+          <label>Forma de Pagamento</label>
+          <div class="grid grid-3 gap-2 m-t-1">
+            <label class="card p-3 txt-center card-hover cursor-pointer border" style="cursor: pointer;">
+              <input type="radio" name="paymentMethod" value="PIX" checked class="m-r-1">
+              <span class="f-w-semibold f-s-2 d-block">PIX</span>
+              <span class="f-s-1 text-green">Aprovação Imediata</span>
+            </label>
+            <label class="card p-3 txt-center card-hover cursor-pointer border" style="cursor: pointer;">
+              <input type="radio" name="paymentMethod" value="Cartão">
+              <span class="f-w-semibold f-s-2 d-block">Cartão</span>
+              <span class="f-s-1 text-muted">Na entrega</span>
+            </label>
+            <label class="card p-3 txt-center card-hover cursor-pointer border" style="cursor: pointer;">
+              <input type="radio" name="paymentMethod" value="Dinheiro">
+              <span class="f-w-semibold f-s-2 d-block">Dinheiro</span>
+              <span class="f-s-1 text-muted">Com troco</span>
+            </label>
+          </div>
+        </div>
+
+        <div class="card p-3 bg-subtle border d-flex justify-content-between align-items-center">
+          <span class="text-muted f-s-2">Total a pagar:</span>
+          <span class="f-s-4 f-w-bold text-primary tabular" id="checkoutModalTotal">R$ 0,00</span>
+        </div>
+
+        <div class="modal-footer d-flex gap-2 justify-content-end p-0 m-t-2">
+          <button type="button" class="btn btn-secondary" data-dismiss="modal">Voltar</button>
+          <button type="submit" class="btn btn-primary" id="btnSubmitOrder">Confirmar Pedido</button>
+        </div>
+      </form>
+    </div>
+  </div>
+
+  <!-- ====================================================================== -->
+  <!-- Live Order Tracker Modal                                               -->
+  <!-- ====================================================================== -->
+  <div id="trackerModal" class="modal">
+    <div class="modal-content stack gap-4 p-4 p-md-5" style="max-width: 34rem;">
+      <div class="modal-header d-flex align-items-center justify-content-between">
+        <div>
+          <div class="cluster gap-2 align-items-center">
+            <h3 class="modal-title f-s-5 m-0">Rastreamento do Pedido</h3>
+            <span class="badge badge-green badge-dot">Ao Vivo</span>
+          </div>
+          <span class="text-muted f-s-1">Pedido #GUSTO-8429</span>
+        </div>
+        <button class="modal-close" data-dismiss="modal">&times;</button>
+      </div>
+
+      <!-- Stepper Tracking Stages -->
+      <div class="stepper" id="orderStepper">
+        <div class="step step-done" data-step="1">
+          <div class="step-circle"><i class="icon icon-check"></i></div>
+          <div class="step-label">Recebido</div>
+        </div>
+        <div class="step step-active" data-step="2">
+          <div class="step-circle">2</div>
+          <div class="step-label">Preparando</div>
+        </div>
+        <div class="step" data-step="3">
+          <div class="step-circle">3</div>
+          <div class="step-label">A Caminho</div>
+        </div>
+        <div class="step" data-step="4">
+          <div class="step-circle">4</div>
+          <div class="step-label">Entregue</div>
+        </div>
+      </div>
+
+      <!-- Dynamic Stage Box -->
+      <div class="card p-4 border bg-subtle stack gap-3" id="trackerStatusBox">
+        <div class="d-flex align-items-center gap-3">
+          <div class="icon-box icon-box-primary" id="trackerStatusIcon">
+            <i class="icon icon-flame"></i>
+          </div>
+          <div>
+            <h4 class="f-s-4 f-w-bold m-0" id="trackerStatusTitle">Na Cozinha (Em Preparo)</h4>
+            <p class="text-muted f-s-2 m-0" id="trackerStatusDesc">O chef está preparando seus pratos com ingredientes frescos selecionados.</p>
+          </div>
+        </div>
+
+        <div class="progress progress-sm">
+          <div class="progress-bar progress-bar-primary" id="trackerProgressBar" style="width: 50%;"></div>
+        </div>
+      </div>
+
+      <!-- Delivery Rider Card (Shown on step 3 and 4) -->
+      <div class="card p-3 border d-flex align-items-center justify-content-between" id="riderCard">
+        <div class="d-flex align-items-center gap-3">
+          <div class="tracker-rider-avatar">RM</div>
+          <div>
+            <div class="f-w-semibold f-s-3">Rodrigo M. (Entregador)</div>
+            <div class="text-muted f-s-1">Honda CG 160 Fan · Placa BRA-2026</div>
+          </div>
+        </div>
+        <span class="badge badge-green badge-pill">Estimativa: 18 min</span>
+      </div>
+
+      <!-- Interactive Controls -->
+      <div class="cluster justify-content-between align-items-center border-t p-t-3">
+        <span class="text-muted f-s-1">Simule o andamento do pedido:</span>
+        <button type="button" class="btn btn-outline btn-sm" id="btnAdvanceStep">
+          Avançar Etapa &rarr;
+        </button>
+      </div>
+
+    </div>
+  </div>
+
+  <!-- Scripts -->
+  <script src="../dist/framePER.min.js"></script>
+  <script>
+    document.addEventListener('DOMContentLoaded', () => {
+      // Cart State
+      let cart = [];
+      let activeCoupon = null;
+      const DELIVERY_FEE = 8.00;
+
+      const cartBadge = document.getElementById('cartBadgeCount');
+      const cartItemsContainer = document.getElementById('cartItemsContainer');
+      const cartEmptyMsg = document.getElementById('cartEmptyMsg');
+      const cartSubtotalEl = document.getElementById('cartSubtotal');
+      const cartDiscountEl = document.getElementById('cartDiscount');
+      const discountRow = document.getElementById('discountRow');
+      const cartDeliveryFeeEl = document.getElementById('cartDeliveryFee');
+      const cartTotalEl = document.getElementById('cartTotal');
+      const btnProceedCheckout = document.getElementById('btnProceedCheckout');
+      const checkoutModalTotal = document.getElementById('checkoutModalTotal');
+
+      // 1. Add to Cart Handler
+      document.querySelectorAll('.btn-add-cart').forEach(btn => {
+        btn.addEventListener('click', () => {
+          const id = btn.getAttribute('data-id');
+          const title = btn.getAttribute('data-title');
+          const price = parseFloat(btn.getAttribute('data-price'));
+
+          const existing = cart.find(it => it.id === id);
+          if (existing) {
+            existing.qty += 1;
+          } else {
+            cart.push({ id, title, price, qty: 1 });
+          }
+
+          updateCartUI();
+          FramePER.Notify.success('Item Adicionado', `${title} foi colocado na sacola!`);
+        });
+      });
+
+      // 2. Update Cart UI & Calculations
+      function updateCartUI() {
+        const totalItems = cart.reduce((acc, it) => acc + it.qty, 0);
+        cartBadge.textContent = totalItems;
+
+        if (cart.length === 0) {
+          cartItemsContainer.innerHTML = '';
+          cartItemsContainer.appendChild(cartEmptyMsg);
+          cartEmptyMsg.classList.remove('d-none');
+          btnProceedCheckout.disabled = true;
+          cartSubtotalEl.textContent = 'R$ 0,00';
+          cartTotalEl.textContent = 'R$ 0,00';
+          checkoutModalTotal.textContent = 'R$ 0,00';
+          discountRow.classList.add('d-none');
+          return;
+        }
+
+        cartEmptyMsg.classList.add('d-none');
+        cartItemsContainer.innerHTML = '';
+
+        let subtotal = 0;
+        cart.forEach(item => {
+          const itemTotal = item.price * item.qty;
+          subtotal += itemTotal;
+
+          const row = document.createElement('div');
+          row.className = 'cart-row';
+          row.innerHTML = `
+            <div class="stack gap-1 flex-1">
+              <span class="f-w-semibold f-s-3">${item.title}</span>
+              <span class="text-muted f-s-2 tabular">R$ ${item.price.toFixed(2).replace('.', ',')} un</span>
+            </div>
+            <div class="d-flex align-items-center gap-2">
+              <button type="button" class="qty-btn" data-action="minus" data-id="${item.id}">-</button>
+              <span class="f-w-bold tabular" style="min-width: 1.25rem; text-align: center;">${item.qty}</span>
+              <button type="button" class="qty-btn" data-action="plus" data-id="${item.id}">+</button>
+            </div>
+            <div class="tabular f-w-bold f-s-3 text-main" style="min-width: 4.5rem; text-align: right;">
+              R$ ${itemTotal.toFixed(2).replace('.', ',')}
+            </div>
+          `;
+
+          row.querySelector('[data-action="minus"]').addEventListener('click', () => {
+            if (item.qty > 1) {
+              item.qty -= 1;
+            } else {
+              cart = cart.filter(it => it.id !== item.id);
+            }
+            updateCartUI();
+          });
+
+          row.querySelector('[data-action="plus"]').addEventListener('click', () => {
+            item.qty += 1;
+            updateCartUI();
+          });
+
+          cartItemsContainer.appendChild(row);
+        });
+
+        // Discount calculation
+        let discount = 0;
+        if (activeCoupon === 'GUSTO10') {
+          discount = subtotal * 0.10;
+        } else if (activeCoupon === 'FRAME15') {
+          discount = subtotal * 0.15;
+        }
+
+        const deliveryFee = subtotal >= 80 ? 0 : DELIVERY_FEE;
+        const total = Math.max(subtotal - discount + deliveryFee, 0);
+
+        cartSubtotalEl.textContent = `R$ ${subtotal.toFixed(2).replace('.', ',')}`;
+        cartDeliveryFeeEl.textContent = deliveryFee === 0 ? 'GRÁTIS' : `R$ ${deliveryFee.toFixed(2).replace('.', ',')}`;
+
+        if (discount > 0) {
+          discountRow.classList.remove('d-none');
+          cartDiscountEl.textContent = `- R$ ${discount.toFixed(2).replace('.', ',')}`;
+        } else {
+          discountRow.classList.add('d-none');
+        }
+
+        cartTotalEl.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        checkoutModalTotal.textContent = `R$ ${total.toFixed(2).replace('.', ',')}`;
+        btnProceedCheckout.disabled = false;
+      }
+
+      // 3. Coupon Logic
+      const couponInput = document.getElementById('couponInput');
+      const btnApplyCoupon = document.getElementById('btnApplyCoupon');
+      const couponAppliedBadge = document.getElementById('couponAppliedBadge');
+      const couponCodeText = document.getElementById('couponCodeText');
+      const btnRemoveCoupon = document.getElementById('btnRemoveCoupon');
+
+      btnApplyCoupon.addEventListener('click', () => {
+        const code = couponInput.value.trim().toUpperCase();
+        if (code === 'GUSTO10' || code === 'FRAME15') {
+          activeCoupon = code;
+          couponCodeText.textContent = `${code} (${code === 'GUSTO10' ? '10%' : '15%'} OFF)`;
+          couponAppliedBadge.classList.remove('d-none');
+          couponInput.value = '';
+          updateCartUI();
+          FramePER.Notify.success('Cupom Aplicado', `Desconto de ${code === 'GUSTO10' ? '10%' : '15%'} concedido com sucesso!`);
+        } else {
+          FramePER.Notify.error('Cupom Inválido', 'Use GUSTO10 ou FRAME15 para obter desconto.');
+        }
+      });
+
+      btnRemoveCoupon.addEventListener('click', () => {
+        activeCoupon = null;
+        couponAppliedBadge.classList.add('d-none');
+        updateCartUI();
+        FramePER.Notify.info('Cupom Removido', 'O cupom de desconto foi removido.');
+      });
+
+      // 4. Proceed to Checkout Transition
+      btnProceedCheckout.addEventListener('click', () => {
+        document.getElementById('cartDrawer').classList.remove('show');
+        document.getElementById('checkoutModal').classList.add('show');
+      });
+
+      // 5. Checkout Form Submit
+      document.getElementById('checkoutForm').addEventListener('submit', (e) => {
+        e.preventDefault();
+        document.getElementById('checkoutModal').classList.remove('show');
+        document.body.style.overflow = '';
+
+        // Clear cart
+        cart = [];
+        activeCoupon = null;
+        couponAppliedBadge.classList.add('d-none');
+        updateCartUI();
+
+        FramePER.Notify.success('Pedido Enviado!', 'Seu pedido #GUSTO-8429 foi confirmado e já está na cozinha!');
+
+        // Open Tracker Modal
+        setTimeout(() => {
+          document.getElementById('trackerModal').classList.add('show');
+          resetTracker();
+        }, 350);
+      });
+
+      // 6. Category Filtering
+      const catPills = document.querySelectorAll('.cat-pill');
+      const foodCards = document.querySelectorAll('.food-card');
+      const sectionTitle = document.getElementById('sectionTitle');
+      const itemsCountLabel = document.getElementById('itemsCountLabel');
+
+      catPills.forEach(pill => {
+        pill.addEventListener('click', () => {
+          catPills.forEach(p => p.classList.remove('active'));
+          pill.classList.add('active');
+
+          const category = pill.getAttribute('data-cat');
+          let visibleCount = 0;
+
+          foodCards.forEach(card => {
+            const cardCat = card.getAttribute('data-category');
+            if (category === 'all' || cardCat === category) {
+              card.style.display = 'flex';
+              visibleCount++;
+            } else {
+              card.style.display = 'none';
+            }
+          });
+
+          sectionTitle.textContent = pill.textContent.trim();
+          itemsCountLabel.textContent = `${visibleCount} opções disponíveis`;
+        });
+      });
+
+      // 7. Search Filter in Menu
+      function filterSearch(query) {
+        const q = query.toLowerCase().trim();
+        let visibleCount = 0;
+
+        foodCards.forEach(card => {
+          const name = card.getAttribute('data-name');
+          if (!q || name.includes(q)) {
+            card.style.display = 'flex';
+            visibleCount++;
+          } else {
+            card.style.display = 'none';
+          }
+        });
+
+        itemsCountLabel.textContent = `${visibleCount} opções encontradas`;
+      }
+
+      const searchInputDesktop = document.getElementById('foodSearchInput');
+      const searchInputMobile = document.getElementById('foodSearchInputMobile');
+
+      if (searchInputDesktop) {
+        searchInputDesktop.addEventListener('input', (e) => filterSearch(e.target.value));
+      }
+      if (searchInputMobile) {
+        searchInputMobile.addEventListener('input', (e) => filterSearch(e.target.value));
+      }
+
+      // 8. Order Tracker Simulator
+      let currentStep = 2; // Starts on Step 2 (Cooking)
+      const steps = [
+        {
+          num: 1,
+          title: 'Pedido Confirmado',
+          desc: 'Seu pedido foi aceito pelo restaurante e registrado no sistema.',
+          progress: 25,
+          icon: 'icon-check'
+        },
+        {
+          num: 2,
+          title: 'Na Cozinha (Em Preparo)',
+          desc: 'O chef está preparando seus pratos com ingredientes frescos selecionados.',
+          progress: 50,
+          icon: 'icon-flame'
+        },
+        {
+          num: 3,
+          title: 'A Caminho (Com o Entregador)',
+          desc: 'O entregador Rodrigo M. já retirou seu pacote e está a caminho da sua residência.',
+          progress: 80,
+          icon: 'icon-truck'
+        },
+        {
+          num: 4,
+          title: 'Entregue no Destino!',
+          desc: 'Seu pedido foi entregue com sucesso. Bom apetite e avalie sua experiência!',
+          progress: 100,
+          icon: 'icon-star'
+        }
+      ];
+
+      function resetTracker() {
+        currentStep = 2;
+        updateTrackerUI();
+      }
+
+      function updateTrackerUI() {
+        const stepElements = document.querySelectorAll('#orderStepper .step');
+        stepElements.forEach((el, index) => {
+          const stepNum = index + 1;
+          el.classList.remove('step-done', 'step-active');
+          if (stepNum < currentStep) {
+            el.classList.add('step-done');
+          } else if (stepNum === currentStep) {
+            el.classList.add('step-active');
+          }
+        });
+
+        const activeData = steps.find(s => s.num === currentStep) || steps[0];
+        document.getElementById('trackerStatusTitle').textContent = activeData.title;
+        document.getElementById('trackerStatusDesc').textContent = activeData.desc;
+        document.getElementById('trackerProgressBar').style.width = `${activeData.progress}%`;
+
+        const iconEl = document.querySelector('#trackerStatusIcon i');
+        if (iconEl) {
+          iconEl.className = `icon ${activeData.icon}`;
+        }
+      }
+
+      document.getElementById('btnAdvanceStep').addEventListener('click', () => {
+        if (currentStep < 4) {
+          currentStep += 1;
+          updateTrackerUI();
+          const activeData = steps.find(s => s.num === currentStep);
+          FramePER.Notify.info(`Etapa ${currentStep}/4`, activeData.title);
+        } else {
+          currentStep = 1;
+          updateTrackerUI();
+          FramePER.Notify.success('Novo Ciclo', 'Rastreamento reiniciado para demonstração.');
+        }
+      });
+
+    });
+  </script>
+</body>
+</html>

@@ -2020,6 +2020,14 @@
                     action: () => { window.location.href = 'store.html'; }
                 },
                 {
+                    group: 'Aplicações Temáticas',
+                    id: 'nav-delivery',
+                    title: 'Gusto Delivery & Restaurante',
+                    desc: 'Cardápio digital, sacola, cupons e rastreio de pedido',
+                    icon: 'icon-cart',
+                    action: () => { window.location.href = 'delivery.html'; }
+                },
+                {
                     group: 'Componentes & Docs',
                     id: 'nav-components',
                     title: 'Galeria de Componentes UI',
