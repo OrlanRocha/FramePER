@@ -1,14 +1,20 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.9.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.10.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **104 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop, miniaturas e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
 
+- **📁 File Uploader com Drag & Drop (`FramePER.Upload`)**:
+  - **Zero Dependências**: Upload interativo em Vanilla JS e SCSS com suporte a arrastar e soltar (`dragenter`, `dragover`, `drop`).
+  - **Previews & Miniaturas Inteligentes**: Geração instantânea de thumbnail para imagens (`URL.createObjectURL`) e ícones semânticos vetoriais para PDFs e documentos.
+  - **Validação em Tempo Real**: Verificação estrita de limites de tamanho por arquivo (`data-uploader-max-size="10MB"`) e tipos MIME/extensões permitidas (`data-uploader-accept`).
+  - **Progresso Individual & Feedback**: Barra de progresso reativa por item, contagem e peso total da fila, badges de status (*Pendente*, *0% a 100%*, *Concluído*, *Erro*) e notificações Toast integradas.
+  - **Inicialização Híbrida**: Declarativa via HTML5 (`[data-uploader]`) ou programática (`new FramePER.Upload(el, options)`).
 - **📅 Datepicker & Calendário Nativo (`FramePER.Datepicker`)**:
   - **Zero Dependências**: Calendário popover em puro JavaScript Vanilla e SCSS modular.
   - **Data Única & Intervalo (Range)**: Seleção de data única (`data-datepicker`) ou range contínuo (`data-datepicker="range"`) com realce no grid.
@@ -40,7 +46,7 @@
 - **🔍 Command Palette / Spotlight (`FramePER.CommandPalette`)**: Menu flutuante de busca global e execução de comandos acionado por atalho de teclado (`Ctrl+K` ou `Cmd+K`) ou botão declarativo `[data-command-palette]`, com navegação por teclado (`↑`, `↓`, `Enter`, `Esc`), categorias, badges e extensibilidade.
 - **📱 Mobile First**: Layouts responsivos baseados em CSS Grid que se adaptam automaticamente a telas menores e expandem via breakpoints (`.grid-sm-*`, `.grid-md-*`, `.grid-lg-*`, `.grid-xl-*`).
 - **🌙 Dark Mode & Light Mode Nativo**: Alternância automática de temas detectando a preferência do sistema operacional, com transições suaves e contraste otimizado.
-- **🎨 Biblioteca de 104 Ícones Pure CSS**: Ícones SVG incorporados via máscara CSS (`-webkit-mask-image` / `mask-image`) com `currentColor`:
+- **🎨 Biblioteca de 107 Ícones Pure CSS**: Ícones SVG incorporados via máscara CSS (`-webkit-mask-image` / `mask-image`) com `currentColor`:
   - **Tecnologia, Computação & Redes (12)**: Processador/CPU (`icon-cpu`), Servidor rack (`icon-server`), Banco de dados (`icon-database`), Wi-Fi (`icon-wifi`), Nuvem (`icon-cloud`), Escudo (`icon-shield`), Bug/Depuração (`icon-bug`), Laptop (`icon-laptop`), Monitor (`icon-monitor`), Rede/Nodes (`icon-network`), Bluetooth (`icon-bluetooth`), Bateria com carga (`icon-battery`).
   - **Espaço & Cosmos (5)**: Foguete (`icon-rocket`), Planeta com anel (`icon-planet`), Satélite em órbita (`icon-satellite`), Telescópio (`icon-telescope`), Cometa (`icon-comet`).
   - **Animais & Pets (5)**: Pegada/Pata (`icon-paw`), Gato (`icon-cat`), Cachorro (`icon-dog`), Peixe (`icon-fish`), Pássaro (`icon-bird`).
@@ -48,8 +54,9 @@
   - **Jornalismo, Imprensa & Mídia (7)**: Jornal impresso (`icon-newspaper`), Artigo/Pauta (`icon-article`), Megafone/Divulgação (`icon-megaphone`), Câmera fotográfica (`icon-camera`), Microfone de reportagem (`icon-mic`), Rádio transmissor (`icon-radio`), Livro/Documento (`icon-book`).
   - **Beleza, Nail Design & Spa (22)**: Esmalte (`icon-nail-polish`), batom (`icon-lipstick`), tesoura (`icon-scissors`), brilho (`icon-sparkles`), pincel de maquiagem (`icon-makeup-brush`), pente (`icon-comb`), secador (`icon-hairdryer`), espelho (`icon-mirror`), perfume (`icon-perfume`), flor de lótus spa (`icon-lotus`), diamante (`icon-gem`), coroa (`icon-crown`), sérum hidratante (`icon-droplet`), pena (`icon-feather`), paleta de cores (`icon-palette`), creme facial (`icon-cream`), varinha de brilho (`icon-wand`), mão/manicure (`icon-hand`), flor floral (`icon-flower`), spray fixador (`icon-spray`), vela aromática (`icon-candle`), laço decorativo (`icon-ribbon`).
   - **E-Commerce & Vendas (5)**: Carrinho (`icon-cart`), etiqueta de preço (`icon-tag`), cartão de crédito (`icon-credit-card`), caixa/pacote (`icon-package`), caminhão de entrega (`icon-truck`).
-  - **Comunicação, Mídia & Sistema (46)**: Mensagem, telefone, compartilhar, play, cadeado, olho, terminal, código, upload, download, etc.
+  - **Comunicação, Arquivos & Sistema (49)**: Upload (`icon-upload`), Arquivo (`icon-file`), Arquivo PDF (`icon-file-pdf`), Imagem (`icon-image`), Mensagem, telefone, compartilhar, play, cadeado, olho, terminal, código, etc.
 - **✨ Componentes Avançados de Interface**:
+  - **File Uploader Shimmer & Progress**: Dragzone pontilhada com feedback visual, previews em miniatura e remoção individual.
   - **Command Palette Dialog**: Modal Spotlight com backdrop blur, atalhos de teclado e grupos filtráveis.
   - **Skeleton Loaders Shimmer**: Efeito ondulante suave (`.skeleton-avatar`, `.skeleton-title`, `.skeleton-text`, `.skeleton-rect`).
   - **Chips & Tags**: Pílulas compactas interativas, filtros clicáveis e tags removíveis (`.chip`, `.chip-clickable`, `.chip-remove`).
@@ -69,6 +76,7 @@
 
 ## ⚙️ Módulos & Recursos JavaScript (`window.FramePER`)
 
+- **📁 FramePER.Upload**: Uploader completo com Drag & Drop, miniaturas, validação de arquivos e barra de progresso.
 - **📅 FramePER.Datepicker**: Calendário flutuante em popover com seleção de data única e intervalo (range) `DD/MM/AAAA`.
 - **🔍 FramePER.Select**: Select customizado pesquisável em tempo real com suporte a multi-select e tags/chips.
 - **📈 FramePER.Chart**: Motor completo de gráficos vetoriais SVG com 10 tipos, animações nativas de entrada e exportação PNG/SVG.
@@ -128,6 +136,28 @@ Inclua os arquivos compilados `dist/framePER.min.css` e `dist/framePER.min.js` n
 <button class="btn btn-primary btn-icon back-to-top-btn" data-scroll-top aria-label="Voltar ao topo">
   <i class="icon icon-arrow-up"></i>
 </button>
+```
+
+### File Uploader com Drag & Drop (HTML5 ou JS)
+```html
+<!-- Declarativo com Auto-Upload e limite de 10MB -->
+<div data-uploader
+     data-uploader-accept="image/*,application/pdf"
+     data-uploader-max-size="10MB"
+     data-uploader-max-files="5"
+     data-uploader-auto-upload="true">
+</div>
+
+<!-- Programático com Callbacks -->
+<script>
+  const uploader = new FramePER.Upload('#meu-upload', {
+    accept: 'image/*',
+    maxSize: '5MB',
+    onUploadSuccess: (item) => {
+      console.log('Upload concluído com sucesso:', item.name);
+    }
+  });
+</script>
 ```
 
 ---

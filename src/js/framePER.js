@@ -2037,6 +2037,14 @@
                 },
                 {
                     group: 'Componentes & Docs',
+                    id: 'nav-uploader',
+                    title: 'File Uploader (Drag & Drop)',
+                    desc: 'Upload avançado com preview, barra de progresso e validações',
+                    icon: 'icon-upload',
+                    action: () => { window.location.href = 'index.html#uploader-demo'; }
+                },
+                {
+                    group: 'Componentes & Docs',
                     id: 'nav-manual',
                     title: 'Manual de API Completo',
                     desc: 'Documentação dos utilitários CSS e JS',
@@ -2934,6 +2942,526 @@
                     });
                 }
             };
+        })(),
+
+        Upload: (() => {
+            class Instance {
+                constructor(container, options = {}) {
+                    this.container = typeof container === 'string' ? document.querySelector(container) : container;
+                    if (!this.container || this.container._frameUpload) return;
+                    this.container._frameUpload = this;
+
+                    const ds = this.container.dataset;
+                    this.options = {
+                        accept: ds.uploaderAccept || options.accept || '*',
+                        maxSize: this._parseSize(ds.uploaderMaxSize || options.maxSize || '10MB'),
+                        maxFiles: parseInt(ds.uploaderMaxFiles || options.maxFiles || 0, 10),
+                        autoUpload: ds.uploaderAutoUpload !== undefined ? ds.uploaderAutoUpload === 'true' : (options.autoUpload !== undefined ? options.autoUpload : true),
+                        uploadUrl: ds.uploaderUrl || options.uploadUrl || null,
+                        uploadParamName: ds.uploaderParamName || options.uploadParamName || 'file',
+                        multiple: ds.uploaderMultiple !== undefined ? ds.uploaderMultiple === 'true' : (options.multiple !== undefined ? options.multiple : true),
+                        onFilesAdded: options.onFilesAdded || null,
+                        onUploadProgress: options.onUploadProgress || null,
+                        onUploadSuccess: options.onUploadSuccess || null,
+                        onError: options.onError || null,
+                        onFileRemoved: options.onFileRemoved || null
+                    };
+
+                    this.files = [];
+                    this._initUI();
+                    this._bindEvents();
+                }
+
+                _parseSize(val) {
+                    if (typeof val === 'number') return val;
+                    if (!val) return 10 * 1024 * 1024;
+                    const units = { B: 1, KB: 1024, MB: 1024 * 1024, GB: 1024 * 1024 * 1024 };
+                    const match = String(val).trim().toUpperCase().match(/^([\d.]+)\s*(B|KB|MB|GB)?$/);
+                    if (!match) return 10 * 1024 * 1024;
+                    const num = parseFloat(match[1]);
+                    const unit = match[2] || 'B';
+                    return Math.round(num * (units[unit] || 1));
+                }
+
+                _formatSize(bytes) {
+                    if (bytes === 0) return '0 B';
+                    const k = 1024;
+                    const sizes = ['B', 'KB', 'MB', 'GB'];
+                    const i = Math.floor(Math.log(bytes) / Math.log(k));
+                    return parseFloat((bytes / Math.pow(k, i)).toFixed(1)) + ' ' + sizes[i];
+                }
+
+                _initUI() {
+                    this.container.classList.add('frame-uploader');
+                    
+                    this.dropzone = this.container.querySelector('.upload-dropzone');
+                    if (!this.dropzone) {
+                        this.dropzone = document.createElement('div');
+                        this.dropzone.className = 'upload-dropzone';
+                        this.dropzone.setAttribute('tabindex', '0');
+                        this.dropzone.setAttribute('role', 'button');
+                        this.dropzone.setAttribute('aria-label', 'Clique ou arraste arquivos para enviar');
+
+                        const acceptLabel = this.options.accept === '*' ? 'Todos os tipos suportados' : this.options.accept;
+                        const maxLabel = this._formatSize(this.options.maxSize);
+
+                        this.dropzone.innerHTML = `
+                            <div class="upload-icon">
+                                <i class="icon icon-upload"></i>
+                            </div>
+                            <h4 class="upload-title">
+                                <span class="upload-action-link">Clique para escolher</span> ou arraste e solte arquivos aqui
+                            </h4>
+                            <p class="upload-hint">Formatos: ${acceptLabel} · Tamanho máximo: ${maxLabel} por arquivo</p>
+                        `;
+                        this.container.appendChild(this.dropzone);
+                    }
+
+                    this.fileInput = this.dropzone.querySelector('input[type="file"]');
+                    if (!this.fileInput) {
+                        this.fileInput = document.createElement('input');
+                        this.fileInput.type = 'file';
+                        if (this.options.multiple) this.fileInput.multiple = true;
+                        if (this.options.accept && this.options.accept !== '*') {
+                            this.fileInput.accept = this.options.accept;
+                        }
+                        this.dropzone.appendChild(this.fileInput);
+                    }
+
+                    this.listEl = this.container.querySelector('.upload-list');
+                    if (!this.listEl) {
+                        this.listEl = document.createElement('div');
+                        this.listEl.className = 'upload-list';
+                        this.container.appendChild(this.listEl);
+                    }
+
+                    this.footerEl = this.container.querySelector('.upload-footer');
+                    if (!this.footerEl) {
+                        this.footerEl = document.createElement('div');
+                        this.footerEl.className = 'upload-footer';
+                        this.footerEl.style.display = 'none';
+                        this.footerEl.innerHTML = `
+                            <div class="upload-stats">
+                                <span class="upload-count">0 arquivos</span>
+                                <span>&middot;</span>
+                                <span class="upload-total-size">0 B</span>
+                            </div>
+                            <div class="upload-buttons">
+                                <button type="button" class="btn btn-sm btn-ghost btn-clear-all">Limpar Tudo</button>
+                                ${!this.options.autoUpload ? '<button type="button" class="btn btn-sm btn-primary btn-upload-all"><i class="icon icon-upload"></i> Enviar Arquivos</button>' : ''}
+                            </div>
+                        `;
+                        this.container.appendChild(this.footerEl);
+                    }
+
+                    this.btnClearAll = this.footerEl.querySelector('.btn-clear-all');
+                    this.btnUploadAll = this.footerEl.querySelector('.btn-upload-all');
+                }
+
+                _bindEvents() {
+                    this.dropzone.addEventListener('click', (e) => {
+                        if (e.target !== this.fileInput) {
+                            this.fileInput.click();
+                        }
+                    });
+
+                    this.dropzone.addEventListener('keydown', (e) => {
+                        if (e.key === 'Enter' || e.key === ' ') {
+                            e.preventDefault();
+                            this.fileInput.click();
+                        }
+                    });
+
+                    this.fileInput.addEventListener('change', () => {
+                        if (this.fileInput.files && this.fileInput.files.length) {
+                            this.addFiles(this.fileInput.files);
+                            this.fileInput.value = '';
+                        }
+                    });
+
+                    ['dragenter', 'dragover'].forEach(eventName => {
+                        this.dropzone.addEventListener(eventName, (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.dropzone.classList.add('is-dragover');
+                        });
+                    });
+
+                    ['dragleave', 'dragend'].forEach(eventName => {
+                        this.dropzone.addEventListener(eventName, (e) => {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            this.dropzone.classList.remove('is-dragover');
+                        });
+                    });
+
+                    this.dropzone.addEventListener('drop', (e) => {
+                        e.preventDefault();
+                        e.stopPropagation();
+                        this.dropzone.classList.remove('is-dragover');
+                        if (e.dataTransfer && e.dataTransfer.files && e.dataTransfer.files.length) {
+                            this.addFiles(e.dataTransfer.files);
+                        }
+                    });
+
+                    if (this.btnClearAll) {
+                        this.btnClearAll.addEventListener('click', () => this.clear());
+                    }
+                    if (this.btnUploadAll) {
+                        this.btnUploadAll.addEventListener('click', () => this.uploadAll());
+                    }
+                }
+
+                _validateFile(file) {
+                    if (file.size > this.options.maxSize) {
+                        return {
+                            valid: false,
+                            error: `Arquivo excede o limite de ${this._formatSize(this.options.maxSize)}.`
+                        };
+                    }
+
+                    if (this.options.accept && this.options.accept !== '*') {
+                        const patterns = this.options.accept.split(',').map(p => p.trim().toLowerCase());
+                        const fileName = file.name.toLowerCase();
+                        const fileType = (file.type || '').toLowerCase();
+
+                        const matches = patterns.some(pattern => {
+                            if (pattern.startsWith('.')) {
+                                return fileName.endsWith(pattern);
+                            } else if (pattern.endsWith('/*')) {
+                                const baseType = pattern.replace('/*', '');
+                                return fileType.startsWith(baseType + '/');
+                            } else {
+                                return fileType === pattern;
+                            }
+                        });
+
+                        if (!matches) {
+                            return {
+                                valid: false,
+                                error: `Tipo de arquivo não permitido (${file.name.split('.').pop()}).`
+                            };
+                        }
+                    }
+
+                    return { valid: true };
+                }
+
+                addFiles(fileList) {
+                    const newFiles = Array.from(fileList);
+                    if (!newFiles.length) return;
+
+                    if (this.options.maxFiles > 0) {
+                        const remaining = this.options.maxFiles - this.files.length;
+                        if (remaining <= 0) {
+                            FramePER.Notify.error('Limite de arquivos', `Você só pode enviar até ${this.options.maxFiles} arquivo(s).`);
+                            return;
+                        }
+                        if (newFiles.length > remaining) {
+                            FramePER.Notify.warning('Limite parcial', `Apenas os primeiros ${remaining} arquivos foram adicionados.`);
+                            newFiles.splice(remaining);
+                        }
+                    }
+
+                    const added = [];
+
+                    newFiles.forEach(file => {
+                        const validation = this._validateFile(file);
+                        const fileId = 'up_' + Date.now() + '_' + Math.random().toString(36).substr(2, 7);
+                        let previewUrl = null;
+
+                        if (file.type.startsWith('image/')) {
+                            try {
+                                previewUrl = URL.createObjectURL(file);
+                            } catch (e) {}
+                        }
+
+                        const fileItem = {
+                            id: fileId,
+                            file: file,
+                            name: file.name,
+                            size: file.size,
+                            type: file.type,
+                            status: validation.valid ? 'pending' : 'error',
+                            progress: 0,
+                            errorMsg: validation.valid ? null : validation.error,
+                            previewUrl: previewUrl,
+                            xhr: null
+                        };
+
+                        this.files.push(fileItem);
+                        added.push(fileItem);
+                        this._renderItem(fileItem);
+
+                        if (!validation.valid) {
+                            FramePER.Notify.error('Arquivo recusado', `${file.name}: ${validation.error}`);
+                            if (this.options.onError) {
+                                this.options.onError(fileItem, validation.error);
+                            }
+                        } else if (this.options.autoUpload) {
+                            this._startUpload(fileItem);
+                        }
+                    });
+
+                    this._updateFooter();
+
+                    if (this.options.onFilesAdded) {
+                        this.options.onFilesAdded(added, this.files);
+                    }
+                }
+
+                _renderItem(fileItem) {
+                    const el = document.createElement('div');
+                    el.className = `upload-item ${fileItem.status === 'error' ? 'upload-item-error' : ''}`;
+                    el.setAttribute('data-file-id', fileItem.id);
+
+                    let thumbContent = '';
+                    if (fileItem.previewUrl) {
+                        thumbContent = `<img src="${fileItem.previewUrl}" alt="${fileItem.name}" />`;
+                    } else if (fileItem.type === 'application/pdf' || fileItem.name.endsWith('.pdf')) {
+                        thumbContent = `<i class="icon icon-file-pdf text-red"></i>`;
+                    } else if (fileItem.type.startsWith('image/')) {
+                        thumbContent = `<i class="icon icon-image text-primary"></i>`;
+                    } else {
+                        thumbContent = `<i class="icon icon-file text-muted"></i>`;
+                    }
+
+                    const statusBadge = fileItem.status === 'error'
+                        ? `<span class="badge badge-sm badge-red item-badge">${fileItem.errorMsg || 'Erro'}</span>`
+                        : `<span class="badge badge-sm badge-subtle item-badge">${this.options.autoUpload ? '0%' : 'Pendente'}</span>`;
+
+                    el.innerHTML = `
+                        <div class="upload-item-thumb">
+                            ${thumbContent}
+                        </div>
+                        <div class="upload-item-body">
+                            <div class="upload-item-header">
+                                <span class="upload-item-name" title="${fileItem.name}">${fileItem.name}</span>
+                                ${statusBadge}
+                            </div>
+                            <div class="upload-item-meta">
+                                <span>${this._formatSize(fileItem.size)}</span>
+                                <span class="item-status-text">${fileItem.status === 'error' ? fileItem.errorMsg : ''}</span>
+                            </div>
+                            ${fileItem.status !== 'error' ? `
+                                <div class="upload-item-progress-track">
+                                    <div class="upload-item-progress-bar" style="width: 0%"></div>
+                                </div>
+                            ` : ''}
+                        </div>
+                        <div class="upload-item-actions">
+                            <button type="button" class="upload-item-remove-btn" title="Remover arquivo">
+                                <i class="icon icon-close"></i>
+                            </button>
+                        </div>
+                    `;
+
+                    el.querySelector('.upload-item-remove-btn').addEventListener('click', () => {
+                        this.removeFile(fileItem.id);
+                    });
+
+                    this.listEl.appendChild(el);
+                    fileItem._el = el;
+                }
+
+                _startUpload(fileItem) {
+                    if (fileItem.status === 'error' || fileItem.status === 'success') return;
+
+                    fileItem.status = 'uploading';
+
+                    if (this.options.uploadUrl) {
+                        const xhr = new XMLHttpRequest();
+                        fileItem.xhr = xhr;
+                        const formData = new FormData();
+                        formData.append(this.options.uploadParamName, fileItem.file);
+
+                        xhr.upload.addEventListener('progress', (e) => {
+                            if (e.lengthComputable) {
+                                const percent = Math.round((e.loaded / e.total) * 100);
+                                this._updateProgress(fileItem, percent);
+                            }
+                        });
+
+                        xhr.addEventListener('load', () => {
+                            if (xhr.status >= 200 && xhr.status < 300) {
+                                this._completeSuccess(fileItem);
+                            } else {
+                                this._completeError(fileItem, `Falha no upload (HTTP ${xhr.status})`);
+                            }
+                        });
+
+                        xhr.addEventListener('error', () => {
+                            this._completeError(fileItem, 'Erro de rede ao enviar arquivo.');
+                        });
+
+                        xhr.open('POST', this.options.uploadUrl, true);
+                        xhr.send(formData);
+                    } else {
+                        let currentProgress = 0;
+                        const stepTime = 100 + Math.floor(Math.random() * 60);
+                        const interval = setInterval(() => {
+                            currentProgress += Math.floor(Math.random() * 22) + 14;
+                            if (currentProgress >= 100) {
+                                currentProgress = 100;
+                                clearInterval(interval);
+                                this._updateProgress(fileItem, 100);
+                                setTimeout(() => this._completeSuccess(fileItem), 80);
+                            } else {
+                                this._updateProgress(fileItem, currentProgress);
+                            }
+                        }, stepTime);
+                        fileItem._simInterval = interval;
+                    }
+                }
+
+                _updateProgress(fileItem, percent) {
+                    fileItem.progress = percent;
+                    const el = fileItem._el;
+                    if (!el) return;
+
+                    const badge = el.querySelector('.item-badge');
+                    const bar = el.querySelector('.upload-item-progress-bar');
+
+                    if (bar) bar.style.width = `${percent}%`;
+                    if (badge && fileItem.status === 'uploading') {
+                        badge.textContent = `${percent}%`;
+                        badge.className = 'badge badge-sm badge-blue item-badge';
+                    }
+
+                    if (this.options.onUploadProgress) {
+                        this.options.onUploadProgress(fileItem, percent);
+                    }
+                }
+
+                _completeSuccess(fileItem) {
+                    fileItem.status = 'success';
+                    fileItem.progress = 100;
+                    const el = fileItem._el;
+                    if (el) {
+                        el.classList.add('upload-item-success');
+                        const badge = el.querySelector('.item-badge');
+                        const bar = el.querySelector('.upload-item-progress-bar');
+                        if (badge) {
+                            badge.textContent = 'Concluído';
+                            badge.className = 'badge badge-sm badge-green item-badge';
+                        }
+                        if (bar) {
+                            bar.style.width = '100%';
+                            bar.classList.add('bar-success');
+                        }
+                    }
+
+                    if (this.options.onUploadSuccess) {
+                        this.options.onUploadSuccess(fileItem);
+                    }
+                }
+
+                _completeError(fileItem, message) {
+                    fileItem.status = 'error';
+                    fileItem.errorMsg = message;
+                    const el = fileItem._el;
+                    if (el) {
+                        el.classList.add('upload-item-error');
+                        const badge = el.querySelector('.item-badge');
+                        const bar = el.querySelector('.upload-item-progress-bar');
+                        const statusTxt = el.querySelector('.item-status-text');
+                        if (badge) {
+                            badge.textContent = 'Erro';
+                            badge.className = 'badge badge-sm badge-red item-badge';
+                        }
+                        if (bar) bar.classList.add('bar-error');
+                        if (statusTxt) statusTxt.textContent = message;
+                    }
+
+                    FramePER.Notify.error('Erro de envio', `${fileItem.name}: ${message}`);
+                    if (this.options.onError) {
+                        this.options.onError(fileItem, message);
+                    }
+                }
+
+                uploadAll() {
+                    const pendingFiles = this.files.filter(f => f.status === 'pending');
+                    if (!pendingFiles.length) {
+                        FramePER.Notify.info('Nenhum arquivo', 'Não há arquivos pendentes para envio.');
+                        return;
+                    }
+                    pendingFiles.forEach(f => this._startUpload(f));
+                }
+
+                removeFile(fileId) {
+                    const index = this.files.findIndex(f => f.id === fileId);
+                    if (index === -1) return;
+
+                    const fileItem = this.files[index];
+                    if (fileItem.xhr) fileItem.xhr.abort();
+                    if (fileItem._simInterval) clearInterval(fileItem._simInterval);
+                    if (fileItem.previewUrl) {
+                        try { URL.revokeObjectURL(fileItem.previewUrl); } catch (e) {}
+                    }
+
+                    if (fileItem._el) {
+                        fileItem._el.style.opacity = '0';
+                        fileItem._el.style.transform = 'translateY(-6px)';
+                        setTimeout(() => {
+                            if (fileItem._el) fileItem._el.remove();
+                        }, 200);
+                    }
+
+                    this.files.splice(index, 1);
+                    this._updateFooter();
+
+                    if (this.options.onFileRemoved) {
+                        this.options.onFileRemoved(fileItem, this.files);
+                    }
+                }
+
+                clear() {
+                    this.files.forEach(f => {
+                        if (f.xhr) f.xhr.abort();
+                        if (f._simInterval) clearInterval(f._simInterval);
+                        if (f.previewUrl) {
+                            try { URL.revokeObjectURL(f.previewUrl); } catch (e) {}
+                        }
+                    });
+                    this.files = [];
+                    this.listEl.innerHTML = '';
+                    this._updateFooter();
+                }
+
+                _updateFooter() {
+                    if (!this.footerEl) return;
+                    if (this.files.length === 0) {
+                        this.footerEl.style.display = 'none';
+                        return;
+                    }
+
+                    this.footerEl.style.display = 'flex';
+                    const countEl = this.footerEl.querySelector('.upload-count');
+                    const sizeEl = this.footerEl.querySelector('.upload-total-size');
+
+                    const totalBytes = this.files.reduce((acc, f) => acc + (f.size || 0), 0);
+                    if (countEl) countEl.textContent = `${this.files.length} arquivo${this.files.length > 1 ? 's' : ''}`;
+                    if (sizeEl) sizeEl.textContent = this._formatSize(totalBytes);
+                }
+
+                getFiles() {
+                    return this.files;
+                }
+
+                destroy() {
+                    this.clear();
+                    delete this.container._frameUpload;
+                }
+            }
+
+            return {
+                create: (container, options) => new Instance(container, options),
+                init: () => {
+                    document.querySelectorAll('[data-uploader]').forEach(el => {
+                        new Instance(el);
+                    });
+                }
+            };
         })()
     };
 
@@ -2967,6 +3495,9 @@
         if (FramePER.Select && FramePER.Select.init) {
             FramePER.Select.init();
         }
+        if (FramePER.Upload && FramePER.Upload.init) {
+            FramePER.Upload.init();
+        }
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -2979,6 +3510,7 @@
     // Expose globally
     window.FramePER = FramePER;
     window.FramePERChart = FramePER.Chart;
+    window.FramePERUpload = FramePER.Upload;
 
 })(window, document);
 
