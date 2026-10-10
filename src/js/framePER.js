@@ -88,10 +88,16 @@
                 this.initKeyboard();
                 this.initTables();
                 this.initContextMenu();
+                this.initFormValidator();
             },
             initContextMenu: function() {
                 if (FramePER.ContextMenu && FramePER.ContextMenu.init) {
                     FramePER.ContextMenu.init();
+                }
+            },
+            initFormValidator: function() {
+                if (FramePER.FormValidator && FramePER.FormValidator.init) {
+                    FramePER.FormValidator.init();
                 }
             },
             initTables: function() {
@@ -2071,6 +2077,14 @@
                     desc: 'Menu de botão direito com submenus em cascata e detecção de bordas',
                     icon: 'icon-menu',
                     action: () => { window.location.href = 'index.html#context-menu-demo'; }
+                },
+                {
+                    group: 'Componentes & Docs',
+                    id: 'nav-form-validator',
+                    title: 'Validador de Formulários Reativo',
+                    desc: 'Validação declarativa em tempo real com CPF, CNPJ, Luhn e mensagens animadas',
+                    icon: 'icon-check',
+                    action: () => { window.location.href = 'index.html#form-validator-demo'; }
                 },
                 {
                     group: 'Componentes & Docs',
@@ -4318,6 +4332,425 @@
                 hide,
                 create: createMenuFromItems
             };
+        })(),
+
+        FormValidator: (() => {
+            const defaultRules = {
+                required: {
+                    validate: (val, field) => {
+                        if (field.type === 'checkbox') return field.checked;
+                        if (field.type === 'radio') {
+                            const name = field.name;
+                            const form = field.form || document;
+                            return !!form.querySelector(`input[type="radio"][name="${name}"]:checked`);
+                        }
+                        return val !== null && val !== undefined && String(val).trim().length > 0;
+                    },
+                    message: 'Este campo é obrigatório.'
+                },
+                email: {
+                    validate: (val) => !val || /^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(String(val).trim()),
+                    message: 'Informe um endereço de e-mail válido.'
+                },
+                min: {
+                    validate: (val, field, param) => !val || String(val).trim().length >= parseInt(param, 10),
+                    message: (param) => `Mínimo de ${param} caracteres.`
+                },
+                max: {
+                    validate: (val, field, param) => !val || String(val).trim().length <= parseInt(param, 10),
+                    message: (param) => `Máximo de ${param} caracteres.`
+                },
+                min_val: {
+                    validate: (val, field, param) => !val || parseFloat(val) >= parseFloat(param),
+                    message: (param) => `O valor mínimo permitido é ${param}.`
+                },
+                max_val: {
+                    validate: (val, field, param) => !val || parseFloat(val) <= parseFloat(param),
+                    message: (param) => `O valor máximo permitido é ${param}.`
+                },
+                numeric: {
+                    validate: (val) => !val || /^-?\d+(\.\d+)?$/.test(String(val).trim()),
+                    message: 'Informe apenas números.'
+                },
+                digits: {
+                    validate: (val) => !val || /^\d+$/.test(String(val).trim()),
+                    message: 'Informe apenas dígitos numéricos.'
+                },
+                url: {
+                    validate: (val) => !val || /^(https?:\/\/)?[\w.-]+\.[a-zA-Z]{2,}(\/.*)?$/i.test(String(val).trim()),
+                    message: 'Informe uma URL válida.'
+                },
+                phone: {
+                    validate: (val) => {
+                        if (!val) return true;
+                        const clean = String(val).replace(/\D/g, '');
+                        return clean.length >= 10 && clean.length <= 11;
+                    },
+                    message: 'Informe um telefone válido com DDD (10 ou 11 dígitos).'
+                },
+                cpf: {
+                    validate: (val) => {
+                        if (!val) return true;
+                        const cpf = String(val).replace(/\D/g, '');
+                        if (cpf.length !== 11 || /^(\d)\1{10}$/.test(cpf)) return false;
+                        let sum = 0, rest;
+                        for (let i = 1; i <= 9; i++) sum += parseInt(cpf.substring(i - 1, i), 10) * (11 - i);
+                        rest = (sum * 10) % 11;
+                        if (rest === 10 || rest === 11) rest = 0;
+                        if (rest !== parseInt(cpf.substring(9, 10), 10)) return false;
+                        sum = 0;
+                        for (let i = 1; i <= 10; i++) sum += parseInt(cpf.substring(i - 1, i), 10) * (12 - i);
+                        rest = (sum * 10) % 11;
+                        if (rest === 10 || rest === 11) rest = 0;
+                        return rest === parseInt(cpf.substring(10, 11), 10);
+                    },
+                    message: 'Informe um CPF válido.'
+                },
+                cnpj: {
+                    validate: (val) => {
+                        if (!val) return true;
+                        const cnpj = String(val).replace(/\D/g, '');
+                        if (cnpj.length !== 14 || /^(\d)\1{13}$/.test(cnpj)) return false;
+                        let length = cnpj.length - 2;
+                        let numbers = cnpj.substring(0, length);
+                        let digits = cnpj.substring(length);
+                        let sum = 0;
+                        let pos = length - 7;
+                        for (let i = length; i >= 1; i--) {
+                            sum += parseInt(numbers.charAt(length - i), 10) * pos--;
+                            if (pos < 2) pos = 9;
+                        }
+                        let result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+                        if (result != parseInt(digits.charAt(0), 10)) return false;
+                        length = length + 1;
+                        numbers = cnpj.substring(0, length);
+                        sum = 0;
+                        pos = length - 7;
+                        for (let i = length; i >= 1; i--) {
+                            sum += parseInt(numbers.charAt(length - i), 10) * pos--;
+                            if (pos < 2) pos = 9;
+                        }
+                        result = sum % 11 < 2 ? 0 : 11 - (sum % 11);
+                        return result == parseInt(digits.charAt(1), 10);
+                    },
+                    message: 'Informe um CNPJ válido.'
+                },
+                card: {
+                    validate: (val) => {
+                        if (!val) return true;
+                        const s = String(val).replace(/\D/g, '');
+                        if (s.length < 13 || s.length > 19) return false;
+                        let sum = 0, shouldDouble = false;
+                        for (let i = s.length - 1; i >= 0; i--) {
+                            let digit = parseInt(s.charAt(i), 10);
+                            if (shouldDouble) {
+                                digit *= 2;
+                                if (digit > 9) digit -= 9;
+                            }
+                            sum += digit;
+                            shouldDouble = !shouldDouble;
+                        }
+                        return sum % 10 === 0;
+                    },
+                    message: 'Informe um número de cartão de crédito válido.'
+                },
+                match: {
+                    validate: (val, field, param) => {
+                        if (!val) return true;
+                        const target = document.querySelector(param);
+                        return target ? val === target.value : false;
+                    },
+                    message: 'Os campos não conferem.'
+                },
+                regex: {
+                    validate: (val, field, param) => {
+                        if (!val) return true;
+                        try {
+                            const re = new RegExp(param);
+                            return re.test(val);
+                        } catch (e) {
+                            return true;
+                        }
+                    },
+                    message: 'Formato inválido.'
+                }
+            };
+
+            class Instance {
+                constructor(form, options = {}) {
+                    this.form = typeof form === 'string' ? document.querySelector(form) : form;
+                    if (!this.form) return;
+                    this.options = Object.assign({
+                        realtime: true,
+                        showValid: false,
+                        showSummary: true,
+                        onSuccess: null,
+                        onError: null
+                    }, options);
+
+                    this.errors = new Map();
+                    this._init();
+                    this.form._frameValidator = this;
+                }
+
+                _init() {
+                    const fields = this.getFields();
+
+                    fields.forEach(field => {
+                        field.addEventListener('blur', () => {
+                            field._touched = true;
+                            this.validateField(field);
+                        });
+
+                        field.addEventListener('input', () => {
+                            if (field._touched || field.classList.contains('is-invalid')) {
+                                this.validateField(field);
+                            }
+                        });
+
+                        field.addEventListener('change', () => {
+                            if (field.type === 'checkbox' || field.type === 'radio' || field.tagName === 'SELECT') {
+                                field._touched = true;
+                                this.validateField(field);
+                            }
+                        });
+                    });
+
+                    this.form.addEventListener('submit', (e) => {
+                        const valid = this.validate();
+                        if (!valid) {
+                            e.preventDefault();
+                            e.stopPropagation();
+                            if (typeof this.options.onError === 'function') {
+                                this.options.onError(this.getErrors(), this.form, e);
+                            }
+                        } else {
+                            if (typeof this.options.onSuccess === 'function') {
+                                e.preventDefault();
+                                const formData = new FormData(this.form);
+                                this.options.onSuccess(formData, this.form, e);
+                            }
+                            this.form.dispatchEvent(new CustomEvent('frameper:form:success', {
+                                bubbles: true,
+                                detail: { form: this.form }
+                            }));
+                        }
+                    });
+                }
+
+                getFields() {
+                    return Array.from(this.form.querySelectorAll('[data-validate], [data-rules]')).filter(el => !el.disabled);
+                }
+
+                validateField(field) {
+                    const rulesStr = field.getAttribute('data-validate') || field.getAttribute('data-rules') || '';
+                    if (!rulesStr) return true;
+
+                    const rules = rulesStr.split('|').map(r => r.trim()).filter(Boolean);
+                    const val = field.value;
+                    let errorMsg = null;
+
+                    for (const ruleExpr of rules) {
+                        const [ruleName, param] = ruleExpr.split(':');
+                        const ruleObj = defaultRules[ruleName];
+
+                        if (ruleObj) {
+                            const isValid = ruleObj.validate(val, field, param);
+                            if (!isValid) {
+                                const customMsg = field.getAttribute(`data-message-${ruleName}`) ||
+                                                  field.getAttribute('data-message') ||
+                                                  (typeof ruleObj.message === 'function' ? ruleObj.message(param) : ruleObj.message);
+                                errorMsg = customMsg;
+                                break;
+                            }
+                        }
+                    }
+
+                    if (errorMsg) {
+                        this.errors.set(field, errorMsg);
+                        this._setFieldInvalid(field, errorMsg);
+                        return false;
+                    } else {
+                        this.errors.delete(field);
+                        this._setFieldValid(field);
+                        return true;
+                    }
+                }
+
+                _setFieldInvalid(field, message) {
+                    field.classList.remove('is-valid');
+                    field.classList.add('is-invalid');
+                    field.setAttribute('aria-invalid', 'true');
+
+                    let feedback = this._getFeedbackEl(field);
+                    if (!feedback) {
+                        feedback = document.createElement('div');
+                        feedback.className = 'form-feedback form-error';
+                        feedback.setAttribute('role', 'alert');
+                        this._insertFeedbackEl(field, feedback);
+                    } else {
+                        feedback.className = 'form-feedback form-error';
+                    }
+
+                    feedback.innerHTML = `
+                        <span class="feedback-icon">
+                            <svg viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116 0zm-7 4a1 1 0 11-2 0 1 1 0 012 0zm-1-9a1 1 0 00-1 1v4a1 1 0 102 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                        </span>
+                        <span>${message}</span>
+                    `;
+                }
+
+                _setFieldValid(field) {
+                    field.classList.remove('is-invalid');
+                    field.removeAttribute('aria-invalid');
+
+                    const feedback = this._getFeedbackEl(field);
+                    if (feedback && feedback.classList.contains('form-error')) {
+                        feedback.remove();
+                    }
+
+                    if (this.options.showValid || field.hasAttribute('data-show-valid')) {
+                        field.classList.add('is-valid');
+                    }
+                }
+
+                _getFeedbackEl(field) {
+                    const parent = field.closest('.form-group') || field.parentElement;
+                    return parent.querySelector(`.form-feedback[data-for="${field.id || field.name || ''}"], .form-feedback:not([data-for])`);
+                }
+
+                _insertFeedbackEl(field, feedback) {
+                    if (field.id || field.name) {
+                        feedback.setAttribute('data-for', field.id || field.name);
+                    }
+                    const parent = field.closest('.input-group') || field.closest('.input-icon') || field;
+                    parent.parentNode.insertBefore(feedback, parent.nextSibling);
+                }
+
+                validate() {
+                    const fields = this.getFields();
+                    let allValid = true;
+                    let firstInvalid = null;
+
+                    fields.forEach(field => {
+                        field._touched = true;
+                        const valid = this.validateField(field);
+                        if (!valid) {
+                            allValid = false;
+                            if (!firstInvalid) firstInvalid = field;
+                        }
+                    });
+
+                    if (!allValid && firstInvalid) {
+                        firstInvalid.focus();
+                        firstInvalid.classList.remove('is-invalid-shake');
+                        firstInvalid.offsetHeight;
+                        firstInvalid.classList.add('is-invalid-shake');
+                        setTimeout(() => firstInvalid.classList.remove('is-invalid-shake'), 400);
+
+                        this._updateSummary();
+                    } else {
+                        const summary = this.form.querySelector('.form-error-summary');
+                        if (summary) summary.classList.remove('show');
+                    }
+
+                    return allValid;
+                }
+
+                _updateSummary() {
+                    if (!this.options.showSummary) return;
+                    let summary = this.form.querySelector('.form-error-summary');
+                    if (!summary && this.errors.size > 0) {
+                        summary = document.createElement('div');
+                        summary.className = 'form-error-summary show';
+                        this.form.insertBefore(summary, this.form.firstChild);
+                    }
+                    if (!summary) return;
+
+                    if (this.errors.size === 0) {
+                        summary.classList.remove('show');
+                        return;
+                    }
+
+                    let listItems = '';
+                    this.errors.forEach((msg, field) => {
+                        const labelText = this.form.querySelector(`label[for="${field.id}"]`)?.textContent.trim() ||
+                                          field.getAttribute('placeholder') ||
+                                          field.name ||
+                                          'Campo';
+                        listItems += `<li><a data-focus-field="${field.id || field.name}">${labelText}: ${msg}</a></li>`;
+                    });
+
+                    summary.innerHTML = `
+                        <div class="summary-title">
+                            <svg style="width:1.1rem;height:1.1rem" viewBox="0 0 20 20" fill="currentColor">
+                                <path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd" />
+                            </svg>
+                            Por favor, corrija os erros abaixo antes de prosseguir:
+                        </div>
+                        <ul class="summary-list">${listItems}</ul>
+                    `;
+                    summary.classList.add('show');
+
+                    summary.querySelectorAll('[data-focus-field]').forEach(link => {
+                        link.onclick = (e) => {
+                            e.preventDefault();
+                            const targetId = link.getAttribute('data-focus-field');
+                            const target = this.form.querySelector(`#${targetId}, [name="${targetId}"]`);
+                            if (target) {
+                                target.focus();
+                                target.scrollIntoView({ behavior: 'smooth', block: 'center' });
+                            }
+                        };
+                    });
+                }
+
+                reset() {
+                    this.errors.clear();
+                    const fields = this.getFields();
+                    fields.forEach(field => {
+                        field._touched = false;
+                        field.classList.remove('is-valid', 'is-invalid', 'is-invalid-shake');
+                        field.removeAttribute('aria-invalid');
+                        const feedback = this._getFeedbackEl(field);
+                        if (feedback && feedback.classList.contains('form-error')) {
+                            feedback.remove();
+                        }
+                    });
+                    const summary = this.form.querySelector('.form-error-summary');
+                    if (summary) summary.classList.remove('show');
+                }
+
+                isValid() {
+                    return this.errors.size === 0;
+                }
+
+                getErrors() {
+                    const result = {};
+                    this.errors.forEach((msg, field) => {
+                        result[field.name || field.id] = msg;
+                    });
+                    return result;
+                }
+            }
+
+            return {
+                rules: defaultRules,
+                addRule: (name, validateFn, defaultMessage) => {
+                    defaultRules[name] = {
+                        validate: validateFn,
+                        message: defaultMessage
+                    };
+                },
+                create: (form, options) => new Instance(form, options),
+                init: () => {
+                    document.querySelectorAll('form[data-form-validator], form.form-validate').forEach(form => {
+                        new Instance(form);
+                    });
+                }
+            };
         })()
     };
 
@@ -4366,6 +4799,9 @@
         if (FramePER.ContextMenu && FramePER.ContextMenu.init) {
             FramePER.ContextMenu.init();
         }
+        if (FramePER.FormValidator && FramePER.FormValidator.init) {
+            FramePER.FormValidator.init();
+        }
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -4383,6 +4819,7 @@
     window.FramePERAccordion = FramePER.Accordion;
     window.FramePERPopover = FramePER.Popover;
     window.FramePERContextMenu = FramePER.ContextMenu;
+    window.FramePERFormValidator = FramePER.FormValidator;
 
 })(window, document);
 

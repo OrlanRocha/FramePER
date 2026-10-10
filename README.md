@@ -1,13 +1,19 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.12.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.13.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Validador Reativo de Formulários (`FramePER.FormValidator`)**, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
+
+- **🛡️ Validador Reativo de Formulários (`FramePER.FormValidator`)**:
+  - **Zero Dependências & Validação em Tempo Real**: Validação instantânea ao sair do campo (`blur`) e contínua durante digitação (`input`), com bloqueio inteligente de envio (`submit`).
+  - **Catálogo de Regras Integradas**: `required`, `email`, `min`, `max`, `min_val`, `max_val`, `numeric`, `digits`, `url`, `phone` (com DDD), `match` (confirmação cruzada), `regex`, `card` (algoritmo de Luhn) e validação matemática oficial de **CPF** e **CNPJ** (com cálculo dos dígitos verificadores).
+  - **Feedback Visual Fluido**: Mensagens de erro/sucesso animadas (`.form-feedback` / `.form-error`), classes de estado (`.is-invalid`, `.is-valid`), tremor de alerta (`is-invalid-shake`) e sumário de erros navegável com foco suave (`.form-error-summary`).
+  - **Uso Híbrido**: Declarativo via atributos HTML5 (`data-form-validator`, `data-validate="required|email|min:6"`) ou programático (`new FramePER.FormValidator(form, options)`).
 
 - **🖱️ Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**:
   - **Zero Dependências**: Menus contextuais desktop-class disparados por clique direito em qualquer elemento (`data-context-menu="#meu-menu"`) ou via API programática (`FramePER.ContextMenu.attach`).
@@ -226,6 +232,54 @@ Inclua os arquivos compilados `dist/framePER.min.css` e `dist/framePER.min.js` n
   document.addEventListener('frameper:contextmenu:select', (e) => {
     console.log('Ação selecionada:', e.detail.action, e.detail.target);
   });
+</script>
+```
+
+### Validador Reativo de Formulários (HTML5 ou JS)
+```html
+<!-- Validação Declarativa com Sumário e Feedback em Tempo Real -->
+<form data-form-validator novalidate>
+  <div class="form-group">
+    <label for="campo-nome">Nome Completo</label>
+    <input type="text" id="campo-nome" class="input" data-validate="required|min:3">
+  </div>
+
+  <div class="form-group">
+    <label for="campo-email">E-mail</label>
+    <input type="email" id="campo-email" class="input" data-validate="required|email">
+  </div>
+
+  <div class="form-group">
+    <label for="campo-cpf">CPF</label>
+    <input type="text" id="campo-cpf" class="input" data-validate="required|cpf" data-mask="cpf">
+  </div>
+
+  <div class="form-group">
+    <label for="campo-senha">Senha</label>
+    <input type="password" id="campo-senha" class="input" data-validate="required|min:6">
+  </div>
+
+  <div class="form-group">
+    <label for="campo-confirma">Confirmar Senha</label>
+    <input type="password" id="campo-confirma" class="input" data-validate="required|match:#campo-senha" data-message-match="As senhas não coincidem!">
+  </div>
+
+  <button type="submit" class="btn btn-primary">Cadastrar</button>
+</form>
+
+<script>
+  // Inicialização programática com callbacks customizados
+  const validator = new FramePER.FormValidator('#meu-form', {
+    onSuccess: (formData, form) => {
+      console.log('Formulário 100% válido!', formData);
+    },
+    onError: (errors) => {
+      console.warn('Erros encontrados:', errors);
+    }
+  });
+
+  // Registro de nova regra personalizada
+  FramePER.FormValidator.addRule('forte', (val) => /[A-Z]/.test(val) && /[0-9]/.test(val), 'A senha precisa de letras maiúsculas e números.');
 </script>
 ```
 

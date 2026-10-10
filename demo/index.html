@@ -77,7 +77,7 @@
     <section class="container container-narrow txt-center p-y-6 p-relative z-10">
       <div class="d-flex justify-content-center m-b-3 slide-up">
         <span class="badge badge-pill badge-green">
-          <i class="icon icon-flame text-green m-r-1"></i> v2.12.0 · Menu de Contexto Inteligente, Dropdowns Multinível & Componentes Reativos
+          <i class="icon icon-flame text-green m-r-1"></i> v2.13.0 · Validador Reativo de Formulários, Menu de Contexto & Componentes UI
         </span>
       </div>
       <h1 class="display-2 m-b-3 text-balance slide-up delay-1">Conheça o Frame PER</h1>
@@ -100,6 +100,7 @@
 
       <!-- Quick Feature Anchors -->
       <div class="cluster justify-content-center gap-2 m-t-4 slide-up delay-4">
+        <a class="badge badge-subtle badge-pill" href="#form-validator-demo"><i class="icon icon-check m-r-1"></i> Validador de Formulários</a>
         <a class="badge badge-subtle badge-pill" href="#context-menu-demo"><i class="icon icon-menu m-r-1"></i> Menu de Contexto & Dropdowns</a>
         <a class="badge badge-subtle badge-pill" href="#interativos-demo"><i class="icon icon-settings m-r-1"></i> Abas, Accordions & Popovers</a>
         <a class="badge badge-subtle badge-pill" href="#uploader-demo"><i class="icon icon-upload m-r-1"></i> File Uploader</a>
@@ -767,10 +768,156 @@
         </button>
       </div>
 
+      <!-- Validador Reativo de Formulários Showcase -->
+      <section id="form-validator-demo" class="m-b-6">
+        <div class="d-flex align-items-center justify-content-between m-b-4">
+          <div>
+            <div class="d-flex align-items-center gap-2 m-b-1">
+              <h2 class="h4 m-0">Validador Reativo de Formulários (`FramePER.FormValidator`)</h2>
+              <span class="badge badge-primary badge-pill">Novo na v2.13</span>
+            </div>
+            <p class="text-muted f-s-2 m-0">Validação declarativa instantânea com CPF, CNPJ, Luhn, confirmação cruzada de campos, feedback animado e bloqueio de submit</p>
+          </div>
+        </div>
+
+        <div class="grid grid-lg-2 gap-4">
+          <!-- Card 1: Formulário de Cadastro Interativo -->
+          <div class="card p-4 h-100">
+            <div class="d-flex align-items-center justify-content-between m-b-3">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Formulário Declarativo em Tempo Real</h3>
+                <p class="text-muted f-s-1 m-0">Validação ao sair do campo (blur) e feedback contínuo (input)</p>
+              </div>
+              <span class="badge badge-blue">Reativo</span>
+            </div>
+
+            <form id="demo-register-form" data-form-validator novalidate>
+              <div class="grid grid-sm-2 gap-3 m-b-3">
+                <div class="form-group m-0">
+                  <label class="label" for="val-nome">Nome Completo *</label>
+                  <input type="text" id="val-nome" name="nome" class="input" placeholder="Seu nome" data-validate="required|min:3" data-message-min="O nome precisa de pelo menos 3 letras.">
+                </div>
+                <div class="form-group m-0">
+                  <label class="label" for="val-email">E-mail Corporativo *</label>
+                  <input type="email" id="val-email" name="email" class="input" placeholder="nome@empresa.com" data-validate="required|email">
+                </div>
+              </div>
+
+              <div class="grid grid-sm-2 gap-3 m-b-3">
+                <div class="form-group m-0">
+                  <label class="label" for="val-cpf">CPF Brasileiro *</label>
+                  <input type="text" id="val-cpf" name="cpf" class="input" placeholder="000.000.000-00" data-mask="cpf" data-validate="required|cpf">
+                </div>
+                <div class="form-group m-0">
+                  <label class="label" for="val-phone">Telefone / WhatsApp *</label>
+                  <input type="text" id="val-phone" name="phone" class="input" placeholder="(00) 00000-0000" data-mask="phone" data-validate="required|phone">
+                </div>
+              </div>
+
+              <div class="grid grid-sm-2 gap-3 m-b-3">
+                <div class="form-group m-0">
+                  <label class="label" for="val-pass">Criar Senha *</label>
+                  <input type="password" id="val-pass" name="senha" class="input" placeholder="Mínimo 6 caracteres" data-validate="required|min:6">
+                </div>
+                <div class="form-group m-0">
+                  <label class="label" for="val-confirm">Confirmar Senha *</label>
+                  <input type="password" id="val-confirm" name="confirmar_senha" class="input" placeholder="Repita a senha" data-validate="required|match:#val-pass" data-message-match="As senhas digitadas não coincidem.">
+                </div>
+              </div>
+
+              <div class="form-group m-b-4">
+                <label class="d-flex align-items-center gap-2 f-s-2 text-muted" style="cursor: pointer;">
+                  <input type="checkbox" id="val-terms" name="terms" class="check" data-validate="required" data-message="Você deve aceitar os termos de serviço para continuar.">
+                  <span>Concordo com os <a href="#" class="text-primary">Termos de Uso</a> e Política de Privacidade.</span>
+                </label>
+              </div>
+
+              <div class="cluster gap-2">
+                <button type="submit" class="btn btn-primary">
+                  <i class="icon icon-check"></i> Validar & Enviar Cadastro
+                </button>
+                <button type="button" class="btn btn-outline" id="btn-reset-demo-form">
+                  Limpar Validações
+                </button>
+              </div>
+            </form>
+          </div>
+
+          <!-- Card 2: Regras Disponíveis & Instruções -->
+          <div class="card p-4 h-100 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Catálogo de Regras Integradas</h3>
+                <p class="text-muted f-s-1 m-0">Configuração declarativa via atributo <code>data-validate</code></p>
+              </div>
+              <span class="badge badge-subtle">Regras Nativas</span>
+            </div>
+
+            <div class="table-responsive">
+              <table class="table table-sm">
+                <thead>
+                  <tr>
+                    <th>Regra</th>
+                    <th>Sintaxe</th>
+                    <th>Descrição</th>
+                  </tr>
+                </thead>
+                <tbody>
+                  <tr>
+                    <td><code>required</code></td>
+                    <td><code>required</code></td>
+                    <td>Obrigatório (texto, select, checkbox ou radio)</td>
+                  </tr>
+                  <tr>
+                    <td><code>email</code></td>
+                    <td><code>email</code></td>
+                    <td>Formato de e-mail RFC válido</td>
+                  </tr>
+                  <tr>
+                    <td><code>min / max</code></td>
+                    <td><code>min:6 | max:20</code></td>
+                    <td>Comprimento mínimo e máximo de caracteres</td>
+                  </tr>
+                  <tr>
+                    <td><code>cpf</code></td>
+                    <td><code>cpf</code></td>
+                    <td>Algoritmo oficial com cálculo dos 2 dígitos verificadores</td>
+                  </tr>
+                  <tr>
+                    <td><code>cnpj</code></td>
+                    <td><code>cnpj</code></td>
+                    <td>Validação completa de CNPJ empresarial</td>
+                  </tr>
+                  <tr>
+                    <td><code>card</code></td>
+                    <td><code>card</code></td>
+                    <td>Algoritmo de Luhn (módulo 10) para cartões de crédito</td>
+                  </tr>
+                  <tr>
+                    <td><code>match</code></td>
+                    <td><code>match:#id</code></td>
+                    <td>Compara valor com outro campo (ex: confirmação de senha)</td>
+                  </tr>
+                  <tr>
+                    <td><code>phone</code></td>
+                    <td><code>phone</code></td>
+                    <td>Telefone celular/fixo com DDD (10 ou 11 dígitos)</td>
+                  </tr>
+                </tbody>
+              </table>
+            </div>
+
+            <div class="p-3 bg-subtle rounded border f-s-1 text-muted">
+              💡 <em>Sumário Automático:</em> Tente enviar o formulário vazio para ver o sumário interativo de erros com clique de navegação suave e o efeito de tremor (shake) no primeiro campo incorreto.
+            </div>
+          </div>
+        </div>
+      </section>
+
     </section>
 
     <footer class="container p-y-5 txt-center f-s-2 text-muted p-relative z-10">
-      Frame PER v2.12.0 · Framework CSS + JS + SVG sem dependências
+      Frame PER v2.13.0 · Framework CSS + JS + SVG sem dependências
     </footer>
   </main>
 

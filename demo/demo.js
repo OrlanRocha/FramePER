@@ -65,4 +65,23 @@ document.addEventListener('DOMContentLoaded', function () {
       F.Notify.info('Menu de Contexto', 'Ação executada: "' + F.Security.escapeHTML(e.detail.action) + '"', 3000);
     }
   });
+
+  // Handlers para Validador de Formulários
+  var resetBtn = document.getElementById('btn-reset-demo-form');
+  if (resetBtn) {
+    resetBtn.addEventListener('click', function () {
+      var form = document.getElementById('demo-register-form');
+      if (form && form._frameValidator) {
+        form._frameValidator.reset();
+        form.reset();
+        if (F && F.Notify) F.Notify.info('Formulário Limpo', 'Todos os campos e alertas foram reiniciados.', 2500);
+      }
+    });
+  }
+
+  document.addEventListener('frameper:form:success', function (e) {
+    if (F && F.Notify) {
+      F.Notify.success('Formulário Válido!', 'Todos os dados foram preenchidos corretamente e estão prontos para envio.', 4000);
+    }
+  });
 });

@@ -1,0 +1,153 @@
+@use '../variables' as *;
+
+// ==========================================================================
+// Frame PER — Form Validator (Validação Reativa de Formulários)
+// ==========================================================================
+
+@keyframes formFeedbackIn {
+  from {
+    opacity: 0;
+    transform: translateY(-4px);
+  }
+  to {
+    opacity: 1;
+    transform: translateY(0);
+  }
+}
+
+@keyframes inputShake {
+  0%, 100% { transform: translateX(0); }
+  20%, 60% { transform: translateX(-5px); }
+  40%, 80% { transform: translateX(5px); }
+}
+
+.input.is-invalid-shake,
+.form-control.is-invalid-shake,
+.select.is-invalid-shake,
+.textarea.is-invalid-shake {
+  animation: inputShake 0.35s ease-in-out;
+}
+
+.form-feedback,
+.form-error,
+.form-success {
+  display: flex;
+  align-items: center;
+  gap: 0.375rem;
+  margin-top: 0.375rem;
+  font-size: 0.8125rem;
+  font-weight: 500;
+  line-height: 1.3;
+  animation: formFeedbackIn 0.18s var(--ease) forwards;
+
+  .feedback-icon {
+    width: 1rem;
+    height: 1rem;
+    flex-shrink: 0;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+
+    svg {
+      width: 100%;
+      height: 100%;
+      fill: currentColor;
+    }
+  }
+}
+
+.form-feedback-error,
+.form-error {
+  color: var(--red);
+
+  .feedback-icon {
+    color: var(--red);
+  }
+}
+
+.form-feedback-success,
+.form-success {
+  color: var(--green);
+
+  .feedback-icon {
+    color: var(--green);
+  }
+}
+
+// Sumário global de erros de formulário
+.form-error-summary {
+  display: none;
+  padding: 0.875rem 1rem;
+  margin-bottom: 1.25rem;
+  background-color: rgba(239, 68, 68, 0.08);
+  border: 1px solid rgba(239, 68, 68, 0.25);
+  border-radius: var(--radius-md);
+  color: var(--text-main);
+  animation: formFeedbackIn 0.2s var(--ease) forwards;
+
+  &.show {
+    display: block;
+  }
+
+  .summary-title {
+    display: flex;
+    align-items: center;
+    gap: 0.5rem;
+    font-size: 0.875rem;
+    font-weight: 600;
+    color: var(--red);
+    margin-bottom: 0.375rem;
+  }
+
+  .summary-list {
+    margin: 0;
+    padding-left: 1.25rem;
+    font-size: 0.8125rem;
+    color: var(--text-muted);
+
+    li {
+      margin-top: 0.25rem;
+    }
+
+    a {
+      color: var(--red);
+      text-decoration: underline;
+      cursor: pointer;
+
+      &:hover {
+        opacity: 0.8;
+      }
+    }
+  }
+}
+
+// Indicadores visuais dentro de campos com feedback
+.input-with-validation {
+  position: relative;
+
+  .validation-status-icon {
+    position: absolute;
+    right: 0.75rem;
+    top: 50%;
+    transform: translateY(-50%);
+    width: 1rem;
+    height: 1rem;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    pointer-events: none;
+    transition: opacity 0.15s ease;
+
+    &.status-valid {
+      color: var(--green);
+    }
+
+    &.status-invalid {
+      color: var(--red);
+    }
+  }
+
+  &.has-icon .input {
+    padding-right: 2.25rem;
+  }
+}
