@@ -58,4 +58,11 @@ document.addEventListener('DOMContentLoaded', function () {
 
     document.querySelectorAll('.docs-section').forEach(function (s) { observer.observe(s); });
   }
+
+  // Feedback para seleção em Menu de Contexto
+  document.addEventListener('frameper:contextmenu:select', function (e) {
+    if (F && F.Notify && e.detail && e.detail.action) {
+      F.Notify.info('Menu de Contexto', 'Ação executada: "' + F.Security.escapeHTML(e.detail.action) + '"', 3000);
+    }
+  });
 });

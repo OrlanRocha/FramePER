@@ -37,12 +37,28 @@
   font-size: 0.875rem;
   text-align: left;
   color: var(--text-main);
+  background: transparent;
+  border: none;
   border-radius: var(--radius-sm);
-  transition: background-color 0.12s var(--ease);
+  cursor: pointer;
+  text-decoration: none;
+  transition: background-color 0.12s var(--ease), color 0.12s var(--ease);
 
   .icon { color: var(--text-muted); }
-  &:hover { background-color: var(--bg-hover); }
+  &:hover,
+  &.is-focused {
+    background-color: var(--bg-hover);
+    color: var(--primary);
+    .icon { color: var(--primary); }
+    .dropdown-arrow { transform: translateX(2px); color: var(--primary); }
+  }
   &.danger { color: var(--red); .icon { color: inherit; } }
+  &.disabled,
+  &[disabled] {
+    opacity: 0.5;
+    pointer-events: none;
+    cursor: not-allowed;
+  }
 }
 
 .dropdown-header {
@@ -56,4 +72,48 @@
   height: 1px;
   margin: 0.25rem -0.25rem;
   background-color: var(--border-color);
+}
+
+.dropdown-arrow {
+  margin-left: auto;
+  font-size: 0.85rem;
+  color: var(--text-muted);
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+// Submenu multinível para Dropdowns
+.dropdown-item.has-submenu {
+  position: relative;
+
+  > .dropdown-submenu {
+    position: absolute;
+    top: -0.25rem;
+    left: calc(100% + 4px);
+    z-index: 1005;
+    min-width: 12rem;
+    padding: 0.25rem;
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-md);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-4px);
+    transition: opacity 0.15s var(--ease), transform 0.15s var(--ease), visibility 0.15s var(--ease);
+    pointer-events: none;
+
+    &.submenu-left {
+      left: auto;
+      right: calc(100% + 4px);
+      transform: translateX(4px);
+    }
+  }
+
+  &.show-submenu > .dropdown-submenu,
+  &:hover > .dropdown-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
 }

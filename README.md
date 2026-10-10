@@ -1,13 +1,20 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.11.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.12.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
+
+- **🖱️ Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**:
+  - **Zero Dependências**: Menus contextuais desktop-class disparados por clique direito em qualquer elemento (`data-context-menu="#meu-menu"`) ou via API programática (`FramePER.ContextMenu.attach`).
+  - **Detecção Inteligente de Bordas (Collision Detection)**: O menu calcula a viewport em tempo real e inverte suas coordenadas horizontal ou verticalmente para nunca ultrapassar os limites da tela.
+  - **Submenus Multinível em Cascata (`.has-submenu` / `.context-submenu` / `.dropdown-submenu`)**: Suporte a múltiplos níveis de aninhamento com inversão automática para a esquerda quando não há espaço à direita.
+  - **Acessibilidade Completa por Teclado**: Navegação por setas (`ArrowUp`, `ArrowDown`), abertura de submenus com `ArrowRight`, fechamento com `ArrowLeft`, ativação com `Enter`/`Space` e escape com tecla `Esc`.
+  - **Itens Ricos com Atalhos**: Suporte a ícones SVG, labels, atalhos decorativos (`<kbd>Ctrl+C</kbd>`), divisores, cabeçalhos de seção e itens destrutivos (`.text-danger`).
 
 - **📑 Abas Reativas com Slider Deslizante (`FramePER.Tabs`)**:
   - **Zero Dependências**: Alternância instantânea de abas com WAI-ARIA nativo e atalhos de teclado (`ArrowLeft`, `ArrowRight`, `Home`, `End`).
@@ -175,6 +182,49 @@ Inclua os arquivos compilados `dist/framePER.min.css` e `dist/framePER.min.js` n
     onUploadSuccess: (item) => {
       console.log('Upload concluído com sucesso:', item.name);
     }
+  });
+</script>
+```
+
+### Menu de Contexto (Right-Click) & Dropdown Multinível
+```html
+<!-- Disparo via atributo em qualquer card ou container -->
+<div class="card p-4" data-context-menu="#meu-menu-contextual">
+  Clique com o botão direito aqui para abrir o menu contextual
+</div>
+
+<!-- Estrutura do menu de contexto com submenus e atalhos -->
+<div id="meu-menu-contextual" class="context-menu" role="menu">
+  <div class="context-menu-header">Opções do Registro</div>
+  <button class="context-menu-item" data-action="copy">
+    <span class="context-menu-label">Copiar Dados</span>
+    <kbd class="context-menu-shortcut">Ctrl+C</kbd>
+  </button>
+  <button class="context-menu-item" data-action="edit">
+    <span class="context-menu-label">Editar Registro</span>
+    <kbd class="context-menu-shortcut">Ctrl+E</kbd>
+  </button>
+  <div class="context-menu-divider"></div>
+  <!-- Submenu Multinível em Cascata -->
+  <div class="context-menu-item has-submenu">
+    <span class="context-menu-label">Exportar</span>
+    <span class="context-menu-arrow">›</span>
+    <div class="context-submenu">
+      <button class="context-menu-item" data-action="export-pdf">Exportar em PDF</button>
+      <button class="context-menu-item" data-action="export-csv">Exportar em CSV</button>
+    </div>
+  </div>
+  <div class="context-menu-divider"></div>
+  <button class="context-menu-item text-danger" data-action="delete">
+    <span class="context-menu-label">Excluir</span>
+    <kbd class="context-menu-shortcut">Del</kbd>
+  </button>
+</div>
+
+<script>
+  // Captura ações disparadas no menu contextual
+  document.addEventListener('frameper:contextmenu:select', (e) => {
+    console.log('Ação selecionada:', e.detail.action, e.detail.target);
   });
 </script>
 ```

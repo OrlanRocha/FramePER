@@ -1,0 +1,220 @@
+@use '../variables' as *;
+
+// ==========================================================================
+// Frame PER — Context Menu (Menu de Contexto de Botão Direito & Submenus)
+// ==========================================================================
+
+.context-menu {
+  position: fixed;
+  z-index: 1070;
+  min-width: 13rem;
+  max-width: 22rem;
+  padding: 0.375rem;
+  color: var(--text-main);
+  background-color: var(--bg-surface);
+  border: 1px solid var(--border-color);
+  border-radius: var(--radius-md);
+  box-shadow: var(--shadow-lg), 0 12px 28px -4px rgba(0, 0, 0, 0.18);
+  opacity: 0;
+  visibility: hidden;
+  transform: scale(0.96) translateY(-4px);
+  transform-origin: top left;
+  transition: opacity 0.14s var(--ease), transform 0.14s var(--ease), visibility 0.14s var(--ease);
+  pointer-events: none;
+  user-select: none;
+  backdrop-filter: blur(10px);
+  -webkit-backdrop-filter: blur(10px);
+
+  &.show {
+    opacity: 1;
+    visibility: visible;
+    transform: scale(1) translateY(0);
+    pointer-events: auto;
+  }
+}
+
+.context-menu-item {
+  display: flex;
+  align-items: center;
+  gap: 0.625rem;
+  width: 100%;
+  padding: 0.4375rem 0.625rem;
+  font-size: 0.84rem;
+  font-weight: 500;
+  text-align: left;
+  color: var(--text-main);
+  background: transparent;
+  border: none;
+  border-radius: var(--radius-sm);
+  cursor: pointer;
+  outline: none;
+  position: relative;
+  transition: background-color 0.12s var(--ease), color 0.12s var(--ease);
+
+  &:hover,
+  &.is-focused {
+    background-color: var(--bg-hover);
+    color: var(--primary);
+
+    .context-menu-icon {
+      color: var(--primary);
+    }
+    .context-menu-arrow {
+      color: var(--primary);
+      transform: translateX(2px);
+    }
+  }
+
+  &.is-disabled,
+  &[disabled] {
+    opacity: 0.45;
+    cursor: not-allowed;
+    pointer-events: none;
+  }
+
+  &.text-danger,
+  &.is-danger {
+    color: var(--red);
+
+    .context-menu-icon {
+      color: var(--red);
+    }
+
+    &:hover,
+    &.is-focused {
+      background-color: rgba(239, 68, 68, 0.12);
+      color: var(--red);
+    }
+  }
+}
+
+.context-menu-icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.125rem;
+  height: 1.125rem;
+  color: var(--text-muted);
+  flex-shrink: 0;
+  transition: color 0.12s var(--ease);
+
+  svg {
+    width: 100%;
+    height: 100%;
+    fill: currentColor;
+  }
+}
+
+.context-menu-label {
+  flex: 1;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
+}
+
+.context-menu-shortcut {
+  margin-left: 1.25rem;
+  font-size: 0.72rem;
+  font-family: inherit;
+  font-weight: 500;
+  padding: 0.125rem 0.375rem;
+  border-radius: 3px;
+  background-color: rgba(125, 125, 125, 0.1);
+  border: 1px solid var(--border-color);
+  color: var(--text-subtle);
+  line-height: 1;
+}
+
+.context-menu-arrow {
+  margin-left: auto;
+  font-size: 0.85rem;
+  line-height: 1;
+  color: var(--text-muted);
+  display: inline-flex;
+  align-items: center;
+  transition: transform 0.15s ease, color 0.15s ease;
+}
+
+.context-menu-header {
+  padding: 0.375rem 0.625rem 0.25rem;
+  font-size: 0.7rem;
+  font-weight: 700;
+  text-transform: uppercase;
+  letter-spacing: 0.05em;
+  color: var(--text-subtle);
+  user-select: none;
+}
+
+.context-menu-divider {
+  height: 1px;
+  margin: 0.3125rem -0.375rem;
+  background-color: var(--border-color);
+}
+
+// Submenus em Cascata
+.context-menu-item.has-submenu {
+  position: relative;
+
+  > .context-submenu {
+    position: absolute;
+    top: -0.375rem;
+    left: calc(100% + 4px);
+    z-index: 1075;
+    min-width: 12rem;
+    padding: 0.375rem;
+    color: var(--text-main);
+    background-color: var(--bg-surface);
+    border: 1px solid var(--border-color);
+    border-radius: var(--radius-md);
+    box-shadow: var(--shadow-lg), 0 12px 28px -4px rgba(0, 0, 0, 0.18);
+    opacity: 0;
+    visibility: hidden;
+    transform: translateX(-6px);
+    transition: opacity 0.14s var(--ease), transform 0.14s var(--ease), visibility 0.14s var(--ease);
+    pointer-events: none;
+    backdrop-filter: blur(10px);
+    -webkit-backdrop-filter: blur(10px);
+
+    &.submenu-left {
+      left: auto;
+      right: calc(100% + 4px);
+      transform: translateX(6px);
+    }
+  }
+
+  &.show-submenu > .context-submenu,
+  &:hover > .context-submenu {
+    opacity: 1;
+    visibility: visible;
+    transform: translateX(0);
+    pointer-events: auto;
+  }
+}
+
+// Área demarcada de demonstração / target styling
+.context-menu-trigger-zone {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.75rem;
+  padding: 2.5rem 1.5rem;
+  border: 2px dashed var(--border-color);
+  border-radius: var(--radius-lg);
+  background-color: var(--bg-surface-secondary, rgba(0, 0, 0, 0.02));
+  text-align: center;
+  cursor: context-menu;
+  transition: border-color 0.2s var(--ease), background-color 0.2s var(--ease);
+
+  &:hover {
+    border-color: var(--primary);
+    background-color: rgba(99, 102, 241, 0.04);
+  }
+
+  .zone-icon {
+    width: 2.5rem;
+    height: 2.5rem;
+    color: var(--primary);
+    opacity: 0.8;
+  }
+}

@@ -77,7 +77,7 @@
     <section class="container container-narrow txt-center p-y-6 p-relative z-10">
       <div class="d-flex justify-content-center m-b-3 slide-up">
         <span class="badge badge-pill badge-green">
-          <i class="icon icon-flame text-green m-r-1"></i> v2.11.0 · Abas com Slider Animado, Accordions Fluidos, Popover Inteligente & File Uploader
+          <i class="icon icon-flame text-green m-r-1"></i> v2.12.0 · Menu de Contexto Inteligente, Dropdowns Multinível & Componentes Reativos
         </span>
       </div>
       <h1 class="display-2 m-b-3 text-balance slide-up delay-1">Conheça o Frame PER</h1>
@@ -96,6 +96,13 @@
         <a class="btn btn-ghost btn-lg" href="components.html">
           <i class="icon icon-settings"></i> Componentes UI
         </a>
+      </div>
+
+      <!-- Quick Feature Anchors -->
+      <div class="cluster justify-content-center gap-2 m-t-4 slide-up delay-4">
+        <a class="badge badge-subtle badge-pill" href="#context-menu-demo"><i class="icon icon-menu m-r-1"></i> Menu de Contexto & Dropdowns</a>
+        <a class="badge badge-subtle badge-pill" href="#interativos-demo"><i class="icon icon-settings m-r-1"></i> Abas, Accordions & Popovers</a>
+        <a class="badge badge-subtle badge-pill" href="#uploader-demo"><i class="icon icon-upload m-r-1"></i> File Uploader</a>
       </div>
     </section>
 
@@ -589,10 +596,181 @@
         </div>
       </section>
 
+      <!-- Menu de Contexto & Dropdowns Multinível Showcase -->
+      <section id="context-menu-demo" class="m-b-6">
+        <div class="d-flex align-items-center justify-content-between m-b-4">
+          <div>
+            <div class="d-flex align-items-center gap-2 m-b-1">
+              <h2 class="h4 m-0">Menu de Contexto de Botão Direito & Dropdowns Multinível</h2>
+              <span class="badge badge-primary badge-pill">Novo na v2.12</span>
+            </div>
+            <p class="text-muted f-s-2 m-0">Menus contextuais desktop-class com atalhos, detecção inteligente de bordas da viewport e submenus em cascata multinível</p>
+          </div>
+        </div>
+
+        <div class="grid grid-lg-2 gap-4">
+          <!-- Card 1: Zona de Disparo com Clique com o Botão Direito -->
+          <div class="card p-4 h-100 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Menu de Contexto Inteligente</h3>
+                <p class="text-muted f-s-1 m-0">Clique com o botão direito do mouse dentro da área</p>
+              </div>
+              <span class="badge badge-subtle">FramePER.ContextMenu</span>
+            </div>
+
+            <!-- Área demarcada de clique direito -->
+            <div class="context-menu-trigger-zone" data-context-menu="#demo-context-menu" tabindex="0">
+              <svg class="zone-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                <path d="M15 3h6v6M9 21H3v-6M21 3l-7 7M3 21l7-7" />
+              </svg>
+              <div>
+                <strong class="f-s-3 d-block m-b-1">Clique com o botão direito nesta área</strong>
+                <span class="text-muted f-s-2">Abre um menu contextual posicionado no cursor com submenus e atalhos</span>
+              </div>
+              <span class="badge badge-outline badge-sm">Ou pressione Shift+F10 / Tecla Menu</span>
+            </div>
+
+            <div class="f-s-1 text-muted">
+              💡 <em>Dica:</em> Abra o menu perto do rodapé ou canto direito da tela para observar o reposicionamento automático sem corte de conteúdo.
+            </div>
+          </div>
+
+          <!-- Card 2: Dropdowns Convencionais com Submenus Multinível -->
+          <div class="card p-4 h-100 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Dropdowns com Submenus em Cascata</h3>
+                <p class="text-muted f-s-1 m-0">Suporte a múltiplos níveis de profundidade</p>
+              </div>
+              <span class="badge badge-subtle">.dropdown-submenu</span>
+            </div>
+
+            <p class="f-s-2 text-muted m-0">Clique no botão para abrir o menu dropdown e passe o cursor (ou toque no mobile) para abrir os submenus aninhados:</p>
+
+            <div class="stack gap-3 m-y-auto">
+              <div class="dropdown">
+                <button type="button" class="btn btn-primary dropdown-toggle">
+                  <i class="icon icon-settings"></i> Ações do Sistema <i class="icon icon-chevron-down m-l-1"></i>
+                </button>
+                <div class="dropdown-menu">
+                  <div class="dropdown-header">Arquivo</div>
+                  <button type="button" class="dropdown-item">
+                    <i class="icon icon-file"></i> Novo Documento
+                  </button>
+                  <button type="button" class="dropdown-item">
+                    <i class="icon icon-folder"></i> Abrir Projeto
+                  </button>
+                  <div class="dropdown-divider"></div>
+                  <!-- Submenu 1 -->
+                  <div class="dropdown-item has-submenu">
+                    <span class="d-flex align-items-center gap-2">
+                      <i class="icon icon-share"></i> Exportar Dados
+                    </span>
+                    <span class="dropdown-arrow">›</span>
+                    <div class="dropdown-submenu">
+                      <button type="button" class="dropdown-item">
+                        <i class="icon icon-file-text"></i> Exportar como PDF
+                      </button>
+                      <button type="button" class="dropdown-item">
+                        <i class="icon icon-database"></i> Exportar como CSV
+                      </button>
+                      <div class="dropdown-divider"></div>
+                      <!-- Submenu nível 2 -->
+                      <div class="dropdown-item has-submenu">
+                        <span class="d-flex align-items-center gap-2">
+                          <i class="icon icon-code"></i> Formatos Dev
+                        </span>
+                        <span class="dropdown-arrow">›</span>
+                        <div class="dropdown-submenu">
+                          <button type="button" class="dropdown-item">JSON Estruturado</button>
+                          <button type="button" class="dropdown-item">SQL Dump</button>
+                          <button type="button" class="dropdown-item">YAML Schema</button>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                  <div class="dropdown-divider"></div>
+                  <button type="button" class="dropdown-item danger">
+                    <i class="icon icon-trash"></i> Excluir Projeto
+                  </button>
+                </div>
+              </div>
+
+              <!-- Exemplo de Linha de Dados com Context Menu -->
+              <div class="card p-3 border rounded bg-surface w-100" data-context-menu="#demo-context-menu" style="cursor: context-menu;">
+                <div class="d-flex align-items-center justify-content-between">
+                  <div class="d-flex align-items-center gap-2">
+                    <span class="badge badge-green badge-dot"></span>
+                    <strong class="f-s-2">Linha de Dados / Registro #4891</strong>
+                  </div>
+                  <span class="badge badge-subtle badge-xs">Right-click ativo</span>
+                </div>
+                <p class="f-s-1 text-muted m-t-1 m-b-0">Clique com o botão direito também nesta linha para acessar o menu contextual do registro.</p>
+              </div>
+            </div>
+          </div>
+        </div>
+      </section>
+
+      <!-- Elemento DOM do Context Menu reutilizável -->
+      <div id="demo-context-menu" class="context-menu" role="menu">
+        <div class="context-menu-header">Ações Rápidas</div>
+        <button class="context-menu-item" role="menuitem" data-action="Copiar">
+          <span class="context-menu-icon">
+            <svg viewBox="0 0 24 24"><path d="M16 1H4c-1.1 0-2 .9-2 2v14h2V3h12V1zm3 4H8c-1.1 0-2 .9-2 2v14c0 1.1.9 2 2 2h11c1.1 0 2-.9 2-2V7c0-1.1-.9-2-2-2zm0 16H8V7h11v14z"/></svg>
+          </span>
+          <span class="context-menu-label">Copiar Conteúdo</span>
+          <kbd class="context-menu-shortcut">Ctrl+C</kbd>
+        </button>
+        <button class="context-menu-item" role="menuitem" data-action="Editar">
+          <span class="context-menu-icon">
+            <svg viewBox="0 0 24 24"><path d="M3 17.25V21h3.75L17.81 9.94l-3.75-3.75L3 17.25zM20.71 7.04c.39-.39.39-1.02 0-1.41l-2.34-2.34c-.39-.39-1.02-.39-1.41 0l-1.83 1.83 3.75 3.75 1.83-1.83z"/></svg>
+          </span>
+          <span class="context-menu-label">Editar Elemento</span>
+          <kbd class="context-menu-shortcut">Ctrl+E</kbd>
+        </button>
+        <div class="context-menu-divider"></div>
+        <div class="context-menu-item has-submenu" role="menuitem" aria-haspopup="true">
+          <span class="context-menu-icon">
+            <svg viewBox="0 0 24 24"><path d="M18 16.08c-.76 0-1.44.3-1.96.77L8.91 12.7c.05-.23.09-.46.09-.7s-.04-.47-.09-.7l7.05-4.11c.54.5 1.25.81 2.04.81 1.66 0 3-1.34 3-3s-1.34-3-3-3-3 1.34-3 3c0 .24.04.47.09.7L8.04 9.81C7.5 9.31 6.79 9 6 9c-1.66 0-3 1.34-3 3s1.34 3 3 3c.79 0 1.5-.31 2.04-.81l7.12 4.16c-.05.21-.08.43-.08.65 0 1.61 1.31 2.92 2.92 2.92 1.61 0 2.92-1.31 2.92-2.92s-1.31-2.92-2.92-2.92z"/></svg>
+          </span>
+          <span class="context-menu-label">Compartilhar</span>
+          <span class="context-menu-arrow">›</span>
+          <div class="context-submenu" role="menu">
+            <button class="context-menu-item" role="menuitem" data-action="Copiar Link">
+              <span class="context-menu-label">Copiar Link Direto</span>
+            </button>
+            <button class="context-menu-item" role="menuitem" data-action="Enviar E-mail">
+              <span class="context-menu-label">Enviar por E-mail</span>
+            </button>
+            <div class="context-menu-divider"></div>
+            <!-- Submenu nível 2 -->
+            <div class="context-menu-item has-submenu" role="menuitem" aria-haspopup="true">
+              <span class="context-menu-label">Exportar Arquivo</span>
+              <span class="context-menu-arrow">›</span>
+              <div class="context-submenu" role="menu">
+                <button class="context-menu-item" role="menuitem" data-action="Exportar PDF">PDF (.pdf)</button>
+                <button class="context-menu-item" role="menuitem" data-action="Exportar CSV">Planilha (.csv)</button>
+                <button class="context-menu-item" role="menuitem" data-action="Exportar JSON">JSON (.json)</button>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="context-menu-divider"></div>
+        <button class="context-menu-item text-danger" role="menuitem" data-action="Excluir">
+          <span class="context-menu-icon">
+            <svg viewBox="0 0 24 24"><path d="M6 19c0 1.1.9 2 2 2h8c1.1 0 2-.9 2-2V7H6v12zM19 4h-3.5l-1-1h-5l-1 1H5v2h14V4z"/></svg>
+          </span>
+          <span class="context-menu-label">Excluir Registro</span>
+          <kbd class="context-menu-shortcut">Del</kbd>
+        </button>
+      </div>
+
     </section>
 
     <footer class="container p-y-5 txt-center f-s-2 text-muted p-relative z-10">
-      Frame PER v2.11.0 · Framework CSS + JS + SVG sem dependências
+      Frame PER v2.12.0 · Framework CSS + JS + SVG sem dependências
     </footer>
   </main>
 
