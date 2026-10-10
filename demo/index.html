@@ -67,6 +67,12 @@
         <a class="btn btn-ghost btn-sm" href="https://github.com/OrlanRocha/FramePER" target="_blank" rel="noopener">
           GitHub <i class="icon icon-external"></i>
         </a>
+        <button class="btn btn-ghost btn-icon p-relative" data-activity-feed-toggle aria-label="Central de Atividades e Notificações" title="Notificações">
+          <svg style="width:1.2rem;height:1.2rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+          </svg>
+          <span class="activity-count-badge p-absolute" data-activity-badge style="top:2px;right:2px;font-size:0.65rem;padding:1px 5px;">3</span>
+        </button>
         <button class="btn btn-ghost btn-icon theme-toggle" data-theme-toggle aria-label="Alternar tema">
           <i class="icon icon-moon"></i><i class="icon icon-sun"></i>
         </button>
@@ -77,7 +83,7 @@
     <section class="container container-narrow txt-center p-y-6 p-relative z-10">
       <div class="d-flex justify-content-center m-b-3 slide-up">
         <span class="badge badge-pill badge-green">
-          <i class="icon icon-flame text-green m-r-1"></i> v2.13.0 · Validador Reativo de Formulários, Menu de Contexto & Componentes UI
+          <i class="icon icon-flame text-green m-r-1"></i> v2.14.0 · Central de Atividades em Drawer, Validador Reativo & Componentes UI
         </span>
       </div>
       <h1 class="display-2 m-b-3 text-balance slide-up delay-1">Conheça o Frame PER</h1>
@@ -100,6 +106,7 @@
 
       <!-- Quick Feature Anchors -->
       <div class="cluster justify-content-center gap-2 m-t-4 slide-up delay-4">
+        <a class="badge badge-subtle badge-pill" href="#activity-feed-demo"><i class="icon icon-bell m-r-1"></i> Central de Atividades</a>
         <a class="badge badge-subtle badge-pill" href="#form-validator-demo"><i class="icon icon-check m-r-1"></i> Validador de Formulários</a>
         <a class="badge badge-subtle badge-pill" href="#context-menu-demo"><i class="icon icon-menu m-r-1"></i> Menu de Contexto & Dropdowns</a>
         <a class="badge badge-subtle badge-pill" href="#interativos-demo"><i class="icon icon-settings m-r-1"></i> Abas, Accordions & Popovers</a>
@@ -912,12 +919,96 @@
             </div>
           </div>
         </div>
+      <!-- Central de Atividades e Notificações Showcase -->
+      <section id="activity-feed-demo" class="m-b-6">
+        <div class="d-flex align-items-center justify-content-between m-b-4">
+          <div>
+            <div class="d-flex align-items-center gap-2 m-b-1">
+              <h2 class="h4 m-0">Central de Atividades & Notificações (`FramePER.ActivityFeed`)</h2>
+              <span class="badge badge-primary badge-pill">Novo na v2.14</span>
+            </div>
+            <p class="text-muted f-s-2 m-0">Drawer lateral retrátil com feed de eventos em tempo real, badges reativas de não lidas e filtros categorizados</p>
+          </div>
+        </div>
+
+        <div class="grid grid-lg-2 gap-4">
+          <!-- Card 1: Controles de Demonstração -->
+          <div class="card p-4 h-100 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Painel Interativo de Notificações</h3>
+                <p class="text-muted f-s-1 m-0">Disparo via gaveta lateral suave com backdrop blur</p>
+              </div>
+              <span class="badge badge-purple">Drawer 100% Vanilla</span>
+            </div>
+
+            <p class="f-s-2 text-muted m-0">
+              Gerencie avisos de sistema, pedidos em tempo real, alertas de segurança e atualizações em uma gaveta lateral desktop-class com filtros rápidos por status.
+            </p>
+
+            <div class="cluster gap-2 m-t-auto">
+              <button type="button" class="btn btn-primary" data-activity-feed-toggle>
+                <svg style="width:1.1rem;height:1.1rem" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2">
+                  <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                </svg>
+                <span>Abrir Central de Notificações</span>
+                <span class="activity-count-badge" data-activity-badge>3</span>
+              </button>
+
+              <button type="button" class="btn btn-outline" id="btn-simulate-activity">
+                <i class="icon icon-plus"></i> Simular Nova Notificação
+              </button>
+
+              <button type="button" class="btn btn-ghost" id="btn-demo-mark-all">
+                Marcar Lidas
+              </button>
+            </div>
+          </div>
+
+          <!-- Card 2: Visão Geral dos Recursos da Central -->
+          <div class="card p-4 h-100 stack gap-3">
+            <div class="d-flex align-items-center justify-content-between">
+              <div>
+                <h3 class="f-s-4 f-w-semibold m-0">Recursos Integrados</h3>
+                <p class="text-muted f-s-1 m-0">Tudo o que seu SaaS ou dashboard precisa</p>
+              </div>
+              <span class="badge badge-subtle">API Reativa</span>
+            </div>
+
+            <div class="grid grid-2 gap-3 f-s-2">
+              <div class="p-3 bg-subtle rounded border stack gap-1">
+                <strong class="text-primary d-flex align-items-center gap-1">
+                  <span class="unread-dot" style="position:static;display:inline-block;width:6px;height:6px;border-radius:50%;background:var(--primary);"></span> Badges Dinâmicas
+                </strong>
+                <span class="text-muted f-s-1">Sincronização automática em qualquer elemento com <code>[data-activity-badge]</code> e pulso animado.</span>
+              </div>
+              <div class="p-3 bg-subtle rounded border stack gap-1">
+                <strong class="text-green d-flex align-items-center gap-1">
+                  <i class="icon icon-check text-green"></i> Filtros Instantâneos
+                </strong>
+                <span class="text-muted f-s-1">Abas integradas para filtrar por Todas, Não Lidas e Avisos de Sistema.</span>
+              </div>
+              <div class="p-3 bg-subtle rounded border stack gap-1">
+                <strong class="text-amber d-flex align-items-center gap-1">
+                  <i class="icon icon-clock text-amber"></i> Timestamps & Ações
+                </strong>
+                <span class="text-muted f-s-1">Botões de ação direta no card (ex: "Ver Pedido") e tempo relativo.</span>
+              </div>
+              <div class="p-3 bg-subtle rounded border stack gap-1">
+                <strong class="text-purple d-flex align-items-center gap-1">
+                  <i class="icon icon-bell text-purple"></i> API Programática
+                </strong>
+                <span class="text-muted f-s-1">Métodos simples: <code>add()</code>, <code>open()</code>, <code>markAsRead()</code> e <code>clear()</code>.</span>
+              </div>
+            </div>
+          </div>
+        </div>
       </section>
 
     </section>
 
     <footer class="container p-y-5 txt-center f-s-2 text-muted p-relative z-10">
-      Frame PER v2.13.0 · Framework CSS + JS + SVG sem dependências
+      Frame PER v2.14.0 · Framework CSS + JS + SVG sem dependências
     </footer>
   </main>
 

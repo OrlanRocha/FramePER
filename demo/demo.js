@@ -84,4 +84,33 @@ document.addEventListener('DOMContentLoaded', function () {
       F.Notify.success('Formulário Válido!', 'Todos os dados foram preenchidos corretamente e estão prontos para envio.', 4000);
     }
   });
+
+  // Handlers para Central de Atividades
+  var btnSimulate = document.getElementById('btn-simulate-activity');
+  if (btnSimulate) {
+    var simCount = 1;
+    btnSimulate.addEventListener('click', function () {
+      if (F && F.ActivityFeed) {
+        var types = ['success', 'info', 'warning', 'system'];
+        var type = types[Math.floor(Math.random() * types.length)];
+        F.ActivityFeed.add({
+          title: 'Notificação ao Vivo #' + (simCount++),
+          desc: 'Evento gerado em tempo real na fila de atividades.',
+          time: 'Agora mesmo',
+          type: type,
+          unread: true
+        });
+      }
+    });
+  }
+
+  var btnMarkAll = document.getElementById('btn-demo-mark-all');
+  if (btnMarkAll) {
+    btnMarkAll.addEventListener('click', function () {
+      if (F && F.ActivityFeed) {
+        F.ActivityFeed.markAllAsRead();
+        if (F.Notify) F.Notify.success('Notificações', 'Todas as notificações foram marcadas como lidas.', 2500);
+      }
+    });
+  }
 });

@@ -89,6 +89,7 @@
                 this.initTables();
                 this.initContextMenu();
                 this.initFormValidator();
+                this.initActivityFeed();
             },
             initContextMenu: function() {
                 if (FramePER.ContextMenu && FramePER.ContextMenu.init) {
@@ -98,6 +99,11 @@
             initFormValidator: function() {
                 if (FramePER.FormValidator && FramePER.FormValidator.init) {
                     FramePER.FormValidator.init();
+                }
+            },
+            initActivityFeed: function() {
+                if (FramePER.ActivityFeed && FramePER.ActivityFeed.init) {
+                    FramePER.ActivityFeed.init();
                 }
             },
             initTables: function() {
@@ -2085,6 +2091,20 @@
                     desc: 'Validação declarativa em tempo real com CPF, CNPJ, Luhn e mensagens animadas',
                     icon: 'icon-check',
                     action: () => { window.location.href = 'index.html#form-validator-demo'; }
+                },
+                {
+                    group: 'Componentes & Docs',
+                    id: 'nav-activity-feed',
+                    title: 'Central de Atividades & Notificações',
+                    desc: 'Drawer lateral com feed em tempo real, filtros e badges de não lidas',
+                    icon: 'icon-bell',
+                    action: () => {
+                        if (window.FramePER && window.FramePER.ActivityFeed) {
+                            window.FramePER.ActivityFeed.open();
+                        } else {
+                            window.location.href = 'index.html#activity-feed-demo';
+                        }
+                    }
                 },
                 {
                     group: 'Componentes & Docs',
@@ -4751,6 +4771,329 @@
                     });
                 }
             };
+        })(),
+
+        ActivityFeed: (() => {
+            let drawerEl = null;
+            let backdropEl = null;
+            let currentFilter = 'all';
+            let activities = [
+                {
+                    id: 'act-1',
+                    title: 'Novo pedido recebido (#5042)',
+                    desc: 'Cliente Marcos Santos finalizou a compra de 3 itens via Cartão de Crédito.',
+                    time: 'Há 4 minutos',
+                    type: 'success',
+                    category: 'system',
+                    unread: true,
+                    action: { label: 'Ver Pedido', url: '#detalhes-5042' }
+                },
+                {
+                    id: 'act-2',
+                    title: 'Alerta de Segurança (2FA)',
+                    desc: 'Novo login detectado em São Paulo, Brasil via Google Chrome / Windows 11.',
+                    time: 'Há 28 minutos',
+                    type: 'warning',
+                    category: 'security',
+                    unread: true
+                },
+                {
+                    id: 'act-3',
+                    title: 'Deploy em Produção v2.13',
+                    desc: 'A compilação de assets e testes unitários foram concluídos com sucesso em 4.2s.',
+                    time: 'Há 2 horas',
+                    type: 'info',
+                    category: 'system',
+                    unread: true
+                },
+                {
+                    id: 'act-4',
+                    title: 'Backup Diário Realizado',
+                    desc: 'O snapshot automático dos bancos de dados foi salvo com segurança em nuvem.',
+                    time: 'Ontem às 23:45',
+                    type: 'system',
+                    category: 'system',
+                    unread: false
+                }
+            ];
+
+            function getSvgIcon(type) {
+                switch (type) {
+                    case 'success':
+                        return `<svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm3.707-9.293a1 1 0 00-1.414-1.414L9 10.586 7.707 9.293a1 1 0 00-1.414 1.414l2 2a1 1 0 001.414 0l4-4z" clip-rule="evenodd"/></svg>`;
+                    case 'warning':
+                        return `<svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M8.257 3.099c.765-1.36 2.722-1.36 3.486 0l5.58 9.92c.75 1.334-.213 2.98-1.742 2.98H4.42c-1.53 0-2.493-1.646-1.743-2.98l5.58-9.92zM11 13a1 1 0 11-2 0 1 1 0 012 0zm-1-8a1 1 0 00-1 1v3a1 1 0 002 0V6a1 1 0 00-1-1z" clip-rule="evenodd"/></svg>`;
+                    case 'danger':
+                        return `<svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zM8.707 7.293a1 1 0 00-1.414 1.414L8.586 10l-1.293 1.293a1 1 0 101.414 1.414L10 11.414l1.293 1.293a1 1 0 001.414-1.414L11.414 10l1.293-1.293a1 1 0 00-1.414-1.414L10 8.586 8.707 7.293z" clip-rule="evenodd"/></svg>`;
+                    case 'system':
+                        return `<svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M11.49 3.17c-.38-1.56-2.6-1.56-2.98 0a1.532 1.532 0 01-2.286.948c-1.372-.836-2.942.734-2.106 2.106.54.886.061 2.042-.947 2.287-1.561.379-1.561 2.6 0 2.978a1.532 1.532 0 01.947 2.287c-.836 1.372.734 2.942 2.106 2.106a1.532 1.532 0 012.287.947c.379 1.561 2.6 1.561 2.978 0a1.533 1.533 0 012.287-.947c1.372.836 2.942-.734 2.106-2.106a1.533 1.533 0 01.947-2.287c1.561-.379 1.561-2.6 0-2.978a1.532 1.532 0 01-.947-2.287c.836-1.372-.734-2.942-2.106-2.106a1.532 1.532 0 01-2.287-.947zM10 13a3 3 0 100-6 3 3 0 000 6z" clip-rule="evenodd"/></svg>`;
+                    case 'info':
+                    default:
+                        return `<svg viewBox="0 0 20 20"><path fill-rule="evenodd" d="M18 10a8 8 0 11-16 0 8 8 0 0116zm-7-4a1 1 0 11-2 0 1 1 0 012 0zM9 9a1 1 0 000 2v3a1 1 0 001 1h1a1 1 0 100-2v-3a1 1 0 00-1-1H9z" clip-rule="evenodd"/></svg>`;
+                }
+            }
+
+            function getDrawer() {
+                if (!drawerEl) {
+                    drawerEl = document.querySelector('#activity-feed-drawer, .activity-drawer');
+                    if (!drawerEl) {
+                        drawerEl = document.createElement('div');
+                        drawerEl.id = 'activity-feed-drawer';
+                        drawerEl.className = 'activity-drawer';
+                        document.body.appendChild(drawerEl);
+                    }
+                }
+                return drawerEl;
+            }
+
+            function getBackdrop() {
+                if (!backdropEl) {
+                    backdropEl = document.querySelector('.activity-drawer-backdrop');
+                    if (!backdropEl) {
+                        backdropEl = document.createElement('div');
+                        backdropEl.className = 'offcanvas-backdrop activity-drawer-backdrop';
+                        document.body.appendChild(backdropEl);
+                        backdropEl.addEventListener('click', close);
+                    }
+                }
+                return backdropEl;
+            }
+
+            function getUnreadCount() {
+                return activities.filter(a => a.unread).length;
+            }
+
+            function updateBadges() {
+                const count = getUnreadCount();
+                document.querySelectorAll('[data-activity-badge], .activity-count-badge').forEach(badge => {
+                    badge.textContent = count;
+                    if (count > 0) {
+                        badge.style.display = '';
+                        badge.classList.remove('has-new');
+                        badge.offsetHeight;
+                        badge.classList.add('has-new');
+                    } else {
+                        badge.textContent = '0';
+                    }
+                });
+
+                document.dispatchEvent(new CustomEvent('frameper:activity:count', {
+                    bubbles: true,
+                    detail: { unreadCount: count, totalCount: activities.length }
+                }));
+            }
+
+            function render() {
+                const drawer = getDrawer();
+                if (!drawer) return;
+
+                const filtered = activities.filter(item => {
+                    if (currentFilter === 'unread') return item.unread;
+                    if (currentFilter === 'system') return item.category === 'system' || item.type === 'system';
+                    return true;
+                });
+
+                const unreadTotal = getUnreadCount();
+
+                let itemsHtml = '';
+                if (filtered.length === 0) {
+                    itemsHtml = `
+                        <div class="activity-empty">
+                            <svg class="empty-icon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="1.5">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="M14.857 17.082a23.848 23.848 0 005.454-1.31A8.967 8.967 0 0118 9.75v-.7V9A6 6 0 006 9v.75a8.967 8.967 0 01-2.312 6.022c1.733.64 3.56 1.085 5.455 1.31m5.714 0a24.255 24.255 0 01-5.714 0m5.714 0a3 3 0 11-5.714 0" />
+                            </svg>
+                            <h4 class="empty-title">Nenhuma notificação por aqui</h4>
+                            <p class="empty-desc">Você está em dia com todas as atividades e avisos do sistema.</p>
+                        </div>
+                    `;
+                } else {
+                    itemsHtml = '<div class="activity-list">' + filtered.map(item => `
+                        <div class="activity-item ${item.unread ? 'unread' : ''}" data-activity-id="${item.id}">
+                            ${item.unread ? '<span class="unread-dot"></span>' : ''}
+                            <div class="activity-icon icon-${item.type || 'info'}">
+                                ${getSvgIcon(item.type || 'info')}
+                            </div>
+                            <div class="activity-content">
+                                <div class="activity-title">${item.title}</div>
+                                <div class="activity-desc">${item.desc}</div>
+                                <div class="activity-meta">
+                                    <span class="activity-time">
+                                        <svg style="width:0.75rem;height:0.75rem" viewBox="0 0 20 20" fill="currentColor">
+                                            <path fill-rule="evenodd" d="M10 18a8 8 0 100-16 8 8 0 000 16zm1-12a1 1 0 10-2 0v4a1 1 0 00.293.707l2.828 2.829a1 1 0 101.415-1.415L11 9.586V6z" clip-rule="evenodd"/>
+                                        </svg>
+                                        ${item.time}
+                                    </span>
+                                    ${item.action ? `<button type="button" class="activity-action-btn" data-action-url="${item.action.url || '#'}">${item.action.label || 'Ver'}</button>` : ''}
+                                </div>
+                            </div>
+                        </div>
+                    `).join('') + '</div>';
+                }
+
+                drawer.innerHTML = `
+                    <div class="activity-header">
+                        <div class="activity-header-left">
+                            <h3 class="activity-title">Central de Notificações</h3>
+                            <span class="activity-count-badge">${unreadTotal}</span>
+                        </div>
+                        <div class="activity-header-actions">
+                            <button type="button" class="btn btn-ghost btn-xs" id="btn-mark-all-read" title="Marcar todas como lidas">
+                                <svg style="width:1rem;height:1rem" viewBox="0 0 20 20" fill="currentColor">
+                                    <path fill-rule="evenodd" d="M16.707 5.293a1 1 0 010 1.414l-8 8a1 1 0 01-1.414 0l-4-4a1 1 0 011.414-1.414L8 12.586l7.293-7.293a1 1 0 011.414 0z" clip-rule="evenodd"/>
+                                </svg>
+                            </button>
+                            <button type="button" class="btn btn-ghost btn-icon btn-sm" id="btn-close-activity-drawer" aria-label="Fechar painel">
+                                &times;
+                            </button>
+                        </div>
+                    </div>
+                    <div class="activity-filter-bar">
+                        <button type="button" class="activity-filter-btn ${currentFilter === 'all' ? 'active' : ''}" data-filter="all">Todas (${activities.length})</button>
+                        <button type="button" class="activity-filter-btn ${currentFilter === 'unread' ? 'active' : ''}" data-filter="unread">Não Lidas (${unreadTotal})</button>
+                        <button type="button" class="activity-filter-btn ${currentFilter === 'system' ? 'active' : ''}" data-filter="system">Sistema</button>
+                    </div>
+                    <div class="activity-body">
+                        ${itemsHtml}
+                    </div>
+                    <div class="activity-footer">
+                        <span>${activities.length} atividades no histórico</span>
+                        <button type="button" class="btn btn-link btn-xs text-muted" id="btn-clear-activities" style="padding:0">Limpar tudo</button>
+                    </div>
+                `;
+
+                drawer.querySelector('#btn-close-activity-drawer')?.addEventListener('click', close);
+                drawer.querySelector('#btn-mark-all-read')?.addEventListener('click', markAllAsRead);
+                drawer.querySelector('#btn-clear-activities')?.addEventListener('click', clear);
+
+                drawer.querySelectorAll('.activity-filter-btn').forEach(btn => {
+                    btn.addEventListener('click', () => {
+                        currentFilter = btn.getAttribute('data-filter');
+                        render();
+                    });
+                });
+
+                drawer.querySelectorAll('.activity-item').forEach(itemEl => {
+                    itemEl.addEventListener('click', (e) => {
+                        const id = itemEl.getAttribute('data-activity-id');
+                        if (id) markAsRead(id);
+                    });
+                });
+
+                updateBadges();
+            }
+
+            function open() {
+                const drawer = getDrawer();
+                const backdrop = getBackdrop();
+                render();
+                drawer.classList.add('show');
+                backdrop.classList.add('show');
+                document.body.style.overflow = 'hidden';
+            }
+
+            function close() {
+                const drawer = getDrawer();
+                const backdrop = getBackdrop();
+                if (drawer) drawer.classList.remove('show');
+                if (backdrop) backdrop.classList.remove('show');
+                document.body.style.overflow = '';
+            }
+
+            function toggle() {
+                const drawer = getDrawer();
+                if (drawer && drawer.classList.contains('show')) {
+                    close();
+                } else {
+                    open();
+                }
+            }
+
+            function add(item) {
+                const newItem = Object.assign({
+                    id: 'act-' + Date.now(),
+                    title: 'Nova notificação',
+                    desc: '',
+                    time: 'Agora',
+                    type: 'info',
+                    category: 'system',
+                    unread: true
+                }, item);
+
+                activities.unshift(newItem);
+                render();
+                updateBadges();
+
+                document.dispatchEvent(new CustomEvent('frameper:activity:new', {
+                    bubbles: true,
+                    detail: newItem
+                }));
+
+                if (window.FramePER && window.FramePER.Notify) {
+                    window.FramePER.Notify.info(newItem.title, newItem.desc, 4000);
+                }
+            }
+
+            function markAsRead(id) {
+                const item = activities.find(a => a.id === id);
+                if (item && item.unread) {
+                    item.unread = false;
+                    render();
+                    updateBadges();
+                    document.dispatchEvent(new CustomEvent('frameper:activity:read', {
+                        bubbles: true,
+                        detail: item
+                    }));
+                }
+            }
+
+            function markAllAsRead() {
+                activities.forEach(a => a.unread = false);
+                render();
+                updateBadges();
+                document.dispatchEvent(new CustomEvent('frameper:activity:all-read', {
+                    bubbles: true
+                }));
+            }
+
+            function clear() {
+                activities = [];
+                render();
+                updateBadges();
+            }
+
+            function init() {
+                document.addEventListener('click', (e) => {
+                    const trigger = e.target.closest('[data-activity-feed-toggle], [data-activity-drawer]');
+                    if (trigger) {
+                        e.preventDefault();
+                        toggle();
+                    }
+                });
+
+                document.addEventListener('keydown', (e) => {
+                    if (e.key === 'Escape') {
+                        const drawer = getDrawer();
+                        if (drawer && drawer.classList.contains('show')) {
+                            close();
+                        }
+                    }
+                });
+
+                updateBadges();
+            }
+
+            return {
+                init,
+                open,
+                close,
+                toggle,
+                add,
+                markAsRead,
+                markAllAsRead,
+                clear,
+                getUnreadCount,
+                getItems: () => [...activities]
+            };
         })()
     };
 
@@ -4802,6 +5145,9 @@
         if (FramePER.FormValidator && FramePER.FormValidator.init) {
             FramePER.FormValidator.init();
         }
+        if (FramePER.ActivityFeed && FramePER.ActivityFeed.init) {
+            FramePER.ActivityFeed.init();
+        }
         
         // Hide global page loader if exists
         const staticLoader = document.querySelector('.page-loader-overlay');
@@ -4820,6 +5166,7 @@
     window.FramePERPopover = FramePER.Popover;
     window.FramePERContextMenu = FramePER.ContextMenu;
     window.FramePERFormValidator = FramePER.FormValidator;
+    window.FramePERActivityFeed = FramePER.ActivityFeed;
 
 })(window, document);
 

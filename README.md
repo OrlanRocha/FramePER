@@ -1,13 +1,19 @@
 # Frame PER
 
-![NPM Version](https://img.shields.io/badge/version-2.13.0-blue.svg)
+![NPM Version](https://img.shields.io/badge/version-2.14.0-blue.svg)
 ![License](https://img.shields.io/badge/license-MIT-green.svg)
 
-**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Validador Reativo de Formulários (`FramePER.FormValidator`)**, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
+**Frame PER** é um **UI Framework** (CSS & JS) moderno, elegante, ultraleve e responsivo desenvolvido com SCSS modular e Vanilla JS sem nenhuma dependência externa. Combina design minimalista de alto padrão (Dribbble/Apple/Vercel) com utilitários flexíveis, modo escuro nativo, **Central de Atividades & Notificações em Drawer (`FramePER.ActivityFeed`)**, **Validador Reativo de Formulários (`FramePER.FormValidator`)**, **Menu de Contexto de Botão Direito & Dropdowns Multinível (`FramePER.ContextMenu`)**, **Abas Reativas com Slider Animado (`FramePER.Tabs`)**, **Accordions Fluidos com scrollHeight (`FramePER.Accordion`)**, **Popovers Inteligentes com Auto-Posicionamento 4D (`FramePER.Popover`)**, **File Uploader Avançado (`FramePER.Upload`) com Drag & Drop e progresso individual**, **Template Delivery & Restaurante (cardápio digital, sacola, cupom e rastreio de pedido com stepper)**, **Datepicker nativo (Data única & Range)**, **Select pesquisável com Multi-Select e chips**, **Tooltips direcionais em 4 posições**, **Command Palette (Ctrl+K)**, **Framework de Gráficos Vetoriais SVG com animações e modo misto**, biblioteca de **107 ícones vetoriais** Pure CSS e utilitários interativos de ponta.
 
 ---
 
 ## 🚀 Principais Recursos & Componentes
+
+- **🔔 Central de Atividades & Notificações em Drawer (`FramePER.ActivityFeed`)**:
+  - **Zero Dependências & Drawer Lateral**: Painel retrátil desktop-class com backdrop blur acionado por atributo `[data-activity-feed-toggle]` ou via API programática (`FramePER.ActivityFeed.open()`).
+  - **Feed de Eventos Reativo**: Itens categorizados com ícones vetoriais semânticos (*sucesso, alerta, erro, info, sistema*), timestamps relativos e botões de ação direta.
+  - **Badges Dinâmicas & Pulso**: Sincronização automática em qualquer elemento com `[data-activity-badge]`, exibição de não lidas e animação de pulso ao receber novas notificações.
+  - **Filtros por Status & Ações Globais**: Filtros instantâneos (*Todas, Não Lidas, Sistema*), botão de "Marcar todas como lidas" e "Limpar histórico".
 
 - **🛡️ Validador Reativo de Formulários (`FramePER.FormValidator`)**:
   - **Zero Dependências & Validação em Tempo Real**: Validação instantânea ao sair do campo (`blur`) e contínua durante digitação (`input`), com bloqueio inteligente de envio (`submit`).
@@ -280,6 +286,31 @@ Inclua os arquivos compilados `dist/framePER.min.css` e `dist/framePER.min.js` n
 
   // Registro de nova regra personalizada
   FramePER.FormValidator.addRule('forte', (val) => /[A-Z]/.test(val) && /[0-9]/.test(val), 'A senha precisa de letras maiúsculas e números.');
+</script>
+```
+
+### Central de Atividades & Notificações em Drawer
+```html
+<!-- Botão gatilho com badge de não lidas -->
+<button class="btn btn-ghost btn-icon p-relative" data-activity-feed-toggle>
+  <i class="icon icon-bell"></i>
+  <span class="activity-count-badge p-absolute" data-activity-badge>3</span>
+</button>
+
+<script>
+  // Adiciona nova notificação ao feed em tempo real
+  FramePER.ActivityFeed.add({
+    title: 'Novo pedido #1042',
+    desc: 'O pagamento foi confirmado e o pedido foi enviado para expedição.',
+    time: 'Agora mesmo',
+    type: 'success', // 'success' | 'warning' | 'danger' | 'info' | 'system'
+    unread: true,
+    action: { label: 'Rastrear', url: '#pedido-1042' }
+  });
+
+  // Abertura / Fechamento programático
+  FramePER.ActivityFeed.open();
+  FramePER.ActivityFeed.markAllAsRead();
 </script>
 ```
 
